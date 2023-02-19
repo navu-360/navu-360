@@ -3,13 +3,6 @@ import React, { useState } from "react";
 import { useJoinWaitlistMutation } from "services/baseApiSlice";
 import toast from "utils/toast";
 
-import { Nunito_Sans } from "@next/font/google";
-
-const font = Nunito_Sans({
-  subsets: ["cyrillic"],
-  weight: ["400", "600", "700", "800"],
-});
-
 export default function Home() {
   const [joinWaitlist, { isLoading }] = useJoinWaitlistMutation();
 
@@ -37,7 +30,7 @@ export default function Home() {
     <>
       <Header />
       <main
-        className={`flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-center ${font.className}`}
+        className={`flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-center`}
       >
         <div className="flex flex-col items-center justify-center gap-6 px-4 py-16 ">
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">

@@ -12,6 +12,13 @@ import ErrorBoundary from "components/errorBoundary";
 
 import "styles/globals.css";
 
+import { Nunito_Sans } from "@next/font/google";
+
+const font = Nunito_Sans({
+  subsets: ["cyrillic"],
+  weight: ["400", "600", "700", "800"],
+});
+
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
@@ -33,6 +40,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
               transition={Slide}
               className={"toast-styles"}
             />
+            <style jsx global>{`
+              html {
+                font-family: ${font.style.fontFamily};
+              }
+            `}</style>
             <Component {...pageProps} />
           </PersistGate>
         </Provider>
