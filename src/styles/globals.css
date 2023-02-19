@@ -15,7 +15,6 @@ body {
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: none;
     -webkit-tap-highlight-color: transparent;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
 }
