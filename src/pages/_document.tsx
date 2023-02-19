@@ -7,7 +7,7 @@ export default class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <meta charSet="utf-8" />
-          <meta name="theme-color" content="#000000" />
+          <meta name="theme-color" content="#cc66ff" />
           {/* og meta */}
           <meta property="og:url" content="https://navu360.com" />
           <meta property="og:type" content="website" />
