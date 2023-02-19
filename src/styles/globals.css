@@ -15,6 +15,7 @@ body {
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: none;
     -webkit-tap-highlight-color: transparent;
+    font-family: 'Nunito Sans', sans-serif;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
 }
