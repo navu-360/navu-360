@@ -42,7 +42,7 @@ export default function Home() {
                 revolutionize your company&apos;s onboarding experience, keeping
                 your top talents and driving growth like never before!
               </div>
-              <form className="mx-auto flex max-w-xs flex-col gap-4">
+              <form className="mx-auto w-full flex max-w-xs flex-col gap-4">
                 <input
                   type="email"
                   name="email"
