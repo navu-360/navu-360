@@ -1,7 +1,31 @@
-import { type NextPage } from "next";
 import Head from "next/head";
+import React, { useState } from "react";
+import { useJoinWaitlistMutation } from "services/baseApiSlice";
+import toast from "utils/toast";
 
-const Home: NextPage = () => {
+export default function Home() {
+  const [joinWaitlist, { isLoading }] = useJoinWaitlistMutation();
+
+  const joinWaitListHandler = async (email: string) => {
+    await joinWaitlist(email)
+      .unwrap()
+      .then((payload: { message: string }) => {
+        toast({
+          status: "success",
+          message: payload.message,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        toast({
+          status: "error",
+          message: "Something went wrong, please try again later",
+        });
+      });
+  };
+
+  const [email, setEmail] = useState<string>("");
+
   return (
     <>
       <Head>
@@ -27,11 +51,20 @@ const Home: NextPage = () => {
                   type="email"
                   name="email"
                   id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter email"
                   className="generic-input"
                 />
-                <button className="rounded-3xl bg-[#cc66ff]/30 py-4 px-6 font-semibold leading-[100%]">
-                  Secure spot!
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    void joinWaitListHandler(email);
+                  }}
+                  disabled={isLoading || !email}
+                  className="rounded-3xl bg-[#cc66ff]/30 py-4 px-6 font-semibold leading-[100%]"
+                >
+                  {isLoading ? "Loading..." : "Secure spot!"}
                 </button>
               </form>
             </div>
@@ -40,6 +73,4 @@ const Home: NextPage = () => {
       </main>
     </>
   );
-};
-
-export default Home;
+}
