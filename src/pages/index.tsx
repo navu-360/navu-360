@@ -1,3 +1,4 @@
+import Header from "components/head";
 import Head from "next/head";
 import React, { useState } from "react";
 import { useJoinWaitlistMutation } from "services/baseApiSlice";
@@ -28,11 +29,7 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <title>Navu 360 - Simplifying onboarding</title>
-        <meta name="description" content="Navu 360 - Simplifying onboarding" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Header />
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-center">
         <div className="container flex flex-col items-center justify-center gap-6 px-4 py-16 ">
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
@@ -41,7 +38,7 @@ export default function Home() {
           <div className="mx-auto w-max">
             <div className="mx-auto flex w-full flex-col gap-4 rounded-xl p-4 text-white md:w-1/2">
               <h3 className="text-2xl font-bold">Launching Soon!</h3>
-              <div className="text-md">
+              <div className="text-md font-medium">
                 Join Navu360&apos;s waitlist now and be among the first to
                 revolutionize your company&apos;s onboarding experience, keeping
                 your top talents and driving growth like never before!
