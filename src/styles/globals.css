@@ -126,3 +126,9 @@ span {
     padding: 5px 20px;
     color: #246812;
 }
+
+@media screen and (min-width: 768px) {
+    .toast-styles {
+        width: 400px;
+    }
+}

@@ -23,7 +23,8 @@
       "styles/*": ["styles/*"],
       "redux/*": ["redux/*"],
       "server/*": ["server/*"],
-      "services/*": ["services/*"]
+      "services/*": ["services/*"],
+      "env/*": ["env/*"]
     }
   },
   "include": [

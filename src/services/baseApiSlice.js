@@ -1,7 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+import { env } from "env/client.mjs";
+
 const baseQuery = fetchBaseQuery({
-  baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL_V1,
+  baseUrl: env.NEXT_PUBLIC_API_BASE_URL_V1,
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const { token } = getState().auth;
@@ -15,14 +17,16 @@ const baseQuery = fetchBaseQuery({
 export const baseApiSlice = createApi({
   baseQuery,
   endpoints: (builder) => ({
-    registerUser: builder.mutation({
-      query: ({ user, userDetails }) => ({
-        url: `${user}/${SIGN_UP}`,
+    joinWaitlist: builder.mutation({
+      query: (email) => ({
+        url: `waitlist`,
         method: "POST",
-        body: userDetails,
+        body: {
+          email,
+        },
       }),
     }),
   }),
 });
 
-export const { useRegisterUserMutation } = baseApiSlice;
+export const { useJoinWaitlistMutation } = baseApiSlice;

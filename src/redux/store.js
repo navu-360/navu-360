@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
-import { baseApiSlice } from "services/api/baseApiSlice";
+import { baseApiSlice } from "services/baseApiSlice";
 
 import storage from "redux-persist/lib/storage";
 
