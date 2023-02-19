@@ -1,5 +1,4 @@
 import Header from "components/head";
-import Head from "next/head";
 import React, { useState } from "react";
 import { useJoinWaitlistMutation } from "services/baseApiSlice";
 import toast from "utils/toast";
