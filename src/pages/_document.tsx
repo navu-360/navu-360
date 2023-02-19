@@ -6,22 +6,8 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link
-            rel="preconnect"
-            href="https://fonts.googleapis.com"
-            crossOrigin="anonymous"
-          />
-          <link
-            rel="preconnect"
-            href="https://fonts.gstatic.com"
-            crossOrigin="anonymous"
-          />
           <meta charSet="utf-8" />
           <meta name="theme-color" content="#000000" />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,600;1,700;1,800;1,900&display=swap"
-            rel="stylesheet"
-          />
           {/* og meta */}
           <meta property="og:url" content="https://navu360.com" />
           <meta property="og:type" content="website" />

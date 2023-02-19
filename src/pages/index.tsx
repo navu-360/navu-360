@@ -36,7 +36,7 @@ export default function Home() {
           </h1>
           <div className="mx-auto md:w-max">
             <div className="mx-auto flex w-full flex-col gap-4 rounded-xl p-4 text-white md:w-1/2">
-              <h3 className="text-2xl font-bold">Launching Soon!</h3>
+              <h2 className="text-2xl font-bold">Launching Soon!</h2>
               <div className="text-md font-medium">
                 Join Navu360&apos;s waitlist now and be among the first to
                 revolutionize your company&apos;s onboarding experience, keeping
