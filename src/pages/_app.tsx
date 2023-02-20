@@ -3,6 +3,7 @@ import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { Provider } from "react-redux";
 import { makeStore } from "redux/store";
+import { Analytics } from "@vercel/analytics/react";
 
 import { ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -44,6 +45,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
             }
           `}</style>
           <Component {...pageProps} />
+          <Analytics />
         </Provider>
       </SessionProvider>
     </ErrorBoundary>
