@@ -8,7 +8,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import ErrorBoundary from "components/errorBoundary";
+import ErrorBoundary from "components/extra/errorBoundary";
 
 import "styles/globals.css";
 
