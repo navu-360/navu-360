@@ -7,7 +7,7 @@ export default function LandingWrapper({
   children: React.ReactNode;
 }) {
   return (
-    <main className="flex min-h-screen w-full flex-col gap-6">
+    <main className="flex h-max min-h-screen w-full flex-col gap-0 pt-[65px]">
       <NavBar />
       {children}
     </main>

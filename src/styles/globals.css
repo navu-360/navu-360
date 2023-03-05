@@ -49,24 +49,6 @@ button:disabled {
     cursor: default !important;
 }
 
-button {
-    transition: all ease-in 0.3s;
-    transform: perspective(50px) translateZ(0px);
-}
-
-button:hover {
-    transform: perspective(50px) translateZ(2.5px);
-}
-
-.animateLinkAsButton {
-    transition: all ease-in 0.3s;
-    transform: perspective(50px) translateZ(0px);
-}
-
-.animateLinkAsButton:hover {
-    transform: perspective(50px) translateZ(2.5px);
-}
-
 /* tap on link on mobile */
 a {
     -webkit-tap-highlight-color: transparent;

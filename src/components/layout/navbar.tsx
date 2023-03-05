@@ -1,26 +1,82 @@
-import Image from "next/image";
-import React from "react";
+/* eslint-disable @next/next/no-img-element */
+import Link from "next/link";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
 
 export default function NavBar() {
+  const [showDropDown, setShowDropDown] = useState(false);
+  const router = useRouter();
   return (
-    <header className="flex justify-between px-4 pt-2 pb-4 shadow">
-      <div className="relative h-[40px] w-[200px]">
-        <Image
-          src="/logo.svg"
-          height="50"
-          width="200"
-          alt="Navu360"
-          className="object-contain"
-        />
+    <nav className="fixed top-0 left-0 z-20 h-[65px] w-full bg-dark py-2.5 sm:px-4">
+      <div className="mx-auto flex flex-wrap items-center justify-between md:mx-0">
+        <Link href="/" className="flex items-center pl-4">
+          <img src="logo.svg" className="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
+        </Link>
+        <div className="flex items-center pr-4 md:order-2">
+          <button className="mr-8 hidden h-max w-max rounded-3xl border-[1px] border-secondary px-8 py-1 text-base font-medium tracking-tight text-secondary md:block">
+            Login
+          </button>
+          <button
+            type="button"
+            className="mr-3 h-max w-max rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 focus:ring-blue-300 md:mr-0"
+          >
+            Get started
+          </button>
+          <button
+            data-collapse-toggle="navbar-sticky"
+            type="button"
+            className="inline-flex items-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 md:hidden"
+            aria-controls="navbar-sticky"
+            aria-expanded="false"
+            onClick={() => setShowDropDown(!showDropDown)}
+          >
+            <span className="sr-only">Open main menu</span>
+            <svg
+              className="h-6 w-6"
+              aria-hidden="true"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+          </button>
+        </div>
+        {showDropDown && (
+          <div
+            className="h-full w-full items-center justify-between overflow-y-auto"
+            id="navbar-sticky"
+          >
+            <ul className="mt-4 flex h-full flex-col px-4 py-4">
+              <li>
+                <Link
+                  href="/"
+                  className={`block rounded py-2 pl-3 pr-4 text-tertiary ${
+                    router.pathname === "/"
+                      ? "border-[1px] border-secondary"
+                      : ""
+                  }`}
+                  aria-current="page"
+                >
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/"
+                  className="block rounded py-2 pl-3 pr-4 text-gray-700 hover:bg-gray-100 "
+                >
+                  Login
+                </Link>
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
-      <div className="flex gap-8">
-        <button className="text-lg font-medium tracking-tight text-tertiary">
-          Login
-        </button>
-        <button className="rounded-3xl bg-secondary py-2 px-8 text-xl font-medium tracking-tighter text-white">
-          Get started
-        </button>
-      </div>
-    </header>
+    </nav>
   );
 }

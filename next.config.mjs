@@ -20,6 +20,9 @@ const config = {
     // for more information.
     hideSourceMaps: true,
   },
+  images: {
+    domains: ["res.cloudinary.com"],
+  },
 
   /**
    * If you have the "experimental: { appDir: true }" setting enabled, then you
