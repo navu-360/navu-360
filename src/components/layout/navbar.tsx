@@ -1,13 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { signIn, useSession, signOut } from "next-auth/react";
-import { useCreateUserMutation } from "services/baseApiSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setUserId } from "redux/auth/authSlice";
-import toast from "utils/toast";
 
 export default function NavBar() {
   const [showDropDown, setShowDropDown] = useState(false);
@@ -16,44 +14,6 @@ export default function NavBar() {
   const { data: session, status } = useSession();
 
   const dispatch = useDispatch();
-
-  const userId = useSelector(
-    (state: { auth: { userId: string } }) => state.auth.userId
-  );
-
-  const [createUser, { isLoading, isError }] = useCreateUserMutation();
-
-  const [hasLoggedOut, setHasLoggedOut] = useState(false);
-
-  const saveUser = async () => {
-    if (hasLoggedOut) return;
-    const body = {
-      ...session?.user,
-    };
-    await createUser(body)
-      .unwrap()
-      .then((payload) => {
-        dispatch(setUserId(payload?.data?.id));
-      })
-      .catch((error) => {
-        toast({
-          status: "error",
-          message: error.data.message,
-        });
-      });
-  };
-
-  useEffect(() => {
-    if (
-      session?.user &&
-      (userId?.length === 0 || !userId) &&
-      !isLoading &&
-      !isError
-    ) {
-      saveUser();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session, userId, isLoading, isError, status]);
 
   return (
     <nav className="fixed top-0 left-0 z-20 h-[65px] w-full bg-dark py-2.5 sm:px-4">
@@ -64,7 +24,6 @@ export default function NavBar() {
         <div className="flex items-center pr-4 md:order-2">
           <button
             onClick={() => {
-              setHasLoggedOut(true);
               signOut({
                 callbackUrl: "/",
                 redirect: false,
@@ -80,10 +39,10 @@ export default function NavBar() {
             onClick={() => {
               signIn("google", { callbackUrl: "/" });
             }}
-            disabled={isLoading || status === "loading"}
+            disabled={status === "loading"}
             className="mr-3 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 md:mr-0"
           >
-            {isLoading || status === "loading" ? (
+            {status === "loading" ? (
               <svg
                 className="h-5 w-5 animate-spin text-white"
                 xmlns="http://www.w3.org/2000/svg"

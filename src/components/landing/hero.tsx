@@ -1,7 +1,10 @@
 import Image from "next/image";
 import React from "react";
 
+import { signIn, useSession } from "next-auth/react";
+
 export default function Hero() {
+  const { status } = useSession();
   return (
     <section className="flex h-max min-h-[calc(100vh_-_65px)] w-full flex-col-reverse items-center justify-center gap-6 bg-dark px-8 pb-8 text-white md:flex-row md:justify-start md:pb-32 xl:gap-12 2xl:gap-32 2xl:px-32">
       <div className="flex min-w-max max-w-[500px] flex-col items-center gap-8 md:items-start 2xl:gap-16">
@@ -12,7 +15,13 @@ export default function Hero() {
           Onboard new hires with confidence using the <br /> ultimate onboarding
           platform
         </p>
-        <button className="h-max w-max rounded-3xl bg-secondary px-12 py-3 text-center text-lg font-bold text-white hover:bg-secondary focus:outline-none focus:ring-4 focus:ring-blue-300">
+        <button
+          onClick={() => {
+            signIn("google", { callbackUrl: "/" });
+          }}
+          disabled={status === "loading"}
+          className="h-max w-max rounded-3xl bg-secondary px-12 py-3 text-center text-lg font-bold text-white hover:bg-secondary focus:outline-none focus:ring-4 focus:ring-blue-300"
+        >
           Get started
         </button>
       </div>

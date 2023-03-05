@@ -39,18 +39,19 @@ model Session {
 }
 
 model User {
-  id              String              @id @default(cuid())
-  name            String?
-  email           String?             @unique
-  emailVerified   DateTime?
-  image           String?
-  role            String?             @default("admin")
-  accounts        Account[]
-  sessions        Session[]
-  organization    Organization?
-  onboardingProgs OnboardingProgram[]
-  createdAt       DateTime            @default(now())
-  updatedAt       DateTime            @updatedAt
+  id               String              @id @default(cuid())
+  name             String?
+  email            String?             @unique
+  emailVerified    DateTime?
+  image            String?
+  role             String?             @default("admin")
+  hasBeenOnboarded Boolean?            @default(false)
+  accounts         Account[]
+  sessions         Session[]
+  organization     Organization?
+  onboardingProgs  OnboardingProgram[]
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
 }
 
 // Define the Organization entity
@@ -68,7 +69,7 @@ model Organization {
 model OnboardingProgram {
   id             String       @id @default(uuid())
   name           String
-  content    String
+  content        String
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
   users          User[]

@@ -2,7 +2,7 @@ import type { GetServerSidePropsContext } from "next";
 import {
   getServerSession,
   type NextAuthOptions,
-  type DefaultSession,
+  type DefaultSession
 } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
@@ -26,6 +26,7 @@ declare module "next-auth" {
       emailVerified: string;
       image: string;
       role: string;
+      hasBeenOnboarded: boolean;
     } & DefaultSession["user"];
   }
 
@@ -36,6 +37,7 @@ declare module "next-auth" {
     emailVerified: string;
     image: string;
     role: string;
+    hasBeenOnboarded: boolean;
   }
 }
 
@@ -47,7 +49,18 @@ declare module "next-auth" {
  **/
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session({ session }) {
+    async session({ session }) {
+      const userObj = await prisma.user.findUnique({
+        where: { email: session.user.email },
+      });
+      if (userObj) {
+        session.user.id = userObj?.id ?? "";
+        session.user.name = userObj?.name ?? "";
+        session.user.image = userObj?.image ?? "";
+        session.user.role = userObj?.role ?? "admin";
+        session.user.hasBeenOnboarded = userObj?.hasBeenOnboarded ?? false;
+      }
+
       return session;
     },
   },

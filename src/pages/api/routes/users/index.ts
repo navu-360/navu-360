@@ -35,7 +35,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
             // if user exists, it means they are login in with Google
             if (userExists) {
-                res.status(200).json({ message: `Login success!`, data: userExists });
+                res.status(200).json({ message: `Login success!`, data: userExists, isNew: false });
                 return;
             }
 
@@ -47,7 +47,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 },
             });
 
-            res.status(200).json({ message: `User ${user.name} created.`, data: user });
+            res.status(201).json({ message: `User ${user.name} created.`, data: user, isNew: true });
             break;
 
         case "GET":
