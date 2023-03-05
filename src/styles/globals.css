@@ -93,6 +93,36 @@ textarea:focus {
     border: 0;
 }
 
+.common-input {
+    width: 100%;
+    height: 45px;
+    border-radius: 8px;
+    padding: 5px 20px;
+    color: #30475E;
+    border: 1px solid #30475E;
+    transition: all 0.3s ease;
+}
+
+.common-input:focus {
+    border: 1.5px solid #fff;
+    box-shadow: 0 0 10px #e5e5e5;
+}
+
+.common-input-error {
+    border: 1px solid #C21010;
+    transition: all 0.3s ease;
+}
+
+.common-input-error:focus {
+    border: 1.5px solid #C21010;
+}
+
+label {
+    font-size: 14px;
+    color: #30475E;
+    font-weight: 600;
+}
+
 p,
 h1,
 h2,
@@ -116,4 +146,15 @@ span {
     .toast-styles {
         width: 400px;
     }
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(144, 85, 177, 0.231) 10.47%, rgba(128, 87, 151, 0.3) 53.18%);
+    backdrop-filter: blur(8px);
+    z-index: 20;
 }

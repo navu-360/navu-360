@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { signIn, useSession, signOut } from "next-auth/react";
 import { useDispatch } from "react-redux";
@@ -14,6 +14,19 @@ export default function NavBar() {
   const { data: session, status } = useSession();
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (router.pathname === "/" && !session?.user?.hasBeenOnboarded) {
+      router.push("/setup");
+    } else if (
+      router.pathname === "/setup" &&
+      session?.user?.hasBeenOnboarded
+    ) {
+      router.push("/");
+    } else if (router.pathname === "/" && session?.user?.hasBeenOnboarded) {
+      router.push("/dashboard");
+    }
+  }, [session]);
 
   return (
     <nav className="fixed top-0 left-0 z-20 h-[65px] w-full bg-dark py-2.5 sm:px-4">
