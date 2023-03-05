@@ -26,7 +26,16 @@ export const baseApiSlice = createApi({
         },
       }),
     }),
+    // USER AUTH ENDPOINTS
+    // create user
+    createUser: builder.mutation({
+      query: (body) => ({
+        url: `users`,
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useJoinWaitlistMutation } = baseApiSlice;
+export const { useJoinWaitlistMutation, useCreateUserMutation } = baseApiSlice;

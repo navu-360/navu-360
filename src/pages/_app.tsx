@@ -28,7 +28,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <SessionProvider session={session}>
         <Provider store={makeStore}>
           <ToastContainer
-            position="top-right"
+            position="bottom-right"
             hideProgressBar={false}
             newestOnTop={false}
             closeOnClick

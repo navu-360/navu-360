@@ -54,6 +54,7 @@ a {
     -webkit-tap-highlight-color: transparent;
 }
 
+
 /* disable touch */
 .stop-touch {
     touch-action: none !important;

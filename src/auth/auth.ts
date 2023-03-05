@@ -47,14 +47,7 @@ declare module "next-auth" {
  **/
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session({ session, user }) {
-      if (session.user) {
-        session.user.id = user.id;
-        session.user.name = user.name;
-        session.user.email = user.email;
-        session.user.image = user.image;
-        session.user.role = user.role;
-      }
+    session({ session }) {
       return session;
     },
   },
