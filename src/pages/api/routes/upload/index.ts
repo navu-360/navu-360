@@ -45,17 +45,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 }
 
 
-const sign = async (req, res) => {
-    const timestamp = Math.round((new Date()).getTime() / 1000);
+// const sign = async (req, res) => {
+//     const timestamp = Math.round((new Date()).getTime() / 1000);
 
-    const signature = cloudinary.v2.utils.api_sign_request({
-        timestamp: timestamp,
-        folder: 'product'
-    }, env.CLOUDINARY_API_SECRET);
+//     const signature = cloudinary.v2.utils.api_sign_request({
+//         timestamp: timestamp,
+//         folder: 'product'
+//     }, env.CLOUDINARY_API_SECRET);
 
-    res.statusCode = 200;
-    res.json({ signature, timestamp });
-};
+//     res.statusCode = 200;
+//     res.json({ signature, timestamp });
+// };
 
 
 export default handler;
