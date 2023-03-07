@@ -35,7 +35,42 @@ export const baseApiSlice = createApi({
         body,
       }),
     }),
+    // update user
+    updateUser: builder.mutation({
+      query: (body) => ({
+        url: `users`,
+        method: "PATCH",
+        body,
+      }),
+    }),
+
+    // Media endpoints
+    // upload image to cloudinary
+    uploadImage: builder.mutation({
+      query: (formData) => ({
+        url: `upload`,
+        method: "POST",
+        formData,
+      }),
+    }),
+
+    // fetch all users
+    fetchUsers: builder.query({
+      query: () => `users`,
+    }),
+    deleteUser: builder.mutation({
+      query: (id) => ({
+        url: `users/${id}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
-export const { useJoinWaitlistMutation, useCreateUserMutation } = baseApiSlice;
+export const {
+  useJoinWaitlistMutation,
+  useCreateUserMutation,
+  useUpdateUserMutation,
+  useUploadImageMutation,
+  useFetchUsersQuery,
+} = baseApiSlice;

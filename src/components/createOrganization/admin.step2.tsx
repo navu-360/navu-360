@@ -12,18 +12,25 @@ export default function AdminCompanyDetails({
     <CreateOrganizationLayout
       goToNext={goToNext}
       goToprev={goToprev}
+      files={[]}
       title="Setup your organization"
       desc="For the purpose of industry regulation, your details are required."
     >
-      <form className="flex h-full flex-col gap-3">
-        <div>
+      <form className="mt-8 flex h-full w-max flex-col gap-6">
+        <div className="flex flex-col gap-2">
           <label htmlFor="name">What’s your company name?</label>
-          <input type="text" name="name" id="name" />
+          <input
+            type="text"
+            name="name"
+            id="name"
+            className="common-input"
+            placeholder="Enter name"
+          />
         </div>
 
-        <div>
+        <div className="flex flex-col gap-2">
           <label htmlFor="industry">What industry are you in?</label>
-          <select name="industry" id="industry">
+          <select className="common-input" name="industry" id="industry">
             <option value="default" selected>
               Select industry
             </option>
@@ -41,9 +48,13 @@ export default function AdminCompanyDetails({
           </select>
         </div>
 
-        <div>
+        <div className="flex flex-col gap-2">
           <label htmlFor="noOfEmployees">How big is your company?</label>
-          <select name="noOfEmployees" id="noOfEmployees">
+          <select
+            className="common-input"
+            name="noOfEmployees"
+            id="noOfEmployees"
+          >
             <option value="default" selected>
               Number of employees
             </option>

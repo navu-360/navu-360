@@ -12,6 +12,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     API endpoint to 1) create a new user. POST request: name, email, image. 2) get all users. GET request.
     */
 
+    const session = await getServerSession(req, res, authOptions);
+    if (!session) {
+        res.status(401).json({ message: `Unauthorized.` });
+        return;
+    }
+
     switch (req.method) {
         case "POST":
             const { name, email, image } = req.body as {
@@ -51,14 +57,35 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             break;
 
         case "GET":
-            const session = await getServerSession(req, res, authOptions);
-            if (!session) {
-                res.status(401).json({ message: `Unauthorized.` });
+
+            const users = await prisma.user.findMany();
+            return res.status(200).json({ message: `Users found.`, data: users });
+
+
+        case "PATCH":
+            // editable fields: image
+            const { image: toEdit } = req.body as {
+                image: string;
+            };
+
+            // validate request
+            if (!toEdit) {
+                res.status(400).json({ message: `Missing required fields.` });
                 return;
             }
-            const users = await prisma.user.findMany();
-            res.status(200).json({ message: `Users found.`, data: users });
-            break;
+
+
+
+            const userToEdit = await prisma.user.update({
+                where: {
+                    email: session.user.email,
+                },
+                data: {
+                    image: toEdit,
+                },
+            });
+
+            res.status(200).json({ message: `User ${userToEdit.name} updated.`, data: userToEdit });
 
         default:
             res.status(405).json({ message: `Method ${req.method} not allowed.` });

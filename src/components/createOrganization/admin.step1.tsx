@@ -1,4 +1,5 @@
 import CreateOrganizationLayout from "components/layout/createOrgLayout";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -12,7 +13,7 @@ export default function AdminPersonalDetails({
   goToNext,
   goToprev,
 }: {
-  goToNext: () => void;
+  goToNext: (files: File[]) => void;
   goToprev: () => void;
 }) {
   const [images, setImages] = useState<CustomFileType[]>([]);
@@ -50,10 +51,11 @@ export default function AdminPersonalDetails({
     <CreateOrganizationLayout
       goToNext={goToNext}
       goToprev={goToprev}
-      title="Customize your profile"
+      files={images}
+      title={`Customize your organization`}
       desc="For the purpose of industry regulation, your details are required."
     >
-      <form className="mt-8 flex h-full w-max flex-col gap-3">
+      <form className="mt-8 flex h-full w-max flex-col gap-6">
         <div className="flex flex-col gap-4">
           {images.length > 0 ? (
             <div className="relative h-[100px] w-[100px] rounded-full border-[1px] border-[#e5e5e5] md:h-[125px] md:w-[125px]">
@@ -89,30 +91,33 @@ export default function AdminPersonalDetails({
               </div>
             </div>
           ) : (
-            <div
-              className="flex h-[100px] w-[100px] flex-col items-center justify-center gap-6 rounded-full border-[1px] border-[#7F82BA] px-8 text-center md:h-[150px] md:w-[150px]"
-              {...getRootProps()}
-            >
-              <input {...getInputProps()} />
-              <div className="bg-white-50 flex h-[50px] w-[50px] items-center justify-center rounded-full">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="#000"
-                  className="h-6 w-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 4.5v15m7.5-7.5h-15"
-                  />
-                </svg>
+            <div className="flex items-center gap-4">
+              <div
+                className="relative flex h-[100px] w-[100px] flex-col items-center justify-center gap-6 rounded-full bg-tertiary px-8 text-center md:h-[150px] md:w-[150px]"
+                {...getRootProps()}
+              >
+                <input {...getInputProps()} />
+                <div className="bg-white-50 flex h-[50px] w-[50px] items-center justify-center rounded-full">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="#fff"
+                    className="h-12 w-12"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
               </div>
-              <p className="text-[0.875rem] text-gray-600">
-                Upload your profile picture
-              </p>
+              <div className="flex flex-col gap-1 text-lg font-medium text-tertiary">
+                <p>Upload a profile picture</p>
+                <p className="text-xs">
+                  Photos help your teammates recognize you in Navu360
+                </p>
+              </div>
             </div>
           )}
         </div>

@@ -16,15 +16,18 @@ export default function NavBar() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (router.pathname === "/" && !session?.user?.hasBeenOnboarded) {
-      router.push("/setup");
-    } else if (
-      router.pathname === "/setup" &&
-      session?.user?.hasBeenOnboarded
-    ) {
-      router.push("/");
-    } else if (router.pathname === "/" && session?.user?.hasBeenOnboarded) {
-      router.push("/dashboard");
+    console.log(session);
+    if (session) {
+      if (router.pathname === "/" && !session?.user?.hasBeenOnboarded) {
+        router.push("/setup");
+      } else if (
+        router.pathname === "/setup" &&
+        session?.user?.hasBeenOnboarded
+      ) {
+        router.push("/");
+      } else if (router.pathname === "/" && session?.user?.hasBeenOnboarded) {
+        router.push("/dashboard");
+      }
     }
   }, [session]);
 
