@@ -27,6 +27,7 @@ declare module "next-auth" {
       image: string;
       role: string;
       hasBeenOnboarded: boolean;
+      position: string;
     } & DefaultSession["user"];
   }
 
@@ -38,6 +39,7 @@ declare module "next-auth" {
     image: string;
     role: string;
     hasBeenOnboarded: boolean;
+    position: string;
   }
 }
 
@@ -59,6 +61,7 @@ export const authOptions: NextAuthOptions = {
         session.user.image = userObj?.image ?? "";
         session.user.role = userObj?.role ?? "admin";
         session.user.hasBeenOnboarded = userObj?.hasBeenOnboarded ?? false;
+        session.user.position = userObj?.position ?? "";
       }
 
       return session;

@@ -58,10 +58,21 @@ export const baseApiSlice = createApi({
     fetchUsers: builder.query({
       query: () => `users`,
     }),
+    // delete user
     deleteUser: builder.mutation({
       query: (id) => ({
         url: `users/${id}`,
         method: "DELETE",
+      }),
+    }),
+
+    // Organization endpoints
+    // create organization
+    createOrganization: builder.mutation({
+      query: (body) => ({
+        url: `organization`,
+        method: "POST",
+        body,
       }),
     }),
   }),
@@ -73,4 +84,6 @@ export const {
   useUpdateUserMutation,
   useUploadImageMutation,
   useFetchUsersQuery,
+  useDeleteUserMutation,
+  useCreateOrganizationMutation,
 } = baseApiSlice;

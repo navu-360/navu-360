@@ -52,6 +52,7 @@ export const serverEnv = {
  */
 export const clientSchema = z.object({
   NEXT_PUBLIC_API_BASE_URL_V1: z.string().min(1),
+  NEXT_PUBLIC_CLOUDINARY_API_KEY: z.string().min(1),
 });
 
 /**
@@ -62,4 +63,5 @@ export const clientSchema = z.object({
  */
 export const clientEnv = {
   NEXT_PUBLIC_API_BASE_URL_V1: process.env.NEXT_PUBLIC_API_BASE_URL_V1,
+  NEXT_PUBLIC_CLOUDINARY_API_KEY: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
 };

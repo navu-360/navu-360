@@ -1,13 +1,27 @@
 import CreateOrganizationLayout from "components/layout/createOrgLayout";
-import React from "react";
+import React, { useState } from "react";
 
 export default function AdminCompanyDetails({
   goToNext,
   goToprev,
+  loading,
 }: {
-  goToNext: () => void;
+  goToNext: (
+    files: File[],
+    role: string,
+    companyDetails: {
+      companyName: string;
+      industry: string;
+      noOfEmployees: string;
+    }
+  ) => void;
   goToprev: () => void;
+  loading: boolean;
 }) {
+  const [companyName, setCompanyName] = useState("");
+  const [industry, setIndustry] = useState("");
+  const [noOfEmployees, setNoOfEmployees] = useState("");
+
   return (
     <CreateOrganizationLayout
       goToNext={goToNext}
@@ -15,6 +29,14 @@ export default function AdminCompanyDetails({
       files={[]}
       title="Setup your organization"
       desc="For the purpose of industry regulation, your details are required."
+      loading={loading}
+      role=""
+      companyDetails={{
+        companyName,
+        industry,
+        noOfEmployees,
+      }}
+      step={2}
     >
       <form className="mt-8 flex h-full w-max flex-col gap-6">
         <div className="flex flex-col gap-2">
@@ -24,13 +46,21 @@ export default function AdminCompanyDetails({
             name="name"
             id="name"
             className="common-input"
+            value={companyName}
+            onChange={(e) => setCompanyName(e.target.value)}
             placeholder="Enter name"
           />
         </div>
 
         <div className="flex flex-col gap-2">
           <label htmlFor="industry">What industry are you in?</label>
-          <select className="common-input" name="industry" id="industry">
+          <select
+            value={industry}
+            onChange={(e) => setIndustry(e.target.value)}
+            className="common-input"
+            name="industry"
+            id="industry"
+          >
             <option value="default" selected>
               Select industry
             </option>
@@ -54,6 +84,8 @@ export default function AdminCompanyDetails({
             className="common-input"
             name="noOfEmployees"
             id="noOfEmployees"
+            value={noOfEmployees}
+            onChange={(e) => setNoOfEmployees(e.target.value)}
           >
             <option value="default" selected>
               Number of employees

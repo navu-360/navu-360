@@ -1,57 +1,95 @@
 import Header from "components/common/head";
+import { uploadAllToCloudinary } from "components/common/uploader";
 import AdminPersonalDetails from "components/createOrganization/admin.step1";
 import AdminCompanyDetails from "components/createOrganization/admin.step2";
 import LandingWrapper from "components/layout/wrapper";
+import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import {
+  useCreateOrganizationMutation,
   useUpdateUserMutation,
-  useUploadImageMutation,
 } from "services/baseApiSlice";
 import toast from "utils/toast";
 
+export interface CompanyDetails {
+  companyName: string;
+  industry: string;
+  noOfEmployees: string;
+}
+
 export default function Setup() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(2);
 
-  const [updateUser, {isLoading, isError}] = useUpdateUserMutation();
-  const [uploadImage] = useUploadImageMutation();
+  const { data: session } = useSession();
 
-  const updateUserDetails = async (files: File[]) => {
-    const formData = new FormData();
-    formData.append("image", files[0] as Blob);
+  const [updateUser, { isLoading }] = useUpdateUserMutation();
+  const [createOrg, { isLoading: CreatingOrg }] =
+    useCreateOrganizationMutation();
 
-    await uploadImage(formData)
+  const updateUserDetails = async (files: File[], role: string) => {
+    let image = "";
+    let publicId = "";
+    // @ts-ignore
+    uploadAllToCloudinary(files).then(async function (
+      results: { public_id: string; url: string }[]
+    ) {
+      if (results.length > 0 && results[0]) {
+        image = results && results[0]?.url;
+        publicId = results && results[0]?.public_id;
+      }
+      const body = {
+        image: image,
+        publicId: publicId,
+        position: role,
+      };
+
+      await updateUser(body)
+        .unwrap()
+        .then(() => {
+          toast({
+            status: "success",
+            message: `Hi ${
+              session?.user?.name.split(" ")[0]
+            }, your details have been updated`,
+          });
+          setStep(2);
+        })
+        .catch((error) => {
+          toast({
+            status: "error",
+            message: error.message,
+          });
+        });
+    });
+  };
+
+  const createOrganization = async (companyDetails: {
+    companyName: string;
+    industry: string;
+    noOfEmployees: string;
+  }) => {
+    // create organization
+    const body = {
+      name: companyDetails.companyName,
+      industry: companyDetails.industry,
+      noOfEmployees: companyDetails.noOfEmployees,
+      userId: session?.user?.id,
+    };
+    await createOrg(body)
       .unwrap()
-      .then((payload) => {
-        console.log(payload);
-        return;
+      .then(() => {
+        toast({
+          status: "success",
+          message: `Organizaion ${companyDetails.companyName} created!`,
+        });
+        setStep(2);
       })
       .catch((error) => {
         toast({
           status: "error",
           message: error.message,
         });
-        return;
       });
-
-    return;
-
-    const body = {};
-    await updateUser(body).unwrap().then((payload) => {
-        toast({
-          status: "success",
-          message: "Profile pictured added!",
-        });
-        setStep(2);
-      }).catch((error) => {
-        toast({
-          status: "error",
-          message: error.message,
-        });
-      });
-  };
-
-  const createOrganization = async () => {
-    // create organization
   };
 
   return (
@@ -60,14 +98,22 @@ export default function Setup() {
       <LandingWrapper hideNav>
         {step === 1 && (
           <AdminPersonalDetails
-            goToNext={(files: File[]) => updateUserDetails(files)}
+            goToNext={(files: File[], role: string) =>
+              updateUserDetails(files, role)
+            }
             goToprev={() => setStep(1)}
+            loading={isLoading || CreatingOrg}
           />
         )}
         {step === 2 && (
           <AdminCompanyDetails
-            goToNext={() => createOrganization()}
+            goToNext={(
+              files: File[],
+              role: string,
+              companyDetails: CompanyDetails
+            ) => createOrganization(companyDetails)}
             goToprev={() => setStep(1)}
+            loading={isLoading || CreatingOrg}
           />
         )}
       </LandingWrapper>

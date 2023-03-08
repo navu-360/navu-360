@@ -1,7 +1,7 @@
 import CreateOrganizationLayout from "components/layout/createOrgLayout";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useDropzone } from "react-dropzone";
 
@@ -12,11 +12,26 @@ interface CustomFileType extends File {
 export default function AdminPersonalDetails({
   goToNext,
   goToprev,
+  loading,
 }: {
-  goToNext: (files: File[]) => void;
+  goToNext: (
+    files: File[],
+    role: string,
+    companyDetails: {
+      companyName: string;
+      industry: string;
+      noOfEmployees: string;
+    }
+  ) => void;
   goToprev: () => void;
+  loading: boolean;
 }) {
-  const [images, setImages] = useState<CustomFileType[]>([]);
+  const [images, setImages] = useState<
+    CustomFileType[] | { preview: string }[]
+  >([]);
+
+  const { data: session } = useSession();
+
   const {
     getRootProps,
     getInputProps,
@@ -47,13 +62,37 @@ export default function AdminPersonalDetails({
     },
   });
 
+  const [role, setRole] = useState("");
+
+  useEffect(() => {
+    if (session?.user?.position) {
+      setRole(session?.user?.position);
+    }
+  }, [session?.user?.position]);
+
+  useEffect(() => {
+    return () => {
+      images.forEach((file) => URL.revokeObjectURL(file.preview));
+    };
+  }, []);
+
+  useEffect(() => {
+    if (session?.user?.image) {
+      setImages([{ preview: session?.user?.image ?? "" }]);
+    }
+  }, [session?.user?.image]);
+
   return (
     <CreateOrganizationLayout
       goToNext={goToNext}
       goToprev={goToprev}
-      files={images}
+      files={images as File[]}
+      role={role}
       title={`Customize your organization`}
       desc="For the purpose of industry regulation, your details are required."
+      loading={loading}
+      step={1}
+      companyDetails={{} as any}
     >
       <form className="mt-8 flex h-full w-max flex-col gap-6">
         <div className="flex flex-col gap-4">
@@ -71,7 +110,7 @@ export default function AdminPersonalDetails({
               <div
                 onClick={() => setImages([])}
                 {...getRootProps()}
-                className="bg-white-50 absolute top-1 right-1 flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-full border-[1px] border-[#f5f5f5]"
+                className="absolute top-1 right-1 flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-full border-[1px] border-[#f5f5f5] bg-white"
               >
                 <input {...getInputProps()} />
                 <svg
@@ -128,6 +167,8 @@ export default function AdminPersonalDetails({
             type="text"
             name="role"
             id="role"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
             placeholder="Enter role"
             className="common-input"
             required

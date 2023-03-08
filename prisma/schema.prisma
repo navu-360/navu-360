@@ -44,6 +44,8 @@ model User {
   email            String?             @unique
   emailVerified    DateTime?
   image            String?
+  publicId         String?
+  position         String?
   role             String?             @default("admin")
   hasBeenOnboarded Boolean?            @default(false)
   accounts         Account[]
@@ -58,7 +60,7 @@ model User {
 model Organization {
   id              String              @id @default(uuid())
   name            String
-  noOfEmployees   Int
+  noOfEmployees   String
   industry        String
   user            User                @relation(fields: [userId], references: [id])
   userId          String              @unique

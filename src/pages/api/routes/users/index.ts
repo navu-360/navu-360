@@ -64,8 +64,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         case "PATCH":
             // editable fields: image
-            const { image: toEdit } = req.body as {
+            const { image: toEdit, publicId, position } = req.body as {
                 image: string;
+                publicId: string;
+                position: string;
             };
 
             // validate request
@@ -82,6 +84,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 },
                 data: {
                     image: toEdit,
+                    publicId: publicId,
+                    position,
                 },
             });
 

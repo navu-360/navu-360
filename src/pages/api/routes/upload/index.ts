@@ -3,7 +3,6 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { env } from "env/server.mjs";
 
 import cloudinary from 'cloudinary';
-import multer from 'multer';
 
 import {
     getServerSession,
@@ -18,7 +17,6 @@ cloudinary.v2.config({
     api_secret: env.CLOUDINARY_API_SECRET
 });
 
-const upload = multer({ storage: multer.memoryStorage() });
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     /*
@@ -32,30 +30,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     switch (req.method) {
-        case "POST":
+        case "DELETE":
 
+            const { public_id } = req.body;
 
+            cloudinary.v2.uploader.destroy(public_id, function (result: unknown) {
+                console.log(result);
+            });
 
-        // res.status(201).json({ message: `Image uploaded.` });
+            res.status(200).json({ message: `Image deleted.` });
 
         default:
             break;
     }
 
 }
-
-
-// const sign = async (req, res) => {
-//     const timestamp = Math.round((new Date()).getTime() / 1000);
-
-//     const signature = cloudinary.v2.utils.api_sign_request({
-//         timestamp: timestamp,
-//         folder: 'product'
-//     }, env.CLOUDINARY_API_SECRET);
-
-//     res.statusCode = 200;
-//     res.json({ signature, timestamp });
-// };
 
 
 export default handler;
