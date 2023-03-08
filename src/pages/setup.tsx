@@ -4,6 +4,7 @@ import AdminPersonalDetails from "components/createOrganization/admin.step1";
 import AdminCompanyDetails from "components/createOrganization/admin.step2";
 import LandingWrapper from "components/layout/wrapper";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import {
   useCreateOrganizationMutation,
@@ -18,9 +19,11 @@ export interface CompanyDetails {
 }
 
 export default function Setup() {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
 
   const { data: session } = useSession();
+
+  const router = useRouter();
 
   const [updateUser, { isLoading }] = useUpdateUserMutation();
   const [createOrg, { isLoading: CreatingOrg }] =
@@ -82,7 +85,7 @@ export default function Setup() {
           status: "success",
           message: `Organizaion ${companyDetails.companyName} created!`,
         });
-        setStep(2);
+        router.push("/dashboard");
       })
       .catch((error) => {
         toast({

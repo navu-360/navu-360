@@ -57,7 +57,7 @@ export default function AdminPersonalDetails({
           })
         );
 
-        setImages([...images, ...newFile]);
+        setImages(newFile);
       }
     },
   });
@@ -71,13 +71,7 @@ export default function AdminPersonalDetails({
   }, [session?.user?.position]);
 
   useEffect(() => {
-    return () => {
-      images.forEach((file) => URL.revokeObjectURL(file.preview));
-    };
-  }, []);
-
-  useEffect(() => {
-    if (session?.user?.image) {
+    if (session?.user?.image && images.length === 0) {
       setImages([{ preview: session?.user?.image ?? "" }]);
     }
   }, [session?.user?.image]);

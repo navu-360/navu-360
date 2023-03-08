@@ -25,7 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             const { name, industry, noOfEmployees, userId } = req.body as {
                 name: string;
                 industry: string;
-                noOfEmployees: number;
+                noOfEmployees: string;
                 userId: string;
             };
 
@@ -45,6 +45,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 },
             });
 
+            // update user field hasBeenOnboarded to true
+            await prisma.user.update({
+                where: { id: userId },
+                data: { hasBeenOnboarded: true },
+            });
 
             return res.status(201).json({ message: `Organization ${organization.name} created.`, data: organization });
 
