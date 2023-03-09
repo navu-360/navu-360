@@ -30,40 +30,23 @@ export default function Setup() {
     useCreateOrganizationMutation();
 
   const updateUserDetails = async (files: File[], role: string) => {
+    console.log("files", files);
     let image = "";
     let publicId = "";
-    // @ts-ignore
-    uploadAllToCloudinary(files).then(async function (
-      results: { public_id: string; url: string }[]
-    ) {
-      if (results.length > 0 && results[0]) {
-        image = results && results[0]?.url;
-        publicId = results && results[0]?.public_id;
-      }
-      const body = {
-        image: image,
-        publicId: publicId,
-        position: role,
-      };
-
-      await updateUser(body)
-        .unwrap()
-        .then(() => {
-          toast({
-            status: "success",
-            message: `Hi ${
-              session?.user?.name.split(" ")[0]
-            }, your details have been updated`,
-          });
-          setStep(2);
-        })
-        .catch((error) => {
-          toast({
-            status: "error",
-            message: error.message,
-          });
-        });
-    });
+    if (File.length > 0 && files[0] instanceof File) {
+      // @ts-ignore
+      uploadAllToCloudinary(files).then(async function (
+        results: { public_id: string; url: string }[]
+      ) {
+        if (results.length > 0 && results[0]) {
+          image = results && results[0]?.url;
+          publicId = results && results[0]?.public_id;
+        }
+        await createHandler(image, publicId, role);
+      });
+    } else {
+      await createHandler(image, publicId, role);
+    }
   };
 
   const createOrganization = async (companyDetails: {
@@ -122,4 +105,30 @@ export default function Setup() {
       </LandingWrapper>
     </>
   );
+
+  async function createHandler(image: string, publicId: string, role: string) {
+    const body = {
+      image: image,
+      publicId: publicId,
+      position: role,
+    };
+
+    await updateUser(body)
+      .unwrap()
+      .then(() => {
+        toast({
+          status: "success",
+          message: `Hi ${
+            session?.user?.name.split(" ")[0]
+          }, your details have been updated`,
+        });
+        setStep(2);
+      })
+      .catch((error) => {
+        toast({
+          status: "error",
+          message: error.message,
+        });
+      });
+  }
 }

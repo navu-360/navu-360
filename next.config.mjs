@@ -21,7 +21,11 @@ const config = {
     hideSourceMaps: true,
   },
   images: {
-    domains: ["res.cloudinary.com", "lh3.googleusercontent.com"],
+    domains: [
+      "res.cloudinary.com",
+      "lh3.googleusercontent.com",
+      "avatars.dicebear.com",
+    ],
   },
 
   /**

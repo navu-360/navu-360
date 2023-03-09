@@ -46,7 +46,7 @@ export default function NavBar() {
               });
               dispatch(setUserId(""));
             }}
-            className="mr-8 hidden h-max w-max rounded-3xl border-[1px] border-secondary px-8 py-1 text-base font-medium tracking-tight text-secondary md:block"
+            className="mr-8 hidden h-max w-max rounded-xl border-[1px] border-secondary px-8 py-1 text-base font-medium tracking-tight text-secondary md:block"
           >
             Login
           </button>

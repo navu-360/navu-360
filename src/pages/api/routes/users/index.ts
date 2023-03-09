@@ -71,12 +71,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             };
 
             // validate request
-            if (!toEdit) {
+            if (!position) {
                 res.status(400).json({ message: `Missing required fields.` });
                 return;
             }
-
-
 
             const userToEdit = await prisma.user.update({
                 where: {
