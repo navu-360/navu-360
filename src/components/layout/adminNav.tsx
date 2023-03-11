@@ -1,25 +1,20 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-import { signIn, useSession, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { useDispatch } from "react-redux";
 import { setUserId } from "redux/auth/authSlice";
 
 export default function AdminNav() {
-  const [showDropDown, setShowDropDown] = useState(false);
   const router = useRouter();
-
-  const { data: session, status } = useSession();
-
-  const dispatch = useDispatch();
 
   return (
     <nav className="fixed top-0 left-0 z-20 h-full w-[200px] bg-dark py-2.5 sm:px-4">
       <div className="mx-auto flex h-full flex-col items-center md:mx-0">
         <Link href="/" className="flex items-center pl-4">
-          <img src="logo.svg" className="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
+          <img src="/logo.svg" className="mr-3 h-6 sm:h-9" alt="Navu360" />
         </Link>
 
         <div className="mt-[50px] flex flex-col gap-4 text-white">

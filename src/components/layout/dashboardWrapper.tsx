@@ -5,9 +5,11 @@ import TopNavAdmin from "./topNav";
 export default function DashboardWrapper({
   children,
   hideNav,
+  hideSearch,
 }: {
   children: React.ReactNode;
   hideNav?: boolean;
+  hideSearch?: boolean;
 }) {
   return (
     <main
@@ -16,7 +18,7 @@ export default function DashboardWrapper({
       }`}
     >
       {!hideNav && <AdminNav />}
-      <TopNavAdmin />
+      <TopNavAdmin hideSearch={hideSearch} />
       {children}
     </main>
   );

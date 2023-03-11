@@ -16,7 +16,6 @@ export default function NavBar() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(session);
     if (session) {
       if (router.pathname === "/" && !session?.user?.hasBeenOnboarded) {
         router.push("/setup");
