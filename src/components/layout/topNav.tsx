@@ -6,7 +6,7 @@ import React from "react";
 export default function TopNavAdmin() {
   return (
     <header className="fixed top-0 left-[200px] z-20 flex h-[75px] w-full py-2">
-      <form className="relative h-full w-[70%] rounded-md bg-blue-700/10 px-4 py-2 pr-16">
+      <form className="relative h-full w-[70%] rounded-md bg-blue-700/10 px-4 py-2 pr-16 ml-2">
         <input
           type="text"
           name="search"
@@ -38,11 +38,12 @@ export default function TopNavAdmin() {
 }
 
 function AdminCard() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
+  console.log(session);
   return (
-    <div className="fixed top-1 right-4 flex items-center gap-2">
+    <div className="fixed top-1 right-4 flex items-center gap-2 transition-all duration-300 ease-in">
       <div className="relative flex h-[70px] w-[70px] items-center justify-center rounded-full bg-tertiary">
-        {status === "authenticated" ? (
+        {session?.user?.id ? (
           <img
             src={`https://avatars.dicebear.com/api/micah/${session?.user?.id}.svg?mouth[]=laughing&mouth[]=smile&mouth[]=smirk&hair[]=dannyPhantom&hair[]=fonze`}
             className="h-[50px] w-[50px]"
@@ -53,14 +54,21 @@ function AdminCard() {
         )}
       </div>
 
-      <div className="flex flex-col gap-0">
-        <h2 className="text-xl font-bold text-tertiary">
-          {session?.user?.name}
-        </h2>
-        <p className="text-md font-medium text-gray-500">
-          {session?.user?.position}
-        </p>
-      </div>
+      {session?.user?.name ? (
+        <div className="flex flex-col gap-0">
+          <h2 className="text-xl font-bold text-tertiary">
+            {session?.user?.name}
+          </h2>
+          <p className="text-md font-medium text-gray-500">
+            {session?.user?.position}
+          </p>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-1">
+          <div className="h-[20px] w-[150px] bg-tertiary"></div>
+          <div className="h-[10px] w-[100px] bg-tertiary"></div>
+        </div>
+      )}
     </div>
   );
 }

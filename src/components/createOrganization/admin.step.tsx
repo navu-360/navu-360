@@ -1,13 +1,12 @@
 import CreateOrganizationLayout from "components/layout/createOrgLayout";
-import React, { useState } from "react";
+import { useSession } from "next-auth/react";
+import React, { useEffect, useState } from "react";
 
 export default function AdminCompanyDetails({
   goToNext,
-  goToprev,
   loading,
 }: {
   goToNext: (
-    files: File[],
     role: string,
     companyDetails: {
       companyName: string;
@@ -15,30 +14,50 @@ export default function AdminCompanyDetails({
       noOfEmployees: string;
     }
   ) => void;
-  goToprev: () => void;
   loading: boolean;
 }) {
   const [companyName, setCompanyName] = useState("");
   const [industry, setIndustry] = useState("");
   const [noOfEmployees, setNoOfEmployees] = useState("");
 
+  const [role, setRole] = useState("");
+
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (session?.user?.position) {
+      setRole(session?.user?.position);
+    }
+  }, [session?.user?.position]);
+
   return (
     <CreateOrganizationLayout
       goToNext={goToNext}
-      goToprev={goToprev}
       files={[]}
       title="Setup your organization"
       desc="For the purpose of industry regulation, your details are required."
       loading={loading}
-      role=""
+      role={role}
       companyDetails={{
         companyName,
         industry,
         noOfEmployees,
       }}
-      step={2}
     >
-      <form className="mt-8 flex h-full w-max flex-col gap-6">
+      <form className="mt-8 flex h-full w-max flex-col gap-6 min-w-[400px]">
+        <div className="flex flex-col gap-2">
+          <label htmlFor="role">What is your role?</label>
+          <input
+            type="text"
+            name="role"
+            id="role"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            placeholder="Enter role"
+            className="common-input"
+            required
+          />
+        </div>
         <div className="flex flex-col gap-2">
           <label htmlFor="name">What’s your company name?</label>
           <input

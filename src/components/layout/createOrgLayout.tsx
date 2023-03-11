@@ -9,18 +9,15 @@ export default function CreateOrganizationLayout({
   title,
   desc,
   goToNext,
-  goToprev,
   files,
   role,
   loading,
   companyDetails,
-  step,
 }: {
   children: React.ReactNode;
   title: string;
   desc: string;
   goToNext: (
-    files: File[],
     role: string,
     companyDetails: {
       companyName: string;
@@ -28,7 +25,6 @@ export default function CreateOrganizationLayout({
       noOfEmployees: string;
     }
   ) => void;
-  goToprev: () => void;
   files: File[];
   role: string;
   loading: boolean;
@@ -37,7 +33,6 @@ export default function CreateOrganizationLayout({
     industry: string;
     noOfEmployees: string;
   };
-  step: number;
 }) {
   const { data: session } = useSession();
   return (
@@ -67,28 +62,11 @@ export default function CreateOrganizationLayout({
           <p className="text-base font-medium">{desc}</p>
         </div>
         {children}
-        <div
-          className={`flex w-full items-end px-8 ${
-            step === 2 ? "justify-between" : "justify-end"
-          }`}
-        >
-          {step === 2 && (
-            <button
-              disabled={loading}
-              onClick={() => goToprev()}
-              className="rounded-md border-[1px] border-tertiary bg-white py-2 px-6 text-base font-semibold text-tertiary"
-            >
-              Back
-            </button>
-          )}
+        <div className={`flex w-full items-end justify-end px-8`}>
           <button
             disabled={loading}
             onClick={() => {
-              if (step === 1) {
-                goToNext(files, role, {} as any);
-              } else {
-                goToNext([], "", companyDetails);
-              }
+              goToNext(role, companyDetails);
             }}
             className="rounded-md bg-secondary py-2 px-6 text-base font-semibold text-white"
           >
