@@ -55,16 +55,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         case "GET":
 
-            const organizations = await prisma.organization.findMany();
+            // fetch organization programs
+            const { orgId } = req.query as { orgId: string };
 
-            return res.status(200).json({ message: `Organizations retrieved.`, data: organizations });
+            const programs = await prisma.onboardingProgram.findMany({
+                where: {
+                    organizationId: orgId,
+                },
+            });
+
+            return res.status(200).json({ message: `Programs fetched.`, data: programs });
 
 
         case "PATCH":
 
 
         default:
-            res.status(405).json({ message: `Method ${req.method} not allowed.` });
+            return res.status(405).json({ message: `Method ${req.method} not allowed.` });
     }
 
 

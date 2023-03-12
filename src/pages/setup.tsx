@@ -4,6 +4,8 @@ import LandingWrapper from "components/layout/wrapper";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { setOrgId } from "redux/auth/authSlice";
 import {
   useCreateOrganizationMutation,
   useUpdateUserMutation,
@@ -37,6 +39,8 @@ export default function Setup() {
     await createOrganization(companyDetails);
   };
 
+  const dispatch = useDispatch();
+
   const createOrganization = async (companyDetails: {
     companyName: string;
     industry: string;
@@ -51,7 +55,8 @@ export default function Setup() {
     };
     await createOrg(body)
       .unwrap()
-      .then(() => {
+      .then((payload) => {
+        dispatch(setOrgId(payload?.data?.id));
         toast({
           status: "success",
           message: `Organizaion ${companyDetails.companyName} created!`,

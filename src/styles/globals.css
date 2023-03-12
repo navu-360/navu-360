@@ -158,3 +158,50 @@ span {
     backdrop-filter: blur(8px);
     z-index: 20;
 }
+
+.ce-inline-toolbar {
+    background-color: white !important;
+}
+
+.ce-toolbar__plus, .ce-toolbar__settings-btn {
+    color: #FB5881;
+}
+
+.ce-toolbar__plus>svg {
+    height: 40px;
+    width: 40px;
+}
+
+.ce-toolbox, .ce-popover--opened, .ce-popover__item-icon, .ce-conversion-tool__icon {
+    background-color: #28293e !important;
+}
+
+.ce-popover__item:hover, .ce-conversion-tool--focused:hover {
+    background-color: #FB5881 !important;
+}
+
+.ce-inline-toolbar__toggler-and-button-wrapper {
+    background-color: #28293e !important;
+    border: none !important;
+    outline: none !important;
+}
+
+.ce-inline-toolbar__dropdown, .ce-conversion-toolbar, .ce-conversion-toolbar--showed {
+    background-color: #28293e !important;
+}
+
+.ce-conversion-tool:hover {
+    background-color: #FB5881 !important;
+}
+
+.program-input {
+    border: 1px solid #28293e;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    padding: 5px 10px;
+
+}
+
+.program-input:focus {
+    border: 1.5px solid #FB5881;
+}

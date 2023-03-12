@@ -75,6 +75,25 @@ export const baseApiSlice = createApi({
         body,
       }),
     }),
+    getOneOrganization: builder.query({
+      query: (userId) => `organization/${userId}`,
+    }),
+
+    // Programs
+    // create program
+    createProgram: builder.mutation({
+      query: (body) => ({
+        url: `programs`,
+        method: "POST",
+        body,
+      }),
+    }),
+    // fetch organization's program
+    getOrganizationPrograms: builder.query({
+      query: (orgId) => ({
+        url: `programs?orgId=${orgId}`,
+      }),
+    }),
   }),
 });
 
@@ -86,4 +105,7 @@ export const {
   useFetchUsersQuery,
   useDeleteUserMutation,
   useCreateOrganizationMutation,
+  useCreateProgramMutation,
+  useGetOrganizationProgramsQuery,
+  useGetOneOrganizationQuery,
 } = baseApiSlice;

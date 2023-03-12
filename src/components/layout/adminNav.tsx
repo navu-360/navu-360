@@ -13,7 +13,7 @@ export default function AdminNav() {
   return (
     <nav className="fixed top-0 left-0 z-20 h-full w-[200px] bg-dark py-2.5 sm:px-4">
       <div className="mx-auto flex h-full flex-col items-center md:mx-0">
-        <Link href="/" className="flex items-center pl-4">
+        <Link href="/dashboard" className="flex items-center pl-4">
           <img src="/logo.svg" className="mr-3 h-6 sm:h-9" alt="Navu360" />
         </Link>
 

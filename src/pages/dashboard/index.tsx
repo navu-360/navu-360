@@ -4,10 +4,29 @@ import AllTalents from "components/dashboard/talents.table";
 import DashboardWrapper from "components/layout/dashboardWrapper";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setOrgId } from "redux/auth/authSlice";
+import { useGetOneOrganizationQuery } from "services/baseApiSlice";
 
 export default function Dashboard() {
   const { data: session } = useSession();
+
+  // get organization created by this user then set the orgId in state
+  const userId = session?.user?.id;
+  const { data } = useGetOneOrganizationQuery(userId, {
+    skip: !userId,
+  });
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (data) {
+      dispatch(setOrgId(data?.organization?.id));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
   return (
     <>
       <Header />
