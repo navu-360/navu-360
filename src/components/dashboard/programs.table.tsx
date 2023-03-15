@@ -1,10 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
-import Link from "next/link";
 import React from "react";
 import { useSelector } from "react-redux";
 import { useGetOrganizationProgramsQuery } from "services/baseApiSlice";
 
-export default function Programs() {
+export default function Programs({
+  showSelectTemplate,
+}: {
+  showSelectTemplate: () => void;
+}) {
   const orgId = useSelector(
     (state: { auth: { orgId: string } }) => state.auth.orgId
   );
@@ -45,12 +48,12 @@ export default function Programs() {
                   <h3 className="text-lg font-semibold text-white">
                     No Programs Found
                   </h3>
-                  <Link
-                    href="/create/program"
+                  <button
+                    onClick={() => showSelectTemplate()}
                     className="flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 md:mr-0"
                   >
                     Create Program
-                  </Link>
+                  </button>
                 </div>
               )}
               {data?.data?.map(
@@ -60,7 +63,7 @@ export default function Programs() {
                     className="relative flex h-[200px] min-h-[200px] w-4/5 flex-col rounded-3xl bg-white"
                   >
                     <div>
-                      <h3 className="text-center text-tertiary font-bold mt-2">
+                      <h3 className="mt-2 text-center font-bold text-tertiary">
                         {program?.name}
                       </h3>
                     </div>

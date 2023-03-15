@@ -52,7 +52,11 @@ export default function NavBar() {
           <button
             type="button"
             onClick={() => {
-              signIn("google", { callbackUrl: "/" });
+              signIn("google", { callbackUrl: "/", redirect: false }).catch(
+                (err) => {
+                  console.log(err);
+                }
+              );
             }}
             disabled={status === "loading"}
             className="mr-3 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 md:mr-0"

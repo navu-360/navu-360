@@ -1,10 +1,11 @@
 import Header from "components/common/head";
 import Programs from "components/dashboard/programs.table";
+import SelectTemplate from "components/dashboard/selectTemplate";
 import AllTalents from "components/dashboard/talents.table";
 import DashboardWrapper from "components/layout/dashboardWrapper";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setOrgId } from "redux/auth/authSlice";
 import { useGetOneOrganizationQuery } from "services/baseApiSlice";
@@ -27,6 +28,8 @@ export default function Dashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
+  const [showSelectTemplate, setShowSelectTemplate] = useState(false);
+
   return (
     <>
       <Header />
@@ -35,8 +38,8 @@ export default function Dashboard() {
           <h1 className="text-2xl font-bold">
             Hi, {session?.user?.name?.split(" ")[0]}
           </h1>
-          <Link
-            href="/create/program"
+          <button
+            onClick={() => setShowSelectTemplate(true)}
             className="absolute right-8 top-12 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 md:mr-0"
           >
             <svg
@@ -53,7 +56,7 @@ export default function Dashboard() {
             </svg>
 
             <span>Create Program</span>
-          </Link>
+          </button>
           <div className="mt-8 flex gap-8">
             <OneStat
               svg={
@@ -120,9 +123,12 @@ export default function Dashboard() {
           </div>
           <section className="mt-8 mr-4 flex gap-2">
             <AllTalents />
-            <Programs />
+            <Programs showSelectTemplate={() => setShowSelectTemplate(true)} />
           </section>
         </div>
+        {showSelectTemplate && (
+          <SelectTemplate closeModal={() => setShowSelectTemplate(false)} />
+        )}
       </DashboardWrapper>
     </>
   );
