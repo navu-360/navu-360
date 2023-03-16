@@ -103,7 +103,7 @@ export default function SelectTemplate({
   );
 }
 
-function TemplateCard({
+export function TemplateCard({
   template,
 }: {
   template: {

@@ -10,7 +10,7 @@ import {
   useCreateOrganizationMutation,
   useUpdateUserMutation,
 } from "services/baseApiSlice";
-import toast from "utils/toast";
+import toast from "utils/toaster";
 
 export interface CompanyDetails {
   companyName: string;

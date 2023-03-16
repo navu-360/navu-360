@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 
 export default function AllTalents() {
@@ -26,13 +27,13 @@ export default function AllTalents() {
                       Talent
                     </th>
                     <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                      Role
+                    </th>
+                    <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                       Joined
                     </th>
                     <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                      Status
-                    </th>
-                    <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                      Users
+                      Onboarding Status
                     </th>
                     <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                       Completion{" "}
@@ -50,40 +51,18 @@ export default function AllTalents() {
                         alt="..."
                       />
                       <span className="ml-3 font-bold text-white">
-                        {" "}
-                        Argon Design System{" "}
+                        Talent X
                       </span>
                     </th>
                     <td className="whitespace-nowrap border-t-0 border-l-0 border-r-0 p-4 px-6 align-middle text-xs">
-                      $2,500 USD
+                      Sales Manager
+                    </td>
+                    <td className="whitespace-nowrap border-t-0 border-l-0 border-r-0 p-4 px-6 align-middle text-xs">
+                      Jan 1, 2021
                     </td>
                     <td className="whitespace-nowrap border-t-0 border-l-0 border-r-0 p-4 px-6 align-middle text-xs">
                       <i className="fas fa-circle mr-2 text-orange-500"></i>
-                      pending
-                    </td>
-                    <td className="whitespace-nowrap border-t-0 border-l-0 border-r-0 p-4 px-6 align-middle text-xs">
-                      <div className="flex">
-                        <img
-                          src="https://demos.creative-tim.com/notus-js/assets/img/team-1-800x800.jpg"
-                          alt="..."
-                          className="border-blueGray-50 h-10 w-10 rounded-full border-2 shadow"
-                        />
-                        <img
-                          src="https://demos.creative-tim.com/notus-js/assets/img/team-2-800x800.jpg"
-                          alt="..."
-                          className="border-blueGray-50 -ml-4 h-10 w-10 rounded-full border-2 shadow"
-                        />
-                        <img
-                          src="https://demos.creative-tim.com/notus-js/assets/img/team-3-800x800.jpg"
-                          alt="..."
-                          className="border-blueGray-50 -ml-4 h-10 w-10 rounded-full border-2 shadow"
-                        />
-                        <img
-                          src="https://demos.creative-tim.com/notus-js/assets/img/team-4-470x470.png"
-                          alt="..."
-                          className="border-blueGray-50 -ml-4 h-10 w-10 rounded-full border-2 shadow"
-                        />
-                      </div>
+                      In progress
                     </td>
                     <td className="whitespace-nowrap border-t-0 border-l-0 border-r-0 p-4 px-6 align-middle text-xs">
                       <div className="flex items-center">

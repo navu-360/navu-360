@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import Link from "next/link";
 import React from "react";
 import { useSelector } from "react-redux";
 import { useGetOrganizationProgramsQuery } from "services/baseApiSlice";
@@ -38,9 +39,9 @@ export default function Programs({
             <div className="mt-3 flex h-[calc(100vh_-_450px)] flex-col items-center gap-4 overflow-y-auto pb-8">
               {(isFetching || !orgId) && (
                 <div className="flex w-full flex-col items-center gap-4">
-                  <div className="h-[200px] w-4/5 animate-pulse rounded bg-gray-400" />
-                  <div className="h-[200px] w-4/5  animate-pulse rounded bg-gray-400" />
-                  <div className="h-[200px] w-4/5  animate-pulse rounded bg-gray-400" />
+                  <div className="h-[100px] w-4/5 animate-pulse rounded bg-gray-400" />
+                  <div className="h-[100px] w-4/5  animate-pulse rounded bg-gray-400" />
+                  <div className="h-[100px] w-4/5  animate-pulse rounded bg-gray-400" />
                 </div>
               )}
               {!isFetching && orgId && data?.data?.length === 0 && (
@@ -56,61 +57,58 @@ export default function Programs({
                   </button>
                 </div>
               )}
-              {data?.data?.map(
-                (program: { name: string; id: string; content: string }) => (
-                  <div
-                    key={program.id}
-                    className="relative flex h-[200px] min-h-[200px] w-4/5 flex-col rounded-3xl bg-white"
-                  >
-                    <div>
-                      <h3 className="mt-2 text-center font-bold text-tertiary">
-                        {program?.name}
-                      </h3>
-                    </div>
-                    <div className="absolute left-2 bottom-2 flex">
-                      <img
-                        src="https://demos.creative-tim.com/notus-js/assets/img/team-1-800x800.jpg"
-                        alt="..."
-                        className="border-blueGray-50 h-10 w-10 rounded-full border-2 shadow"
-                      />
-                      <img
-                        src="https://demos.creative-tim.com/notus-js/assets/img/team-2-800x800.jpg"
-                        alt="..."
-                        className="border-blueGray-50 -ml-4 h-10 w-10 rounded-full border-2 shadow"
-                      />
-                      <img
-                        src="https://demos.creative-tim.com/notus-js/assets/img/team-3-800x800.jpg"
-                        alt="..."
-                        className="border-blueGray-50 -ml-4 h-10 w-10 rounded-full border-2 shadow"
-                      />
-                      <img
-                        src="https://demos.creative-tim.com/notus-js/assets/img/team-4-470x470.png"
-                        alt="..."
-                        className="border-blueGray-50 -ml-4 h-10 w-10 rounded-full border-2 shadow"
-                      />
-                      <img
-                        src="https://demos.creative-tim.com/notus-js/assets/img/team-4-470x470.png"
-                        alt="..."
-                        className="border-blueGray-50 -ml-4 h-10 w-10 rounded-full border-2 shadow"
-                      />
-                      <img
-                        src="https://demos.creative-tim.com/notus-js/assets/img/team-4-470x470.png"
-                        alt="..."
-                        className="border-blueGray-50 -ml-4 h-10 w-10 rounded-full border-2 shadow"
-                      />
-                      <img
-                        src="https://demos.creative-tim.com/notus-js/assets/img/team-4-470x470.png"
-                        alt="..."
-                        className="border-blueGray-50 -ml-4 h-10 w-10 rounded-full border-2 shadow"
-                      />
-                    </div>
-                  </div>
-                )
+              {!isFetching && (
+                <div className="mx-auto flex w-4/5 flex-col gap-4">
+                  {data?.data?.map(
+                    (program: {
+                      name: string;
+                      id: string;
+                      content: string;
+                    }) => (
+                      <TemplateCard key={program.id} template={program} />
+                    )
+                  )}
+                </div>
               )}
             </div>
           </div>
         </div>
       </section>
     </section>
+  );
+}
+
+function TemplateCard({
+  template,
+}: {
+  template: {
+    id: string;
+    name: string;
+  };
+}) {
+  return (
+    <Link
+      href={`/programs/${template.id}`}
+      className={`relative flex w-full cursor-pointer items-center justify-between rounded-md bg-[#28293E] p-4 text-white`}
+    >
+      <div className="flex flex-col break-all">
+        <h3 className="text-lg font-bold">{template.name}</h3>
+        <p className="mt-1 text-sm font-medium ">2 talents enrolled</p>
+      </div>
+      <div className="absolute bottom-2 right-2 flex h-[30px] w-[30px] items-center justify-center rounded-full bg-secondary">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="h-6 w-6"
+        >
+          <path
+            fillRule="evenodd"
+            d="M3.75 12a.75.75 0 01.75-.75h13.19l-5.47-5.47a.75.75 0 011.06-1.06l6.75 6.75a.75.75 0 010 1.06l-6.75 6.75a.75.75 0 11-1.06-1.06l5.47-5.47H4.5a.75.75 0 01-.75-.75z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </div>
+    </Link>
   );
 }

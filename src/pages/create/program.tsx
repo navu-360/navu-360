@@ -12,9 +12,9 @@ import {
   useCreateTemplateMutation,
   useGetOneTemplateQuery,
 } from "services/baseApiSlice";
-import toast from "utils/toast";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 interface CustomTemplate extends OutputData {
   id?: string;
@@ -63,17 +63,10 @@ export default function CreateProgram() {
     await createProgram(body)
       .unwrap()
       .then(() => {
-        toast({
-          status: "success",
-          message: `Program created!`,
-        });
         router.push("/dashboard");
       })
       .catch((error) => {
-        toast({
-          status: "error",
-          message: error.message,
-        });
+        console.log(error);
       });
   };
 
@@ -86,16 +79,10 @@ export default function CreateProgram() {
     await createTemplate(body)
       .unwrap()
       .then(() => {
-        toast({
-          status: "success",
-          message: `Template created!`,
-        });
+        console.log("Template created!");
       })
       .catch((error) => {
-        toast({
-          status: "error",
-          message: error.message,
-        });
+        console.log(error);
       });
   };
 
@@ -130,8 +117,24 @@ export default function CreateProgram() {
               getData={save}
               receiveData={(data: OutputData) => {
                 setChosenTemplate(data);
-                createProgramHandler();
-                // createTemplateHandler();
+                toast.promise(
+                  createProgramHandler(),
+                  {
+                    pending: "Saving...",
+                    success: "Program created!",
+                    error: "Error creating program",
+                  },
+                  {
+                    theme: "dark",
+                  }
+                );
+                // toast.promise(createTemplateHandler(), {
+                //   pending: "Creating...",
+                //   success: "Program created!",
+                //   error: "Error creating program",
+                // }, {
+                // theme: "dark",
+                // });
               }}
               initialData={chosenTemplate}
             />
