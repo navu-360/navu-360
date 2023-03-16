@@ -94,6 +94,24 @@ export const baseApiSlice = createApi({
         url: `programs?orgId=${orgId}`,
       }),
     }),
+
+    // templates
+    // fetch all templates
+    fetchTemplates: builder.query({
+      query: () => `templates`,
+    }),
+    // create template
+    createTemplate: builder.mutation({
+      query: (body) => ({
+        url: `templates`,
+        method: "POST",
+        body,
+      }),
+    }),
+    // get one template
+    getOneTemplate: builder.query({
+      query: (id) => `templates/${id}`,
+    }),
   }),
 });
 
@@ -108,4 +126,7 @@ export const {
   useCreateProgramMutation,
   useGetOrganizationProgramsQuery,
   useGetOneOrganizationQuery,
+  useFetchTemplatesQuery,
+  useCreateTemplateMutation,
+  useGetOneTemplateQuery,
 } = baseApiSlice;

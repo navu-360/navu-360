@@ -5,22 +5,50 @@ const MyEditor = dynamic(() => import("components/common/editor/editor"), {
 
 import Header from "components/common/head";
 import DashboardWrapper from "components/layout/dashboardWrapper";
-import React, { useState } from "react";
-import { companyCulture } from "components/common/editor/templates/companyCulture";
+import React, { useEffect, useState } from "react";
 import type { OutputData } from "@editorjs/editorjs";
-import { useCreateProgramMutation } from "services/baseApiSlice";
+import {
+  useCreateProgramMutation,
+  useCreateTemplateMutation,
+  useGetOneTemplateQuery,
+} from "services/baseApiSlice";
 import toast from "utils/toast";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
+
+interface CustomTemplate extends OutputData {
+  id?: string;
+  name?: string;
+  description?: string;
+  estimatedTime?: string;
+  backgroundColor?: string;
+}
 
 export default function CreateProgram() {
-  const [chosenTemplate, setChosenTemplate] =
-    useState<OutputData>(companyCulture);
+  const [chosenTemplate, setChosenTemplate] = useState<CustomTemplate | null>(
+    null
+  );
 
   const [save, setSave] = useState(false);
 
+  const router = useRouter();
+  const { template } = router.query;
+
+  const { data, isFetching } = useGetOneTemplateQuery(template as string, {
+    skip: !template,
+  });
+
   const [name, setName] = useState("");
 
+  useEffect(() => {
+    if (data) {
+      setChosenTemplate(JSON.parse(data.data.content));
+      setName(data.data.name);
+    }
+  }, [data]);
+
   const [createProgram, { isLoading }] = useCreateProgramMutation();
+  const [createTemplate, { isLoading: loading }] = useCreateTemplateMutation();
 
   const orgId = useSelector(
     (state: { auth: { orgId: string } }) => state.auth.orgId
@@ -39,6 +67,29 @@ export default function CreateProgram() {
           status: "success",
           message: `Program created!`,
         });
+        router.push("/dashboard");
+      })
+      .catch((error) => {
+        toast({
+          status: "error",
+          message: error.message,
+        });
+      });
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const createTemplateHandler = async () => {
+    const body = {
+      name,
+      content: JSON.stringify(chosenTemplate),
+    };
+    await createTemplate(body)
+      .unwrap()
+      .then(() => {
+        toast({
+          status: "success",
+          message: `Template created!`,
+        });
       })
       .catch((error) => {
         toast({
@@ -53,6 +104,7 @@ export default function CreateProgram() {
       <Header />
       <DashboardWrapper hideSearch>
         <div className="relative left-1/2 ml-[100px] mt-[20px] flex h-full w-max min-w-[764px] -translate-x-1/2 flex-col items-center justify-center gap-8">
+          {isFetching && <div>Loading...</div>}
           <div className="flex w-full justify-between">
             <form>
               <input
@@ -64,13 +116,13 @@ export default function CreateProgram() {
               />
             </form>
             <button
-              disabled={isLoading || !name}
+              disabled={isLoading || !name || loading}
               className="flex items-center justify-center rounded-xl bg-secondary px-12 py-2 text-center text-base font-semibold text-white hover:bg-secondary"
               onClick={() => {
                 setSave(true);
               }}
             >
-              {isLoading ? "Saving..." : "Save"}
+              {isLoading || loading ? "Saving..." : "Save"}
             </button>
           </div>
           {chosenTemplate && (
@@ -79,6 +131,7 @@ export default function CreateProgram() {
               receiveData={(data: OutputData) => {
                 setChosenTemplate(data);
                 createProgramHandler();
+                // createTemplateHandler();
               }}
               initialData={chosenTemplate}
             />

@@ -205,3 +205,7 @@ span {
 .program-input:focus {
     border: 1.5px solid #FB5881;
 }
+
+.hr-color {
+    background: rgba(98, 100, 106, 0.25);
+}
