@@ -123,7 +123,7 @@ export default function Dashboard() {
               num={0}
             />
           </div>
-          <section className="mt-8 mr-4 flex gap-2 w-full max-w-full">
+          <section className="mt-8 mr-4 flex w-full max-w-full gap-2">
             <AllTalents />
             <Programs
               countOfPrograms={(num: number) => setCountOfPrograms(num)}
@@ -149,14 +149,14 @@ function OneStat({
   num: number;
 }) {
   return (
-    <div className="flex w-[300px] flex-col items-center gap-1 rounded-xl bg-tertiary p-2 text-white shadow-sm">
+    <div className="stat-shadow flex w-[300px] flex-col items-center gap-1 rounded-xl bg-tertiary p-2 text-white">
       <div className="">{svg}</div>
 
       <div className="flex items-center gap-2 text-center text-base">
         <span className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-secondary/50 p-2 text-base leading-normal">
           {num}
         </span>
-        {text}
+        <span>{text}</span>
       </div>
     </div>
   );

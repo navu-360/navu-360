@@ -29,7 +29,7 @@ export default function Programs({
       <section className="bg-blueGray-50 relative py-16">
         <div className="mb-12 w-full px-4">
           <div
-            className="relative mb-6 flex h-max w-full min-w-0 flex-col break-words rounded bg-tertiary
+            className="table-shadow relative mb-6 flex h-max w-full min-w-0 flex-col break-words rounded bg-tertiary
   text-white shadow-lg"
           >
             {data?.data?.length > 0 && (

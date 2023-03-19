@@ -176,7 +176,7 @@ span {
     background-color: #28293e !important;
 }
 
-.ce-popover__item:hover, .ce-conversion-tool--focused:hover {
+.ce-popover__item:hover, .ce-conversion-tool--focused:hover, .cdx-attaches__download-button {
     background-color: #FB5881 !important;
 }
 
@@ -186,7 +186,7 @@ span {
     outline: none !important;
 }
 
-.ce-inline-toolbar__dropdown, .ce-conversion-toolbar, .ce-conversion-toolbar--showed {
+.ce-inline-toolbar__dropdown, .ce-conversion-toolbar, .ce-conversion-toolbar--showed, .cdx-attaches {
     background-color: #28293e !important;
 }
 
@@ -208,4 +208,16 @@ span {
 
 .hr-color {
     background: rgba(98, 100, 106, 0.25);
+}
+
+.stat-shadow:hover {
+    box-shadow: rgba(251, 88, 129, 0.5) 0px 2px 5px -1px, rgba(251, 88, 129, 0.3) 0px 1px 3px -1px;
+}
+
+p:hover, span:hover, h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover {
+    cursor: default;
+}
+
+.table-shadow {
+    box-shadow: rgba(251, 88, 129, 0.3) 0px 2px 5px -1px, rgba(251, 88, 129, 0.1) 0px 1px 1px -1px;
 }
