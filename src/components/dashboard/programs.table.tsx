@@ -6,8 +6,10 @@ import { useGetOrganizationProgramsQuery } from "services/baseApiSlice";
 
 export default function Programs({
   showSelectTemplate,
+  countOfPrograms,
 }: {
   showSelectTemplate: () => void;
+  countOfPrograms: (count: number) => void;
 }) {
   const orgId = useSelector(
     (state: { auth: { orgId: string } }) => state.auth.orgId
@@ -36,7 +38,7 @@ export default function Programs({
                 </div>
               </div>
             )}
-            <div className="mt-3 flex h-[calc(100vh_-_450px)] flex-col items-center gap-4 overflow-y-auto pb-8">
+            <div className="no-scrollbar mt-3 flex h-[calc(100vh_-_450px)] flex-col items-center gap-4 overflow-y-auto pb-8">
               {(isFetching || !orgId) && (
                 <div className="flex w-full flex-col items-center gap-4">
                   <div className="h-[100px] w-4/5 animate-pulse rounded bg-gray-400" />

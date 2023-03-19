@@ -30,6 +30,8 @@ export default function Dashboard() {
 
   const [showSelectTemplate, setShowSelectTemplate] = useState(false);
 
+  const [countOfPrograms, setCountOfPrograms] = useState(0);
+
   return (
     <>
       <Header />
@@ -100,7 +102,7 @@ export default function Dashboard() {
                   <path d="M4 4v16"></path>
                 </svg>
               }
-              num={0}
+              num={countOfPrograms}
             />
             <OneStat
               text="Total Onboarded"
@@ -123,7 +125,10 @@ export default function Dashboard() {
           </div>
           <section className="mt-8 mr-4 flex gap-2">
             <AllTalents />
-            <Programs showSelectTemplate={() => setShowSelectTemplate(true)} />
+            <Programs
+              countOfPrograms={(num: number) => setCountOfPrograms(num)}
+              showSelectTemplate={() => setShowSelectTemplate(true)}
+            />
           </section>
         </div>
         {showSelectTemplate && (
