@@ -94,6 +94,9 @@ export const baseApiSlice = createApi({
         url: `programs?orgId=${orgId}`,
       }),
     }),
+    getOneProgram: builder.query({
+      query: (id) => `programs/${id}`,
+    }),
 
     // templates
     // fetch all templates
@@ -129,4 +132,5 @@ export const {
   useFetchTemplatesQuery,
   useCreateTemplateMutation,
   useGetOneTemplateQuery,
+  useGetOneProgramQuery,
 } = baseApiSlice;
