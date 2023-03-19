@@ -4,9 +4,9 @@ import React from "react";
 
 export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
   return (
-    <header className="fixed top-0 left-[200px] z-20 flex h-[75px] w-full py-2">
+    <header className="fixed top-0 left-[200px] bg-white z-20 flex h-[75px] w-full py-2">
       {!hideSearch && (
-        <form className="relative ml-2 h-full w-[70%] rounded-md bg-blue-700/10 px-4 py-2 pr-16">
+        <form className="relative ml-2 h-full 2xl:w-[70%] w-[50%] rounded-md bg-blue-700/10 px-4 py-2 pr-16">
           <input
             type="text"
             name="search"

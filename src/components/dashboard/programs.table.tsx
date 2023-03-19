@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useGetOrganizationProgramsQuery } from "services/baseApiSlice";
 
@@ -19,8 +19,13 @@ export default function Programs({
     refetchOnMountOrArgChange: true,
   });
 
+  useEffect(() => {
+    countOfPrograms(data?.data?.length || 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data?.data?.length]);
+
   return (
-    <section className="w-[25%]">
+    <section className="w-[25%] min-w-[400px]">
       <section className="bg-blueGray-50 relative py-16">
         <div className="mb-12 w-full px-4">
           <div
@@ -32,13 +37,13 @@ export default function Programs({
                 <div className="flex flex-wrap items-center">
                   <div className="relative w-full max-w-full flex-1 flex-grow px-4 ">
                     <h3 className="text-lg font-semibold text-white">
-                      All Programs
+                      Recent Programs
                     </h3>
                   </div>
                 </div>
               </div>
             )}
-            <div className="no-scrollbar mt-3 flex h-[calc(100vh_-_450px)] flex-col items-center gap-4 overflow-y-auto pb-8">
+            <div className="no-scrollbar mt-3 flex h-max flex-col items-center gap-4 overflow-y-auto pb-8">
               {(isFetching || !orgId) && (
                 <div className="flex w-full flex-col items-center gap-4">
                   <div className="h-[100px] w-4/5 animate-pulse rounded bg-gray-400" />
@@ -61,16 +66,26 @@ export default function Programs({
               )}
               {!isFetching && (
                 <div className="mx-auto flex w-4/5 flex-col gap-4">
-                  {data?.data?.map(
-                    (program: {
-                      name: string;
-                      id: string;
-                      content: string;
-                    }) => (
-                      <TemplateCard key={program.id} template={program} />
-                    )
-                  )}
+                  {data?.data
+                    ?.slice(0, 3)
+                    .map(
+                      (program: {
+                        name: string;
+                        id: string;
+                        content: string;
+                      }) => (
+                        <TemplateCard key={program.id} template={program} />
+                      )
+                    )}
                 </div>
+              )}
+              {!isFetching && data?.data?.length > 0 && (
+                <Link
+                  href={`/programs`}
+                  className="mt-6 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 md:mr-0"
+                >
+                  View All Programs
+                </Link>
               )}
             </div>
           </div>

@@ -33,9 +33,6 @@ export default function AllTalents() {
                       Joined
                     </th>
                     <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                      Onboarding Status
-                    </th>
-                    <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                       Completion{" "}
                     </th>
                     <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white"></th>
@@ -59,10 +56,6 @@ export default function AllTalents() {
                     </td>
                     <td className="whitespace-nowrap border-t-0 border-l-0 border-r-0 p-4 px-6 align-middle text-xs">
                       Jan 1, 2021
-                    </td>
-                    <td className="whitespace-nowrap border-t-0 border-l-0 border-r-0 p-4 px-6 align-middle text-xs">
-                      <i className="fas fa-circle mr-2 text-orange-500"></i>
-                      In progress
                     </td>
                     <td className="whitespace-nowrap border-t-0 border-l-0 border-r-0 p-4 px-6 align-middle text-xs">
                       <div className="flex items-center">

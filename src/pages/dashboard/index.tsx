@@ -36,13 +36,13 @@ export default function Dashboard() {
     <>
       <Header />
       <DashboardWrapper>
-        <div className="relative mt-[20px] ml-[250px] text-tertiary">
-          <h1 className="text-2xl font-bold">
+        <div className="relative mt-[4rem] ml-[250px] text-tertiary">
+          <h1 className="w-full text-2xl font-bold">
             Hi, {session?.user?.name?.split(" ")[0]}
           </h1>
           <button
             onClick={() => setShowSelectTemplate(true)}
-            className="absolute right-8 top-12 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 md:mr-0"
+            className="absolute right-8 top-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 md:mr-0"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -59,7 +59,7 @@ export default function Dashboard() {
 
             <span>Create Program</span>
           </button>
-          <div className="mt-8 flex gap-8">
+          <div className="mt-16 flex gap-8 2xl:mt-8">
             <OneStat
               svg={
                 <svg
@@ -123,7 +123,7 @@ export default function Dashboard() {
               num={0}
             />
           </div>
-          <section className="mt-8 mr-4 flex gap-2">
+          <section className="mt-8 mr-4 flex gap-2 w-full max-w-full">
             <AllTalents />
             <Programs
               countOfPrograms={(num: number) => setCountOfPrograms(num)}

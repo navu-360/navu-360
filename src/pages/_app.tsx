@@ -12,7 +12,7 @@ import ErrorBoundary from "components/error/errorBoundary";
 
 import "styles/globals.css";
 
-import { Nunito_Sans } from "@next/font/google";
+import { Nunito_Sans } from "next/font/google";
 
 const font = Nunito_Sans({
   subsets: ["cyrillic"],
