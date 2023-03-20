@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserProfile } from "redux/auth/authSlice";
+import { generateAvatar } from "utils/avatar";
 
 export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
   return (
@@ -65,7 +66,7 @@ function AdminCard() {
       <div className="relative flex h-[70px] w-[70px] items-center justify-center rounded-full bg-tertiary">
         {userProfile?.id ? (
           <img
-            src={`https://avatars.dicebear.com/api/micah/${userProfile?.id}.svg?mouth[]=laughing&mouth[]=smile&mouth[]=smirk&hair[]=dannyPhantom&hair[]=fonze`}
+            src={generateAvatar(userProfile?.id)}
             className="h-[50px] w-[50px]"
             alt={userProfile?.name as string}
           />

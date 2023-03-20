@@ -9,6 +9,7 @@ import Header from "components/common/head";
 import DashboardWrapper from "components/layout/dashboardWrapper";
 import React, { useEffect, useState } from "react";
 import type { OnboardingProgram } from "types";
+import { generateAvatar } from "utils/avatar";
 
 export default function Program({ data }: { data: OnboardingProgram }) {
   const [content, setContent] = useState<OutputData | null>(null);
@@ -43,7 +44,7 @@ export default function Program({ data }: { data: OnboardingProgram }) {
 
               <div className="flex w-full items-center gap-3 rounded-lg bg-tertiary/80 p-4 text-white">
                 <img
-                  src={`https://avatars.dicebear.com/api/micah/${data?.id}.svg?mouth[]=laughing&mouth[]=smile&mouth[]=smirk&hair[]=dannyPhantom&hair[]=fonze`}
+                  src={generateAvatar(data?.id)}
                   className="h-[50px] w-[50px] rounded-full bg-tertiary"
                   alt={""}
                 />
@@ -53,7 +54,7 @@ export default function Program({ data }: { data: OnboardingProgram }) {
               </div>
               <div className="flex w-full items-center gap-3 rounded-lg bg-tertiary/80 p-4 text-white">
                 <img
-                  src={`https://avatars.dicebear.com/api/micah/${data?.id}.svg?mouth[]=laughing&mouth[]=smile&mouth[]=smirk&hair[]=dannyPhantom&hair[]=fonze`}
+                  src={generateAvatar(data?.id)}
                   className="h-[50px] w-[50px] rounded-full bg-tertiary"
                   alt={""}
                 />

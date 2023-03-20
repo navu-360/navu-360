@@ -7,6 +7,7 @@ import Link from "next/link";
 import React from "react";
 import { useSelector } from "react-redux";
 import { useGetOrganizationProgramsQuery } from "services/baseApiSlice";
+import { generateAvatar } from "utils/avatar";
 import { processDate } from "utils/date";
 
 export default function Programs() {
@@ -84,7 +85,7 @@ export function OneProgramCard({ program }: { program: OnboardingProgram }) {
         <div className="flex items-center gap-4">
           <p className="text-[14px] font-semibold">User Name</p>
           <img
-            src={`https://avatars.dicebear.com/api/micah/${program?.id}.svg?mouth[]=laughing&mouth[]=smile&mouth[]=smirk&hair[]=dannyPhantom&hair[]=fonze`}
+            src={generateAvatar(program?.id)}
             className="h-[50px] w-[50px] rounded-full bg-tertiary"
             alt={program?.name}
           />
