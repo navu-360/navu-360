@@ -12,7 +12,7 @@ export default function Hero() {
           Simplify <br /> your onboarding <br /> experience.
         </h1>
         <p className="text-medium text-center text-base md:text-left xl:text-lg 2xl:text-xl">
-          Onboard new hires with confidence using the <br /> ultimate onboarding
+          Onboard new talents with confidence using the <br /> ultimate onboarding
           platform
         </p>
         <button

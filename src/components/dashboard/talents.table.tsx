@@ -5,7 +5,7 @@ export default function AllTalents() {
   return (
     <section className="w-[75%]">
       <section className="bg-blueGray-50 relative py-16">
-        <div className="mb-12 w-full px-4">
+        <div className="mb-12 w-full">
           <div
             className="table-shadow relative mb-6 flex w-full min-w-0 flex-col break-words rounded bg-tertiary
   text-white shadow-lg"

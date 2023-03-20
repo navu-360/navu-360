@@ -58,6 +58,9 @@ export const baseApiSlice = createApi({
     fetchUsers: builder.query({
       query: () => `users`,
     }),
+    getAllTalents: builder.query({
+      query: (orgId) => `users/talents?orgId=${orgId}`,
+    }),
     // delete user
     deleteUser: builder.mutation({
       query: (id) => ({
@@ -133,4 +136,5 @@ export const {
   useCreateTemplateMutation,
   useGetOneTemplateQuery,
   useGetOneProgramQuery,
+  useGetAllTalentsQuery,
 } = baseApiSlice;

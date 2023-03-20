@@ -4,6 +4,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   userId: "",
   orgId: "",
+  organizationData: undefined,
+  userProfile: undefined,
 };
 
 export const authSlice = createSlice({
@@ -18,7 +20,19 @@ export const authSlice = createSlice({
     setOrgId: (state, action) => {
       state.orgId = action.payload;
     },
+    setOrganizationData: (state, action) => {
+      state.organizationData = action.payload;
+    },
+    setUserProfile: (state, action) => {
+      state.userProfile = action.payload;
+    },
   },
 });
-export const { resetAuth, setUserId, setOrgId } = authSlice.actions;
+export const {
+  resetAuth,
+  setUserId,
+  setOrgId,
+  setOrganizationData,
+  setUserProfile,
+} = authSlice.actions;
 export default authSlice.reducer;

@@ -35,7 +35,7 @@ export default function AdminCompanyDetails({
       goToNext={goToNext}
       files={[]}
       title="Setup your organization"
-      desc="For the purpose of industry regulation, your details are required."
+      desc="Provide some basic information about you and your organization"
       loading={loading}
       role={role}
       companyDetails={{

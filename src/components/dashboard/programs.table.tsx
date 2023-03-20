@@ -52,7 +52,7 @@ export default function Programs({
                 </div>
               )}
               {!isFetching && orgId && data?.data?.length === 0 && (
-                <div className="relative top-1/2 flex -translate-y-1/2 flex-col items-center gap-4">
+                <div className="relative flex flex-col items-center gap-4">
                   <h3 className="text-lg font-semibold text-white">
                     No Programs Found
                   </h3>

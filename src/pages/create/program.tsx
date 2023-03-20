@@ -101,7 +101,7 @@ export default function CreateProgram() {
 
   return (
     <>
-      <Header />
+      <Header title="Create an Onboarding Program" />
       <DashboardWrapper hideSearch>
         <div className="relative left-1/2 ml-[100px] mt-[20px] flex h-full w-max min-w-[764px] -translate-x-1/2 flex-col items-center justify-center gap-8">
           <div className="flex w-full justify-between mt-8">

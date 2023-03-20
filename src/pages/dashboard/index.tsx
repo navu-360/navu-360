@@ -1,20 +1,21 @@
+import type { User } from "@prisma/client";
 import Header from "components/common/head";
 import Programs from "components/dashboard/programs.table";
 import SelectTemplate from "components/dashboard/selectTemplate";
 import AllTalents from "components/dashboard/talents.table";
 import DashboardWrapper from "components/layout/dashboardWrapper";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { setOrgId } from "redux/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setOrgId, setOrganizationData } from "redux/auth/authSlice";
 import { useGetOneOrganizationQuery } from "services/baseApiSlice";
 
 export default function Dashboard() {
-  const { data: session } = useSession();
+  const userProfile = useSelector(
+    (state: { auth: { userProfile: User } }) => state.auth.userProfile
+  );
 
   // get organization created by this user then set the orgId in state
-  const userId = session?.user?.id;
+  const userId = userProfile?.id;
   const { data } = useGetOneOrganizationQuery(userId, {
     skip: !userId,
   });
@@ -24,6 +25,7 @@ export default function Dashboard() {
   useEffect(() => {
     if (data) {
       dispatch(setOrgId(data?.organization?.id));
+      dispatch(setOrganizationData(data?.organization));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
@@ -34,15 +36,15 @@ export default function Dashboard() {
 
   return (
     <>
-      <Header />
+      <Header title={`${data?.organization?.name} dashboard - Navu360`} />
       <DashboardWrapper>
         <div className="relative mt-[4rem] ml-[250px] text-tertiary">
           <h1 className="w-full text-2xl font-bold">
-            Hi, {session?.user?.name?.split(" ")[0]}
+            Hi, {userProfile?.name?.split(" ")[0]}
           </h1>
           <button
             onClick={() => setShowSelectTemplate(true)}
-            className="absolute right-8 top-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 md:mr-0"
+            className="absolute right-6 top-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 md:mr-0"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -59,7 +61,7 @@ export default function Dashboard() {
 
             <span>Create Program</span>
           </button>
-          <div className="mt-16 flex gap-8 2xl:mt-8">
+          <div className="mt-16 flex w-[98%] justify-between 2xl:mt-8">
             <OneStat
               svg={
                 <svg
@@ -149,7 +151,7 @@ function OneStat({
   num: number;
 }) {
   return (
-    <div className="stat-shadow flex w-[300px] flex-col items-center gap-1 rounded-xl bg-tertiary p-2 text-white">
+    <div className="stat-shadow flex min-w-[300px] w-1/4 flex-col items-center gap-1 rounded-xl bg-tertiary p-2 text-white">
       <div className="">{svg}</div>
 
       <div className="flex items-center gap-2 text-center text-base">

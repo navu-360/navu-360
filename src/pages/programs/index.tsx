@@ -21,7 +21,7 @@ export default function Programs() {
   if (isFetching)
     return (
       <>
-        <Header title="All Programs - Loading ..." />
+        <Header title="All Onboarding Programs - Loading ..." />
         <DashboardWrapper hideSearch>
           <div className="relative ml-[300px] mt-[20px] flex h-full flex-col items-center justify-center gap-8">
             <div className="flex w-full flex-wrap gap-8">
@@ -36,14 +36,33 @@ export default function Programs() {
 
   return (
     <>
-      <Header title="All Programs" />
+      <Header title={`All Onboarding Programs - Navu360`} />
       <DashboardWrapper hideSearch>
         <div className="relative ml-[250px] mt-[20px] flex h-full flex-col items-center justify-center gap-8 2xl:ml-[300px]">
-          <div className="flex w-full flex-wrap gap-8">
-            {data?.data?.map((program: OnboardingProgram) => (
-              <OneProgramCard key={program.id} program={program} />
-            ))}
-          </div>
+          {data?.data?.length === 0 && (
+            <div className="flex min-h-[70vh] w-full items-center justify-center gap-4">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="#FB5881"
+                className="h-8 w-8"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <p>You have no programs yet.</p>
+            </div>
+          )}
+          {data?.data?.length > 0 && (
+            <div className="flex w-full flex-wrap gap-8">
+              {data?.data?.map((program: OnboardingProgram) => (
+                <OneProgramCard key={program.id} program={program} />
+              ))}
+            </div>
+          )}
         </div>
       </DashboardWrapper>
     </>

@@ -22,7 +22,7 @@ export default function Program({ data }: { data: OnboardingProgram }) {
 
   return (
     <>
-      <Header />
+      <Header title={`${data?.name} - Navu360`} />
       <DashboardWrapper hideSearch>
         <div className="relative ml-[300px] mt-[20px] flex h-full items-start justify-start gap-8">
           <div className="flex flex-col gap-3">
