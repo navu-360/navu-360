@@ -217,3 +217,41 @@ span {
 .table-shadow {
     box-shadow: rgba(251, 88, 129, 0.3) 0px 2px 5px -1px, rgba(251, 88, 129, 0.1) 0px 1px 1px -1px;
 }
+
+#svg {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.path {
+    stroke: #28293E;
+    stroke-width: 6;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    stroke-dasharray: 193.904983521;
+    fill: none;
+    animation:
+        load 4s linear infinite,
+        color 2s linear infinite;
+}
+
+@keyframes load {
+    from {
+        stroke-dashoffset: 775.6199340820312;
+    }
+}
+
+@keyframes color {
+    33% {
+        stroke: #30475E;
+    }
+
+    66% {
+        stroke: #28293E;
+    }
+}
+
+.ce-block__content,
+.ce-toolbar__content {
+    max-width: unset;
+}

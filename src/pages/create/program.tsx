@@ -15,6 +15,7 @@ import {
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
+import Spinner from "components/common/spinner";
 
 interface CustomTemplate extends OutputData {
   id?: string;
@@ -86,13 +87,24 @@ export default function CreateProgram() {
       });
   };
 
+  if (isFetching)
+    return (
+      <>
+        <Header />
+        <DashboardWrapper hideSearch>
+          <div className="relative left-1/2 ml-[100px] mt-[20px] flex h-full min-h-[70vh] w-max min-w-[764px] -translate-x-1/2 flex-col items-center justify-center gap-8">
+            <Spinner />
+          </div>
+        </DashboardWrapper>
+      </>
+    );
+
   return (
     <>
       <Header />
       <DashboardWrapper hideSearch>
         <div className="relative left-1/2 ml-[100px] mt-[20px] flex h-full w-max min-w-[764px] -translate-x-1/2 flex-col items-center justify-center gap-8">
-          {isFetching && <div>Loading...</div>}
-          <div className="flex w-full justify-between">
+          <div className="flex w-full justify-between mt-8">
             <form>
               <input
                 type="text"

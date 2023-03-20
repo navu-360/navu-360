@@ -7,10 +7,12 @@ function MyEditor({
   initialData,
   getData,
   receiveData,
+  isReadOnly,
 }: {
   initialData: OutputData;
-  getData: boolean;
-  receiveData: (data: OutputData) => void;
+  getData?: boolean;
+  isReadOnly?: boolean;
+  receiveData?: (data: OutputData) => void;
 }) {
   const editorRef = useRef<EditorConfig>(null);
 
@@ -23,14 +25,16 @@ function MyEditor({
         holder: "editorjs",
         data: initialData,
         tools: EDITOR_JS_TOOLS,
+        placeholder: "Create your content here...",
+        readOnly: isReadOnly,
       });
     }
-  }, [initialData]);
+  }, [initialData, isReadOnly]);
 
   const saveData = async () => {
     // @ts-ignore
     editorRef.current?.save().then((outputData: OutputData) => {
-      receiveData(outputData);
+      receiveData && receiveData(outputData);
     });
   };
 
@@ -38,11 +42,14 @@ function MyEditor({
     if (getData) {
       saveData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getData]);
 
   return (
     <div
-      className="mb-8 min-w-[764px] rounded-lg bg-tertiary p-8 text-white"
+      className={`mb-8 min-w-[400px] rounded-lg bg-tertiary p-8 text-white ${
+        isReadOnly ? "max-w-[50vw]" : "max-w-[60vw]"
+      }`}
       id="editorjs"
     />
   );

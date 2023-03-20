@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import type { OnboardingProgram } from "@prisma/client";
 import Header from "components/common/head";
+import Spinner from "components/common/spinner";
 import DashboardWrapper from "components/layout/dashboardWrapper";
 import Link from "next/link";
 import React from "react";
@@ -17,11 +18,27 @@ export default function Programs() {
     refetchOnMountOrArgChange: true,
   });
 
+  if (isFetching)
+    return (
+      <>
+        <Header title="All Programs - Loading ..." />
+        <DashboardWrapper hideSearch>
+          <div className="relative ml-[300px] mt-[20px] flex h-full flex-col items-center justify-center gap-8">
+            <div className="flex w-full flex-wrap gap-8">
+              <div className="flex min-h-[70vh] w-full items-center justify-center">
+                <Spinner />
+              </div>
+            </div>
+          </div>
+        </DashboardWrapper>
+      </>
+    );
+
   return (
     <>
-      <Header />
+      <Header title="All Programs" />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[300px] mt-[20px] flex h-full flex-col items-center justify-center gap-8">
+        <div className="relative ml-[250px] mt-[20px] flex h-full flex-col items-center justify-center gap-8 2xl:ml-[300px]">
           <div className="flex w-full flex-wrap gap-8">
             {data?.data?.map((program: OnboardingProgram) => (
               <OneProgramCard key={program.id} program={program} />
