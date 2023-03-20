@@ -42,6 +42,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     };
 
     try {
+        // @ts-ignore
         await sgMail.send(msg);
         return res.json({ message: `${firstName} has been invited to onboarding program: ${onboardingProgram}` });
     } catch (error) {
