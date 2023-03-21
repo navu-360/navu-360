@@ -10,7 +10,7 @@ export default function Talents() {
   const orgId = useSelector(
     (state: { auth: { orgId: string } }) => state.auth.orgId
   );
-  const { data, isFetching } = useGetOrganizationProgramsQuery(orgId, {
+  const { isFetching } = useGetOrganizationProgramsQuery(orgId, {
     skip: !orgId,
     refetchOnMountOrArgChange: true,
   });

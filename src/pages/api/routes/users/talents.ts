@@ -18,15 +18,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         return;
     }
 
-    const { orgId } = req.query as { orgId: string };
-
     const users = await prisma.user.findMany({
         where: {
             role: "talent",
         },
     });
 
-    // 
+    //
 
     return res.status(200).json({ message: `Users found.`, data: users });
 

@@ -9,7 +9,6 @@ export default function CreateOrganizationLayout({
   title,
   desc,
   goToNext,
-  files,
   role,
   loading,
   companyDetails,
