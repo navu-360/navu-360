@@ -10,6 +10,12 @@ import DashboardWrapper from "components/layout/dashboardWrapper";
 import React, { useEffect, useState } from "react";
 import type { OnboardingProgram } from "types";
 import { generateAvatar } from "utils/avatar";
+import InviteTalentsModal from "components/dashboard/inviteTalents";
+import {
+  useGetProgramTalentsQuery,
+  useGetSentInvitesQuery,
+} from "services/baseApiSlice";
+import type { OnboardingProgramTalents, invites } from "@prisma/client";
 
 export default function Program({ data }: { data: OnboardingProgram }) {
   const [content, setContent] = useState<OutputData | null>(null);
@@ -20,6 +26,13 @@ export default function Program({ data }: { data: OnboardingProgram }) {
       setContent(receivedContent);
     }
   }, [data]);
+
+  const [showModal, setShowModal] = useState(false);
+
+  const programId = data?.id;
+  const { data: invites } = useGetSentInvitesQuery(programId);
+
+  const { data: enrolledTalents } = useGetProgramTalentsQuery(programId);
 
   return (
     <>
@@ -35,36 +48,72 @@ export default function Program({ data }: { data: OnboardingProgram }) {
           <div className="fixed right-4 mt-16 mr-16 flex h-[80vh] w-[20vw] min-w-[400px] flex-col overflow-y-auto text-tertiary">
             {/* list of talents */}
             <div className="flex w-full flex-col gap-4">
-              <button className="absolute right-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 md:mr-0">
+              <button
+                onClick={() => setShowModal(true)}
+                className="absolute right-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 md:mr-0"
+              >
                 Invite talent
               </button>
-              <div className="mt-8 flex items-center justify-between">
-                <h2 className="tetx-lg font-semibold">Talents enrolled</h2>
+              {enrolledTalents?.data?.length > 0 && (
+                <div className="mt-8 flex items-center justify-between">
+                  <h2 className="tetx-lg font-semibold">Talents enrolled</h2>
+                </div>
+              )}
+
+              {/* // enrolled talents */}
+              <div className="mt-16 flex flex-col gap-4 rounded border-[1px] border-gray-400 p-4">
+                {enrolledTalents?.data?.length === 0 && (
+                  <p className="text-center">No talents enrolled</p>
+                )}
+                {enrolledTalents?.data?.map(
+                  (talent: OnboardingProgramTalents) => (
+                    <div
+                      key={talent.id}
+                      className="flex w-full items-center gap-3 rounded-lg bg-tertiary/80 p-4 text-white"
+                    >
+                      <img
+                        src={generateAvatar(talent?.id)}
+                        className="h-[50px] w-[50px] rounded-full bg-tertiary"
+                        alt={""}
+                      />
+                      <div>
+                        <p>{talent?.talentId}</p>
+                      </div>
+                    </div>
+                  )
+                )}
               </div>
 
-              <div className="flex w-full items-center gap-3 rounded-lg bg-tertiary/80 p-4 text-white">
-                <img
-                  src={generateAvatar(data?.id)}
-                  className="h-[50px] w-[50px] rounded-full bg-tertiary"
-                  alt={""}
-                />
-                <div>
-                  <p>Jane Doe</p>
-                </div>
-              </div>
-              <div className="flex w-full items-center gap-3 rounded-lg bg-tertiary/80 p-4 text-white">
-                <img
-                  src={generateAvatar(data?.id)}
-                  className="h-[50px] w-[50px] rounded-full bg-tertiary"
-                  alt={""}
-                />
-                <div>
-                  <p>Jane Doe</p>
-                </div>
+              {/* // invited emails */}
+              <div className="mt-4 flex flex-col rounded border-[1px] border-gray-400 p-4">
+                {invites?.data?.length === 0 && (
+                  <p className="text-center">No invites sent</p>
+                )}
+                {invites?.data?.map((invite: invites) => (
+                  <div
+                    key={invite.id}
+                    className="flex w-full items-center gap-3 rounded-lg bg-tertiary/80 p-4 text-white"
+                  >
+                    <img
+                      src={generateAvatar(invite?.id)}
+                      className="h-[50px] w-[50px] rounded-full bg-tertiary"
+                      alt={""}
+                    />
+                    <div>
+                      <p>{invite.email}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
+        {showModal && (
+          <InviteTalentsModal
+            program={data}
+            closeModal={() => setShowModal(false)}
+          />
+        )}
       </DashboardWrapper>
     </>
   );

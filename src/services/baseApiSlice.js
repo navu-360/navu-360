@@ -118,6 +118,24 @@ export const baseApiSlice = createApi({
     getOneTemplate: builder.query({
       query: (id) => `templates/${id}`,
     }),
+
+    // emails
+    // invite talent to program
+    inviteTalent: builder.mutation({
+      query: (body) => ({
+        url: `email/inviteTalent`,
+        method: "POST",
+        body,
+      }),
+    }),
+    // get sent invites for a program
+    getSentInvites: builder.query({
+      query: (programId) => `invite?programId=${programId}`,
+    }),
+    // get all talents for a program
+    getProgramTalents: builder.query({
+      query: (programId) => `users/talents/${programId}`,
+    }),
   }),
 });
 
@@ -137,4 +155,7 @@ export const {
   useGetOneTemplateQuery,
   useGetOneProgramQuery,
   useGetAllTalentsQuery,
+  useInviteTalentMutation,
+  useGetSentInvitesQuery,
+  useGetProgramTalentsQuery,
 } = baseApiSlice;

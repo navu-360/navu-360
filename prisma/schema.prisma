@@ -52,6 +52,7 @@ model User {
   sessions         Session[]
   organization     Organization?
   onboardingProgs  OnboardingProgram[]
+  onboardingProgramTalents OnboardingProgramTalents[]
   createdAt        DateTime            @default(now())
   updatedAt        DateTime            @updatedAt
 }
@@ -77,6 +78,18 @@ model OnboardingProgram {
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
   users          User[]
+  invites        invites[]
+  onboardingProgramTalents OnboardingProgramTalents[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model OnboardingProgramTalents {
+  id             String       @id @default(uuid())
+  programId     String
+  OnboardingProgram OnboardingProgram @relation(fields: [programId], references: [id])
+  talentId      String
+  User User @relation(fields: [talentId], references: [id])
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
 }
@@ -92,6 +105,15 @@ model template {
   id        String   @id @default(cuid())
   name      String
   content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model invites {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  onboardingProgramId String
+  OnboardingProgram OnboardingProgram @relation(fields: [onboardingProgramId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

@@ -26,6 +26,8 @@ export const serverSchema = z.object({
   CLOUDINARY_API_SECRET: z.string().min(1),
   CLOUDINARY_CLOUD_NAME: z.string().min(1),
   SENDGRID_API_KEY: z.string().min(1),
+  EMAIL_FROM: z.string().min(1),
+  REPLY_TO: z.string().min(1),
 });
 
 /**
@@ -45,6 +47,8 @@ export const serverEnv = {
   CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
   CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
   SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
+  EMAIL_FROM: process.env.EMAIL_FROM,
+  REPLY_TO: process.env.REPLY_TO,
 };
 
 /**
