@@ -66,7 +66,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                         .replace(/{{adminName}}/g, adminName)
                         .replace(/{{onboardingProgram}}/g, onboardingProgramName)
                         .replace(/{{organizationName}}/g, organizationName)
-                        .replace(/{{link}}/g, link)
+                        .replace(/{{link}}/g, link).replace(/{{todayYear}}/g, new Date().getFullYear().toString()),
 
                 };
 
