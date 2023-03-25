@@ -19,48 +19,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     switch (req.method) {
-        case "POST":
-            const { name, email, image } = req.body as {
-                name: string;
-                email: string;
-                image: string;
-            };
-
-            // validate request
-            if (!name || !email || !image) {
-                res.status(400).json({ message: `Missing required fields.` });
-                return;
-            }
-
-            // check if user already exists - email
-            const userExists = await prisma.user.findUnique({
-                where: {
-                    email: email,
-                },
-            });
-
-            // if user exists, it means they are login in with Google
-            if (userExists) {
-                res.status(200).json({ message: `Login success!`, data: userExists, isNew: false });
-                return;
-            }
-
-            const user = await prisma.user.create({
-                data: {
-                    name: name,
-                    email: email,
-                    image: image,
-                },
-            });
-
-            res.status(201).json({ message: `User ${user.name} created.`, data: user, isNew: true });
-            break;
-
         case "GET":
-
             const users = await prisma.user.findMany();
             return res.status(200).json({ message: `Users found.`, data: users });
-
 
         case "PATCH":
             // editable fields: image

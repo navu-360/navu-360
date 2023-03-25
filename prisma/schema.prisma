@@ -52,7 +52,6 @@ model User {
   sessions         Session[]
   organization     Organization?
   onboardingProgs  OnboardingProgram[]
-  onboardingProgramTalents OnboardingProgramTalents[]
   createdAt        DateTime            @default(now())
   updatedAt        DateTime            @updatedAt
 }
@@ -66,6 +65,7 @@ model Organization {
   user            User                @relation(fields: [userId], references: [id])
   userId          String              @unique
   onboardingProgs OnboardingProgram[]
+  onboardingProgramTalents OnboardingProgramTalents[]
   createdAt       DateTime            @default(now())
   updatedAt       DateTime            @updatedAt
 }
@@ -86,10 +86,13 @@ model OnboardingProgram {
 
 model OnboardingProgramTalents {
   id             String       @id @default(uuid())
+  name           String
+  role          String
+  hasBeenOnboarded Boolean?            @default(false)
   programId     String
   OnboardingProgram OnboardingProgram @relation(fields: [programId], references: [id])
-  talentId      String
-  User User @relation(fields: [talentId], references: [id])
+  organizationId String
+  Organization Organization @relation(fields: [organizationId], references: [id])
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
 }

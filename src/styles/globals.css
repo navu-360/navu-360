@@ -235,6 +235,18 @@ span {
         color 2s linear infinite;
 }
 
+.path-white {
+    stroke: #fff;
+    stroke-width: 6;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    stroke-dasharray: 193.904983521;
+    fill: none;
+    animation:
+        load 4s linear infinite,
+        color-white 2s linear infinite;
+}
+
 @keyframes load {
     from {
         stroke-dashoffset: 775.6199340820312;
@@ -248,6 +260,16 @@ span {
 
     66% {
         stroke: #28293E;
+    }
+}
+
+@keyframes color-white {
+    33% {
+        stroke: #fff;
+    }
+
+    66% {
+        stroke: #fff;
     }
 }
 

@@ -37,7 +37,7 @@ export default function Programs({
                 <div className="flex flex-wrap items-center">
                   <div className="relative w-full max-w-full flex-1 flex-grow px-4 ">
                     <h3 className="text-lg font-semibold text-white">
-                      Recent Programs
+                      Recently created programs
                     </h3>
                   </div>
                 </div>
@@ -82,7 +82,7 @@ export default function Programs({
               {!isFetching && data?.data?.length > 0 && (
                 <Link
                   href={`/programs`}
-                  className="mt-6 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 md:mr-0"
+                  className="mt-6 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl border border-secondary bg-tertiary px-8 py-2 text-center text-lg font-semibold text-secondary focus:outline-none focus:ring-4 md:mr-0"
                 >
                   View All Programs
                 </Link>

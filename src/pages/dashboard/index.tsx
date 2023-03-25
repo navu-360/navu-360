@@ -33,6 +33,7 @@ export default function Dashboard() {
   const [showSelectTemplate, setShowSelectTemplate] = useState(false);
 
   const [countOfPrograms, setCountOfPrograms] = useState(0);
+  const [countOfTalents, setCountOfTalents] = useState(0);
 
   return (
     <>
@@ -44,7 +45,7 @@ export default function Dashboard() {
           </h1>
           <button
             onClick={() => setShowSelectTemplate(true)}
-            className="absolute right-6 top-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 md:mr-0"
+            className="absolute right-8 top-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 md:mr-0"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -126,7 +127,9 @@ export default function Dashboard() {
             />
           </div>
           <section className="mt-8 mr-4 flex w-full max-w-full gap-2">
-            <AllTalents />
+            <AllTalents
+              sendTotalTalents={(num: number) => setCountOfTalents(num)}
+            />
             <Programs
               countOfPrograms={(num: number) => setCountOfPrograms(num)}
               showSelectTemplate={() => setShowSelectTemplate(true)}
@@ -151,7 +154,7 @@ function OneStat({
   num: number;
 }) {
   return (
-    <div className="stat-shadow flex min-w-[300px] w-1/4 flex-col items-center gap-1 rounded-xl bg-tertiary p-2 text-white">
+    <div className="stat-shadow flex w-1/4 min-w-[300px] flex-col items-center gap-1 rounded-xl bg-tertiary p-2 text-white">
       <div className="">{svg}</div>
 
       <div className="flex items-center gap-2 text-center text-base">
