@@ -125,7 +125,7 @@ export default function AllTalents({
                           >
                             <Link
                               href={`/talents/${talent?.id}`}
-                              className="text-blueGray-700 mb-2 block w-max whitespace-nowrap rounded-xl bg-white py-2 px-8 text-sm font-semibold font-normal text-secondary"
+                              className="text-blueGray-700 mb-2 block w-max whitespace-nowrap rounded-xl bg-white py-2 px-8 text-sm font-semibold text-secondary"
                             >
                               View
                             </Link>

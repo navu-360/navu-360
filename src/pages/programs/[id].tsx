@@ -77,7 +77,7 @@ export default function Program({ data }: { data: OnboardingProgram }) {
                         alt={""}
                       />
                       <div>
-                        <p>{talent?.talentId}</p>
+                        <p>{talent?.name}</p>
                       </div>
                     </div>
                   )
