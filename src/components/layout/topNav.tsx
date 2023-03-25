@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import type { User } from "@prisma/client";
 import { useSession } from "next-auth/react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserProfile } from "redux/auth/authSlice";
 import { generateAvatar } from "utils/avatar";
@@ -60,6 +60,14 @@ function AdminCard() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
+
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    setIsReady(true);
+  }, []);
+
+  if (!isReady) return null;
 
   return (
     <div className="fixed top-1 right-4 flex items-center gap-2 transition-all duration-300 ease-in">

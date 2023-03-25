@@ -24,6 +24,41 @@ export default function Programs({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.data?.length]);
 
+  if (isFetching || !orgId)
+    return (
+      <section className="w-[25%] min-w-[400px]">
+        <section className="bg-blueGray-50 relative py-16">
+          <div className="mb-12 w-full px-4">
+            <div
+              className="table-shadow relative mb-6 flex h-max w-full min-w-0 flex-col break-words rounded bg-tertiary
+  text-white shadow-lg"
+            >
+              {data?.data?.length > 0 && (
+                <div className="mb-0 rounded-t border-0 px-4 py-3">
+                  <div className="flex flex-wrap items-center">
+                    <div className="relative w-full max-w-full flex-1 flex-grow px-4 ">
+                      <h3 className="text-lg font-semibold text-white">
+                        Recently created programs
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <div className="no-scrollbar mt-3 flex h-max flex-col items-center gap-4 overflow-y-auto pb-8">
+                {(isFetching || !orgId) && (
+                  <div className="flex w-full flex-col items-center gap-4">
+                    <div className="h-[100px] w-4/5 animate-pulse rounded bg-gray-400" />
+                    <div className="h-[100px] w-4/5  animate-pulse rounded bg-gray-400" />
+                    <div className="h-[100px] w-4/5  animate-pulse rounded bg-gray-400" />
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+    );
+
   return (
     <section className="w-[25%] min-w-[400px]">
       <section className="bg-blueGray-50 relative py-16">

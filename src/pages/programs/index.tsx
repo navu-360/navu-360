@@ -4,7 +4,7 @@ import Header from "components/common/head";
 import Spinner from "components/common/spinner";
 import DashboardWrapper from "components/layout/dashboardWrapper";
 import Link from "next/link";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import {
   useGetOrganizationProgramsQuery,
@@ -23,6 +23,14 @@ export default function Programs() {
     skip: !orgId,
     refetchOnMountOrArgChange: true,
   });
+
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    setIsReady(true);
+  }, []);
+
+  if (!isReady) return null;
 
   if (isFetching)
     return (
@@ -152,7 +160,7 @@ export function OneProgramCard({
           <p>{enrolledTalents?.data?.length || 0} talents enrolled</p>
         </div>
 
-        <div className="flex mt-4 items-center gap-2 px-4">
+        <div className="mt-4 flex items-center gap-2 px-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"

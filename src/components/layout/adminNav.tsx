@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { signOut } from "next-auth/react";
 import { useDispatch } from "react-redux";
@@ -9,6 +9,14 @@ import { setUserId } from "redux/auth/authSlice";
 
 export default function AdminNav() {
   const router = useRouter();
+
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    setIsReady(true);
+  }, []);
+
+  if (!isReady) return null;
 
   return (
     <nav className="fixed top-0 left-0 z-20 h-full w-[200px] bg-dark py-2.5 sm:px-4">

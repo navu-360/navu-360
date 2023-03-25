@@ -35,13 +35,21 @@ export default function Dashboard() {
   const [countOfPrograms, setCountOfPrograms] = useState(0);
   const [countOfTalents, setCountOfTalents] = useState(0);
 
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    setIsReady(true);
+  }, []);
+
+  if (!isReady) return null;
+
   return (
     <>
       <Header title={`${data?.organization?.name} dashboard - Navu360`} />
       <DashboardWrapper>
         <div className="relative mt-[4rem] ml-[250px] text-tertiary">
           <h1 className="w-full text-2xl font-bold">
-            Hi, {userProfile?.name?.split(" ")[0]}
+            Hi, {userProfile?.name?.split(" ")[0] ?? ""}
           </h1>
           <button
             onClick={() => setShowSelectTemplate(true)}
@@ -83,7 +91,7 @@ export default function Dashboard() {
                 </svg>
               }
               text="Total Talents"
-              num={0}
+              num={countOfTalents}
             />
             <OneStat
               text="Total Programs"

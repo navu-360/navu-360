@@ -26,6 +26,67 @@ export default function AllTalents({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.data?.length]);
 
+  if (isFetching || !orgId)
+    return (
+      <section className="w-[75%]">
+        <section className="bg-blueGray-50 relative py-16">
+          <div className="mb-12 w-full">
+            <div
+              className="table-shadow relative mb-6 flex w-full min-w-0 flex-col break-words rounded bg-tertiary
+  text-white shadow-lg"
+            >
+              <div className="mb-0 rounded-t border-0 px-4 py-3">
+                <div className="flex flex-wrap items-center">
+                  <div className="relative w-full max-w-full flex-1 flex-grow px-4 ">
+                    <h3 className="text-lg font-semibold text-white">
+                      Recently invited talents
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <div className="block w-full overflow-x-auto ">
+                <table className="w-full border-collapse items-center bg-transparent">
+                  <thead>
+                    <tr>
+                      <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                        Talent
+                      </th>
+                      <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                        Role
+                      </th>
+                      <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                        Joined
+                      </th>
+                      <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                        Completion{" "}
+                      </th>
+                      <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {isFetching && (
+                      <tr>
+                        <td
+                          align="center"
+                          colSpan={5}
+                          className="whitespace-nowrap border-t-0 border-l-0 border-r-0 p-4 px-6 align-middle text-xs"
+                        >
+                          <Spinner smaller />
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+    );
+
   return (
     <section className="w-[75%]">
       <section className="bg-blueGray-50 relative py-16">
