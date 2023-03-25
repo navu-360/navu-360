@@ -15,3 +15,11 @@ export default function Spinner({ smaller }: { smaller?: boolean }) {
     </svg>
   );
 }
+
+export function SmallSpinner() {
+  return (
+    <div className="container-spinner">
+      <span></span>
+    </div>
+  );
+}

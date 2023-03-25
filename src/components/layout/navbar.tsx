@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { signIn, useSession, signOut } from "next-auth/react";
 import { useDispatch } from "react-redux";
 import { setUserId } from "redux/auth/authSlice";
+import { SmallSpinner } from "components/common/spinner";
 
 export default function NavBar() {
   const [showDropDown, setShowDropDown] = useState(false);
@@ -28,7 +29,7 @@ export default function NavBar() {
         router.push("/dashboard");
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
   return (
@@ -63,26 +64,7 @@ export default function NavBar() {
             className="mr-3 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 md:mr-0"
           >
             {status === "loading" ? (
-              <svg
-                className="h-5 w-5 animate-spin text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="transparent"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className=""
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
+              <SmallSpinner />
             ) : (
               <span>{session?.user?.email ?? "Get started"}</span>
             )}

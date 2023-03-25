@@ -10,7 +10,7 @@ export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
   return (
     <header className="fixed top-0 left-[200px] z-20 flex h-[75px] w-full bg-white py-2">
       {!hideSearch && (
-        <form className="relative ml-2 h-full w-[50%] rounded-md bg-blue-700/10 px-4 py-2 pr-16 2xl:w-[70%]">
+        <form className="relative ml-4 h-full w-[50%] rounded-md bg-blue-700/10 px-4 py-2 pr-16 2xl:w-[70%]">
           <input
             type="text"
             name="search"
