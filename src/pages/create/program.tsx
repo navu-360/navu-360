@@ -42,7 +42,7 @@ export default function CreateProgram() {
   const [name, setName] = useState("");
 
   useEffect(() => {
-    if (data) {
+    if (data?.data?.content) {
       setChosenTemplate(JSON.parse(data.data.content));
       setName(data.data.name);
     }
@@ -87,6 +87,14 @@ export default function CreateProgram() {
       });
   };
 
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    setIsReady(true);
+  }, []);
+
+  if (!isReady) return null;
+
   if (isFetching)
     return (
       <>
@@ -104,7 +112,7 @@ export default function CreateProgram() {
       <Header title="Create an Onboarding Program" />
       <DashboardWrapper hideSearch>
         <div className="relative left-1/2 ml-[100px] mt-[20px] flex h-full w-max min-w-[764px] -translate-x-1/2 flex-col items-center justify-center gap-8">
-          <div className="flex w-full justify-between mt-8">
+          <div className="mt-8 flex w-full justify-between">
             <form>
               <input
                 type="text"
@@ -121,7 +129,7 @@ export default function CreateProgram() {
                 setSave(true);
               }}
             >
-              {isLoading || loading ? "Saving..." : "Save"}
+              {isLoading || loading ? "Saving..." : "Create Program"}
             </button>
           </div>
           {chosenTemplate && (
@@ -140,13 +148,17 @@ export default function CreateProgram() {
                     theme: "dark",
                   }
                 );
-                // toast.promise(createTemplateHandler(), {
-                //   pending: "Creating...",
-                //   success: "Program created!",
-                //   error: "Error creating program",
-                // }, {
-                // theme: "dark",
-                // });
+                // toast.promise(
+                //   createTemplateHandler(),
+                //   {
+                //     pending: "Creating...",
+                //     success: "Program created!",
+                //     error: "Error creating program",
+                //   },
+                //   {
+                //     theme: "dark",
+                //   }
+                // );
               }}
               initialData={chosenTemplate}
             />

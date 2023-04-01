@@ -4,13 +4,18 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useInviteTalentMutation } from "services/baseApiSlice";
 import type { OnboardingProgram } from "types";
+import toaster from "utils/toaster";
 
 export default function InviteTalentsModal({
   closeModal,
   program,
+  invitedEmails,
+  enrolledTalents,
 }: {
-  closeModal: () => void;
+  closeModal: (val?: boolean) => void;
   program: OnboardingProgram;
+  invitedEmails: string[];
+  enrolledTalents: string[];
 }) {
   const [emailOne, setEmailOne] = useState<string>("");
   const [emailTwo, setEmailTwo] = useState<string>("");
@@ -26,23 +31,58 @@ export default function InviteTalentsModal({
     (state: { auth: { userProfile: User } }) => state.auth.userProfile
   );
 
+  const [error, setError] = useState(false);
+
   const invietHandler = async () => {
-    const body = {
-      adminName: userProfile?.name,
-      onboardingProgramName: program?.name,
-      talentEmails: [emailOne, emailTwo, emailThree, emailFour, emailFive],
-      organizationId: program?.organizationId,
-      onboardingProgramId: program?.id,
-    };
-    await inviteTalents(body)
-      .unwrap()
-      .then((payload) => {
-        console.log(payload);
-        closeModal();
-      })
-      .catch((error) => {
-        console.log(error);
+    try {
+      const body = {
+        adminName: userProfile?.name,
+        onboardingProgramName: program?.name,
+        talentEmails: [emailOne, emailTwo, emailThree, emailFour, emailFive],
+        organizationId: program?.organizationId,
+        onboardingProgramId: program?.id,
+      };
+
+      await inviteTalents(body)
+        .unwrap()
+        .then(() => {
+          closeModal(true);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const checkIfNotAllowed = (email: string) => {
+    // check if already invited
+    if (invitedEmails.includes(email)) {
+      toaster({
+        message: `${email} has already been invited`,
+        status: "error",
       });
+      setError(true);
+      return;
+    }
+    // check if already enrolled
+    if (enrolledTalents.includes(email)) {
+      toaster({
+        message: `${email} has already been enrolled`,
+        status: "error",
+      });
+      setError(true);
+      return;
+    }
+    // check if current user is trying to invite themselves
+    if (userProfile?.email === email) {
+      toaster({ message: "You cannot invite yourself", status: "error" });
+      setError(true);
+      return;
+    }
+    setError(false);
+    return true;
   };
 
   return (
@@ -64,7 +104,7 @@ export default function InviteTalentsModal({
 
         <div className="mt-4 flex items-center gap-4">
           <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-4">
+            <div className="flex min-w-[400px] items-center gap-4">
               <input
                 type="email"
                 placeholder="Email address"
@@ -73,10 +113,19 @@ export default function InviteTalentsModal({
                 onChange={(e) => {
                   setEmailOne(e.target.value);
                 }}
+                onFocus={() => {
+                  setError(false);
+                }}
+                onBlur={() => {
+                  checkIfNotAllowed(emailOne);
+                }}
               />
               {numberOfEmails === 1 ? (
                 <button
-                  onClick={() => setNumberOfEmails(numberOfEmails + 1)}
+                  onClick={() => {
+                    if (error) return;
+                    setNumberOfEmails(numberOfEmails + 1);
+                  }}
                   disabled={emailOne.length === 0}
                   className="flex h-[40px] w-[40px] min-w-[40px] items-center justify-center rounded-full bg-tertiary"
                 >
@@ -114,7 +163,7 @@ export default function InviteTalentsModal({
             </div>
 
             {numberOfEmails > 1 && (
-              <div className="flex items-center gap-4">
+              <div className="flex min-w-[400px] items-center gap-4">
                 <input
                   type="email"
                   placeholder="Email address"
@@ -123,11 +172,20 @@ export default function InviteTalentsModal({
                   onChange={(e) => {
                     setEmailTwo(e.target.value);
                   }}
+                  onFocus={() => {
+                    setError(false);
+                  }}
+                  onBlur={() => {
+                    checkIfNotAllowed(emailTwo);
+                  }}
                 />
 
                 {numberOfEmails === 2 ? (
                   <button
-                    onClick={() => setNumberOfEmails(numberOfEmails + 1)}
+                    onClick={() => {
+                      if (error) return;
+                      setNumberOfEmails(numberOfEmails + 1);
+                    }}
                     disabled={emailTwo.length === 0}
                     className="flex h-[40px] w-[40px] min-w-[40px] items-center justify-center rounded-full bg-tertiary"
                   >
@@ -165,7 +223,7 @@ export default function InviteTalentsModal({
               </div>
             )}
             {numberOfEmails > 2 && (
-              <div className="flex items-center gap-4">
+              <div className="flex min-w-[400px] items-center gap-4">
                 <input
                   type="email"
                   placeholder="Email address"
@@ -174,10 +232,19 @@ export default function InviteTalentsModal({
                   onChange={(e) => {
                     setEmailThree(e.target.value);
                   }}
+                  onFocus={() => {
+                    setError(false);
+                  }}
+                  onBlur={() => {
+                    checkIfNotAllowed(emailThree);
+                  }}
                 />
                 {numberOfEmails === 3 ? (
                   <button
-                    onClick={() => setNumberOfEmails(numberOfEmails + 1)}
+                    onClick={() => {
+                      if (error) return;
+                      setNumberOfEmails(numberOfEmails + 1);
+                    }}
                     disabled={emailThree.length === 0}
                     className="flex h-[40px] w-[40px] min-w-[40px] items-center justify-center rounded-full bg-tertiary"
                   >
@@ -215,7 +282,7 @@ export default function InviteTalentsModal({
               </div>
             )}
             {numberOfEmails > 3 && (
-              <div className="flex items-center gap-4">
+              <div className="flex min-w-[400px] items-center gap-4">
                 <input
                   type="email"
                   placeholder="Email address"
@@ -224,10 +291,19 @@ export default function InviteTalentsModal({
                   onChange={(e) => {
                     setEmailFour(e.target.value);
                   }}
+                  onFocus={() => {
+                    setError(false);
+                  }}
+                  onBlur={() => {
+                    checkIfNotAllowed(emailFour);
+                  }}
                 />
                 {numberOfEmails === 4 ? (
                   <button
-                    onClick={() => setNumberOfEmails(numberOfEmails + 1)}
+                    onClick={() => {
+                      if (error) return;
+                      setNumberOfEmails(numberOfEmails + 1);
+                    }}
                     disabled={emailFour.length === 0}
                     className="flex h-[40px] w-[40px] min-w-[40px] items-center justify-center rounded-full bg-tertiary"
                   >
@@ -265,7 +341,7 @@ export default function InviteTalentsModal({
               </div>
             )}
             {numberOfEmails > 4 && (
-              <div className="flex w-max items-center gap-4">
+              <div className="flex w-max min-w-[400px] items-center gap-4">
                 <input
                   type="email"
                   placeholder="Email address"
@@ -274,10 +350,19 @@ export default function InviteTalentsModal({
                   onChange={(e) => {
                     setEmailFive(e.target.value);
                   }}
+                  onFocus={() => {
+                    setError(false);
+                  }}
+                  onBlur={() => {
+                    checkIfNotAllowed(emailFive);
+                  }}
                 />
                 {numberOfEmails === 5 ? (
                   <button
-                    onClick={() => setNumberOfEmails(numberOfEmails + 1)}
+                    onClick={() => {
+                      if (error) return;
+                      setNumberOfEmails(numberOfEmails + 1);
+                    }}
                     disabled={emailFive.length === 0}
                     className="flex h-[40px] w-[40px] min-w-[40px] items-center justify-center rounded-full bg-tertiary"
                   >
@@ -318,7 +403,7 @@ export default function InviteTalentsModal({
         </div>
         <div className="mt-8">
           <button
-            disabled={emailOne.length === 0 || isLoading}
+            disabled={emailOne.length === 0 || isLoading || error}
             onClick={(e) => {
               e.preventDefault();
               toast.promise(
@@ -326,7 +411,7 @@ export default function InviteTalentsModal({
                 {
                   pending: "Sending emails ...",
                   success: "Emails sent successfully!",
-                  error: "Error sending emails",
+                  error: "Error. We couldn't send the emails.",
                 },
                 {
                   theme: "dark",

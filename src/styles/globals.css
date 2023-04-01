@@ -299,8 +299,8 @@ span {
     border-right: 2px solid currentColor;
     border-left: 2px solid currentColor;
     border-radius: 50%;
-    -webkit-animation: rotate-clockwise 2s linear infinite;
-    animation: rotate-clockwise 2s linear infinite;
+    -webkit-animation: rotate-clockwise 1s linear infinite;
+    animation: rotate-clockwise 1s linear infinite;
 }
 
 .container-spinner span::after {
@@ -316,8 +316,8 @@ span {
     border-right: 2px solid currentColor;
     border-left: 2px solid currentColor;
     border-radius: 50%;
-    -webkit-animation: rotate-counterclockwise 1s linear infinite;
-    animation: rotate-counterclockwise 1s linear infinite;
+    -webkit-animation: rotate-counterclockwise 0.5s linear infinite;
+    animation: rotate-counterclockwise 0.5s linear infinite;
 }
 
 @-webkit-keyframes rotate-clockwise {

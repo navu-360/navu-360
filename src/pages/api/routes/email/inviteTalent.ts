@@ -72,7 +72,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
                 // @ts-ignore
                 await sgMail.send(msg);
-                console.log(`email sent to ${talentEmail}`);
                 createInviteRecord(talentEmail);
 
             }

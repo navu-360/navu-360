@@ -45,7 +45,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <Header title={`${data?.organization?.name} dashboard - Navu360`} />
+      <Header title={`${data?.organization?.name ?? ""} dashboard - Navu360`} />
       <DashboardWrapper>
         <div className="relative mt-[4rem] ml-[250px] text-tertiary">
           <h1 className="w-full text-2xl font-bold">

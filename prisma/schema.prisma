@@ -58,43 +58,44 @@ model User {
 
 // Define the Organization entity
 model Organization {
-  id              String              @id @default(uuid())
-  name            String
-  noOfEmployees   String
-  industry        String
-  user            User                @relation(fields: [userId], references: [id])
-  userId          String              @unique
-  onboardingProgs OnboardingProgram[]
+  id                       String                     @id @default(uuid())
+  name                     String
+  noOfEmployees            String
+  industry                 String
+  user                     User                       @relation(fields: [userId], references: [id])
+  userId                   String                     @unique
+  onboardingProgs          OnboardingProgram[]
   onboardingProgramTalents OnboardingProgramTalents[]
-  createdAt       DateTime            @default(now())
-  updatedAt       DateTime            @updatedAt
+  createdAt                DateTime                   @default(now())
+  updatedAt                DateTime                   @updatedAt
 }
 
 // Define the OnboardingProgram entity
 model OnboardingProgram {
-  id             String       @id @default(uuid())
-  name           String
-  content        String
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId String
-  users          User[]
-  invites        invites[]
+  id                       String                     @id @default(uuid())
+  name                     String
+  content                  String
+  organization             Organization               @relation(fields: [organizationId], references: [id])
+  organizationId           String
+  users                    User[]
+  invites                  invites[]
   onboardingProgramTalents OnboardingProgramTalents[]
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  createdAt                DateTime                   @default(now())
+  updatedAt                DateTime                   @updatedAt
 }
 
 model OnboardingProgramTalents {
-  id             String       @id @default(uuid())
-  name           String
-  role          String
-  hasBeenOnboarded Boolean?            @default(false)
-  programId     String
+  id                String            @id @default(uuid())
+  name              String
+  role              String
+  email             String            @unique
+  hasBeenOnboarded  Boolean?          @default(false)
+  programId         String
   OnboardingProgram OnboardingProgram @relation(fields: [programId], references: [id])
-  organizationId String
-  Organization Organization @relation(fields: [organizationId], references: [id])
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  organizationId    String
+  Organization      Organization      @relation(fields: [organizationId], references: [id])
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
 }
 
 model waitlist {
@@ -113,10 +114,10 @@ model template {
 }
 
 model invites {
-  id        String   @id @default(cuid())
-  email     String   @unique
+  id                  String            @id @default(cuid())
+  email               String            @unique
   onboardingProgramId String
-  OnboardingProgram OnboardingProgram @relation(fields: [onboardingProgramId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  OnboardingProgram   OnboardingProgram @relation(fields: [onboardingProgramId], references: [id])
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
 }

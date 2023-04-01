@@ -16,6 +16,7 @@ import {
   useGetSentInvitesQuery,
 } from "services/baseApiSlice";
 import type { OnboardingProgramTalents, invites } from "@prisma/client";
+import { SmallSpinner } from "components/common/spinner";
 
 export default function Program({ data }: { data: OnboardingProgram }) {
   const [content, setContent] = useState<OutputData | null>(null);
@@ -30,9 +31,14 @@ export default function Program({ data }: { data: OnboardingProgram }) {
   const [showModal, setShowModal] = useState(false);
 
   const programId = data?.id;
-  const { data: invites } = useGetSentInvitesQuery(programId);
+  const {
+    data: invites,
+    isFetching: fetchingInvited,
+    refetch,
+  } = useGetSentInvitesQuery(programId);
 
-  const { data: enrolledTalents } = useGetProgramTalentsQuery(programId);
+  const { data: enrolledTalents, isFetching: fetchingEnrolled } =
+    useGetProgramTalentsQuery(programId);
 
   return (
     <>
@@ -61,9 +67,14 @@ export default function Program({ data }: { data: OnboardingProgram }) {
               )}
 
               {/* // enrolled talents */}
-              <div className="mt-16 flex flex-col gap-4 rounded border-[1px] border-gray-400 p-4">
+              <div className="mt-16 flex flex-col gap-4 rounded border-[1px] border-gray-400 p-4 text-tertiary">
                 {enrolledTalents?.data?.length === 0 && (
                   <p className="text-center">No talents enrolled</p>
+                )}
+                {fetchingEnrolled && (
+                  <div className="flex w-full items-center justify-center">
+                    <SmallSpinner />
+                  </div>
                 )}
                 {enrolledTalents?.data?.map(
                   (talent: OnboardingProgramTalents) => (
@@ -85,9 +96,14 @@ export default function Program({ data }: { data: OnboardingProgram }) {
               </div>
 
               {/* // invited emails */}
-              <div className="mt-4 flex flex-col rounded border-[1px] border-gray-400 p-4">
+              <div className="mt-4 flex flex-col rounded border-[1px] border-gray-400 p-4 text-tertiary">
                 {invites?.data?.length === 0 && (
                   <p className="text-center">No invites sent</p>
+                )}
+                {fetchingInvited && (
+                  <div className="flex w-full items-center justify-center">
+                    <SmallSpinner />
+                  </div>
                 )}
                 {invites?.data?.map((invite: invites) => (
                   <div
@@ -111,7 +127,16 @@ export default function Program({ data }: { data: OnboardingProgram }) {
         {showModal && (
           <InviteTalentsModal
             program={data}
-            closeModal={() => setShowModal(false)}
+            closeModal={(val) => {
+              if (val) {
+                refetch();
+              }
+              setShowModal(false);
+            }}
+            invitedEmails={invites?.data.map((invite: invites) => invite.email)}
+            enrolledTalents={enrolledTalents?.data.map(
+              (talent: OnboardingProgramTalents) => talent.email
+            )}
           />
         )}
       </DashboardWrapper>
