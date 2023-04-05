@@ -81,6 +81,9 @@ export const baseApiSlice = createApi({
     getOneOrganization: builder.query({
       query: (userId) => `organization/${userId}`,
     }),
+    getOrganizationById: builder.query({
+      query: (id) => `organization/id/${id}`,
+    }),
 
     // Programs
     // create program
@@ -158,4 +161,5 @@ export const {
   useInviteTalentMutation,
   useGetSentInvitesQuery,
   useGetProgramTalentsQuery,
+  useGetOrganizationByIdQuery,
 } = baseApiSlice;

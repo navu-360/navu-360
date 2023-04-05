@@ -46,7 +46,7 @@ model User {
   image            String?
   publicId         String?
   position         String?
-  role             String?             @default("admin")
+  role             String?
   hasBeenOnboarded Boolean?            @default(false)
   accounts         Account[]
   sessions         Session[]

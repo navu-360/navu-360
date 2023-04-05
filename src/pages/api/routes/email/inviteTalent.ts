@@ -33,7 +33,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         // email link: staging.navu360.com/onboarding/organizationId/onboardingProgramId
 
-        const link = `${process.env.NODE_ENV === "production" ? "https://navu360.com" : "http://localhost:3000"}/onboarding/${organizationId}/${onboardingProgramId}`
+        const link = `${process.env.NODE_ENV === "production" ? "https://navu360.com" : "http://localhost:3000"}/invite/${onboardingProgramId}`
 
         const createInviteRecord = async (talentEmail: string) => {
             const body = {

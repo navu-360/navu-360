@@ -71,11 +71,7 @@ export default function Program({ data }: { data: OnboardingProgram }) {
                 {enrolledTalents?.data?.length === 0 && (
                   <p className="text-center">No talents enrolled</p>
                 )}
-                {fetchingEnrolled && (
-                  <div className="flex w-full items-center justify-center">
-                    <SmallSpinner />
-                  </div>
-                )}
+
                 {enrolledTalents?.data?.map(
                   (talent: OnboardingProgramTalents) => (
                     <div
@@ -93,6 +89,11 @@ export default function Program({ data }: { data: OnboardingProgram }) {
                     </div>
                   )
                 )}
+                {fetchingEnrolled && (
+                  <div className="mt-3 flex w-full items-center justify-center">
+                    <SmallSpinner />
+                  </div>
+                )}
               </div>
 
               {/* // invited emails */}
@@ -100,15 +101,11 @@ export default function Program({ data }: { data: OnboardingProgram }) {
                 {invites?.data?.length === 0 && (
                   <p className="text-center">No invites sent</p>
                 )}
-                {fetchingInvited && (
-                  <div className="flex w-full items-center justify-center">
-                    <SmallSpinner />
-                  </div>
-                )}
+
                 {invites?.data?.map((invite: invites) => (
                   <div
                     key={invite.id}
-                    className="flex w-full items-center gap-3 rounded-lg bg-tertiary/80 p-4 text-white"
+                    className="mb-3 flex w-full items-center gap-3 rounded-lg bg-tertiary/80 p-4 text-white"
                   >
                     <img
                       src={generateAvatar(invite?.id)}
@@ -120,6 +117,11 @@ export default function Program({ data }: { data: OnboardingProgram }) {
                     </div>
                   </div>
                 ))}
+                {fetchingInvited && (
+                  <div className="mt-3 flex w-full items-center justify-center">
+                    <SmallSpinner />
+                  </div>
+                )}
               </div>
             </div>
           </div>

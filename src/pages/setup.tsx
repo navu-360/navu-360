@@ -88,6 +88,7 @@ export default function Setup() {
   async function createHandler(role: string) {
     const body = {
       position: role,
+      role: "admin",
     };
 
     await updateUser(body)

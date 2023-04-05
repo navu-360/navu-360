@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import { getServerSession } from "next-auth";
 
-import { prisma } from "../../../../auth/db";
+import { prisma } from "../../../../../auth/db";
 import { authOptions } from "auth/auth";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -19,11 +19,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "GET":
       // fetch organization created by user
-      const { userId } = req.query as { userId: string };
+      const { id } = req.query as { id: string };
 
       const organization = await prisma.organization.findFirst({
         where: {
-          userId,
+          id,
+        },
+        include: {
+          user: true,
         },
       });
 
