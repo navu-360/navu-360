@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useDispatch } from "react-redux";
 import { setUserId } from "redux/auth/authSlice";
 
@@ -16,10 +16,12 @@ export default function AdminNav() {
     setIsReady(true);
   }, []);
 
+  const { data: session } = useSession();
+
   if (!isReady) return null;
 
   return (
-    <nav className="fixed top-0 left-0 z-20 h-full w-[200px] bg-dark py-2.5 sm:px-4">
+    <nav className="fixed left-0 top-0 z-20 h-full w-[250px] bg-dark py-2.5 sm:px-4">
       <div className="mx-auto flex h-full flex-col items-center md:mx-0">
         <Link href="/dashboard" className="flex items-center pl-4">
           <img src="/logo.svg" className="mr-3 h-6 sm:h-9" alt="Navu360" />
@@ -68,7 +70,7 @@ export default function AdminNav() {
                 <path d="M4 4v16"></path>
               </svg>
             }
-            text={"Programs"}
+            text={session?.user?.role === "admin" ? "Programs" : "My Programs"}
             isActive={router.pathname === "/programs"}
             to={"/programs"}
           />
@@ -153,7 +155,7 @@ function OneItem({
           dispatch(setUserId(""));
         }
       }}
-      className={`flex items-center gap-2 rounded-md py-2 px-8 pl-2 font-medium transition-all duration-300 ease-in hover:bg-secondary/50 ${
+      className={`flex items-center gap-2 rounded-md px-8 py-2 pl-2 font-medium transition-all duration-300 ease-in hover:bg-secondary/50 ${
         isActive ? "bg-secondary/20" : "bg-transparent"
       }`}
     >

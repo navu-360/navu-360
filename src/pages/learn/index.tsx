@@ -1,33 +1,34 @@
 import type { User } from "@prisma/client";
 import Header from "components/common/head";
 import MyEnrolledPrograms from "components/dashboard/myPrograms";
-import AllTalents from "components/dashboard/talents.table";
 import DashboardWrapper from "components/layout/dashboardWrapper";
+import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setOrgId, setOrganizationData } from "redux/auth/authSlice";
-import { useGetOneOrganizationQuery } from "services/baseApiSlice";
+import { useGetOrganizationByIdQuery } from "services/baseApiSlice";
 
 export default function LearnCenter() {
   const userProfile = useSelector(
     (state: { auth: { userProfile: User } }) => state.auth.userProfile
   );
 
-  // get organization created by this user then set the orgId in state
-  const userId = userProfile?.id;
-  const { data } = useGetOneOrganizationQuery(userId, {
-    skip: !userId,
+  const { data: session } = useSession();
+
+  const id = session?.user?.orgId;
+  const { data: organizationData } = useGetOrganizationByIdQuery(id, {
+    skip: !id,
   });
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (data) {
-      dispatch(setOrgId(data?.organization?.id));
-      dispatch(setOrganizationData(data?.organization));
+    if (organizationData) {
+      dispatch(setOrgId(organizationData?.organization?.id));
+      dispatch(setOrganizationData(organizationData?.organization));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
+  }, [organizationData]);
 
   const [isReady, setIsReady] = useState(false);
 
@@ -39,13 +40,15 @@ export default function LearnCenter() {
 
   return (
     <>
-      <Header title={`${data?.organization?.name ?? ""} dashboard`} />
+      <Header
+        title={`${organizationData?.organization?.name ?? ""} Learn Center`}
+      />
       <DashboardWrapper>
-        <div className="relative ml-[250px] mt-[4rem] text-tertiary">
+        <div className="relative ml-[300px] mt-[4rem] text-tertiary">
           <h1 className="w-full text-2xl font-bold">
             Hi, {userProfile?.name?.split(" ")[0] ?? ""}
           </h1>
-          <div className="mt-16 flex w-[98%] justify-between 2xl:mt-8">
+          <div className="mt-16 flex w-[98%] justify-start gap-6 2xl:mt-8">
             <OneStat
               svg={
                 <svg

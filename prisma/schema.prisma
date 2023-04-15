@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["jsonProtocol"]
 }
 
 datasource db {
@@ -47,6 +48,7 @@ model User {
   publicId         String?
   position         String?
   role             String?
+  orgId            String?
   hasBeenOnboarded Boolean?            @default(false)
   accounts         Account[]
   sessions         Session[]

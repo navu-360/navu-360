@@ -26,6 +26,7 @@ declare module "next-auth" {
       emailVerified: string;
       image: string;
       role: string;
+      orgId: string;
       hasBeenOnboarded: boolean;
       position: string;
     } & DefaultSession["user"];
@@ -38,6 +39,7 @@ declare module "next-auth" {
     emailVerified: string;
     image: string;
     role: string;
+    orgId: string;
     hasBeenOnboarded: boolean;
     position: string;
   }
@@ -62,6 +64,7 @@ export const authOptions: NextAuthOptions = {
         session.user.role = userObj?.role ?? "admin";
         session.user.hasBeenOnboarded = userObj?.hasBeenOnboarded ?? false;
         session.user.position = userObj?.position ?? "";
+        session.user.orgId = userObj?.orgId ?? "";
       }
 
       return session;

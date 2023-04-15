@@ -25,19 +25,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         case "PATCH":
             // editable fields: image
-            const { image: toEdit, publicId, position, role, hasBeenOnboarded } = req.body as {
+            const { image: toEdit, publicId, position, role, hasBeenOnboarded, orgId } = req.body as {
                 image: string;
                 publicId: string;
                 position: string;
                 role: string;
                 hasBeenOnboarded: boolean;
+                orgId: string;
             };
 
-            // validate request
-            if (!position) {
-                res.status(400).json({ message: `Missing required fields.` });
-                return;
-            }
 
             const userToEdit = await prisma.user.update({
                 where: {
@@ -49,6 +45,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     position,
                     role,
                     hasBeenOnboarded,
+                    orgId,
                 },
             });
 

@@ -4,6 +4,7 @@ import Programs from "components/dashboard/programs.table";
 import SelectTemplate from "components/dashboard/selectTemplate";
 import AllTalents from "components/dashboard/talents.table";
 import DashboardWrapper from "components/layout/dashboardWrapper";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setOrgId, setOrganizationData } from "redux/auth/authSlice";
@@ -41,13 +42,22 @@ export default function Dashboard() {
     setIsReady(true);
   }, []);
 
-  if (!isReady) return null;
+  const router = useRouter();
+
+  useEffect(() => {
+    if (userProfile?.role === "talent") {
+      router.push("/learn");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userProfile]);
+
+  if (!isReady || userProfile?.role !== "admin") return null;
 
   return (
     <>
       <Header title={`${data?.organization?.name ?? ""} dashboard - Navu360`} />
       <DashboardWrapper>
-        <div className="relative mt-[4rem] ml-[250px] text-tertiary">
+        <div className="relative ml-[300px] mt-[4rem] text-tertiary">
           <h1 className="w-full text-2xl font-bold">
             Hi, {userProfile?.name?.split(" ")[0] ?? ""}
           </h1>
@@ -134,7 +144,7 @@ export default function Dashboard() {
               num={0}
             />
           </div>
-          <section className="mt-8 mr-4 flex w-full max-w-full gap-2">
+          <section className="mr-4 mt-8 flex w-full max-w-full gap-2">
             <AllTalents
               sendTotalTalents={(num: number) => setCountOfTalents(num)}
             />

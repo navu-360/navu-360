@@ -26,14 +26,18 @@ export default function NavBar() {
       ) {
         router.push("/");
       } else if (router.pathname === "/" && session?.user?.hasBeenOnboarded) {
-        router.push("/dashboard");
+        if (session?.user?.role === "admin") {
+          router.push("/dashboard");
+        } else {
+          router.push("/learn");
+        }
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
   return (
-    <nav className="fixed top-0 left-0 z-20 h-[65px] w-full bg-dark py-2.5 sm:px-4">
+    <nav className="fixed left-0 top-0 z-20 h-[65px] w-full bg-dark py-2.5 sm:px-4">
       <div className="mx-auto flex flex-wrap items-center justify-between md:mx-0">
         <Link href="/" className="flex items-center pl-4">
           <img src="logo.svg" className="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
