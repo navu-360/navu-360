@@ -12,7 +12,6 @@ export default function InviteTalentsModal({
   enrolledTalents,
 }: {
   closeModal: (val?: boolean) => void;
-  program: OnboardingProgram;
   invitedEmails: string[];
   enrolledTalents: string[];
 }) {
