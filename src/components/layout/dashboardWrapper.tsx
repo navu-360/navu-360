@@ -19,7 +19,7 @@ export default function DashboardWrapper({
         hideNav ? "pt-0" : "pt-[65px]"
       }`}
     >
-      {!hideNav && <AdminNav showInviteTalent={() => console.log("")} />}
+      {!hideNav && <AdminNav showInviteTalent={() => setShowModal(true)} />}
       <TopNavAdmin hideSearch={hideSearch} />
       {children}
 
