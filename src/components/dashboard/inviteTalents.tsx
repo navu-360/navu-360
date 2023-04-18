@@ -32,12 +32,16 @@ export default function InviteTalentsModal({
 
   const [error, setError] = useState(false);
 
+  const orgId = useSelector(
+    (state: { auth: { orgId: string } }) => state.auth.orgId
+  );
+
   const invietHandler = async () => {
     try {
       const body = {
         adminName: userProfile?.name,
         talentEmails: [emailOne, emailTwo, emailThree, emailFour, emailFive],
-        organizationId: program?.organizationId,
+        organizationId: orgId,
       };
 
       await inviteTalents(body)
