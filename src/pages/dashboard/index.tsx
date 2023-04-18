@@ -23,7 +23,12 @@ export default function Dashboard() {
 
   const dispatch = useDispatch();
 
+  const orgId = useSelector(
+    (state: { auth: { orgId: string } }) => state.auth.orgId
+  );
+
   useEffect(() => {
+    console.log(data, orgId)
     if (data) {
       dispatch(setOrgId(data?.organization?.id));
       dispatch(setOrganizationData(data?.organization));
@@ -50,8 +55,6 @@ export default function Dashboard() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userProfile]);
-
-  console.log(userProfile);
 
   if (!isReady) return null;
 

@@ -80,7 +80,6 @@ model OnboardingProgram {
   organization             Organization               @relation(fields: [organizationId], references: [id])
   organizationId           String
   users                    User[]
-  invites                  invites[]
   onboardingProgramTalents OnboardingProgramTalents[]
   createdAt                DateTime                   @default(now())
   updatedAt                DateTime                   @updatedAt
@@ -118,8 +117,7 @@ model template {
 model invites {
   id                  String            @id @default(cuid())
   email               String            @unique
-  onboardingProgramId String
-  OnboardingProgram   OnboardingProgram @relation(fields: [onboardingProgramId], references: [id])
+  orgId String?
   createdAt           DateTime          @default(now())
   updatedAt           DateTime          @updatedAt
 }

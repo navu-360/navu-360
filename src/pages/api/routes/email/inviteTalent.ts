@@ -12,7 +12,7 @@ sgMail.setApiKey(env.SENDGRID_API_KEY);
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
-        const { adminName, onboardingProgramName, talentEmails, organizationId, onboardingProgramId } = req.body;
+        const { adminName, talentEmails, organizationId } = req.body;
 
         // get organization name from organizationId
         const organization = await prisma.organization.findUnique({
@@ -24,7 +24,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const organizationName = organization?.name;
 
         // validate the data coming in
-        if (!adminName || !onboardingProgramName || !organizationName || !talentEmails) {
+        if (!adminName || !organizationName || !talentEmails) {
             return res.status(400).json({ error: "Missing required fields" });
         }
 
@@ -33,12 +33,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         // email link: staging.navu360.com/onboarding/organizationId/onboardingProgramId
 
-        const link = `${process.env.NODE_ENV === "production" ? "https://navu360.com" : "http://localhost:3000"}/invite/${onboardingProgramId}`
+        const link = `${process.env.NODE_ENV === "production" ? "https://navu360.com" : "http://localhost:3000"}/invite/${organizationId}`
 
         const createInviteRecord = async (talentEmail: string) => {
             const body = {
                 email: talentEmail,
-                onboardingProgramId: onboardingProgramId,
+                orgId: organizationId
             }
 
             const invite = await prisma.invites.create({
@@ -59,12 +59,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                         name: `Navu360`,
                     },
                     replyTo: env.REPLY_TO,
-                    subject: `You've been invited to join to onboarding program: ${onboardingProgramName}`,
+                    subject: `You've been invited to join ${organizationName}`,
                     // email template path src/utils/emails/inviteTalent.html
                     // dynamic data: adminName, onboardingProgram, organizationName, link,firstName
                     html: stringTemplate
                         .replace(/{{adminName}}/g, adminName)
-                        .replace(/{{onboardingProgram}}/g, onboardingProgramName)
                         .replace(/{{organizationName}}/g, organizationName)
                         .replace(/{{link}}/g, link).replace(/{{todayYear}}/g, new Date().getFullYear().toString()),
 
@@ -72,13 +71,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
                 // @ts-ignore
                 await sgMail.send(msg);
-                createInviteRecord(talentEmail);
+                await createInviteRecord(talentEmail);
 
             }
 
         });
 
-        return res.json({ message: `Talents have been invited to onboarding program: ${onboardingProgramName}` });
+        return res.json({ message: `Talents have been invited to ${organizationName}` });
 
     } catch (error) {
         // @ts-ignore

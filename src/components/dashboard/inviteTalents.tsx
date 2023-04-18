@@ -9,11 +9,9 @@ import toaster from "utils/toaster";
 export default function InviteTalentsModal({
   closeModal,
   invitedEmails,
-  enrolledTalents,
 }: {
   closeModal: (val?: boolean) => void;
   invitedEmails: string[];
-  enrolledTalents: string[];
 }) {
   const [emailOne, setEmailOne] = useState<string>("");
   const [emailTwo, setEmailTwo] = useState<string>("");
@@ -45,31 +43,27 @@ export default function InviteTalentsModal({
 
       await inviteTalents(body)
         .unwrap()
-        .then(() => {
+        .then((payload) => {
+          toaster({message: payload?.message})
           closeModal(true);
+          
         })
         .catch((error) => {
           console.log(error);
+          toaster({message: error?.message, status: "error"});
         });
     } catch (error) {
       console.log(error);
+      // @ts-ignore
+      toaster({message: error?.message, status: "error"});
     }
   };
 
   const checkIfNotAllowed = (email: string) => {
     // check if already invited
-    if (invitedEmails.includes(email)) {
+    if (invitedEmails?.includes(email)) {
       toaster({
         message: `${email} has already been invited`,
-        status: "error",
-      });
-      setError(true);
-      return;
-    }
-    // check if already enrolled
-    if (enrolledTalents.includes(email)) {
-      toaster({
-        message: `${email} has already been enrolled`,
         status: "error",
       });
       setError(true);
@@ -90,7 +84,7 @@ export default function InviteTalentsModal({
       onClick={(e) => (e.target === e.currentTarget ? closeModal() : null)}
       className={`fixed inset-0 z-[120] flex h-full w-full items-center justify-center  bg-black/50 backdrop-blur-sm`}
     >
-      <div className="flex h-max w-max flex-col items-center justify-center rounded-lg bg-white p-8 md:max-h-[600px] md:max-w-[1000px]">
+      <div className="flex h-max w-max flex-col items-center justify-center rounded-lg bg-white p-8 md:max-h-[600px] md:max-w-[700px]">
         <h1 className="text-lg font-bold text-tertiary">
           Invite Talents to this organization
         </h1>
@@ -406,17 +400,7 @@ export default function InviteTalentsModal({
             disabled={emailOne.length === 0 || isLoading || error}
             onClick={(e) => {
               e.preventDefault();
-              toast.promise(
-                invietHandler(),
-                {
-                  pending: "Sending emails ...",
-                  success: "Emails sent successfully!",
-                  error: "Error. We couldn't send the emails.",
-                },
-                {
-                  theme: "dark",
-                }
-              );
+              invietHandler();
             }}
             className="flex h-max min-h-[45px] w-max min-w-[300px] items-center justify-center gap-3 rounded-xl bg-secondary px-6 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 disabled:opacity-50 md:mr-0"
           >

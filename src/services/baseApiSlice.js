@@ -133,7 +133,7 @@ export const baseApiSlice = createApi({
     }),
     // get sent invites for a program
     getSentInvites: builder.query({
-      query: () => `invite`,
+      query: (id) => `invite?orgId=${id}`,
     }),
     // get all talents for a program
     getProgramTalents: builder.query({

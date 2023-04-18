@@ -132,7 +132,7 @@ export default function AdminNav({
               text={"Invite talent"}
               isActive={false}
               to={"#"}
-              action={() => console.log("Hello")}
+              action={() => showInviteTalent()}
             />
           )}
         </div>

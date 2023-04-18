@@ -15,12 +15,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         return;
     }
 
+    const orgId = req.query.orgId as string;
+
+    if(!orgId && orgId === "undefined") return res.status(400).json({ error: "Missing required fields" });
 
     const invites = await prisma.invites.findMany({
         orderBy: {
             createdAt: "desc",
+        },
+        where: {
+            orgId: orgId,
         }
     });
+
     return res.status(200).json({ message: `Invites found.`, data: invites });
 
 }

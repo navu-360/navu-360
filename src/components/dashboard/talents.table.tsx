@@ -26,18 +26,19 @@ export default function AllTalents({
     skip: !orgId,
   });
 
+  const id = orgId;
+  
+  const {data:sentInvites, isFetching:fetchingInvited} = useGetSentInvitesQuery(id, {
+    skip: !id
+  })
+
   useEffect(() => {
     sendTotalTalents(data?.data?.length || 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.data?.length]);
 
-  const {
-    data: invites,
-    isFetching: fetchingInvited,
-    refetch,
-  } = useGetSentInvitesQuery(undefined);
 
-  if (isFetching || !orgId)
+  if (isFetching || fetchingInvited || !orgId)
     return (
       <section className="w-[75%]">
         <section className="bg-blueGray-50 relative py-16">
@@ -50,7 +51,7 @@ export default function AllTalents({
                 <div className="flex flex-wrap items-center">
                   <div className="relative w-full max-w-full flex-1 flex-grow px-4 ">
                     <h3 className="text-lg font-semibold text-white">
-                      Enrolled talents
+                      Talents
                     </h3>
                   </div>
                 </div>
@@ -70,6 +71,9 @@ export default function AllTalents({
                       </th>
                       <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                         Completion{" "}
+                      </th>
+                      <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                        Type
                       </th>
                       <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                         Actions
@@ -132,23 +136,16 @@ export default function AllTalents({
                       Completion{" "}
                     </th>
                     <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                        Type
+                      </th>
+                    <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                       Actions
                     </th>
                   </tr>
                 </thead>
 
                 <tbody>
-                  {isFetching && (
-                    <tr>
-                      <td
-                        align="center"
-                        colSpan={5}
-                        className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs"
-                      >
-                        <Spinner smaller />
-                      </td>
-                    </tr>
-                  )}
+                  {/* enrolled */}
                   {data?.data?.length === 0 && !isFetching && (
                     <tr>
                       <td
@@ -160,7 +157,7 @@ export default function AllTalents({
                       </td>
                     </tr>
                   )}
-                  {!isFetching &&
+                  {
                     data?.data?.length > 0 &&
                     data?.data?.map((talent: OnboardingProgramTalents) => (
                       <tr key={talent?.id}>
@@ -189,6 +186,70 @@ export default function AllTalents({
                               </div>
                             </div>
                           </div>
+                        </td>
+                        <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-medium">
+                          Enrolled
+                        </td>
+                        <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-right align-middle text-xs">
+                          <div
+                            className="min-w-48 z-50 list-none rounded py-2 text-left text-base shadow-lg"
+                            id="table-dark-1-dropdown"
+                          >
+                            <Link
+                              href={`/talents/${talent?.id}`}
+                              className="text-blueGray-700 mb-2 block w-max whitespace-nowrap rounded-xl bg-white px-8 py-2 text-sm font-semibold text-secondary"
+                            >
+                              View
+                            </Link>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+
+                    {/* invited */}
+                    {sentInvites?.data?.length === 0 && (
+                    <tr className="hidden">
+                      <td
+                        align="center"
+                        colSpan={5}
+                        className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-lg font-bold"
+                      >
+                        No talents have been invited yet
+                      </td>
+                    </tr>
+                  )}
+                  {
+                    sentInvites?.data?.length > 0 &&
+                    sentInvites?.data?.map((talent: OnboardingProgramTalents) => (
+                      <tr className="hidden" key={talent?.id}>
+                        <th className="flex items-center whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left align-middle text-xs">
+                          <img
+                            src={generateAvatar(talent?.id)}
+                            className="h-12 w-12 rounded-full border bg-white"
+                            alt="..."
+                          />
+                          <span className="ml-3 font-bold text-white">
+                            N/A
+                          </span>
+                        </th>
+                        <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-medium">
+                          N/A
+                        </td>
+                        <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-medium">
+                          {processDate(talent?.createdAt)}
+                        </td>
+                        <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs">
+                          <div className="flex items-center">
+                            <span className="mr-2 font-semibold">60%</span>
+                            <div className="relative w-full">
+                              <div className="flex h-2 overflow-hidden rounded bg-red-200 text-xs">
+                                <div className="flex w-[60%] flex-col justify-center whitespace-nowrap bg-red-500 text-center text-white shadow-none"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-medium">
+                          Invited
                         </td>
                         <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-right align-middle text-xs">
                           <div
