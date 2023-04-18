@@ -8,7 +8,7 @@ import { generateAvatar } from "utils/avatar";
 
 export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
   return (
-    <header className="fixed top-0 left-[250px] z-20 flex h-[75px] w-full bg-white py-2">
+    <header className="fixed left-[250px] top-0 z-20 flex h-[75px] w-full bg-white py-2">
       {!hideSearch && (
         <form className="relative ml-4 h-full w-[50%] rounded-md bg-blue-700/10 px-4 py-2 pr-16 2xl:w-[70%]">
           <input
@@ -70,7 +70,7 @@ function AdminCard() {
   if (!isReady) return null;
 
   return (
-    <div className="fixed top-1 right-4 flex items-center gap-2 transition-all duration-300 ease-in">
+    <div className="fixed right-4 top-1 flex items-center gap-2 transition-all duration-300 ease-in">
       <div className="relative flex h-[70px] w-[70px] items-center justify-center rounded-full bg-tertiary">
         {userProfile?.id ? (
           <img
@@ -85,7 +85,7 @@ function AdminCard() {
 
       {userProfile?.name ? (
         <div className="flex flex-col gap-0">
-          <h2 className="text-xl font-bold text-tertiary">
+          <h2 className="text-xl font-bold capitalize text-tertiary">
             {userProfile?.name}
           </h2>
           <p className="text-md font-medium text-gray-500">

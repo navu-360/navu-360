@@ -8,7 +8,6 @@ import toaster from "utils/toaster";
 
 export default function InviteTalentsModal({
   closeModal,
-  program,
   invitedEmails,
   enrolledTalents,
 }: {
@@ -37,10 +36,8 @@ export default function InviteTalentsModal({
     try {
       const body = {
         adminName: userProfile?.name,
-        onboardingProgramName: program?.name,
         talentEmails: [emailOne, emailTwo, emailThree, emailFour, emailFive],
         organizationId: program?.organizationId,
-        onboardingProgramId: program?.id,
       };
 
       await inviteTalents(body)
@@ -92,13 +89,13 @@ export default function InviteTalentsModal({
     >
       <div className="flex h-max w-max flex-col items-center justify-center rounded-lg bg-white p-8 md:max-h-[600px] md:max-w-[1000px]">
         <h1 className="text-lg font-bold text-tertiary">
-          Invite Talents to this Program
+          Invite Talents to this organization
         </h1>
 
         <p>
           <span className="text-base font-medium text-gray-600">
-            Enter the email addresses of the talents you want to invite to this
-            program.
+            Enter the email addresses of the talents you want to invite. They
+            will receive an email with a link to join the organization.
           </span>
         </p>
 

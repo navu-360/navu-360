@@ -51,6 +51,8 @@ export default function Dashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userProfile]);
 
+  console.log(userProfile);
+
   if (!isReady || userProfile?.role !== "admin") return null;
 
   return (
@@ -63,7 +65,7 @@ export default function Dashboard() {
           </h1>
           <button
             onClick={() => setShowSelectTemplate(true)}
-            className="absolute right-8 top-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 md:mr-0"
+            className="absolute right-8 top-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-[#fa3264] focus:outline-none focus:ring-4 md:mr-0"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

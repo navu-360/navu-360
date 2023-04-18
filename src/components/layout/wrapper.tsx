@@ -1,5 +1,5 @@
 import React from "react";
-import NavBar from "./navbar";
+import NavBar from "./landing.navbar";
 
 export default function LandingWrapper({
   children,

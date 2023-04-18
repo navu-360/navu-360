@@ -8,6 +8,11 @@ import { useGetAllTalentsQuery } from "services/baseApiSlice";
 import { generateAvatar } from "utils/avatar";
 import { processDate } from "utils/date";
 
+import {
+  useGetProgramTalentsQuery,
+  useGetSentInvitesQuery,
+} from "services/baseApiSlice";
+
 export default function AllTalents({
   sendTotalTalents,
 }: {
@@ -26,6 +31,12 @@ export default function AllTalents({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.data?.length]);
 
+  const {
+    data: invites,
+    isFetching: fetchingInvited,
+    refetch,
+  } = useGetSentInvitesQuery(undefined);
+
   if (isFetching || !orgId)
     return (
       <section className="w-[75%]">
@@ -39,7 +50,7 @@ export default function AllTalents({
                 <div className="flex flex-wrap items-center">
                   <div className="relative w-full max-w-full flex-1 flex-grow px-4 ">
                     <h3 className="text-lg font-semibold text-white">
-                      Recently invited talents
+                      Enrolled talents
                     </h3>
                   </div>
                 </div>
@@ -72,7 +83,7 @@ export default function AllTalents({
                         <td
                           align="center"
                           colSpan={5}
-                          className="whitespace-nowrap border-t-0 border-l-0 border-r-0 p-4 px-6 align-middle text-xs"
+                          className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs"
                         >
                           <Spinner smaller />
                         </td>
@@ -99,7 +110,7 @@ export default function AllTalents({
               <div className="flex flex-wrap items-center">
                 <div className="relative w-full max-w-full flex-1 flex-grow px-4 ">
                   <h3 className="text-lg font-semibold text-white">
-                    Recently invited talents
+                    Enrolled talents
                   </h3>
                 </div>
               </div>
@@ -132,7 +143,7 @@ export default function AllTalents({
                       <td
                         align="center"
                         colSpan={5}
-                        className="whitespace-nowrap border-t-0 border-l-0 border-r-0 p-4 px-6 align-middle text-xs"
+                        className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs"
                       >
                         <Spinner smaller />
                       </td>
@@ -143,9 +154,9 @@ export default function AllTalents({
                       <td
                         align="center"
                         colSpan={5}
-                        className="whitespace-nowrap border-t-0 border-l-0 border-r-0 p-4 px-6 align-middle text-lg font-bold"
+                        className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-lg font-bold"
                       >
-                        No talents have been invited yet
+                        No talents have been enrolled yet
                       </td>
                     </tr>
                   )}
@@ -153,7 +164,7 @@ export default function AllTalents({
                     data?.data?.length > 0 &&
                     data?.data?.map((talent: OnboardingProgramTalents) => (
                       <tr key={talent?.id}>
-                        <th className="flex items-center whitespace-nowrap border-t-0 border-l-0 border-r-0 p-4 px-6 text-left align-middle text-xs">
+                        <th className="flex items-center whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left align-middle text-xs">
                           <img
                             src={generateAvatar(talent?.id)}
                             className="h-12 w-12 rounded-full border bg-white"
@@ -163,13 +174,13 @@ export default function AllTalents({
                             {talent?.name}
                           </span>
                         </th>
-                        <td className="whitespace-nowrap border-t-0 border-l-0 border-r-0 p-4 px-6 align-middle text-xs font-medium">
+                        <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-medium">
                           {talent?.role}
                         </td>
-                        <td className="whitespace-nowrap border-t-0 border-l-0 border-r-0 p-4 px-6 align-middle text-xs font-medium">
+                        <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-medium">
                           {processDate(talent?.createdAt)}
                         </td>
-                        <td className="whitespace-nowrap border-t-0 border-l-0 border-r-0 p-4 px-6 align-middle text-xs">
+                        <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs">
                           <div className="flex items-center">
                             <span className="mr-2 font-semibold">60%</span>
                             <div className="relative w-full">
@@ -179,14 +190,14 @@ export default function AllTalents({
                             </div>
                           </div>
                         </td>
-                        <td className="whitespace-nowrap border-t-0 border-l-0 border-r-0 p-4 px-6 text-right align-middle text-xs">
+                        <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-right align-middle text-xs">
                           <div
                             className="min-w-48 z-50 list-none rounded py-2 text-left text-base shadow-lg"
                             id="table-dark-1-dropdown"
                           >
                             <Link
                               href={`/talents/${talent?.id}`}
-                              className="text-blueGray-700 mb-2 block w-max whitespace-nowrap rounded-xl bg-white py-2 px-8 text-sm font-semibold text-secondary"
+                              className="text-blueGray-700 mb-2 block w-max whitespace-nowrap rounded-xl bg-white px-8 py-2 text-sm font-semibold text-secondary"
                             >
                               View
                             </Link>

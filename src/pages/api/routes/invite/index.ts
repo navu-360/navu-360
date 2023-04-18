@@ -15,14 +15,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         return;
     }
 
-    const { programId } = req.query as {
-        programId: string;
-    };
 
     const invites = await prisma.invites.findMany({
-        where: {
-            onboardingProgramId: programId,
-        },
+        orderBy: {
+            createdAt: "desc",
+        }
     });
     return res.status(200).json({ message: `Invites found.`, data: invites });
 

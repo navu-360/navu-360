@@ -93,7 +93,7 @@ export default function Programs({
                   </h3>
                   <button
                     onClick={() => showSelectTemplate()}
-                    className="flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 md:mr-0"
+                    className="flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-[#fc7e9e] focus:outline-none focus:ring-4 md:mr-0"
                   >
                     Create Program
                   </button>
@@ -117,7 +117,7 @@ export default function Programs({
               {!isFetching && data?.data?.length > 0 && (
                 <Link
                   href={`/programs`}
-                  className="mt-6 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl border border-secondary bg-tertiary px-8 py-2 text-center text-lg font-semibold text-secondary focus:outline-none focus:ring-4 md:mr-0"
+                  className="mt-6 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl border border-secondary bg-tertiary px-8 py-2 text-center text-lg font-semibold text-secondary transition-all duration-300 ease-in hover:bg-secondary hover:text-white focus:outline-none focus:ring-4 md:mr-0"
                 >
                   View All Programs
                 </Link>
@@ -141,13 +141,13 @@ function TemplateCard({
   return (
     <Link
       href={`/programs/${template.id}`}
-      className={`relative flex w-full cursor-pointer items-center justify-between rounded-md bg-[#28293E] p-4 text-white`}
+      className={`group relative flex w-full cursor-pointer items-center justify-between rounded-md bg-[#28293E] p-4 text-white`}
     >
       <div className="flex flex-col break-all">
         <h3 className="text-lg font-bold">{template.name}</h3>
         <p className="mt-1 text-sm font-medium ">2 talents enrolled</p>
       </div>
-      <div className="absolute bottom-2 right-2 flex h-[30px] w-[30px] items-center justify-center rounded-full bg-secondary">
+      <div className="absolute bottom-2 right-2 flex h-[30px] w-[30px] items-center justify-center rounded-full bg-secondary transition-all duration-300 ease-in group-hover:right-1">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"

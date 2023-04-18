@@ -1,6 +1,7 @@
-import React from "react";
-import AdminNav from "./adminNav";
-import TopNavAdmin from "./topNav";
+import React, { useState } from "react";
+import AdminNav from "./dashboard.sidebar";
+import TopNavAdmin from "./dashboard.topNav";
+import InviteTalentsModal from "components/dashboard/inviteTalents";
 
 export default function DashboardWrapper({
   children,
@@ -11,6 +12,7 @@ export default function DashboardWrapper({
   hideNav?: boolean;
   hideSearch?: boolean;
 }) {
+  const [showModal, setShowModal] = useState(false);
   return (
     <main
       className={`flex h-max min-h-screen w-full flex-col gap-0 ${
@@ -20,6 +22,16 @@ export default function DashboardWrapper({
       {!hideNav && <AdminNav />}
       <TopNavAdmin hideSearch={hideSearch} />
       {children}
+
+      {showModal && (
+        <InviteTalentsModal
+          closeModal={() => {
+            setShowModal(false);
+          }}
+          invitedEmails={[]}
+          enrolledTalents={[]}
+        />
+      )}
     </main>
   );
 }

@@ -129,7 +129,7 @@ export default function CreateProgram() {
                 setSave(true);
               }}
             >
-              {isLoading || loading ? "Saving..." : "Create Program"}
+              {isLoading || loading ? "Saving..." : "Save Program"}
             </button>
           </div>
           {chosenTemplate && (
