@@ -53,7 +53,7 @@ export default function Dashboard() {
 
   console.log(userProfile);
 
-  if (!isReady || userProfile?.role !== "admin") return null;
+  if (!isReady) return null;
 
   return (
     <>
