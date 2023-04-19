@@ -4,7 +4,7 @@ import TopNavAdmin from "./dashboard.topNav";
 import InviteTalentsModal from "components/dashboard/inviteTalents";
 import { useGetSentInvitesQuery } from "services/baseApiSlice";
 import { useSelector } from "react-redux";
-import { invites } from "@prisma/client";
+import type { invites } from "@prisma/client";
 
 export default function DashboardWrapper({
   children,
@@ -22,11 +22,11 @@ export default function DashboardWrapper({
   );
 
   const id = orgId;
-  
-  const {data:sentInvites, refetch} = useGetSentInvitesQuery(id, {
-    skip: !id
-  })
-  
+
+  const { data: sentInvites, refetch } = useGetSentInvitesQuery(id, {
+    skip: !id,
+  });
+
   return (
     <main
       className={`flex h-max min-h-screen w-full flex-col gap-0 ${
@@ -43,7 +43,11 @@ export default function DashboardWrapper({
             setShowModal(false);
             refetch();
           }}
-          invitedEmails={sentInvites?.data ?  sentInvites?.data?.map((inv:invites) => inv?.email) : []}
+          invitedEmails={
+            sentInvites?.data
+              ? sentInvites?.data?.map((inv: invites) => inv?.email)
+              : []
+          }
         />
       )}
     </main>

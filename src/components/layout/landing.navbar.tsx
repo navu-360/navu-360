@@ -45,11 +45,11 @@ export default function NavBar() {
         <div className="flex items-center pr-4 md:order-2">
           <button
             onClick={() => {
-              signOut({
-                callbackUrl: "/",
-                redirect: false,
-              });
-              dispatch(setUserId(""));
+              signIn("google", { callbackUrl: "/", redirect: false }).catch(
+                (err) => {
+                  console.log(err);
+                }
+              );
             }}
             className="mr-8 hidden h-max w-max rounded-xl border-[1px] border-secondary px-8 py-1 text-base font-medium tracking-tight text-secondary md:block"
           >
