@@ -236,7 +236,7 @@ export default function AllTalents({
                             >
                               <Link
                                 href={`/talents/${talent?.id}`}
-                                className="text-blueGray-700 mb-2 block w-max whitespace-nowrap rounded-xl bg-white px-8 py-2 text-sm font-semibold text-secondary"
+                                className="text-blueGray-700 mb-2 block w-max whitespace-nowrap rounded-xl bg-white px-12 py-2 text-sm font-semibold text-secondary"
                               >
                                 View
                               </Link>
@@ -261,10 +261,24 @@ export default function AllTalents({
 
                           <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-right align-middle text-xs">
                             <div
-                              className="min-w-48 z-50 list-none rounded py-2 text-left text-base"
+                              className="min-w-48 z-50 list-none rounded text-left text-base"
                               id="table-dark-1-dropdown"
                             >
-                              <button className="text-blueGray-700 mb-2 block w-max whitespace-nowrap rounded-xl bg-white px-8 py-2 text-sm font-semibold text-secondary">
+                              <button className="text-blueGray-700 flex w-max items-center gap-2 whitespace-nowrap rounded-xl bg-secondary px-8 py-2 text-sm font-semibold text-white">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  strokeWidth={1.5}
+                                  stroke="currentColor"
+                                  className="h-6 w-6"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M6 18L18 6M6 6l12 12"
+                                  />
+                                </svg>
                                 Revoke Invite
                               </button>
                             </div>
