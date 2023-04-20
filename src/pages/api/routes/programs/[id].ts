@@ -25,11 +25,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(200).json({ message: `Program deleted.`, data: program });
     }
 
-    if (req.method === "PUT") {
-        const { name, content, organizationId } = req.body as {
+    if (req.method === "PATCH") {
+        const { name, content } = req.body as {
             name: string;
             content: string;
-            organizationId: string;
         };
 
         const program = await prisma.onboardingProgram.update({
@@ -39,7 +38,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             data: {
                 name,
                 content,
-                organizationId,
             },
         });
 

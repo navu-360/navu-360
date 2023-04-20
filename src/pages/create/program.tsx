@@ -10,6 +10,8 @@ import type { OutputData } from "@editorjs/editorjs";
 import {
   useCreateProgramMutation,
   useCreateTemplateMutation,
+  useEditProgramMutation,
+  useGetOneProgramQuery,
   useGetOneTemplateQuery,
 } from "services/baseApiSlice";
 import { useSelector } from "react-redux";
@@ -33,11 +35,17 @@ export default function CreateProgram() {
   const [save, setSave] = useState(false);
 
   const router = useRouter();
-  const { template } = router.query;
+  const { template, edit } = router.query;
 
   const { data, isFetching } = useGetOneTemplateQuery(template as string, {
     skip: !template,
   });
+
+  const id = edit;
+  const { data: editingProgram, isFetching: loadingEdit } =
+    useGetOneProgramQuery(id, {
+      skip: !edit,
+    });
 
   const [name, setName] = useState("");
 
@@ -48,7 +56,16 @@ export default function CreateProgram() {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (editingProgram?.data?.content) {
+      setChosenTemplate(JSON.parse(editingProgram.data.content));
+      setName(editingProgram.data.name);
+    }
+  }, [editingProgram]);
+
   const [createProgram, { isLoading }] = useCreateProgramMutation();
+  const [editProgram, { isLoading: editingProgramLoading }] =
+    useEditProgramMutation();
   const [createTemplate, { isLoading: loading }] = useCreateTemplateMutation();
 
   const orgId = useSelector(
@@ -62,6 +79,23 @@ export default function CreateProgram() {
       content: JSON.stringify(chosenTemplate),
     };
     await createProgram(body)
+      .unwrap()
+      .then(() => {
+        router.push("/dashboard");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const editProgramHandler = async () => {
+    const body = {
+      name,
+      content: JSON.stringify(chosenTemplate),
+      id,
+    };
+
+    await editProgram(body)
       .unwrap()
       .then(() => {
         router.push("/dashboard");
@@ -123,13 +157,15 @@ export default function CreateProgram() {
               />
             </form>
             <button
-              disabled={isLoading || !name || loading}
+              disabled={isLoading || !name || loading || editingProgramLoading}
               className="flex items-center justify-center rounded-xl bg-secondary px-12 py-2 text-center text-base font-semibold text-white hover:bg-secondary"
               onClick={() => {
                 setSave(true);
               }}
             >
-              {isLoading || loading ? "Saving..." : "Save Program"}
+              {isLoading || loading || editingProgramLoading
+                ? "Saving..."
+                : "Save Program"}
             </button>
           </div>
           {chosenTemplate && (
@@ -137,17 +173,32 @@ export default function CreateProgram() {
               getData={save}
               receiveData={(data: OutputData) => {
                 setChosenTemplate(data);
-                toast.promise(
-                  createProgramHandler(),
-                  {
-                    pending: "Saving...",
-                    success: "Program created!",
-                    error: "Error creating program",
-                  },
-                  {
-                    theme: "dark",
-                  }
-                );
+                if (edit) {
+                  toast.promise(
+                    editProgramHandler(),
+                    {
+                      pending: "Saving...",
+                      success: "Program edited!",
+                      error: "Error editing program",
+                    },
+                    {
+                      theme: "dark",
+                    }
+                  );
+                } else {
+                  toast.promise(
+                    createProgramHandler(),
+                    {
+                      pending: "Saving...",
+                      success: "Program created!",
+                      error: "Error creating program",
+                    },
+                    {
+                      theme: "dark",
+                    }
+                  );
+                }
+
                 // toast.promise(
                 //   createTemplateHandler(),
                 //   {

@@ -108,8 +108,8 @@ export const baseApiSlice = createApi({
       query: (id) => `programs/${id}`,
     }),
     editProgram: builder.mutation({
-      query: (body, id) => ({
-        url: `programs/${id}`,
+      query: (body) => ({
+        url: `programs/${body?.id}`,
         method: "PATCH",
         body,
       }),
