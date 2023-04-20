@@ -34,6 +34,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 orgId: string;
             };
 
+            // validations
+            // 1. A user can only belong to one organization. Check if the user already belongs to an organization.
+            const user = await prisma.user.findUnique({
+                where: {
+                    email: session.user.email,
+                },
+            });
+
+            if (user?.orgId) {
+                res.status(400).json({ message: `User ${user.name} already belongs to an organization.` });
+                return;
+            }
+
+
 
             const userToEdit = await prisma.user.update({
                 where: {

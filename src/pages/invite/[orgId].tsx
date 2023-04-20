@@ -39,8 +39,18 @@ export default function InviteTalent() {
   );
 
   useEffect(() => {
-    if (session?.user?.position && session?.user?.orgId) {
+    if (
+      session?.user?.position &&
+      session?.user?.orgId &&
+      session?.user?.role === "talent"
+    ) {
       router.push("/learn");
+    } else if (
+      session?.user?.position &&
+      session?.user?.orgId &&
+      session?.user?.role === "admin"
+    ) {
+      router.push("/dashboard");
     } else if (session?.user?.position) {
       setRole(session?.user?.position);
     }
@@ -50,6 +60,13 @@ export default function InviteTalent() {
   const [updateUser, { isLoading }] = useUpdateUserMutation();
 
   const createHandler = async () => {
+    if (!role) {
+      toaster({
+        status: "error",
+        message: "Please enter your role",
+      });
+      return;
+    }
     const body = {
       position: role,
       role: "talent",
@@ -77,7 +94,9 @@ export default function InviteTalent() {
   return (
     <>
       <Header
-        title={`Invitation to join ${organizationData?.organization?.name}`}
+        title={`Invitation to join ${
+          organizationData?.organization?.name ?? ""
+        }`}
       />
       <LandingWrapper hideNav>
         <section className="flex h-[100vh] w-screen">
@@ -160,7 +179,7 @@ export default function InviteTalent() {
                     <button
                       type="button"
                       onClick={() => createHandler()}
-                      disabled={isLoading || !role}
+                      disabled={isLoading}
                       className="flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center self-center rounded-3xl bg-secondary px-12 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 md:mr-0"
                     >
                       {isLoading ? <SmallSpinner /> : <span>Continue</span>}
