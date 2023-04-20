@@ -20,7 +20,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     switch (req.method) {
         case "GET":
-            const users = await prisma.user.findMany();
+            // get only talents that belong to the organization
+            const orgIdtalent = req.query.orgId as string;
+            const users = await prisma.user.findMany({
+                where: {
+                    orgId: orgIdtalent,
+                    role: "talent",
+                }
+                ,
+                orderBy: {
+                    name: "desc",
+                }
+            });
             return res.status(200).json({ message: `Users found.`, data: users });
 
         case "PATCH":

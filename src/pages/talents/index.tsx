@@ -1,19 +1,21 @@
 /* eslint-disable @next/next/no-img-element */
+import type { OnboardingProgramTalents } from "@prisma/client";
 import Header from "components/common/head";
 import Spinner from "components/common/spinner";
 import DashboardWrapper from "components/layout/dashboardWrapper";
+import Link from "next/link";
 import React from "react";
 import { useSelector } from "react-redux";
-import { useGetOrganizationProgramsQuery } from "services/baseApiSlice";
+import { useFetchUsersQuery } from "services/baseApiSlice";
+import { generateAvatar } from "utils/avatar";
+import { processDate } from "utils/date";
 
 export default function Talents() {
   const orgId = useSelector(
     (state: { auth: { orgId: string } }) => state.auth.orgId
   );
-  const { isFetching } = useGetOrganizationProgramsQuery(orgId, {
-    skip: !orgId,
-    refetchOnMountOrArgChange: true,
-  });
+
+  const { data, isFetching } = useFetchUsersQuery(orgId, { skip: !orgId });
 
   if (isFetching)
     return (
@@ -36,23 +38,85 @@ export default function Talents() {
       <Header title={`All Talents - Navu360`} />
       <DashboardWrapper hideSearch>
         <div className="relative ml-[250px] mt-[20px] flex h-full flex-col items-center justify-center gap-8 2xl:ml-[300px]">
-          <div className="flex min-h-[70vh] w-full items-center justify-center gap-4">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="#FB5881"
-              className="h-6 w-6"
-            >
-              <path
-                fillRule="evenodd"
-                d="M8.25 6.75a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zM15.75 9.75a3 3 0 116 0 3 3 0 01-6 0zM2.25 9.75a3 3 0 116 0 3 3 0 01-6 0zM6.31 15.117A6.745 6.745 0 0112 12a6.745 6.745 0 016.709 7.498.75.75 0 01-.372.568A12.696 12.696 0 0112 21.75c-2.305 0-4.47-.612-6.337-1.684a.75.75 0 01-.372-.568 6.787 6.787 0 011.019-4.38z"
-                clipRule="evenodd"
-              />
-              <path d="M5.082 14.254a8.287 8.287 0 00-1.308 5.135 9.687 9.687 0 01-1.764-.44l-.115-.04a.563.563 0 01-.373-.487l-.01-.121a3.75 3.75 0 013.57-4.047zM20.226 19.389a8.287 8.287 0 00-1.308-5.135 3.75 3.75 0 013.57 4.047l-.01.121a.563.563 0 01-.373.486l-.115.04c-.567.2-1.156.349-1.764.441z" />
-            </svg>
+          <table className="mt-8 w-auto min-w-[80vw] border-collapse items-center bg-transparent">
+            <thead>
+              <tr>
+                <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                  Talent
+                </th>
+                <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                  Role
+                </th>
+                <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                  Joined
+                </th>
+                <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                  Completion{" "}
+                </th>
+                <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                  Actions
+                </th>
+              </tr>
+            </thead>
 
-            <p>Coming Soon...</p>
-          </div>
+            <tbody>
+              {data?.data?.length === 0 && (
+                <tr>
+                  <td
+                    align="center"
+                    colSpan={6}
+                    className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-lg font-bold"
+                  >
+                    No talents have been enrolled yet
+                  </td>
+                </tr>
+              )}
+              {data?.data?.length > 0 &&
+                data?.data?.map((talent: OnboardingProgramTalents) => (
+                  <tr key={talent?.id}>
+                    <th className="flex items-center whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left align-middle text-xs">
+                      <img
+                        src={generateAvatar(talent?.id)}
+                        className="h-12 w-12 rounded-full border bg-white"
+                        alt="..."
+                      />
+                      <span className="ml-3 font-bold text-white">
+                        {talent?.name}
+                      </span>
+                    </th>
+                    <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-sm font-semibold">
+                      {talent?.role}
+                    </td>
+                    <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-sm font-semibold">
+                      {processDate(talent?.createdAt)}
+                    </td>
+                    <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-sm">
+                      <div className="flex items-center">
+                        <span className="mr-2 font-semibold">60%</span>
+                        <div className="relative w-full">
+                          <div className="flex h-2 overflow-hidden rounded bg-red-200 text-xs">
+                            <div className="flex w-[60%] flex-col justify-center whitespace-nowrap bg-red-500 text-center text-white shadow-none"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-right align-middle text-xs">
+                      <div
+                        className="min-w-48 z-50 list-none rounded py-2 text-left text-base"
+                        id="table-dark-1-dropdown"
+                      >
+                        <Link
+                          href={`/talents/${talent?.id}`}
+                          className="mb-2 block w-max whitespace-nowrap rounded-xl bg-tertiary px-12 py-2 text-sm font-semibold text-white"
+                        >
+                          View
+                        </Link>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
         </div>
       </DashboardWrapper>
     </>
