@@ -3,6 +3,15 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import useDebounce from "utils/useDebounce";
 
+export interface ITemplate {
+  id: string;
+  name: string;
+  description: string;
+  estimatedTime: string;
+  backgroundColor: string;
+  categories: string[];
+}
+
 export default function SelectTemplate({
   closeModal,
 }: {
@@ -38,12 +47,12 @@ export default function SelectTemplate({
 
   const debouncedValue = useDebounce(search, 500);
 
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<ITemplate[]>([]);
 
   // search
   useEffect(() => {
     if (templates && debouncedValue?.length > 0) {
-      const templatesFound = [];
+      const templatesFound: ITemplate[] = [];
       templates.forEach((template) => {
         if (
           template.name.toLowerCase().includes(debouncedValue.toLowerCase())
