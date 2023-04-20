@@ -48,6 +48,8 @@ export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
 function AdminCard() {
   const { data: session } = useSession();
 
+  console.log(session);
+
   const userProfile = useSelector(
     (state: { auth: { userProfile: User } }) => state.auth.userProfile
   );

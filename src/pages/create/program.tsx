@@ -5,6 +5,7 @@ const MyEditor = dynamic(() => import("components/common/editor/editor"), {
 
 import Header from "components/common/head";
 import DashboardWrapper from "components/layout/dashboardWrapper";
+import type { Key } from "react";
 import React, { useEffect, useState } from "react";
 import type { OutputData } from "@editorjs/editorjs";
 import {
@@ -28,9 +29,9 @@ interface CustomTemplate extends OutputData {
 }
 
 export default function CreateProgram() {
-  const [chosenTemplate, setChosenTemplate] = useState<CustomTemplate | null>(
-    null
-  );
+  const [chosenTemplate, setChosenTemplate] = useState<
+    CustomTemplate | undefined
+  >(undefined);
 
   const [save, setSave] = useState(false);
 
@@ -42,10 +43,9 @@ export default function CreateProgram() {
   });
 
   const id = edit;
-  const { data: editingProgram, isFetching: loadingEdit } =
-    useGetOneProgramQuery(id, {
-      skip: !edit,
-    });
+  const { data: editingProgram } = useGetOneProgramQuery(id, {
+    skip: !edit,
+  });
 
   const [name, setName] = useState("");
 
@@ -72,11 +72,11 @@ export default function CreateProgram() {
     (state: { auth: { orgId: string } }) => state.auth.orgId
   );
 
-  const createProgramHandler = async () => {
+  const createProgramHandler = async (data: OutputData) => {
     const body = {
       name,
       organizationId: orgId,
-      content: JSON.stringify(chosenTemplate),
+      content: JSON.stringify(data),
     };
     await createProgram(body)
       .unwrap()
@@ -88,10 +88,10 @@ export default function CreateProgram() {
       });
   };
 
-  const editProgramHandler = async () => {
+  const editProgramHandler = async (data: OutputData) => {
     const body = {
       name,
-      content: JSON.stringify(chosenTemplate),
+      content: JSON.stringify(data),
       id,
     };
 
@@ -145,7 +145,7 @@ export default function CreateProgram() {
     <>
       <Header title="Create an Onboarding Program" />
       <DashboardWrapper hideSearch>
-        <div className="relative left-1/2 ml-[100px] mt-[20px] flex h-full w-max min-w-[764px] -translate-x-1/2 flex-col items-center justify-center gap-8">
+        <div className="relative left-1/2 ml-[100px] mt-[20px] flex h-full w-[764px] -translate-x-1/2 flex-col items-center justify-center gap-8">
           <div className="mt-8 flex w-full justify-between">
             <form>
               <input
@@ -153,7 +153,7 @@ export default function CreateProgram() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter program name ..."
-                className="program-input w-[40vw] text-2xl font-bold text-tertiary"
+                className="program-input w-[40vw] max-w-[500px] text-2xl font-bold text-tertiary"
               />
             </form>
             <button
@@ -168,52 +168,52 @@ export default function CreateProgram() {
                 : "Save Program"}
             </button>
           </div>
-          {chosenTemplate && (
-            <MyEditor
-              getData={save}
-              receiveData={(data: OutputData) => {
-                setChosenTemplate(data);
-                if (edit) {
-                  toast.promise(
-                    editProgramHandler(),
-                    {
-                      pending: "Saving...",
-                      success: "Program edited!",
-                      error: "Error editing program",
-                    },
-                    {
-                      theme: "dark",
-                    }
-                  );
-                } else {
-                  toast.promise(
-                    createProgramHandler(),
-                    {
-                      pending: "Saving...",
-                      success: "Program created!",
-                      error: "Error creating program",
-                    },
-                    {
-                      theme: "dark",
-                    }
-                  );
-                }
 
-                // toast.promise(
-                //   createTemplateHandler(),
-                //   {
-                //     pending: "Creating...",
-                //     success: "Program created!",
-                //     error: "Error creating program",
-                //   },
-                //   {
-                //     theme: "dark",
-                //   }
-                // );
-              }}
-              initialData={chosenTemplate}
-            />
-          )}
+          <MyEditor
+            key={chosenTemplate as unknown as Key}
+            getData={save}
+            receiveData={(data: OutputData) => {
+              setChosenTemplate(data);
+              if (edit) {
+                toast.promise(
+                  editProgramHandler(data),
+                  {
+                    pending: "Saving...",
+                    success: "Program edited!",
+                    error: "Error editing program",
+                  },
+                  {
+                    theme: "dark",
+                  }
+                );
+              } else {
+                toast.promise(
+                  createProgramHandler(data),
+                  {
+                    pending: "Saving...",
+                    success: "Program created!",
+                    error: "Error creating program",
+                  },
+                  {
+                    theme: "dark",
+                  }
+                );
+              }
+
+              // toast.promise(
+              //   createTemplateHandler(),
+              //   {
+              //     pending: "Creating...",
+              //     success: "Program created!",
+              //     error: "Error creating program",
+              //   },
+              //   {
+              //     theme: "dark",
+              //   }
+              // );
+            }}
+            initialData={chosenTemplate ?? { blocks: [] }}
+          />
         </div>
       </DashboardWrapper>
     </>

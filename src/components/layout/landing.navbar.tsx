@@ -3,9 +3,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
-import { signIn, useSession, signOut } from "next-auth/react";
-import { useDispatch } from "react-redux";
-import { setUserId } from "redux/auth/authSlice";
+import { signIn, useSession } from "next-auth/react";
+
 import { SmallSpinner } from "components/common/spinner";
 
 export default function NavBar() {
@@ -13,8 +12,6 @@ export default function NavBar() {
   const router = useRouter();
 
   const { data: session, status } = useSession();
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (session) {
