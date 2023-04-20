@@ -31,6 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 data: {
                     name,
                     content,
+                    createdBy: session?.user?.id,
                     organization: {
                         connect: {
                             id: organizationId,

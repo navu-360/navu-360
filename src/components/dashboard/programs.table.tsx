@@ -2,7 +2,10 @@
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useGetOrganizationProgramsQuery } from "services/baseApiSlice";
+import {
+  useGetOrganizationProgramsQuery,
+  useGetProgramTalentsQuery,
+} from "services/baseApiSlice";
 
 export default function Programs({
   showSelectTemplate,
@@ -138,6 +141,12 @@ function TemplateCard({
     name: string;
   };
 }) {
+  const programId = template?.id;
+
+  const { data: enrolledTalents } = useGetProgramTalentsQuery(programId, {
+    skip: !programId,
+  });
+
   return (
     <Link
       href={`/programs/${template.id}`}
@@ -145,7 +154,11 @@ function TemplateCard({
     >
       <div className="flex flex-col break-all">
         <h3 className="text-lg font-bold">{template.name}</h3>
-        <p className="mt-1 text-sm font-medium ">2 talents enrolled</p>
+        {enrolledTalents && (
+          <p className="mt-1 text-sm font-medium ">
+            {enrolledTalents?.data?.length} talents enrolled
+          </p>
+        )}
       </div>
       <div className="absolute bottom-2 right-2 flex h-[30px] w-[30px] items-center justify-center rounded-full bg-secondary transition-all duration-300 ease-in group-hover:right-1">
         <svg

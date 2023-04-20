@@ -77,6 +77,7 @@ model OnboardingProgram {
   id                       String                     @id @default(uuid())
   name                     String
   content                  String
+  createdBy                String?
   organization             Organization               @relation(fields: [organizationId], references: [id])
   organizationId           String
   users                    User[]

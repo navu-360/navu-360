@@ -10,6 +10,7 @@ import {
   useGetOrganizationProgramsQuery,
   useGetProgramTalentsQuery,
   useGetSentInvitesQuery,
+  useGetUserByIdQuery,
 } from "services/baseApiSlice";
 import { generateAvatar } from "utils/avatar";
 import { processDate } from "utils/date";
@@ -95,9 +96,14 @@ export function OneProgramCard({
   delay: number;
 }) {
   const programId = program?.id;
-  const { data: invites } = useGetSentInvitesQuery(programId);
 
   const { data: enrolledTalents } = useGetProgramTalentsQuery(programId);
+
+  const id = program?.createdBy;
+
+  const { data: userInfo } = useGetUserByIdQuery(id, {
+    skip: !id,
+  });
 
   return (
     <motion.div
@@ -113,35 +119,19 @@ export function OneProgramCard({
           <h2 className="break-all text-lg font-bold">{program.name}</h2>
         </div>
 
-        <div className="absolute right-2 bottom-2 flex items-center gap-2">
-          <p className="text-xs font-medium">Created By</p>
-          <div className="flex items-center gap-4">
-            <p className="text-[14px] font-semibold">User Name</p>
-            <img
-              src={generateAvatar(program?.id)}
-              className="h-[50px] w-[50px] rounded-full bg-tertiary"
-              alt={program?.name}
-            />
+        {userInfo && (
+          <div className="absolute bottom-2 right-2 flex items-center gap-2">
+            <p className="text-xs font-medium">Created By</p>
+            <div className="flex items-center gap-4">
+              <p className="text-[14px] font-semibold">{userInfo?.name}</p>
+              <img
+                src={generateAvatar(userInfo?.id)}
+                className="h-[50px] w-[50px] rounded-full bg-tertiary"
+                alt={userInfo?.id}
+              />
+            </div>
           </div>
-        </div>
-        <div className="mt-4 flex items-center gap-2 px-4">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="h-6 w-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-
-          <p>{invites?.data?.length || 0} talents invited</p>
-        </div>
+        )}
         <div className="-mt-2 flex items-center gap-2 px-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"

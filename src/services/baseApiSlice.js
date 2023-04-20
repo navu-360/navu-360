@@ -58,6 +58,9 @@ export const baseApiSlice = createApi({
     fetchUsers: builder.query({
       query: () => `users`,
     }),
+    getUserById: builder.query({
+      query: (id) => `users/${id}`,
+    }),
     getAllTalents: builder.query({
       query: (orgId) => `users/orgTalents?orgId=${orgId}`,
     }),
@@ -162,4 +165,5 @@ export const {
   useGetSentInvitesQuery,
   useGetProgramTalentsQuery,
   useGetOrganizationByIdQuery,
+  useGetUserByIdQuery
 } = baseApiSlice;

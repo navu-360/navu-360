@@ -119,7 +119,7 @@ export default function CreateProgram() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter program name ..."
-                className="program-input text-2xl font-bold text-tertiary"
+                className="program-input w-[40vw] text-2xl font-bold text-tertiary"
               />
             </form>
             <button
