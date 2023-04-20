@@ -103,8 +103,22 @@ export const baseApiSlice = createApi({
         url: `programs?orgId=${orgId}`,
       }),
     }),
+
     getOneProgram: builder.query({
       query: (id) => `programs/${id}`,
+    }),
+    editProgram: builder.mutation({
+      query: (body, id) => ({
+        url: `programs/${id}`,
+        method: "PATCH",
+        body,
+      }),
+    }),
+    deleteProgram: builder.mutation({
+      query: (id) => ({
+        url: `programs/${id}`,
+        method: "DELETE",
+      }),
     }),
 
     // templates
@@ -165,5 +179,7 @@ export const {
   useGetSentInvitesQuery,
   useGetProgramTalentsQuery,
   useGetOrganizationByIdQuery,
-  useGetUserByIdQuery
+  useGetUserByIdQuery,
+  useDeleteProgramMutation,
+  useEditProgramMutation,
 } = baseApiSlice;

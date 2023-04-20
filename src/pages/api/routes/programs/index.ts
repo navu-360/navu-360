@@ -57,6 +57,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                         organizationId: true,
                         createdAt: true,
                         updatedAt: true,
+                        createdBy: true,
                     },
                     orderBy: {
                         createdAt: "desc",

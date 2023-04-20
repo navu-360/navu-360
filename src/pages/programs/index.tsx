@@ -9,18 +9,19 @@ import { useSelector } from "react-redux";
 import {
   useGetOrganizationProgramsQuery,
   useGetProgramTalentsQuery,
-  useGetSentInvitesQuery,
   useGetUserByIdQuery,
 } from "services/baseApiSlice";
 import { generateAvatar } from "utils/avatar";
 import { processDate } from "utils/date";
 import { motion } from "framer-motion";
+import { DeleteConfirmModal } from "components/dashboard/confirmDelete";
+import { useRouter } from "next/router";
 
 export default function Programs() {
   const orgId = useSelector(
     (state: { auth: { orgId: string } }) => state.auth.orgId
   );
-  const { data, isFetching } = useGetOrganizationProgramsQuery(orgId, {
+  const { data, isFetching, refetch } = useGetOrganizationProgramsQuery(orgId, {
     skip: !orgId,
     refetchOnMountOrArgChange: true,
   });
@@ -30,6 +31,10 @@ export default function Programs() {
   useEffect(() => {
     setIsReady(true);
   }, []);
+
+  const [showDeleteProgramModal, setShowDeleteProgramModal] = useState<
+    boolean | string
+  >(false);
 
   if (!isReady) return null;
 
@@ -78,11 +83,19 @@ export default function Programs() {
                   key={program.id}
                   program={program}
                   delay={i * 0.05}
+                  deleteProgram={(id) => setShowDeleteProgramModal(id)}
                 />
               ))}
             </div>
           )}
         </div>
+        {showDeleteProgramModal && (
+          <DeleteConfirmModal
+            id={showDeleteProgramModal as string}
+            setShowConfirmModal={() => setShowDeleteProgramModal(false)}
+            refreshPrograms={() => refetch()}
+          />
+        )}
       </DashboardWrapper>
     </>
   );
@@ -91,9 +104,11 @@ export default function Programs() {
 export function OneProgramCard({
   program,
   delay,
+  deleteProgram,
 }: {
   program: OnboardingProgram;
   delay: number;
+  deleteProgram: (id: string) => void;
 }) {
   const programId = program?.id;
 
@@ -105,6 +120,8 @@ export function OneProgramCard({
     skip: !id,
   });
 
+  const router = useRouter();
+
   return (
     <motion.div
       initial={{ y: 10 }}
@@ -113,25 +130,91 @@ export function OneProgramCard({
     >
       <Link
         href={`/programs/${program.id}`}
+        onClick={(e) => {
+          // if click element IDs: editProgram, deleteProgram, cancel default
+          if (e.target) {
+            if (
+              (e.target as HTMLElement).id === "delete1" ||
+              (e.target as HTMLElement).id === "delete2" ||
+              (e.target as HTMLElement).id === "delete3" ||
+              (e.target as HTMLElement).id === "delete4" ||
+              (e.target as HTMLElement).id === "delete5" ||
+              (e.target as HTMLElement).id === "delete6" ||
+              (e.target as HTMLElement).id === "delete7"
+            ) {
+              e.preventDefault();
+            }
+          }
+        }}
         className="relative flex h-[280px] w-[300px] flex-col gap-4 rounded-lg bg-white text-tertiary shadow-md"
       >
-        <div className="flex h-[60px] w-full items-center gap-2 rounded-t-lg bg-tertiary p-4 text-white">
-          <h2 className="break-all text-lg font-bold">{program.name}</h2>
+        <div className="relative flex h-[60px] w-full items-center gap-2 rounded-t-lg bg-tertiary p-4 text-white">
+          <h2 className="text-lg font-bold">{program.name}</h2>
         </div>
 
         {userInfo && (
-          <div className="absolute bottom-2 right-2 flex items-center gap-2">
+          <div className="absolute bottom-16 right-4 flex items-center gap-2">
             <p className="text-xs font-medium">Created By</p>
             <div className="flex items-center gap-4">
-              <p className="text-[14px] font-semibold">{userInfo?.name}</p>
+              <p className="text-[14px] font-semibold">
+                {userInfo?.data?.name}
+              </p>
               <img
-                src={generateAvatar(userInfo?.id)}
+                src={generateAvatar(userInfo?.data?.id)}
                 className="h-[50px] w-[50px] rounded-full bg-tertiary"
-                alt={userInfo?.id}
+                alt={userInfo?.data?.id}
               />
             </div>
           </div>
         )}
+
+        <div className="absolute bottom-2 right-4 flex flex-row-reverse items-center justify-end gap-6">
+          <div
+            id="delete1"
+            onClick={() => deleteProgram(program?.id)}
+            className="flex h-[35px] w-[35px] items-center justify-center rounded-full hover:bg-secondary/20"
+          >
+            <svg
+              id="delete2"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="#f40101"
+              className="h-7 w-7"
+            >
+              <path
+                id="delete3"
+                fillRule="evenodd"
+                d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+
+          <div
+            onClick={() => {
+              router.push(`/create/program?edit=${program.id}`);
+            }}
+            className="flex h-[35px] w-[35px] items-center justify-center rounded-full hover:bg-secondary/20"
+          >
+            <svg
+              id="delete5"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="#686868"
+              className="h-7 w-7"
+            >
+              <path
+                id="delete6"
+                d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z"
+              />
+              <path
+                id="delete7"
+                d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z"
+              />
+            </svg>
+          </div>
+        </div>
+
         <div className="-mt-2 flex items-center gap-2 px-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
