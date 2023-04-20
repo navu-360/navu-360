@@ -1,9 +1,7 @@
 import type { User } from "@prisma/client";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
 import { useInviteTalentMutation } from "services/baseApiSlice";
-import type { OnboardingProgram } from "types";
 import toaster from "utils/toaster";
 
 export default function InviteTalentsModal({
@@ -43,19 +41,18 @@ export default function InviteTalentsModal({
 
       await inviteTalents(body)
         .unwrap()
-        .then((payload) => {
-          toaster({message: payload?.message})
+        .then((payload: { message: string }) => {
+          toaster({ message: payload?.message });
           closeModal(true);
-          
         })
         .catch((error) => {
           console.log(error);
-          toaster({message: error?.message, status: "error"});
+          toaster({ message: error?.message, status: "error" });
         });
     } catch (error) {
       console.log(error);
       // @ts-ignore
-      toaster({message: error?.message, status: "error"});
+      toaster({ message: error?.message, status: "error" });
     }
   };
 
