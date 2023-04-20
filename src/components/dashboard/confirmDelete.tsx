@@ -23,7 +23,6 @@ export function DeleteConfirmModal({
           message: "Program deleted successfully",
         });
         refreshPrograms();
-        setShowConfirmModal(false);
       })
       .catch((error) => {
         toaster({

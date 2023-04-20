@@ -62,7 +62,7 @@ export default function Dashboard() {
   return (
     <>
       <Header title={`${data?.organization?.name ?? ""} dashboard - Navu360`} />
-      <DashboardWrapper>
+      <DashboardWrapper hideSearch>
         <div className="relative ml-[300px] mt-[4rem] text-tertiary">
           <h1 className="w-full text-2xl font-bold">
             Hi, {userProfile?.name?.split(" ")[0] ?? ""}

@@ -36,9 +36,19 @@ export default function Programs() {
     boolean | string
   >(false);
 
+  const [programsArray, setProgramsArray] = useState<OnboardingProgram[]>(
+    data?.data
+  );
+
+  useEffect(() => {
+    if (data) {
+      setProgramsArray(data?.data);
+    }
+  }, [data]);
+
   if (!isReady) return null;
 
-  if (isFetching)
+  if (isFetching && !data)
     return (
       <>
         <Header title="All Onboarding Programs - Loading ..." />
@@ -59,7 +69,7 @@ export default function Programs() {
       <Header title={`All Onboarding Programs - Navu360`} />
       <DashboardWrapper hideSearch>
         <div className="relative ml-[250px] mt-[20px] flex h-full flex-col items-center justify-center gap-8 2xl:ml-[300px]">
-          {data?.data?.length === 0 && (
+          {programsArray?.length === 0 && (
             <div className="flex min-h-[70vh] w-full items-center justify-center gap-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -76,9 +86,9 @@ export default function Programs() {
               <p>You have no programs yet.</p>
             </div>
           )}
-          {data?.data?.length > 0 && (
+          {programsArray?.length > 0 && (
             <div className="flex w-full flex-wrap gap-8">
-              {data?.data?.map((program: OnboardingProgram, i: number) => (
+              {programsArray?.map((program: OnboardingProgram, i: number) => (
                 <OneProgramCard
                   key={program.id}
                   program={program}
@@ -94,7 +104,15 @@ export default function Programs() {
             <DeleteConfirmModal
               id={showDeleteProgramModal as string}
               setShowConfirmModal={() => setShowDeleteProgramModal(false)}
-              refreshPrograms={() => refetch()}
+              refreshPrograms={() => {
+                refetch();
+                setProgramsArray((prev) =>
+                  prev.filter(
+                    (program) => program.id !== showDeleteProgramModal
+                  )
+                );
+                setShowDeleteProgramModal(false);
+              }}
             />
           )}
         </AnimatePresence>
@@ -118,7 +136,7 @@ export function OneProgramCard({
 
   const id = program?.createdBy;
 
-  const { data: userInfo } = useGetUserByIdQuery(id, {
+  const { data: userInfo, isFetching } = useGetUserByIdQuery(id, {
     skip: !id,
   });
 
@@ -154,7 +172,7 @@ export function OneProgramCard({
           <h2 className="text-lg font-bold">{program.name}</h2>
         </div>
 
-        {userInfo && (
+        {userInfo ? (
           <div className="absolute bottom-16 right-4 flex items-center gap-2">
             <p className="text-xs font-medium">Created By</p>
             <div className="flex items-center gap-4">
@@ -168,6 +186,8 @@ export function OneProgramCard({
               />
             </div>
           </div>
+        ) : !isFetching ? null : (
+          <div className="absolute bottom-16 right-4 mt-1 h-[50px] w-[90%] animate-pulse rounded bg-gray-400" />
         )}
 
         <div className="absolute bottom-2 right-4 flex flex-row-reverse items-center justify-end gap-6">

@@ -150,14 +150,16 @@ function TemplateCard({
   return (
     <Link
       href={`/programs/${template.id}`}
-      className={`group relative flex w-full cursor-pointer items-center justify-between rounded-md bg-[#28293E] p-4 text-white`}
+      className={`group relative flex w-full cursor-pointer items-center justify-between rounded-md bg-[#28293E] p-6 text-white`}
     >
       <div className="flex flex-col break-all">
-        <h3 className="text-lg font-bold">{template.name}</h3>
-        {enrolledTalents && (
+        <h3 className="text-base font-bold">{template.name}</h3>
+        {enrolledTalents ? (
           <p className="mt-1 text-sm font-medium ">
             {enrolledTalents?.data?.length} talents enrolled
           </p>
+        ) : (
+          <div className="mt-1 h-[20px] w-4/5 animate-pulse rounded bg-gray-400" />
         )}
       </div>
       <div className="absolute bottom-2 right-2 flex h-[30px] w-[30px] items-center justify-center rounded-full bg-secondary transition-all duration-300 ease-in group-hover:right-1">
