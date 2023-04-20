@@ -1,6 +1,8 @@
 import { useDeleteProgramMutation } from "services/baseApiSlice";
 import toaster from "utils/toaster";
 
+import { motion } from "framer-motion";
+
 export function DeleteConfirmModal({
   id,
   setShowConfirmModal,
@@ -38,7 +40,13 @@ export function DeleteConfirmModal({
       }
       className="fixed inset-0 z-[130] flex h-full w-full items-center justify-center bg-black/50 backdrop:blur-md md:absolute"
     >
-      <div className="h-[200px] w-[95%] rounded-lg bg-white px-8 py-4 md:w-[400px]">
+      <motion.div
+        initial={{ y: 30, opacity: 0.7 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: 20, opacity: 0 }}
+        transition={{ duration: 0.3, ease: "easeIn" }}
+        className="h-[200px] w-[95%] rounded-lg bg-white px-8 py-4 md:w-[400px]"
+      >
         <div className="flex h-full flex-col justify-between">
           <div className="flex flex-col gap-8">
             <h1 className="text-center text-xl font-bold text-[#243669]">
@@ -68,7 +76,7 @@ export function DeleteConfirmModal({
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

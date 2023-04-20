@@ -4,6 +4,7 @@ import Programs from "components/dashboard/programs.table";
 import SelectTemplate from "components/dashboard/selectTemplate";
 import AllTalents from "components/dashboard/talents.table";
 import DashboardWrapper from "components/layout/dashboardWrapper";
+import { AnimatePresence } from "framer-motion";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,7 +29,7 @@ export default function Dashboard() {
   );
 
   useEffect(() => {
-    console.log(data, orgId)
+    console.log(data, orgId);
     if (data) {
       dispatch(setOrgId(data?.organization?.id));
       dispatch(setOrganizationData(data?.organization));
@@ -159,9 +160,11 @@ export default function Dashboard() {
             />
           </section>
         </div>
-        {showSelectTemplate && (
-          <SelectTemplate closeModal={() => setShowSelectTemplate(false)} />
-        )}
+        <AnimatePresence>
+          {showSelectTemplate && (
+            <SelectTemplate closeModal={() => setShowSelectTemplate(false)} />
+          )}
+        </AnimatePresence>
       </DashboardWrapper>
     </>
   );

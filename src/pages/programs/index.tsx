@@ -13,7 +13,7 @@ import {
 } from "services/baseApiSlice";
 import { generateAvatar } from "utils/avatar";
 import { processDate } from "utils/date";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { DeleteConfirmModal } from "components/dashboard/confirmDelete";
 import { useRouter } from "next/router";
 
@@ -89,13 +89,15 @@ export default function Programs() {
             </div>
           )}
         </div>
-        {showDeleteProgramModal && (
-          <DeleteConfirmModal
-            id={showDeleteProgramModal as string}
-            setShowConfirmModal={() => setShowDeleteProgramModal(false)}
-            refreshPrograms={() => refetch()}
-          />
-        )}
+        <AnimatePresence>
+          {showDeleteProgramModal && (
+            <DeleteConfirmModal
+              id={showDeleteProgramModal as string}
+              setShowConfirmModal={() => setShowDeleteProgramModal(false)}
+              refreshPrograms={() => refetch()}
+            />
+          )}
+        </AnimatePresence>
       </DashboardWrapper>
     </>
   );
