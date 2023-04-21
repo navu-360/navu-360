@@ -1,12 +1,36 @@
 /* eslint-disable @next/next/no-img-element */
 import type { User } from "@prisma/client";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserProfile } from "redux/auth/authSlice";
 import { generateAvatar } from "utils/avatar";
 
 export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
+  const { data: session } = useSession();
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (session) {
+      if (router.pathname === "/" && !session?.user?.hasBeenOnboarded) {
+        router.push("/setup");
+      } else if (
+        router.pathname === "/setup" &&
+        session?.user?.hasBeenOnboarded
+      ) {
+        router.push("/");
+      } else if (session?.user?.hasBeenOnboarded) {
+        if (session?.user?.role === "admin") {
+          router.push("/dashboard");
+        } else {
+          router.push("/learn");
+        }
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session]);
   return (
     <header className="fixed left-[250px] top-0 z-20 flex h-[75px] w-full bg-white py-2">
       {!hideSearch && (
@@ -47,8 +71,6 @@ export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
 
 function AdminCard() {
   const { data: session } = useSession();
-
-  console.log(session);
 
   const userProfile = useSelector(
     (state: { auth: { userProfile: User } }) => state.auth.userProfile
