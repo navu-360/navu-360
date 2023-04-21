@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import type { OnboardingProgramTalents } from "@prisma/client";
+import type { User } from "@prisma/client";
 import Spinner from "components/common/spinner";
 import Link from "next/link";
 import React from "react";
@@ -142,7 +142,7 @@ export default function MyEnrolledPrograms() {
                   )}
                   {!isFetching &&
                     data?.data?.length > 0 &&
-                    data?.data?.map((talent: OnboardingProgramTalents) => (
+                    data?.data?.map((talent: User) => (
                       <tr key={talent?.id}>
                         <th className="flex items-center whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left align-middle text-xs">
                           <img

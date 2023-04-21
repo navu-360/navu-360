@@ -9,7 +9,7 @@ import { authOptions } from "auth/auth";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     /*
-    API endpoint to 1) create a new user. POST request: name, email, image. 2) get all users. GET request.
+    Get all talents for a program
     */
 
     const session = await getServerSession(req, res, authOptions);

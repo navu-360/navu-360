@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["jsonProtocol"]
 }
 
@@ -40,22 +40,23 @@ model Session {
 }
 
 model User {
-  id               String              @id @default(cuid())
-  name             String?
-  email            String?             @unique
-  emailVerified    DateTime?
-  image            String?
-  publicId         String?
-  position         String?
-  role             String?
-  orgId            String?
-  hasBeenOnboarded Boolean?            @default(false)
-  accounts         Account[]
-  sessions         Session[]
-  organization     Organization?
-  onboardingProgs  OnboardingProgram[]
-  createdAt        DateTime            @default(now())
-  updatedAt        DateTime            @updatedAt
+  id                       String                     @id @default(cuid())
+  name                     String?
+  email                    String?                    @unique
+  emailVerified            DateTime?
+  image                    String?
+  publicId                 String?
+  position                 String?
+  role                     String?
+  orgId                    String?
+  hasBeenOnboarded         Boolean?                   @default(false)
+  accounts                 Account[]
+  sessions                 Session[]
+  organization             Organization?
+  onboardingProgs          OnboardingProgram[]
+  createdAt                DateTime                   @default(now())
+  updatedAt                DateTime                   @updatedAt
+  OnboardingProgramTalents OnboardingProgramTalents[]
 }
 
 // Define the Organization entity
@@ -88,16 +89,17 @@ model OnboardingProgram {
 
 model OnboardingProgramTalents {
   id                String            @id @default(uuid())
-  name              String
-  role              String
-  email             String            @unique
-  hasBeenOnboarded  Boolean?          @default(false)
+  enrollmentStatus  String            @default("pending") // pending, enrolled, completed
+  userId            String
+  User              User              @relation(fields: [userId], references: [id])
   programId         String
   OnboardingProgram OnboardingProgram @relation(fields: [programId], references: [id])
-  organizationId    String
-  Organization      Organization      @relation(fields: [organizationId], references: [id])
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
+  Organization      Organization?     @relation(fields: [organizationId], references: [id])
+  organizationId    String?
+
+  @@unique([userId, programId])
 }
 
 model waitlist {
@@ -116,9 +118,9 @@ model template {
 }
 
 model invites {
-  id                  String            @id @default(cuid())
-  email               String            @unique
-  orgId String?
-  createdAt           DateTime          @default(now())
-  updatedAt           DateTime          @updatedAt
+  id        String   @id @default(cuid())
+  email     String   @unique
+  orgId     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

@@ -44,7 +44,7 @@ export default function LearnCenter() {
         title={`${organizationData?.organization?.name ?? ""} Learn Center`}
       />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[300px] mt-[4rem] text-tertiary">
+        <div className="relative ml-[300px] mt-[1rem] text-tertiary">
           <h1 className="w-full text-2xl font-bold">
             Hi, {userProfile?.name?.split(" ")[0] ?? ""}
           </h1>

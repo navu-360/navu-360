@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import type { OnboardingProgramTalents } from "@prisma/client";
 import Spinner from "components/common/spinner";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -10,6 +9,7 @@ import { processDate } from "utils/date";
 
 import { useGetSentInvitesQuery } from "services/baseApiSlice";
 import { TalentSwitch } from "./common";
+import type { User } from "@prisma/client";
 
 export default function AllTalents({
   sendTotalTalents,
@@ -200,7 +200,7 @@ export default function AllTalents({
                     </tr>
                   )}
                   {showingTalents?.length > 0 &&
-                    showingTalents?.map((talent: OnboardingProgramTalents) =>
+                    showingTalents?.map((talent: User) =>
                       selectedType === "Enrolled" ? (
                         <tr key={talent?.id}>
                           <th className="flex items-center whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left align-middle text-xs">
@@ -249,7 +249,7 @@ export default function AllTalents({
                             <img
                               src={generateAvatar(talent?.id)}
                               className="h-12 w-12 rounded-full border bg-white"
-                              alt={talent?.email}
+                              alt={talent?.email as string}
                             />
                             <span className="ml-3 font-bold text-white">
                               {talent?.email}

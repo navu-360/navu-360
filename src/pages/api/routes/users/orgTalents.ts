@@ -8,6 +8,9 @@ import { prisma } from "../../../../auth/db";
 import { authOptions } from "auth/auth";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+    /*
+    Get all talents for an organization
+   */
     const session = await getServerSession(req, res, authOptions);
     if (!session) {
         res.status(401).json({ message: `Unauthorized.` });

@@ -156,6 +156,60 @@ export const baseApiSlice = createApi({
     getProgramTalents: builder.query({
       query: (programId) => `users/talents/${programId}`,
     }),
+
+    // enrollment actions
+    // enroll a talent: receive talentId, programId, organizationId
+    enrollTalent: builder.mutation({
+      query: (body) => ({
+        url: `enrollment/enroll`,
+        method: "POST",
+        body,
+      }),
+    }),
+    // get all enrollments for a talent
+    getTalentEnrollments: builder.query({
+      query: (body) => ({
+        url: `enrollment/get-my-enrollments`,
+        method: "POST",
+        body,
+      }),
+    }),
+
+    // get all enrollments for organization
+    getOrganizationEnrollments: builder.query({
+      query: (body) => ({
+        url: `enrollment/get-org-enrollments`,
+        method: "POST",
+        body,
+      }),
+    }),
+
+    // get all enrollments for a program
+    getProgramEnrollments: builder.query({
+      query: (body) => ({
+        url: `enrollment/get-program-enrollments`,
+        method: "POST",
+        body,
+      }),
+    }),
+
+    // mark enrollment as completed
+    markEnrollmentCompleted: builder.mutation({
+      query: (body) => ({
+        url: `enrollment/mark-complete`,
+        method: "POST",
+        body,
+      }),
+    }),
+
+    // unregister a talent from a program
+    unregisterTalent: builder.mutation({
+      query: (body) => ({
+        url: `enrollment/unregister`,
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -182,4 +236,10 @@ export const {
   useGetUserByIdQuery,
   useDeleteProgramMutation,
   useEditProgramMutation,
+  useEnrollTalentMutation,
+  useGetTalentEnrollmentsQuery,
+  useGetOrganizationEnrollmentsQuery,
+  useGetProgramEnrollmentsQuery,
+  useMarkEnrollmentCompletedMutation,
+  useUnregisterTalentMutation,
 } = baseApiSlice;

@@ -19,6 +19,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     switch (req.method) {
+        /*
+        Get all talents for an organization
+   */
         case "GET":
             // get only talents that belong to the organization
             const orgIdtalent = req.query.orgId as string;
@@ -34,6 +37,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             });
             return res.status(200).json({ message: `Users found.`, data: users });
 
+        /*
+            edit a user
+*/
         case "PATCH":
             // editable fields: image
             const { image: toEdit, publicId, position, role, hasBeenOnboarded, orgId } = req.body as {

@@ -4,7 +4,9 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../../../auth/db";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-
+    /*
+       Get a user by id
+       */
     switch (req.method) {
         case "GET":
             const id = req.query.id as string;
