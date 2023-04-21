@@ -15,20 +15,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         return;
     }
 
-    // enroll a talent to a program
-    // receive: programId, talentId, organizationId
+    // enroll a talent to a programs
+    // receive: programId[], talentId, organizationId
 
-    // validations: 1) programId exists, 2) talentId exists, 3) talent is not already enrolled in program
 
-    const { programId, talentId, organizationId } = req.body as { programId: string, talentId: string; organizationId: string };
-
-    const program = await prisma.onboardingProgram.findUnique({
-        where: {
-            id: programId,
-        },
-    });
-
-    if (!program) return res.status(400).json({ error: "Program not found" });
+    const { programId, talentId, organizationId } = req.body as { programId: string[], talentId: string; organizationId: string };
 
     const talent = await prisma.user.findUnique({
         where: {
@@ -38,14 +29,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (!talent) return res.status(400).json({ error: "Talent not found" });
 
-    // create enrollment
-    const enrollment = await prisma.onboardingProgramTalents.create({
-        data: {
-            programId: programId,
-            userId: talentId,
-            organizationId: organizationId,
-        },
+    // create enrollments for each program
+    const enrollments = programId.map(async (programId) => {
+        await prisma.onboardingProgramTalents.create({
+            data: {
+                programId,
+                userId: talentId,
+                organizationId,
+            },
+        });
     });
+
+    const enrollment = await Promise.all(enrollments);
 
     return res.status(200).json({ message: `Talent enrolled!`, data: enrollment });
 

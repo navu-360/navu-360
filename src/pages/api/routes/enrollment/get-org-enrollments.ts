@@ -34,6 +34,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         where: {
             organizationId: organizationId,
         },
+        include: {
+            User: true,
+        },
+        // only return distinct userIds. We only consider one enrollment per talent
+        distinct: ["userId"],
     });
 
     return res.status(200).json({ message: `Organization enrollments found!`, data: organizationEnrollments });

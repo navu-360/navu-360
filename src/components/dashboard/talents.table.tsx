@@ -6,20 +6,28 @@ import { useSelector } from "react-redux";
 import {
   useFetchUsersQuery,
   useGetOrganizationEnrollmentsQuery,
+  useGetTalentEnrollmentsQuery,
 } from "services/baseApiSlice";
 import { generateAvatar } from "utils/avatar";
 import { processDate } from "utils/date";
 
 import { useGetSentInvitesQuery } from "services/baseApiSlice";
 import { TalentSwitch } from "./common";
-import type { OnboardingProgramTalents, User } from "@prisma/client";
+import type {
+  OnboardingProgram,
+  OnboardingProgramTalents,
+  User,
+} from "@prisma/client";
+import { SelectPrograms } from "./selectPrograms";
 
 export default function AllTalents({
   sendTotalTalents,
   setTotalOnboarded,
+  onboardingPrograms,
 }: {
   sendTotalTalents: (count: number) => void;
   setTotalOnboarded: (count: number) => void;
+  onboardingPrograms: OnboardingProgram[];
 }) {
   const orgId = useSelector(
     (state: { auth: { orgId: string } }) => state.auth.orgId
@@ -27,12 +35,14 @@ export default function AllTalents({
 
   // get enrolled talents -  ENROLLED
   const organizationId = orgId;
-  const { data, isFetching } = useGetOrganizationEnrollmentsQuery(
+  const { data, isFetching, refetch } = useGetOrganizationEnrollmentsQuery(
     organizationId,
     {
       skip: !organizationId,
     }
   );
+
+  console.log(data, " data");
 
   // get all talents in the organization
   const org = orgId;
@@ -42,6 +52,7 @@ export default function AllTalents({
 
   const [talentsWithoutPrograms, setTalentsWithoutPrograms] = useState([]);
 
+  // joined but not enrolled - JOINED
   useEffect(() => {
     if (allUsers && data?.data) {
       // get all talents who are not enrolled in any program. comparing allUsers and data
@@ -52,6 +63,7 @@ export default function AllTalents({
               enrolledTalent.userId === talent.id
           )
       );
+      console.log(talentsWithoutPrograms);
       setTalentsWithoutPrograms(talentsWithoutPrograms ?? []);
     }
   }, [allUsers, data?.data]);
@@ -87,6 +99,10 @@ export default function AllTalents({
       : setShowingTalents(talentsWithoutPrograms ?? []);
   }, [data?.data, selectedType, sentInvites?.data, talentsWithoutPrograms]);
 
+  const [showTalentEnrolModal, setShowTalentEnrolModal] = useState<string[]>(
+    []
+  );
+
   if (isFetching || fetchingInvited || !orgId)
     return (
       <section className="w-[75%] rounded-md border-[1px] border-tertiary/50 bg-tertiary/10 p-2">
@@ -121,7 +137,7 @@ export default function AllTalents({
                           Role
                         </th>
                         <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                          Joined
+                          {selectedType === "Enrolled" ? "Enrolled" : "Joined"}
                         </th>
                         <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                           Completion{" "}
@@ -180,7 +196,7 @@ export default function AllTalents({
               <div className="flex flex-wrap items-center">
                 <div className="relative w-full max-w-full flex-1 flex-grow px-4 ">
                   <h3 className="text-lg font-semibold text-white">
-                    {selectedType} talents
+                    {selectedType} talents ({showingTalents?.length || 0})
                   </h3>
                 </div>
               </div>
@@ -197,7 +213,7 @@ export default function AllTalents({
                         Role
                       </th>
                       <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                        Joined
+                        {selectedType === "Enrolled" ? "Enrolled" : "Joined"}
                       </th>
                       {selectedType === "Enrolled" && (
                         <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
@@ -232,41 +248,36 @@ export default function AllTalents({
                         colSpan={selectedType !== "Invited" ? 6 : 4}
                         className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-lg font-bold"
                       >
-                        No talents have been {selectedType.toLowerCase()} yet
+                        No talents have{" "}
+                        {selectedType !== "Joined" ? "been" : ""}{" "}
+                        {selectedType.toLowerCase()} yet
                       </td>
                     </tr>
                   )}
                   {showingTalents?.length > 0 &&
-                    showingTalents?.map((talent: User) =>
+                    showingTalents?.map((talent: any) =>
                       selectedType !== "Invited" ? (
                         <tr key={talent?.id}>
                           <th className="flex items-center whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left align-middle text-xs">
                             <img
-                              src={generateAvatar(talent?.id)}
+                              src={generateAvatar(
+                                talent?.User?.id ?? talent?.id
+                              )}
                               className="h-12 w-12 rounded-full border bg-white"
-                              alt="..."
+                              alt={talent?.User?.name ?? talent?.name}
                             />
                             <span className="ml-3 font-bold text-white">
-                              {talent?.name}
+                              {talent?.User?.name ?? talent?.name}
                             </span>
                           </th>
                           <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
-                            {talent?.role}
+                            {talent?.User?.position ?? talent?.position}
                           </td>
                           <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
                             {processDate(talent?.createdAt)}
                           </td>
                           {selectedType === "Enrolled" && (
-                            <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs">
-                              <div className="flex items-center">
-                                <span className="mr-2 font-semibold">60%</span>
-                                <div className="relative w-full">
-                                  <div className="flex h-2 overflow-hidden rounded bg-red-200 text-xs">
-                                    <div className="flex w-[60%] flex-col justify-center whitespace-nowrap bg-red-500 text-center text-white shadow-none"></div>
-                                  </div>
-                                </div>
-                              </div>
-                            </td>
+                            <CompletionStatus enrollment={talent} />
                           )}
                           <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-right align-middle text-xs">
                             <div
@@ -281,7 +292,15 @@ export default function AllTalents({
                                   View
                                 </Link>
                               ) : (
-                                <button className="text-blueGray-700 mb-2 block w-max whitespace-nowrap rounded-xl bg-white px-12 py-2 text-sm font-semibold text-secondary">
+                                <button
+                                  onClick={() =>
+                                    setShowTalentEnrolModal([
+                                      talent?.id,
+                                      talent?.name as string,
+                                    ])
+                                  }
+                                  className="text-blueGray-700 mb-2 block w-max whitespace-nowrap rounded-xl bg-white px-12 py-2 text-sm font-semibold text-secondary"
+                                >
                                   Enroll Now
                                 </button>
                               )}
@@ -337,6 +356,83 @@ export default function AllTalents({
           </div>
         </div>
       </section>
+      {showTalentEnrolModal?.length > 0 && (
+        <SelectPrograms
+          closeModal={(val) => {
+            if (val) {
+              refetch();
+            }
+            setShowTalentEnrolModal([]);
+          }}
+          talentId={showTalentEnrolModal[0] as string}
+          talentName={showTalentEnrolModal[1] as string}
+          programs={onboardingPrograms}
+        />
+      )}
     </section>
+  );
+}
+
+function CompletionStatus({
+  enrollment,
+}: {
+  enrollment: OnboardingProgramTalents;
+}) {
+  const talentId = enrollment?.userId;
+  const { data, isFetching } = useGetTalentEnrollmentsQuery(talentId, {
+    skip: !talentId,
+  });
+
+  const checkCompletionStatus = () => {
+    // check all enrollment objects field enrollmentStatus for values pending, completed then return the percentage completed
+    const completed = data?.data?.filter(
+      (enrollment: OnboardingProgramTalents) =>
+        enrollment?.enrollmentStatus === "completed"
+    );
+    const pending = data?.data?.filter(
+      (enrollment: OnboardingProgramTalents) =>
+        enrollment?.enrollmentStatus === "pending"
+    );
+    const total = completed?.length + pending?.length;
+    const percentage = (completed?.length / total) * 100;
+    return percentage;
+  };
+
+  const getSliderColor = (percentage: number) => {
+    // 0 - 30 red
+    // 31 - 60 orange
+    // 61 - 100 green
+
+    if (percentage >= 0 && percentage <= 30) {
+      return "bg-red-500";
+    }
+    if (percentage >= 31 && percentage <= 60) {
+      return "bg-yellow-500";
+    }
+    if (percentage >= 61 && percentage <= 100) {
+      return "bg-green-500";
+    }
+  };
+
+  return (
+    <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs">
+      {isFetching ? (
+        <div className="h-[30px] w-4/5 animate-pulse rounded bg-gray-400" />
+      ) : (
+        <div className="flex items-center">
+          <span className="mr-2 font-semibold">{checkCompletionStatus()}%</span>
+          <div className="relative w-full">
+            <div className="flex h-2 overflow-hidden rounded bg-white text-xs">
+              <div
+                style={{ width: `${checkCompletionStatus()}%` }}
+                className={`flex h-2 flex-col justify-center whitespace-nowrap rounded text-center text-white shadow-none ${getSliderColor(
+                  checkCompletionStatus()
+                )}`}
+              ></div>
+            </div>
+          </div>
+        </div>
+      )}
+    </td>
   );
 }

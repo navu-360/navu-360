@@ -1,4 +1,4 @@
-import type { User } from "@prisma/client";
+import type { OnboardingProgram, User } from "@prisma/client";
 import Header from "components/common/head";
 import Programs from "components/dashboard/programs.table";
 import SelectTemplate from "components/dashboard/selectTemplate";
@@ -52,6 +52,10 @@ export default function Dashboard() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userProfile]);
+
+  const [onboardingPrograms, setOnboardingPrograms] = useState<
+    OnboardingProgram[]
+  >([]);
 
   if (!isReady) return null;
 
@@ -150,10 +154,14 @@ export default function Dashboard() {
             <AllTalents
               sendTotalTalents={(num: number) => setCountOfTalents(num)}
               setTotalOnboarded={(num: number) => setCountOfOnboarded(num)}
+              onboardingPrograms={onboardingPrograms}
             />
             <Programs
               countOfPrograms={(num: number) => setCountOfPrograms(num)}
               showSelectTemplate={() => setShowSelectTemplate(true)}
+              setPrograms={(programs: OnboardingProgram[]) =>
+                setOnboardingPrograms(programs)
+              }
             />
           </section>
         </div>

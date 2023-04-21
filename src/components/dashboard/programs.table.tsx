@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import type { OnboardingProgram } from "@prisma/client";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -10,9 +11,11 @@ import {
 export default function Programs({
   showSelectTemplate,
   countOfPrograms,
+  setPrograms,
 }: {
   showSelectTemplate: () => void;
   countOfPrograms: (count: number) => void;
+  setPrograms: (programs: OnboardingProgram[]) => void;
 }) {
   const orgId = useSelector(
     (state: { auth: { orgId: string } }) => state.auth.orgId
@@ -20,11 +23,11 @@ export default function Programs({
   // get programs created by this organization
   const { data, isFetching } = useGetOrganizationProgramsQuery(orgId, {
     skip: !orgId,
-    refetchOnMountOrArgChange: true,
   });
 
   useEffect(() => {
     countOfPrograms(data?.data?.length || 0);
+    setPrograms(data?.data);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.data?.length]);
 

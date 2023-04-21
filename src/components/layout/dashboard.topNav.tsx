@@ -21,7 +21,10 @@ export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
         session?.user?.hasBeenOnboarded
       ) {
         router.push("/");
-      } else if (session?.user?.hasBeenOnboarded) {
+      } else if (
+        session?.user?.hasBeenOnboarded &&
+        (router.pathname === "/dashboard" || router.pathname === "/learn")
+      ) {
         if (session?.user?.role === "admin") {
           router.push("/dashboard");
         } else {
