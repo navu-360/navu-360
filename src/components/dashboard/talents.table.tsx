@@ -3,29 +3,62 @@ import Spinner from "components/common/spinner";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useGetAllTalentsQuery } from "services/baseApiSlice";
+import {
+  useFetchUsersQuery,
+  useGetOrganizationEnrollmentsQuery,
+} from "services/baseApiSlice";
 import { generateAvatar } from "utils/avatar";
 import { processDate } from "utils/date";
 
 import { useGetSentInvitesQuery } from "services/baseApiSlice";
 import { TalentSwitch } from "./common";
-import type { User } from "@prisma/client";
+import type { OnboardingProgramTalents, User } from "@prisma/client";
 
 export default function AllTalents({
   sendTotalTalents,
+  setTotalOnboarded,
 }: {
   sendTotalTalents: (count: number) => void;
+  setTotalOnboarded: (count: number) => void;
 }) {
   const orgId = useSelector(
     (state: { auth: { orgId: string } }) => state.auth.orgId
   );
 
-  const { data, isFetching } = useGetAllTalentsQuery(orgId, {
-    skip: !orgId,
+  // get enrolled talents -  ENROLLED
+  const organizationId = orgId;
+  const { data, isFetching } = useGetOrganizationEnrollmentsQuery(
+    organizationId,
+    {
+      skip: !organizationId,
+    }
+  );
+
+  // get all talents in the organization
+  const org = orgId;
+  const { data: allUsers } = useFetchUsersQuery(org, {
+    skip: !org,
   });
+
+  const [talentsWithoutPrograms, setTalentsWithoutPrograms] = useState([]);
+
+  useEffect(() => {
+    if (allUsers && data?.data) {
+      // get all talents who are not enrolled in any program. comparing allUsers and data
+      const talentsWithoutPrograms = allUsers?.data?.filter(
+        (talent: User) =>
+          !data?.data?.find(
+            (enrolledTalent: OnboardingProgramTalents) =>
+              enrolledTalent.userId === talent.id
+          )
+      );
+      setTalentsWithoutPrograms(talentsWithoutPrograms ?? []);
+    }
+  }, [allUsers, data?.data]);
 
   const id = orgId;
 
+  // get invited talents - INVITED
   const { data: sentInvites, isFetching: fetchingInvited } =
     useGetSentInvitesQuery(id, {
       skip: !id,
@@ -33,8 +66,14 @@ export default function AllTalents({
 
   useEffect(() => {
     sendTotalTalents(data?.data?.length || 0);
+    setTotalOnboarded(
+      data?.data?.filter(
+        (talent: OnboardingProgramTalents) =>
+          talent.enrollmentStatus === "completed"
+      ).length || 0
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data?.data?.length]);
+  }, [data?.data]);
 
   const [showingTalents, setShowingTalents] = useState([]);
 
@@ -43,8 +82,10 @@ export default function AllTalents({
   useEffect(() => {
     selectedType === "Enrolled"
       ? setShowingTalents(data?.data ?? [])
-      : setShowingTalents(sentInvites?.data ?? []);
-  }, [data?.data, selectedType, sentInvites?.data]);
+      : selectedType === "Invited"
+      ? setShowingTalents(sentInvites?.data ?? [])
+      : setShowingTalents(talentsWithoutPrograms ?? []);
+  }, [data?.data, selectedType, sentInvites?.data, talentsWithoutPrograms]);
 
   if (isFetching || fetchingInvited || !orgId)
     return (
@@ -71,7 +112,7 @@ export default function AllTalents({
               <div className="block w-full overflow-x-auto ">
                 <table className="w-full border-collapse items-center bg-transparent">
                   <thead>
-                    {selectedType === "Enrolled" ? (
+                    {selectedType !== "Invited" ? (
                       <tr>
                         <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                           Talent
@@ -86,9 +127,6 @@ export default function AllTalents({
                           Completion{" "}
                         </th>
                         <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                          Type
-                        </th>
-                        <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                           Actions
                         </th>
                       </tr>
@@ -101,9 +139,6 @@ export default function AllTalents({
                           Invite Date
                         </th>
                         <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                          Type
-                        </th>
-                        <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                           Actions
                         </th>
                       </tr>
@@ -114,7 +149,7 @@ export default function AllTalents({
                     <tr>
                       <td
                         align="center"
-                        colSpan={selectedType === "Enrolled" ? 6 : 4}
+                        colSpan={selectedType !== "Invited" ? 6 : 4}
                         className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs"
                       >
                         <Spinner smaller />
@@ -153,7 +188,7 @@ export default function AllTalents({
             <div className="block w-full overflow-x-auto ">
               <table className="w-full border-collapse items-center bg-transparent">
                 <thead>
-                  {selectedType === "Enrolled" ? (
+                  {selectedType !== "Invited" ? (
                     <tr>
                       <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                         Talent
@@ -164,9 +199,11 @@ export default function AllTalents({
                       <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                         Joined
                       </th>
-                      <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                        Completion{" "}
-                      </th>
+                      {selectedType === "Enrolled" && (
+                        <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                          Completion{" "}
+                        </th>
+                      )}
                       <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                         Actions
                       </th>
@@ -192,7 +229,7 @@ export default function AllTalents({
                     <tr>
                       <td
                         align="center"
-                        colSpan={selectedType === "Enrolled" ? 6 : 4}
+                        colSpan={selectedType !== "Invited" ? 6 : 4}
                         className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-lg font-bold"
                       >
                         No talents have been {selectedType.toLowerCase()} yet
@@ -201,7 +238,7 @@ export default function AllTalents({
                   )}
                   {showingTalents?.length > 0 &&
                     showingTalents?.map((talent: User) =>
-                      selectedType === "Enrolled" ? (
+                      selectedType !== "Invited" ? (
                         <tr key={talent?.id}>
                           <th className="flex items-center whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left align-middle text-xs">
                             <img
@@ -219,27 +256,35 @@ export default function AllTalents({
                           <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
                             {processDate(talent?.createdAt)}
                           </td>
-                          <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs">
-                            <div className="flex items-center">
-                              <span className="mr-2 font-semibold">60%</span>
-                              <div className="relative w-full">
-                                <div className="flex h-2 overflow-hidden rounded bg-red-200 text-xs">
-                                  <div className="flex w-[60%] flex-col justify-center whitespace-nowrap bg-red-500 text-center text-white shadow-none"></div>
+                          {selectedType === "Enrolled" && (
+                            <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs">
+                              <div className="flex items-center">
+                                <span className="mr-2 font-semibold">60%</span>
+                                <div className="relative w-full">
+                                  <div className="flex h-2 overflow-hidden rounded bg-red-200 text-xs">
+                                    <div className="flex w-[60%] flex-col justify-center whitespace-nowrap bg-red-500 text-center text-white shadow-none"></div>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          </td>
+                            </td>
+                          )}
                           <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-right align-middle text-xs">
                             <div
                               className="min-w-48 z-50 list-none rounded py-2 text-left text-base"
                               id="table-dark-1-dropdown"
                             >
-                              <Link
-                                href={`/talents/${talent?.id}`}
-                                className="text-blueGray-700 mb-2 block w-max whitespace-nowrap rounded-xl bg-white px-12 py-2 text-sm font-semibold text-secondary"
-                              >
-                                View
-                              </Link>
+                              {selectedType === "Enrolled" ? (
+                                <Link
+                                  href={`/talents/${talent?.id}`}
+                                  className="text-blueGray-700 mb-2 block w-max whitespace-nowrap rounded-xl bg-white px-12 py-2 text-sm font-semibold text-secondary"
+                                >
+                                  View
+                                </Link>
+                              ) : (
+                                <button className="text-blueGray-700 mb-2 block w-max whitespace-nowrap rounded-xl bg-white px-12 py-2 text-sm font-semibold text-secondary">
+                                  Enroll Now
+                                </button>
+                              )}
                             </div>
                           </td>
                         </tr>

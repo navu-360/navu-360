@@ -14,6 +14,11 @@ export function TalentSwitch({
         customStyles="rounded-l-md"
       />
       <OneOption
+        text="Joined"
+        isSelected={selectedOption === "Joined"}
+        selectOption={() => setSelectedOption("Joined")}
+      />
+      <OneOption
         text="Invited"
         isSelected={selectedOption === "Invited"}
         selectOption={() => setSelectedOption("Invited")}
@@ -40,11 +45,17 @@ function OneOption({
       className={`flex h-[45px] w-[300px] cursor-pointer items-center justify-center bg-tertiary ${customStyles}`}
     >
       <div
-        className={`flex h-[40px] w-[295px] items-center justify-center transition-all duration-200 ease-in ${customStyles} ${
+        className={`flex h-[40px] w-[297px] flex-col items-center justify-center transition-all duration-200 ease-in ${customStyles} ${
           isSelected ? "bg-tertiary text-white" : `bg-white text-tertiary`
         }`}
       >
         <p className="text-[15px] font-semibold">{text}</p>
+        <div
+          className="h-1 w-1 rounded-full bg-secondary transition-all duration-200 ease-in"
+          style={{
+            opacity: isSelected ? 1 : 0,
+          }}
+        />
       </div>
     </div>
   );

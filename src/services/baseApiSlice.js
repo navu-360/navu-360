@@ -179,10 +179,12 @@ export const baseApiSlice = createApi({
 
     // get all enrollments for organization
     getOrganizationEnrollments: builder.query({
-      query: (body) => ({
+      query: (organizationId) => ({
         url: `enrollment/get-org-enrollments`,
         method: "POST",
-        body,
+        body: {
+          organizationId,
+        },
       }),
     }),
 

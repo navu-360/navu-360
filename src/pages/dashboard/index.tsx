@@ -24,12 +24,7 @@ export default function Dashboard() {
 
   const dispatch = useDispatch();
 
-  const orgId = useSelector(
-    (state: { auth: { orgId: string } }) => state.auth.orgId
-  );
-
   useEffect(() => {
-    console.log(data, orgId);
     if (data) {
       dispatch(setOrgId(data?.organization?.id));
       dispatch(setOrganizationData(data?.organization));
@@ -41,6 +36,7 @@ export default function Dashboard() {
 
   const [countOfPrograms, setCountOfPrograms] = useState(0);
   const [countOfTalents, setCountOfTalents] = useState(0);
+  const [countOfOnboarded, setCountOfOnboarded] = useState(0);
 
   const [isReady, setIsReady] = useState(false);
 
@@ -147,12 +143,13 @@ export default function Dashboard() {
                   />
                 </svg>
               }
-              num={0}
+              num={countOfOnboarded}
             />
           </div>
           <section className="mr-4 mt-8 flex w-full max-w-full gap-2">
             <AllTalents
               sendTotalTalents={(num: number) => setCountOfTalents(num)}
+              setTotalOnboarded={(num: number) => setCountOfOnboarded(num)}
             />
             <Programs
               countOfPrograms={(num: number) => setCountOfPrograms(num)}

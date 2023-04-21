@@ -17,6 +17,7 @@ export default function Programs({
   const orgId = useSelector(
     (state: { auth: { orgId: string } }) => state.auth.orgId
   );
+  // get programs created by this organization
   const { data, isFetching } = useGetOrganizationProgramsQuery(orgId, {
     skip: !orgId,
     refetchOnMountOrArgChange: true,
