@@ -10,9 +10,8 @@ import DashboardWrapper from "components/layout/dashboardWrapper";
 import React, { useEffect, useState } from "react";
 import type { OnboardingProgram } from "types";
 import { generateAvatar } from "utils/avatar";
-import InviteTalentsModal from "components/dashboard/inviteTalents";
 import { useGetProgramTalentsQuery } from "services/baseApiSlice";
-import type { OnboardingProgramTalents } from "@prisma/client";
+import type { OnboardingProgramTalents, User } from "@prisma/client";
 import { SmallSpinner } from "components/common/spinner";
 
 export default function Program({ data }: { data: OnboardingProgram }) {
@@ -72,23 +71,21 @@ export default function Program({ data }: { data: OnboardingProgram }) {
                   </p>
                 )}
 
-                {enrolledTalents?.data?.map(
-                  (talent: OnboardingProgramTalents) => (
-                    <div
-                      key={talent.id}
-                      className="flex w-full items-center gap-3 rounded-lg bg-tertiary/80 p-4 text-white"
-                    >
-                      <img
-                        src={generateAvatar(talent?.id)}
-                        className="h-[50px] w-[50px] rounded-full bg-tertiary"
-                        alt={""}
-                      />
-                      <div>
-                        <p>{talent?.name}</p>
-                      </div>
+                {enrolledTalents?.data?.map((talent: User) => (
+                  <div
+                    key={talent.id}
+                    className="flex w-full items-center gap-3 rounded-lg bg-tertiary/80 p-4 text-white"
+                  >
+                    <img
+                      src={generateAvatar(talent?.id)}
+                      className="h-[50px] w-[50px] rounded-full bg-tertiary"
+                      alt={""}
+                    />
+                    <div>
+                      <p>{talent?.name}</p>
                     </div>
-                  )
-                )}
+                  </div>
+                ))}
                 {fetchingEnrolled && (
                   <div className="mt-3 flex w-full items-center justify-center">
                     <SmallSpinner />

@@ -26,6 +26,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         where: {
             id: talentId,
         },
+        include: {
+            onboardingProgs: true,
+        }
     });
 
     if (!talent) return res.status(400).json({ error: "Talent not found" });

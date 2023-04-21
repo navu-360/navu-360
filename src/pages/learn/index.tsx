@@ -1,4 +1,4 @@
-import type { User } from "@prisma/client";
+import type { OnboardingProgramTalents, User } from "@prisma/client";
 import Header from "components/common/head";
 import MyEnrolledPrograms from "components/dashboard/myPrograms";
 import DashboardWrapper from "components/layout/dashboardWrapper";
@@ -6,7 +6,10 @@ import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setOrgId, setOrganizationData } from "redux/auth/authSlice";
-import { useGetOrganizationByIdQuery } from "services/baseApiSlice";
+import {
+  useGetOrganizationByIdQuery,
+  useGetTalentEnrollmentsQuery,
+} from "services/baseApiSlice";
 
 export default function LearnCenter() {
   const userProfile = useSelector(
@@ -16,6 +19,7 @@ export default function LearnCenter() {
   const { data: session } = useSession();
 
   const id = session?.user?.orgId;
+  // get organization data
   const { data: organizationData } = useGetOrganizationByIdQuery(id, {
     skip: !id,
   });
@@ -35,6 +39,14 @@ export default function LearnCenter() {
   useEffect(() => {
     setIsReady(true);
   }, []);
+
+  // get all enrolled programs
+  const talentId = session?.user?.id;
+  const { data } = useGetTalentEnrollmentsQuery(talentId, {
+    skip: !talentId,
+  });
+
+  console.log(data);
 
   if (!isReady) return null;
 
@@ -69,7 +81,7 @@ export default function LearnCenter() {
                 </svg>
               }
               text="Total Enrolled Programs"
-              num={0}
+              num={data?.data?.length ?? 0}
             />
             <OneStat
               text="Completed Programs"
@@ -91,11 +103,16 @@ export default function LearnCenter() {
                   <path d="M4 4v16"></path>
                 </svg>
               }
-              num={0}
+              num={
+                data?.data?.filter(
+                  (item: OnboardingProgramTalents) =>
+                    item?.enrollmentStatus === "completed"
+                ).length ?? 0
+              }
             />
           </div>
           <section className="mr-4 mt-8 flex w-full max-w-full gap-2">
-            <MyEnrolledPrograms />
+            <MyEnrolledPrograms data={data?.data ?? []} />
           </section>
         </div>
       </DashboardWrapper>

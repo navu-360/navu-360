@@ -168,10 +168,12 @@ export const baseApiSlice = createApi({
     }),
     // get all enrollments for a talent
     getTalentEnrollments: builder.query({
-      query: (body) => ({
+      query: (talentId) => ({
         url: `enrollment/get-my-enrollments`,
         method: "POST",
-        body,
+        body: {
+          talentId,
+        },
       }),
     }),
 

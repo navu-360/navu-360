@@ -61,30 +61,35 @@ export default function AdminNav({
             isActive={router.pathname === "/dashboard"}
             to={"/dashboard"}
           />
-          <OneItem
-            svg={
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                className=" transition-all duration-300 ease-in group-hover:rotate-[-25deg]"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="m16 6 4 14"></path>
-                <path d="M12 6v14"></path>
-                <path d="M8 8v12"></path>
-                <path d="M4 4v16"></path>
-              </svg>
-            }
-            text={session?.user?.role === "admin" ? "Programs" : "My Programs"}
-            isActive={router.pathname === "/programs"}
-            to={"/programs"}
-          />
+          {userProfile?.role === "admin" && (
+            <OneItem
+              svg={
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  className=" transition-all duration-300 ease-in group-hover:rotate-[-25deg]"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="m16 6 4 14"></path>
+                  <path d="M12 6v14"></path>
+                  <path d="M8 8v12"></path>
+                  <path d="M4 4v16"></path>
+                </svg>
+              }
+              text={
+                session?.user?.role === "admin" ? "Programs" : "My Programs"
+              }
+              isActive={router.pathname === "/programs"}
+              to={"/programs"}
+            />
+          )}
+
           {userProfile?.role === "admin" && (
             <OneItem
               svg={

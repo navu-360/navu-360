@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import type { OnboardingProgramTalents } from "@prisma/client";
+import type { OnboardingProgramTalents, User } from "@prisma/client";
 import Header from "components/common/head";
 import Spinner from "components/common/spinner";
 import DashboardWrapper from "components/layout/dashboardWrapper";
@@ -72,13 +72,13 @@ export default function Talents() {
                 </tr>
               )}
               {data?.data?.length > 0 &&
-                data?.data?.map((talent: OnboardingProgramTalents) => (
+                data?.data?.map((talent: User) => (
                   <tr key={talent?.id}>
                     <th className="flex items-center whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left align-middle text-xs">
                       <img
                         src={generateAvatar(talent?.id)}
                         className="h-12 w-12 rounded-full border bg-white"
-                        alt="..."
+                        alt={talent?.id}
                       />
                       <span className="ml-3 font-bold text-white">
                         {talent?.name}
