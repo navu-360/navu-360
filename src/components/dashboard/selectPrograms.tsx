@@ -6,6 +6,7 @@ import toaster from "utils/toaster";
 import { useEnrollTalentMutation } from "services/baseApiSlice";
 import { useSelector } from "react-redux";
 import useDebounce from "utils/useDebounce";
+
 export function SelectPrograms({
   programs,
   talentName,

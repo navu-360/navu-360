@@ -43,8 +43,6 @@ export default function Talent({ data }: { data: User }) {
     skip: !orgId,
   });
 
-  console.log(allPrograms);
-
   // remove from enrolled program
 
   // remove from organization
@@ -195,7 +193,7 @@ export default function Talent({ data }: { data: User }) {
                 onClick={() =>
                   setShowTalentEnrolModal([data?.id, data?.name as string])
                 }
-                className="absolute right-10 top-3 flex w-max items-center gap-2 rounded-md bg-tertiary/50 px-4 py-2 font-semibold text-white"
+                className="absolute right-10 top-3 flex w-max items-center gap-2 rounded-md bg-tertiary/70 px-4 py-2 font-semibold text-white"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

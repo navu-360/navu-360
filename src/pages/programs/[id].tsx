@@ -20,6 +20,7 @@ import { SmallSpinner } from "components/common/spinner";
 import { motion } from "framer-motion";
 import { processDate } from "utils/date";
 import Link from "next/link";
+import { GoBack } from "components/dashboard/common";
 
 export interface IEnrollmentWithTalent extends OnboardingProgramTalents {
   User: User;
@@ -37,6 +38,7 @@ export default function Program({ data }: { data: OnboardingProgram }) {
 
   const programId = data?.id;
 
+  // get enrolled talents
   const { data: enrolledTalents, isFetching: fetchingEnrolled } =
     useGetProgramEnrollmentsQuery(programId, {
       skip: !programId,
@@ -44,6 +46,7 @@ export default function Program({ data }: { data: OnboardingProgram }) {
 
   const id = data?.createdBy;
 
+  // get user
   const { data: userInfo } = useGetUserByIdQuery(id, {
     skip: !id,
   });
@@ -52,7 +55,8 @@ export default function Program({ data }: { data: OnboardingProgram }) {
     <>
       <Header title={`${data?.name} - Navu360`} />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[300px] mt-[20px] flex h-full items-start justify-start gap-8">
+        <div className="relative ml-[300px] mt-[20px] flex h-full items-start justify-start gap-8 pt-16">
+          <GoBack />
           <div className="flex flex-col gap-3">
             <h1 className="w-full text-left text-2xl font-bold text-tertiary">
               {data?.name}
@@ -159,7 +163,7 @@ export default function Program({ data }: { data: OnboardingProgram }) {
             {/* list of talents */}
             <div className="flex w-full flex-col gap-4">
               {enrolledTalents?.data?.length > 0 && (
-                <div className="mt-8 flex items-center justify-between">
+                <div className="relative mb-0 mt-8 flex items-center justify-between">
                   <h2 className="tetx-lg font-semibold">Talents enrolled</h2>
                 </div>
               )}

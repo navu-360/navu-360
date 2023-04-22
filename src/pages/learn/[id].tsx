@@ -12,6 +12,7 @@ import type { OnboardingProgram } from "types";
 import { useMarkEnrollmentCompletedMutation } from "services/baseApiSlice";
 import toaster from "utils/toaster";
 import type { OnboardingProgramTalents } from "@prisma/client";
+import { GoBack } from "components/dashboard/common";
 
 export default function ViewTalent({
   data,
@@ -66,9 +67,10 @@ export default function ViewTalent({
     <>
       <Header title={`${data?.OnboardingProgram?.name} - Navu360`} />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[300px] mt-[20px] flex h-full items-start justify-start gap-8">
+        <div className="relative ml-[300px] mt-[20px] flex h-full items-start justify-start gap-8 pt-16">
+          <GoBack />
           <div className="flex w-[95%] min-w-[95%] flex-col gap-3 pb-8">
-            <h1 className="w-full text-center text-2xl font-bold text-tertiary">
+            <h1 className="w-full text-left text-2xl font-bold text-tertiary">
               {data?.OnboardingProgram?.name}
             </h1>
             {content && <MyEditor isReadOnly initialData={content} />}

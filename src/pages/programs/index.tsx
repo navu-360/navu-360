@@ -21,6 +21,7 @@ export default function Programs() {
   const orgId = useSelector(
     (state: { auth: { orgId: string } }) => state.auth.orgId
   );
+  // get organization programs
   const { data, isFetching, refetch } = useGetOrganizationProgramsQuery(orgId, {
     skip: !orgId,
     refetchOnMountOrArgChange: true,
@@ -68,7 +69,7 @@ export default function Programs() {
     <>
       <Header title={`All Onboarding Programs - Navu360`} />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[250px] mt-[20px] flex h-full flex-col items-center justify-center gap-8 2xl:ml-[250px]">
+        <div className="relative ml-[250px] mt-[4rem] flex h-full flex-col items-center justify-center gap-8 2xl:ml-[250px]">
           {programsArray?.length === 0 && (
             <div className="flex min-h-[70vh] w-full items-center justify-center gap-4">
               <svg

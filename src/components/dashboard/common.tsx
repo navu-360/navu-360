@@ -1,3 +1,5 @@
+import { useRouter } from "next/router";
+
 export function TalentSwitch({
   selectedOption,
   setSelectedOption,
@@ -57,6 +59,32 @@ function OneOption({
           }}
         />
       </div>
+    </div>
+  );
+}
+
+export function GoBack() {
+  const router = useRouter();
+  return (
+    <div
+      onClick={() => router.back()}
+      className="absolute left-0 top-0 flex w-max cursor-pointer items-center gap-2 rounded-md p-2 text-tertiary hover:bg-gray-100"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+        className="h-6 w-6"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"
+        />
+      </svg>
+      <p className="cursor-pointer text-[15px] font-semibold">Go Back</p>
     </div>
   );
 }

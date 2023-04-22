@@ -53,9 +53,9 @@ function MyEditor({
       className={`mb-8 min-w-[400px] rounded-lg  bg-tertiary p-8 text-white md:min-w-[50vw] ${
         isReadOnly
           ? `${
-              router?.pathname === "/learn"
+              router?.pathname.includes("learn")
                 ? "w-full max-w-[unset]"
-                : "w-full max-w-[unset]"
+                : "w-[65%] max-w-[unset]"
             }`
           : "max-w-[60vw]"
       }`}
