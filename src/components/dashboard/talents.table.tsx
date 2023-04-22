@@ -21,7 +21,6 @@ import type {
 } from "@prisma/client";
 import { SelectPrograms } from "./selectPrograms";
 import { AnimatePresence } from "framer-motion";
-import type { IEnrollment } from "./myPrograms";
 
 export default function AllTalents({
   sendTotalTalents,
@@ -191,7 +190,7 @@ export default function AllTalents({
     );
 
   return (
-    <section className="w-[70%] rounded-md border-[1px] border-tertiary/50 bg-tertiary/5 p-2">
+    <section className="w-[70%] rounded-md border-[1px] border-tertiary/50 p-2">
       <section className="relative w-full py-16">
         <TalentSwitch
           selectedOption={selectedType}
