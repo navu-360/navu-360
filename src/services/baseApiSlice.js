@@ -211,7 +211,7 @@ export const baseApiSlice = createApi({
     // unregister a talent from a program
     unregisterTalent: builder.mutation({
       query: (body) => ({
-        url: `enrollment/unregister`,
+        url: `enrollment/unenroll`,
         method: "POST",
         body,
       }),

@@ -195,15 +195,14 @@ span {
 }
 
 .program-input {
-    border: 1px solid #28293e;
+    border-bottom: 1px solid #28293e;
     transition: all 0.3s ease;
-    border-radius: 8px;
     padding: 5px 10px;
 
 }
 
 .program-input:focus {
-    border: 1.5px solid #FB5881;
+    border-bottom: 1.5px solid #FB5881;
 }
 
 .hr-color {

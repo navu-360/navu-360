@@ -17,10 +17,12 @@ export default function MyEnrolledPrograms({
   data,
   user,
   setShowTalentEnrolModal,
+  unenroll,
 }: {
   data: IEnrollment[];
   user?: User;
   setShowTalentEnrolModal?: (arg: [string, string]) => void;
+  unenroll?: (arg: string) => void;
 }) {
   if (!data) return null;
 
@@ -70,6 +72,7 @@ export default function MyEnrolledPrograms({
                 program={program}
                 delay={i * 0.1}
                 fromAdmin={!!user}
+                unenroll={unenroll}
               />
             ))}
           </div>
@@ -83,10 +86,12 @@ export function OneProgramCard({
   program,
   delay,
   fromAdmin,
+  unenroll,
 }: {
   program: IEnrollment;
   delay: number;
   fromAdmin?: boolean;
+  unenroll?: (arg: string) => void;
 }) {
   return (
     <motion.div
@@ -135,11 +140,7 @@ export function OneProgramCard({
         </svg>
 
         <div
-          className={`relative flex w-full items-start gap-1 rounded-t-lg p-4 text-tertiary ${
-            fromAdmin
-              ? "flex-col justify-between xl:flex-row"
-              : "flex-col justify-start"
-          }`}
+          className={`relative flex w-full flex-col items-start justify-start gap-1 rounded-t-lg p-4 text-tertiary`}
         >
           <h2 className="text-lg font-bold leading-tight">
             {program?.OnboardingProgram?.name}
@@ -188,7 +189,30 @@ export function OneProgramCard({
           </div>
         </div>
 
-        {!fromAdmin && (
+        {fromAdmin ? (
+          program?.enrollmentStatus === "pending" ? (
+            <button
+              onClick={() => (unenroll ? unenroll(program.id) : null)}
+              className="mr-3 flex w-[150px] items-center justify-center gap-2 rounded-md border-[1px] border-tertiary bg-white px-4 py-2 text-base font-semibold text-tertiary"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="h-6 w-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M19.5 12h-15"
+                />
+              </svg>
+              <span className="w-max">Unenroll</span>
+            </button>
+          ) : null
+        ) : (
           <div className="mr-8 flex h-max w-max items-center gap-4 rounded-lg bg-green-600/25 px-6 py-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"

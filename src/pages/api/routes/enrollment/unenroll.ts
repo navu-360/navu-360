@@ -14,32 +14,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // unenroll a talent from a program
 
-  // receive: programId, talentId, enrollmentId
+  // receive: enrollmentId
 
-  // validations: 1) programId exists, 2) talentId exists, 3) talent is enrolled in program
 
   try {
-    const { programId, talentId, enrollmentId } = req.body as {
-      programId: string;
-      talentId: string;
+    const { enrollmentId } = req.body as {
+
       enrollmentId: string;
     };
-
-    const program = await prisma.onboardingProgram.findUnique({
-      where: {
-        id: programId,
-      },
-    });
-
-    if (!program) return res.status(400).json({ error: "Program not found" });
-
-    const talent = await prisma.user.findUnique({
-      where: {
-        id: talentId,
-      },
-    });
-
-    if (!talent) return res.status(400).json({ error: "Talent not found" });
 
     const talentEnrollment = await prisma.onboardingProgramTalents.findUnique({
       where: {

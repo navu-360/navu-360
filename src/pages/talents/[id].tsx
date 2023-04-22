@@ -19,6 +19,7 @@ import { useSelector } from "react-redux";
 
 import { AnimatePresence } from "framer-motion";
 import { SelectPrograms } from "components/dashboard/selectPrograms";
+import { ConfirmUnenroll } from "components/dashboard/confirmUnenroll";
 
 export default function Talent({ data }: { data: User }) {
   const talentId = data?.id;
@@ -43,7 +44,9 @@ export default function Talent({ data }: { data: User }) {
     skip: !orgId,
   });
 
-  // remove from enrolled program
+  const [showUnenrollModal, setShowUnenrollModal] = useState<boolean | string>(
+    false
+  );
 
   // remove from organization
 
@@ -55,7 +58,7 @@ export default function Talent({ data }: { data: User }) {
           {/* sections */}
           {/* user details part - like on talent feed */}
           <section className="relative flex w-[95%] gap-8">
-            <div className="fixed left-[300px] top-[120px] flex h-[350px] w-[400px] flex-col justify-between rounded-xl bg-white p-4 shadow-lg">
+            <div className="fixed left-[300px] top-[120px] flex h-[300px] w-[400px] flex-col justify-between rounded-xl bg-white p-4 shadow-lg">
               <div className="w-full">
                 <div className="flex gap-4">
                   <img
@@ -152,23 +155,6 @@ export default function Talent({ data }: { data: User }) {
               </div>
               <div className="hr-color h-[1px] w-full"></div>
               <div className="flex w-full flex-col gap-4">
-                <button className="flex items-center justify-center gap-2 rounded-md border-[1px] border-tertiary bg-white py-2 text-base font-semibold text-tertiary">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="h-6 w-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M19.5 12h-15"
-                    />
-                  </svg>
-                  <span>Remove From Program</span>
-                </button>
                 <button className="flex items-center justify-center gap-2 rounded-md bg-red-400 py-2 text-base font-semibold text-white">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -216,7 +202,13 @@ export default function Talent({ data }: { data: User }) {
                   <Spinner />
                 </div>
               ) : (
-                <MyEnrolledPrograms user={data} data={enrollments?.data} />
+                <MyEnrolledPrograms
+                  user={data}
+                  data={enrollments?.data}
+                  unenroll={(id) => {
+                    setShowUnenrollModal(id);
+                  }}
+                />
               )}
             </div>
           </section>
@@ -240,6 +232,19 @@ export default function Talent({ data }: { data: User }) {
                       enrollment.programId === program.id
                   )
               )}
+            />
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {showUnenrollModal && (
+            <ConfirmUnenroll
+              id={showUnenrollModal as string}
+              setShowConfirmModal={() => setShowUnenrollModal(false)}
+              refreshPrograms={() => {
+                refetch();
+                setShowUnenrollModal(false);
+              }}
+              userName={data?.name as string}
             />
           )}
         </AnimatePresence>

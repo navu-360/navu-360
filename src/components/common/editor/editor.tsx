@@ -57,7 +57,7 @@ function MyEditor({
                 ? "w-full max-w-[unset]"
                 : "w-[65%] max-w-[unset]"
             }`
-          : "max-w-[60vw]"
+          : "w-full max-w-[80vw]"
       }`}
       id="editorjs"
     />

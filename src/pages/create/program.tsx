@@ -19,6 +19,7 @@ import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import Spinner from "components/common/spinner";
+import { GoBack } from "components/dashboard/common";
 
 interface CustomTemplate extends OutputData {
   id?: string;
@@ -145,7 +146,8 @@ export default function CreateProgram() {
     <>
       <Header title="Create an Onboarding Program" />
       <DashboardWrapper hideSearch>
-        <div className="relative left-1/2 ml-[100px] mt-[20px] flex h-full w-[764px] -translate-x-1/2 flex-col items-center justify-center gap-8">
+        <div className="relative ml-[250px] mt-[20px] flex h-full w-max flex-col items-start justify-start gap-8 pt-8">
+          <GoBack />
           <div className="mt-8 flex w-full justify-between">
             <form>
               <input
