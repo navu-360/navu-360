@@ -32,7 +32,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       } catch (error) {
         return res
           .status(500)
-          .json({ message: `Unable to get organization.`, error: error });
+          // @ts-ignore
+          .json({ message: error.message });
       }
 
     default:

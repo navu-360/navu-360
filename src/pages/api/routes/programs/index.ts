@@ -45,7 +45,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       } catch (error) {
         return res
           .status(500)
-          .json({ message: `Unable to create program.`, error: error });
+          // @ts-ignore
+          .json({ message: error.message });
       }
 
     case "GET":
@@ -74,7 +75,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       } catch (error) {
         return res
           .status(500)
-          .json({ message: `Unable to fetch programs.`, error: error });
+          // @ts-ignore
+          .json({ message: error.message });
       }
 
     default:
