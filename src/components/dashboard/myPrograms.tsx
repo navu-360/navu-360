@@ -5,14 +5,9 @@ import type {
   User,
 } from "@prisma/client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 
 import { motion } from "framer-motion";
-
-import { AnimatePresence } from "framer-motion";
-import { SelectPrograms } from "./selectPrograms";
-import { useGetOrganizationProgramsQuery } from "services/baseApiSlice";
-import { useSelector } from "react-redux";
 
 interface IEnrollment extends OnboardingProgramTalents {
   OnboardingProgram: OnboardingProgram;
@@ -21,24 +16,12 @@ interface IEnrollment extends OnboardingProgramTalents {
 export default function MyEnrolledPrograms({
   data,
   user,
-  refetch,
+  setShowTalentEnrolModal,
 }: {
   data: IEnrollment[];
   user?: User;
-  refetch?: () => void;
+  setShowTalentEnrolModal?: (arg: [string, string]) => void;
 }) {
-  const [showTalentEnrolModal, setShowTalentEnrolModal] = useState<string[]>(
-    []
-  );
-
-  const orgId = useSelector(
-    (state: { auth: { orgId: string } }) => state.auth.orgId
-  );
-  // get programs created by this organization
-  const { data: allPrograms } = useGetOrganizationProgramsQuery(orgId, {
-    skip: !orgId,
-  });
-
   if (!data) return null;
 
   return (
@@ -63,6 +46,7 @@ export default function MyEnrolledPrograms({
                 <p>{user?.name} has not been enrolled to any program. </p>
                 <button
                   onClick={() =>
+                    setShowTalentEnrolModal &&
                     setShowTalentEnrolModal([user?.id, user?.name as string])
                   }
                   className="text-blueGray-700 mb-2 block w-max whitespace-nowrap rounded-xl bg-white px-12 py-2 text-sm font-semibold text-secondary"
@@ -91,21 +75,6 @@ export default function MyEnrolledPrograms({
           </div>
         )}
       </div>
-      <AnimatePresence>
-        {showTalentEnrolModal?.length > 0 && (
-          <SelectPrograms
-            closeModal={(val) => {
-              if (val) {
-                refetch && refetch();
-              }
-              setShowTalentEnrolModal([]);
-            }}
-            talentId={showTalentEnrolModal[0] as string}
-            talentName={showTalentEnrolModal[1] as string}
-            programs={allPrograms}
-          />
-        )}
-      </AnimatePresence>
     </section>
   );
 }
@@ -130,6 +99,9 @@ export function OneProgramCard({
       <Link
         href={`/learn/${program.id}`}
         onClick={(e) => {
+          if (fromAdmin) {
+            e.preventDefault();
+          }
           // if click element IDs: editProgram, deleteProgram, cancel default
           if (e.target) {
             if (

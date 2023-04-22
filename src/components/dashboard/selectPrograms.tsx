@@ -47,12 +47,18 @@ export function SelectPrograms({
         });
         closeModal(true);
       })
-      .catch((error) => {
-        toaster({
-          status: "error",
-          message: error?.data?.message,
-        });
-      });
+      .catch(
+        (error: {
+          data: {
+            message: string;
+          };
+        }) => {
+          toaster({
+            status: "error",
+            message: error?.data?.message,
+          });
+        }
+      );
   };
 
   const [search, setSearch] = useState("");
@@ -121,12 +127,26 @@ export function SelectPrograms({
                 />
               </form>
               {selectedProgramIds?.length > 0 && (
-                <button className="flex items-center gap-1 rounded p-2 py-1 hover:underline">
+                <button className="flex items-center gap-2 rounded p-2 py-1 hover:underline">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="h-6 w-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
                   Unselect all
                 </button>
               )}
             </div>
-            <div className="no-scrollbar flex h-[350px] flex-col gap-4 overflow-y-auto">
+            <div className="no-scrollbar flex h-max max-h-[350px] flex-col gap-4 overflow-y-auto">
               {showingItems.map((program) => (
                 <div
                   key={program.id}

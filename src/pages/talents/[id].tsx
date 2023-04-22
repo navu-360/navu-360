@@ -1,17 +1,28 @@
 /* eslint-disable @next/next/no-img-element */
-import type { User } from "@prisma/client";
+import type {
+  OnboardingProgram,
+  OnboardingProgramTalents,
+  User,
+} from "@prisma/client";
 import axios from "axios";
 import Header from "components/common/head";
 import Spinner from "components/common/spinner";
 import MyEnrolledPrograms from "components/dashboard/myPrograms";
 import DashboardWrapper from "components/layout/dashboardWrapper";
-import React from "react";
+import React, { useState } from "react";
 import { useGetTalentEnrollmentsQuery } from "services/baseApiSlice";
 import { generateAvatar } from "utils/avatar";
 import { processDate } from "utils/date";
 
+import { useGetOrganizationProgramsQuery } from "services/baseApiSlice";
+import { useSelector } from "react-redux";
+
+import { AnimatePresence } from "framer-motion";
+import { SelectPrograms } from "components/dashboard/selectPrograms";
+
 export default function Talent({ data }: { data: User }) {
   const talentId = data?.id;
+  // get all enrolled programs for this talent
   const {
     data: enrollments,
     isFetching,
@@ -19,6 +30,20 @@ export default function Talent({ data }: { data: User }) {
   } = useGetTalentEnrollmentsQuery(talentId, {
     skip: !talentId,
   });
+
+  const [showTalentEnrolModal, setShowTalentEnrolModal] = useState<string[]>(
+    []
+  );
+
+  const orgId = useSelector(
+    (state: { auth: { orgId: string } }) => state.auth.orgId
+  );
+  // get programs created by this organization
+  const { data: allPrograms } = useGetOrganizationProgramsQuery(orgId, {
+    skip: !orgId,
+  });
+
+  console.log(allPrograms);
 
   // remove from enrolled program
 
@@ -165,23 +190,61 @@ export default function Talent({ data }: { data: User }) {
                 </button>
               </div>
             </div>
-            <div className="ml-[450px] mt-8 h-max min-h-[400px] w-full rounded-xl bg-white p-4 shadow-lg">
+            <div className="relative ml-[450px] mt-8 h-max min-h-[400px] w-full rounded-xl bg-white p-4 pt-12 shadow-lg">
+              <button
+                onClick={() =>
+                  setShowTalentEnrolModal([data?.id, data?.name as string])
+                }
+                className="absolute right-10 top-3 flex w-max items-center gap-2 rounded-md bg-tertiary/50 px-4 py-2 font-semibold text-white"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="h-6 w-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 4.5v15m7.5-7.5h-15"
+                  />
+                </svg>
+                <span>New Enrollment</span>
+              </button>
               {isFetching || !enrollments?.data ? (
                 <div className="relative mt-[20px] flex h-full min-h-[400px] w-full flex-col items-center justify-center gap-8">
                   <Spinner />
                 </div>
               ) : (
-                <MyEnrolledPrograms
-                  refetch={refetch}
-                  user={data}
-                  data={enrollments?.data}
-                />
+                <MyEnrolledPrograms user={data} data={enrollments?.data} />
               )}
             </div>
           </section>
-
-          {/* show their enrolled programs as cards with completion % */}
         </div>
+        <AnimatePresence>
+          {showTalentEnrolModal?.length > 0 && (
+            <SelectPrograms
+              closeModal={(val) => {
+                if (val) {
+                  refetch && refetch();
+                }
+                setShowTalentEnrolModal([]);
+              }}
+              talentId={showTalentEnrolModal[0] as string}
+              talentName={showTalentEnrolModal[1] as string}
+              // remove already enrolled programs: enrollments?.data where id === program.id
+              programs={allPrograms?.data?.filter(
+                (program: OnboardingProgram) =>
+                  !enrollments?.data?.some(
+                    (enrollment: OnboardingProgramTalents) =>
+                      enrollment.programId === program.id
+                  )
+              )}
+            />
+          )}
+        </AnimatePresence>
       </DashboardWrapper>
     </>
   );
