@@ -1,5 +1,6 @@
 import type { OnboardingProgramTalents, User } from "@prisma/client";
 import Header from "components/common/head";
+import Spinner from "components/common/spinner";
 import MyEnrolledPrograms from "components/dashboard/myPrograms";
 import DashboardWrapper from "components/layout/dashboardWrapper";
 import { useSession } from "next-auth/react";
@@ -41,8 +42,8 @@ export default function LearnCenter() {
   }, []);
 
   // get all enrolled programs
-  const talentId = session?.user?.id;
-  const { data } = useGetTalentEnrollmentsQuery(talentId, {
+  const talentId = userProfile?.id;
+  const { data, isFetching } = useGetTalentEnrollmentsQuery(talentId, {
     skip: !talentId,
   });
 
@@ -54,7 +55,7 @@ export default function LearnCenter() {
         title={`${organizationData?.organization?.name ?? ""} Learn Center`}
       />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[300px] mt-[1rem] text-tertiary">
+        <div className="relative ml-[250px] mt-[1rem] text-tertiary">
           <h1 className="w-full text-2xl font-bold">
             Hi, {userProfile?.name?.split(" ")[0] ?? ""}
           </h1>
@@ -110,7 +111,13 @@ export default function LearnCenter() {
             />
           </div>
           <section className="mr-4 mt-8 flex w-full max-w-full gap-2">
-            <MyEnrolledPrograms data={data?.data ?? []} />
+            {isFetching || !data?.data ? (
+              <div className="relative mt-[20px] flex h-full min-h-[400px] w-[50%] flex-col items-center justify-center gap-8">
+                <Spinner />
+              </div>
+            ) : (
+              <MyEnrolledPrograms data={data?.data} />
+            )}
           </section>
         </div>
       </DashboardWrapper>

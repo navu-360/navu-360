@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from "react";
 import type { EditorConfig, OutputData } from "@editorjs/editorjs";
 import EditorJS from "@editorjs/editorjs";
 import { EDITOR_JS_TOOLS } from "./editor.tools";
+import { useRouter } from "next/router";
 
 function MyEditor({
   initialData,
@@ -15,6 +16,8 @@ function MyEditor({
   receiveData?: (data: OutputData) => void;
 }) {
   const editorRef = useRef<EditorConfig>(null);
+
+  const router = useRouter();
 
   useEffect(() => {
     const holder = document.getElementById("editorjs");
@@ -48,7 +51,13 @@ function MyEditor({
   return (
     <div
       className={`mb-8 min-w-[400px] rounded-lg bg-tertiary p-8 text-white ${
-        isReadOnly ? "max-w-[50vw]" : "max-w-[60vw]"
+        isReadOnly
+          ? `${
+              router?.pathname === "/learn"
+                ? "w-full max-w-[unset]"
+                : "w-full max-w-[unset]"
+            }`
+          : "max-w-[60vw]"
       }`}
       id="editorjs"
     />

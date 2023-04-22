@@ -37,7 +37,7 @@ export default function Talents() {
     <>
       <Header title={`All Talents - Navu360`} />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[250px] mt-[20px] flex h-full flex-col items-center justify-center gap-8 2xl:ml-[300px]">
+        <div className="relative ml-[250px] mt-[20px] flex h-full flex-col items-center justify-center gap-8 2xl:ml-[250px]">
           <table className="mt-8 w-auto min-w-[80vw] border-collapse items-center bg-transparent">
             <thead>
               <tr>

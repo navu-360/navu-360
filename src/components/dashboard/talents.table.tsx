@@ -42,8 +42,6 @@ export default function AllTalents({
     }
   );
 
-  console.log(data, " data");
-
   // get all talents in the organization
   const org = orgId;
   const { data: allUsers } = useFetchUsersQuery(org, {
@@ -51,10 +49,12 @@ export default function AllTalents({
   });
 
   const [talentsWithoutPrograms, setTalentsWithoutPrograms] = useState([]);
+  const [loadingJoined, setLoadingJoined] = useState(false);
 
   // joined but not enrolled - JOINED
   useEffect(() => {
     if (allUsers && data?.data) {
+      setLoadingJoined(true);
       // get all talents who are not enrolled in any program. comparing allUsers and data
       const talentsWithoutPrograms = allUsers?.data?.filter(
         (talent: User) =>
@@ -65,6 +65,7 @@ export default function AllTalents({
       );
       console.log(talentsWithoutPrograms);
       setTalentsWithoutPrograms(talentsWithoutPrograms ?? []);
+      setLoadingJoined(false);
     }
   }, [allUsers, data?.data]);
 
@@ -103,7 +104,7 @@ export default function AllTalents({
     []
   );
 
-  if (isFetching || fetchingInvited || !orgId)
+  if (isFetching || fetchingInvited || !orgId || loadingJoined)
     return (
       <section className="w-[70%] rounded-md border-[1px] border-tertiary/50 bg-tertiary/10 p-2">
         <section className="bg-blueGray-50 relative py-16">
@@ -153,9 +154,6 @@ export default function AllTalents({
                         </th>
                         <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                           Invite Date
-                        </th>
-                        <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                          Actions
                         </th>
                       </tr>
                     )}
@@ -232,16 +230,13 @@ export default function AllTalents({
                       <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                         Invite Date
                       </th>
-                      <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                        Actions
-                      </th>
                     </tr>
                   )}
                 </thead>
 
                 <tbody>
                   {/* enrolled */}
-                  {showingTalents?.length === 0 && (
+                  {showingTalents?.length === 0 && data && sentInvites && (
                     <tr>
                       <td
                         align="center"
@@ -258,7 +253,7 @@ export default function AllTalents({
                     showingTalents?.map((talent: any) =>
                       selectedType !== "Invited" ? (
                         <tr key={talent?.id}>
-                          <td className="flex items-center w-[225px] whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left align-middle text-xs">
+                          <td className="flex w-[225px] items-center whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left align-middle text-xs">
                             <img
                               src={generateAvatar(
                                 talent?.User?.id ?? talent?.id
@@ -286,7 +281,7 @@ export default function AllTalents({
                             >
                               {selectedType === "Enrolled" ? (
                                 <Link
-                                  href={`/talents/${talent?.id}`}
+                                  href={`/talents/${talent?.User?.id}`}
                                   className="text-blueGray-700 mb-2 block w-max whitespace-nowrap rounded-xl bg-white px-12 py-2 text-sm font-semibold text-secondary"
                                 >
                                   View
@@ -321,31 +316,6 @@ export default function AllTalents({
                           </th>
                           <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
                             {processDate(talent?.createdAt)}
-                          </td>
-
-                          <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-right align-middle text-xs">
-                            <div
-                              className="min-w-48 z-50 list-none rounded text-left text-base"
-                              id="table-dark-1-dropdown"
-                            >
-                              <button className="text-blueGray-700 flex w-max items-center gap-2 whitespace-nowrap rounded-xl bg-secondary px-8 py-2 text-sm font-semibold text-white">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  strokeWidth={1.5}
-                                  stroke="currentColor"
-                                  className="h-6 w-6"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M6 18L18 6M6 6l12 12"
-                                  />
-                                </svg>
-                                Revoke Invite
-                              </button>
-                            </div>
                           </td>
                         </tr>
                       )

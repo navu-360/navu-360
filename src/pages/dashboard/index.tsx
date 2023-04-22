@@ -63,13 +63,13 @@ export default function Dashboard() {
     <>
       <Header title={`${data?.organization?.name ?? ""} dashboard - Navu360`} />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[300px] mt-[3rem] text-tertiary">
+        <div className="relative ml-[250px] mr-4 mt-[3rem] text-tertiary">
           <h1 className="w-full text-2xl font-bold">
             Hi, {userProfile?.name?.split(" ")[0] ?? ""}
           </h1>
           <button
             onClick={() => setShowSelectTemplate(true)}
-            className="absolute right-8 top-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-[#fa3264] focus:outline-none focus:ring-4 md:mr-0"
+            className="absolute right-0 top-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-[#fa3264] focus:outline-none focus:ring-4 md:mr-0"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -86,7 +86,7 @@ export default function Dashboard() {
 
             <span>Create Program</span>
           </button>
-          <div className="mt-16 flex w-[98%] justify-between 2xl:mt-8">
+          <div className="mt-16 flex w-full justify-between 2xl:mt-8">
             <OneStat
               svg={
                 <svg
@@ -150,7 +150,7 @@ export default function Dashboard() {
               num={countOfOnboarded}
             />
           </div>
-          <section className="mt-8 flex w-[98%] gap-2">
+          <section className="mt-8 flex w-full justify-between gap-2">
             <AllTalents
               sendTotalTalents={(num: number) => setCountOfTalents(num)}
               setTotalOnboarded={(num: number) => setCountOfOnboarded(num)}
@@ -185,7 +185,7 @@ function OneStat({
   num: number;
 }) {
   return (
-    <div className="stat-shadow flex w-1/4 min-w-[300px] flex-col items-center gap-1 rounded-xl bg-tertiary p-2 text-white">
+    <div className="stat-shadow flex w-[25%] min-w-[300px] flex-col items-center gap-1 rounded-xl bg-tertiary p-2 text-white">
       <div className="">{svg}</div>
 
       <div className="flex items-center gap-2 text-center text-base">

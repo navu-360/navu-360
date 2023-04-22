@@ -35,13 +35,13 @@ export default function Programs({
     return (
       <section className="w-[25%] min-w-[300px]">
         <section className="bg-blueGray-50 relative py-16">
-          <div className="mb-12 w-full px-2">
+          <div className="mb-12 w-full px-2 pr-0">
             <div
               className="table-shadow relative mb-6 flex h-max w-full min-w-0 flex-col break-words rounded bg-tertiary
   text-white shadow-lg"
             >
               {data?.data?.length > 0 && (
-                <div className="mb-0 rounded-t border-0 px-2 py-3">
+                <div className="mb-0 rounded-t border-0 px-2 py-3 pr-0">
                   <div className="flex flex-wrap items-center">
                     <div className="relative w-full max-w-full flex-1 flex-grow px-2 ">
                       <h3 className="text-base font-semibold text-white">
@@ -69,7 +69,7 @@ export default function Programs({
   return (
     <section className="w-[25%] min-w-[300px]">
       <section className="bg-blueGray-50 relative">
-        <div className="mb-12 w-full px-4">
+        <div className="mb-12 w-full px-0">
           <div
             className="table-shadow relative mb-6 flex h-max w-full min-w-0 flex-col break-words rounded bg-tertiary
   text-white shadow-lg"
@@ -157,7 +157,7 @@ function TemplateCard({
       className={`group relative flex w-full cursor-pointer items-center justify-between rounded-md bg-[#28293E] p-6 py-2 text-white`}
     >
       <div className="flex flex-col break-all">
-        <h3 className="font-bold text-sm">{template.name}</h3>
+        <h3 className="text-sm font-bold">{template.name}</h3>
         {enrolledTalents ? (
           <p className="mt-1 text-sm font-medium ">
             {enrolledTalents?.data?.length} talents enrolled

@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import type { User } from "@prisma/client";
+import type {  User } from "@prisma/client";
 import axios from "axios";
 import Header from "components/common/head";
 import DashboardWrapper from "components/layout/dashboardWrapper";
@@ -10,7 +10,7 @@ import { processDate } from "utils/date";
 export default function Talent({ data }: { data: User }) {
   return (
     <>
-      <Header title={`Talent - Navu360`} />
+      <Header title={`${data?.name} - Navu360`} />
       <DashboardWrapper hideSearch>
         <div className="relative ml-[300px] mt-[20px] flex h-full items-start justify-start gap-8">
           {/* sections */}
@@ -153,7 +153,6 @@ export default function Talent({ data }: { data: User }) {
           </section>
 
           {/* show their enrolled programs as cards with completion % */}
-          {/* actions area - bottom - remove from program, remove from org */}
         </div>
       </DashboardWrapper>
     </>
@@ -190,6 +189,7 @@ export const getStaticProps = async ({
         headers: { "Accept-Encoding": "gzip,deflate,compress" },
       }
     );
+    console.log(res.data);
     if (res.data.data) {
       return {
         props: {

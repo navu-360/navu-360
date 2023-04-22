@@ -1,19 +1,22 @@
 /* eslint-disable @next/next/no-img-element */
-import type { OnboardingProgramTalents } from "@prisma/client";
+import type {
+  OnboardingProgram,
+  OnboardingProgramTalents,
+} from "@prisma/client";
 import Link from "next/link";
 import React from "react";
-import { generateAvatar } from "utils/avatar";
-import { processDate } from "utils/date";
 
 import { motion } from "framer-motion";
 
-export default function MyEnrolledPrograms({
-  data,
-}: {
-  data: OnboardingProgramTalents[];
-}) {
+interface IEnrollment extends OnboardingProgramTalents {
+  OnboardingProgram: OnboardingProgram;
+}
+
+export default function MyEnrolledPrograms({ data }: { data: IEnrollment[] }) {
+  if (!data) return null;
+
   return (
-    <section className="w-[75%]">
+    <section className="w-[95%]">
       <div className="relative mt-[20px] flex h-full flex-col items-center justify-center gap-8">
         {data?.length === 0 && (
           <div className="flex min-h-[400px] w-full flex-col items-center justify-center gap-4">
@@ -37,11 +40,11 @@ export default function MyEnrolledPrograms({
         )}
         {data?.length > 0 && (
           <div className="flex w-full flex-wrap gap-8">
-            {data?.map((program: OnboardingProgramTalents, i: number) => (
+            {data?.map((program: IEnrollment, i: number) => (
               <OneProgramCard
                 key={program.id}
                 program={program}
-                delay={i * 0.05}
+                delay={i * 0.1}
               />
             ))}
           </div>
@@ -55,14 +58,16 @@ export function OneProgramCard({
   program,
   delay,
 }: {
-  program: OnboardingProgramTalents;
+  program: IEnrollment;
   delay: number;
 }) {
   return (
     <motion.div
-      initial={{ y: 10 }}
+      initial={{ y: 15 }}
       transition={{ duration: 0.3, ease: "easeIn", delay }}
       whileInView={{ y: 0 }}
+      className="w-full"
+      viewport={{ once: true }}
     >
       <Link
         href={`/learn/${program.id}`}
@@ -82,28 +87,71 @@ export function OneProgramCard({
             }
           }
         }}
-        className="relative flex h-[280px] w-[300px] flex-col gap-4 rounded-lg bg-white text-tertiary shadow-md"
+        className="relative flex items-center gap-4 rounded-lg border-[1px] border-[#964f70] bg-white pl-4 text-tertiary"
       >
-        <div className="relative flex h-[60px] w-full items-center gap-2 rounded-t-lg bg-tertiary p-4 text-white">
-          <h2 className="text-lg font-bold">{program.id}</h2>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="#964f70"
+          className="h-16 w-16"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
+          />
+        </svg>
+
+        <div className="relative flex w-full flex-col items-start gap-1 rounded-t-lg p-4 text-tertiary">
+          <h2 className="text-lg font-bold">
+            {program?.OnboardingProgram?.name}
+          </h2>
+          <div
+            className={`flex h-max items-center gap-2 rounded-lg px-4 py-2 pl-0 ${
+              program?.enrollmentStatus === "pending"
+                ? "text-yellow-800"
+                : "text-[#00b300]"
+            }`}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="h-6 w-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
+              />
+            </svg>
+            <p className={`text-lg font-semibold capitalize`}>
+              {program?.enrollmentStatus}
+            </p>
+          </div>
         </div>
 
-        <div className="-mt-2 flex items-center gap-2 px-4">
+        <div className="mr-8 flex h-max w-max items-center gap-4 rounded-lg bg-green-600/25 px-6 py-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            fill="none"
+            width="24"
+            height="24"
             viewBox="0 0 24 24"
-            strokeWidth={1.5}
+            fill="none"
             stroke="currentColor"
-            className="h-6 w-6"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            className="lucide lucide-send"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
-            />
+            <line x1="22" x2="11" y1="2" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
           </svg>
-          <p>Complete</p>
+          <p className="text-lg font-semibold capitalize">View</p>
         </div>
       </Link>
     </motion.div>

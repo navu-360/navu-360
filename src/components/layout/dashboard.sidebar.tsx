@@ -30,7 +30,7 @@ export default function AdminNav({
   if (!isReady) return null;
 
   return (
-    <nav className="fixed left-0 top-0 z-20 h-full w-[250px] bg-dark py-2.5 sm:px-4">
+    <nav className="fixed left-0 top-0 z-20 h-full w-[200px] bg-dark py-2.5 sm:px-4">
       <div className="mx-auto flex h-full flex-col items-center md:mx-0">
         <Link href="/dashboard" className="flex items-center pl-4">
           <img src="/logo.svg" className="mr-3 h-6 sm:h-9" alt="Navu360" />
@@ -59,7 +59,7 @@ export default function AdminNav({
             }
             text={"Dashboard"}
             isActive={router.pathname === "/dashboard"}
-            to={"/dashboard"}
+            to={session?.user?.role === "admin" ? "/dashboard" : "/learn"}
           />
           {userProfile?.role === "admin" && (
             <OneItem
