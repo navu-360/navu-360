@@ -48,7 +48,7 @@ export const getStaticPaths = async () => {
       }
     );
     const paths = res.data.data.map((program: OnboardingProgram) => ({
-      params: { id: program.id.toString() },
+      params: { programId: program.id.toString() },
     }));
 
     return { paths, fallback: "blocking" };
@@ -60,11 +60,11 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async ({
   params,
 }: {
-  params: { id: string };
+  params: { programId: string };
 }) => {
   try {
     const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL_V1}/programs/${params.id}`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL_V1}/programs/${params.programId}`,
       {
         headers: { "Accept-Encoding": "gzip,deflate,compress" },
       }
