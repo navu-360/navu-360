@@ -18,19 +18,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   switch (req.method) {
     case "GET":
-      // fetch organization created by user
-      const { userId } = req.query as { userId: string };
+      try {
+        // fetch organization created by user
+        const { userId } = req.query as { userId: string };
 
-      const organization = await prisma.organization.findFirst({
-        where: {
-          userId,
-        },
-      });
+        const organization = await prisma.organization.findFirst({
+          where: {
+            userId,
+          },
+        });
 
-      return res.status(200).json({ organization });
+        return res.status(200).json({ organization });
+      } catch (error) {
+        return res
+          .status(500)
+          .json({ message: `Unable to get organization.`, error: error });
+      }
 
     default:
-      return res.status(405).json({ message: `Method ${req.method} not allowed.` });
+      return res
+        .status(405)
+        .json({ message: `Method ${req.method} not allowed.` });
   }
 };
 

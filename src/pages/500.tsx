@@ -23,9 +23,12 @@ export default function Custom500() {
         >
           Go Home
         </button>
-        <p onClick={() => {
-          window.location.reload();
-        }} className="-mt-4 cursor-pointer text-xs font-semibold text-white underline">
+        <p
+          onClick={() => {
+            window.location.reload();
+          }}
+          className="-mt-4 cursor-pointer text-xs font-semibold text-white underline"
+        >
           reload?
         </p>
       </div>

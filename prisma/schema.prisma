@@ -93,7 +93,7 @@ model OnboardingProgramTalents {
   userId            String
   User              User              @relation(fields: [userId], references: [id])
   programId         String
-  OnboardingProgram OnboardingProgram @relation(fields: [programId], references: [id])
+  OnboardingProgram OnboardingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
   Organization      Organization?     @relation(fields: [organizationId], references: [id])

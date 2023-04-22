@@ -6,6 +6,8 @@
     "build": "next build",
     "dev": "next dev",
     "postinstall": "prisma generate",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,scss,json,md}\"",
+    "typecheck": "tsc --noEmit",
     "lint": "next lint",
     "start": "next start"
   },

@@ -1,3 +1,3 @@
-import * as Sentry from '@sentry/node'
+import * as Sentry from "@sentry/node";
 
-Sentry.init()
+Sentry.init();

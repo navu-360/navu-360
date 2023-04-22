@@ -14,7 +14,7 @@ import {
 import { generateAvatar } from "utils/avatar";
 import { processDate } from "utils/date";
 import { AnimatePresence, motion } from "framer-motion";
-import { DeleteConfirmModal } from "components/dashboard/confirmDelete";
+import { DeleteConfirmModal } from "components/dashboard/confirmDeleteProgram";
 import { useRouter } from "next/router";
 
 export default function Programs() {

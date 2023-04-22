@@ -1,61 +1,70 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import {
-    getServerSession,
-} from "next-auth";
+import { getServerSession } from "next-auth";
 
 import { prisma } from "../../../../auth/db";
 import { authOptions } from "auth/auth";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const session = await getServerSession(req, res, authOptions);
+  if (!session) {
+    res.status(401).json({ message: `Unauthorized.` });
+    return;
+  }
 
-    const session = await getServerSession(req, res, authOptions);
-    if (!session) {
-        res.status(401).json({ message: `Unauthorized.` });
-        return;
-    }
+  // unenroll a talent from a program
 
-    // unenroll a talent from a program
+  // receive: programId, talentId, enrollmentId
 
-    // receive: programId, talentId, enrollmentId
+  // validations: 1) programId exists, 2) talentId exists, 3) talent is enrolled in program
 
-    // validations: 1) programId exists, 2) talentId exists, 3) talent is enrolled in program
-
-    const { programId, talentId, enrollmentId } = req.body as { programId: string, talentId: string; enrollmentId: string };
+  try {
+    const { programId, talentId, enrollmentId } = req.body as {
+      programId: string;
+      talentId: string;
+      enrollmentId: string;
+    };
 
     const program = await prisma.onboardingProgram.findUnique({
-        where: {
-            id: programId,
-        },
+      where: {
+        id: programId,
+      },
     });
 
     if (!program) return res.status(400).json({ error: "Program not found" });
 
     const talent = await prisma.user.findUnique({
-        where: {
-            id: talentId,
-        },
+      where: {
+        id: talentId,
+      },
     });
 
     if (!talent) return res.status(400).json({ error: "Talent not found" });
 
     const talentEnrollment = await prisma.onboardingProgramTalents.findUnique({
-        where: {
-            id: enrollmentId
-        },
+      where: {
+        id: enrollmentId,
+      },
     });
 
-    if (!talentEnrollment) return res.status(400).json({ error: "Talent not enrolled in program" });
+    if (!talentEnrollment)
+      return res.status(400).json({ error: "Talent not enrolled in program" });
 
     // delete enrollment
     const enrollment = await prisma.onboardingProgramTalents.delete({
-        where: {
-            id: enrollmentId
-        },
+      where: {
+        id: enrollmentId,
+      },
     });
 
-    return res.status(200).json({ message: `Talent unenrolled!`, data: enrollment });
-
-}
+    return res
+      .status(200)
+      .json({ message: `Talent unenrolled!`, data: enrollment });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: `Unable to get enrollment.`, error: error });
+  }
+};
 
 export default handler;

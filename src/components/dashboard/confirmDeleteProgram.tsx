@@ -49,26 +49,27 @@ export function DeleteConfirmModal({
         <div className="flex h-full flex-col justify-between">
           <div className="flex flex-col gap-8">
             <h1 className="text-center text-xl font-bold text-[#243669]">
-              Delete program
+              Delete this program?
             </h1>
             <p className="text-center text-sm font-medium text-[#243669]">
-              Are you sure you want to delete this program? <br />
+              This program including all its enrolled students will be deleted
+              permanently.
             </p>
 
             <div className="flex justify-center gap-4">
               <button
                 disabled={isLoading}
                 onClick={() => setShowConfirmModal(false)}
-                className="flex h-[40px] w-[120px] items-center justify-center rounded-md bg-[#243669] text-sm font-semibold text-white"
+                className="flex h-[35px] w-[120px] items-center justify-center rounded-md border border-[#243669] text-sm font-semibold text-[#243669]"
               >
-                Exit
+                Cancel
               </button>
               <button
                 onClick={() => {
                   deleteProductHandler();
                 }}
                 disabled={isLoading}
-                className="ml-2 flex h-[40px] w-[120px] items-center justify-center rounded-md bg-[#fe3232] text-sm font-semibold text-white"
+                className="ml-2 flex h-[35px] w-[120px] items-center justify-center rounded-md bg-[#fe3232] text-sm font-semibold text-white"
               >
                 {isLoading ? "Loading..." : "Confirm"}
               </button>

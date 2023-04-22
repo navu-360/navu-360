@@ -22,12 +22,19 @@ import { processDate } from "utils/date";
 import Link from "next/link";
 import { GoBack } from "components/dashboard/common";
 
+import { AnimatePresence } from "framer-motion";
+
+import { DeleteConfirmModal } from "components/dashboard/confirmDeleteProgram";
+import { useRouter } from "next/router";
+
 export interface IEnrollmentWithTalent extends OnboardingProgramTalents {
   User: User;
 }
 
 export default function Program({ data }: { data: OnboardingProgram }) {
   const [content, setContent] = useState<OutputData | null>(null);
+
+  const router = useRouter();
 
   useEffect(() => {
     if (data?.content) {
@@ -50,6 +57,10 @@ export default function Program({ data }: { data: OnboardingProgram }) {
   const { data: userInfo } = useGetUserByIdQuery(id, {
     skip: !id,
   });
+
+  const [showDeleteProgramModal, setShowDeleteProgramModal] = useState<
+    boolean | string
+  >(false);
 
   return (
     <>
@@ -140,7 +151,10 @@ export default function Program({ data }: { data: OnboardingProgram }) {
 
                   <span>Edit</span>
                 </Link>
-                <button className="flex w-1/2 items-center justify-center gap-2 rounded-md bg-red-400 px-6 py-1 text-sm font-semibold text-white">
+                <button
+                  onClick={() => setShowDeleteProgramModal(data?.id)}
+                  className="flex w-1/2 items-center justify-center gap-2 rounded-md bg-red-400 px-6 py-1 text-sm font-semibold text-white"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -262,6 +276,18 @@ export default function Program({ data }: { data: OnboardingProgram }) {
             </div>
           </div>
         </div>
+        <AnimatePresence>
+          {showDeleteProgramModal && (
+            <DeleteConfirmModal
+              id={showDeleteProgramModal as string}
+              setShowConfirmModal={() => setShowDeleteProgramModal(false)}
+              refreshPrograms={() => {
+                router.push("/programs");
+                setShowDeleteProgramModal(false);
+              }}
+            />
+          )}
+        </AnimatePresence>
       </DashboardWrapper>
     </>
   );
