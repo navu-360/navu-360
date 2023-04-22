@@ -19,6 +19,7 @@ import type {
   User,
 } from "@prisma/client";
 import { SelectPrograms } from "./selectPrograms";
+import { AnimatePresence } from "framer-motion";
 
 export default function AllTalents({
   sendTotalTalents,
@@ -252,7 +253,10 @@ export default function AllTalents({
                   {showingTalents?.length > 0 &&
                     showingTalents?.map((talent: any) =>
                       selectedType !== "Invited" ? (
-                        <tr key={talent?.id}>
+                        <tr
+                          key={talent?.id}
+                          className="border border-secondary/25"
+                        >
                           <td className="flex w-[225px] items-center whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left align-middle text-xs">
                             <img
                               src={generateAvatar(
@@ -303,7 +307,10 @@ export default function AllTalents({
                           </td>
                         </tr>
                       ) : (
-                        <tr key={talent?.id}>
+                        <tr
+                          className="border border-secondary/25"
+                          key={talent?.id}
+                        >
                           <th className="flex items-center whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left align-middle text-xs">
                             <img
                               src={generateAvatar(talent?.id)}
@@ -326,27 +333,31 @@ export default function AllTalents({
           </div>
         </div>
       </section>
-      {showTalentEnrolModal?.length > 0 && (
-        <SelectPrograms
-          closeModal={(val) => {
-            if (val) {
-              refetch();
-            }
-            setShowTalentEnrolModal([]);
-          }}
-          talentId={showTalentEnrolModal[0] as string}
-          talentName={showTalentEnrolModal[1] as string}
-          programs={onboardingPrograms}
-        />
-      )}
+      <AnimatePresence>
+        {showTalentEnrolModal?.length > 0 && (
+          <SelectPrograms
+            closeModal={(val) => {
+              if (val) {
+                refetch();
+              }
+              setShowTalentEnrolModal([]);
+            }}
+            talentId={showTalentEnrolModal[0] as string}
+            talentName={showTalentEnrolModal[1] as string}
+            programs={onboardingPrograms}
+          />
+        )}
+      </AnimatePresence>
     </section>
   );
 }
 
-function CompletionStatus({
+export function CompletionStatus({
   enrollment,
 }: {
-  enrollment: OnboardingProgramTalents;
+  enrollment: {
+    userId: string;
+  };
 }) {
   const talentId = enrollment?.userId;
   const { data, isFetching } = useGetTalentEnrollmentsQuery(talentId, {

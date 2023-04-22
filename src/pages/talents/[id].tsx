@@ -1,13 +1,29 @@
 /* eslint-disable @next/next/no-img-element */
-import type {  User } from "@prisma/client";
+import type { User } from "@prisma/client";
 import axios from "axios";
 import Header from "components/common/head";
+import Spinner from "components/common/spinner";
+import MyEnrolledPrograms from "components/dashboard/myPrograms";
 import DashboardWrapper from "components/layout/dashboardWrapper";
 import React from "react";
+import { useGetTalentEnrollmentsQuery } from "services/baseApiSlice";
 import { generateAvatar } from "utils/avatar";
 import { processDate } from "utils/date";
 
 export default function Talent({ data }: { data: User }) {
+  const talentId = data?.id;
+  const {
+    data: enrollments,
+    isFetching,
+    refetch,
+  } = useGetTalentEnrollmentsQuery(talentId, {
+    skip: !talentId,
+  });
+
+  // remove from enrolled program
+
+  // remove from organization
+
   return (
     <>
       <Header title={`${data?.name} - Navu360`} />
@@ -16,7 +32,7 @@ export default function Talent({ data }: { data: User }) {
           {/* sections */}
           {/* user details part - like on talent feed */}
           <section className="relative flex w-[95%] gap-8">
-            <div className="absolute left-8 top-8 flex h-[350px] w-[400px] flex-col justify-between rounded-xl bg-white p-4 shadow-lg">
+            <div className="fixed left-[300px] top-[120px] flex h-[350px] w-[400px] flex-col justify-between rounded-xl bg-white p-4 shadow-lg">
               <div className="w-full">
                 <div className="flex gap-4">
                   <img
@@ -149,7 +165,19 @@ export default function Talent({ data }: { data: User }) {
                 </button>
               </div>
             </div>
-            <div className="ml-[450px] mt-8 h-max min-h-[400px] w-full rounded-xl bg-white p-4 shadow-lg"></div>
+            <div className="ml-[450px] mt-8 h-max min-h-[400px] w-full rounded-xl bg-white p-4 shadow-lg">
+              {isFetching || !enrollments?.data ? (
+                <div className="relative mt-[20px] flex h-full min-h-[400px] w-full flex-col items-center justify-center gap-8">
+                  <Spinner />
+                </div>
+              ) : (
+                <MyEnrolledPrograms
+                  refetch={refetch}
+                  user={data}
+                  data={enrollments?.data}
+                />
+              )}
+            </div>
           </section>
 
           {/* show their enrolled programs as cards with completion % */}
@@ -189,7 +217,6 @@ export const getStaticProps = async ({
         headers: { "Accept-Encoding": "gzip,deflate,compress" },
       }
     );
-    console.log(res.data);
     if (res.data.data) {
       return {
         props: {
@@ -206,7 +233,6 @@ export const getStaticProps = async ({
       },
     };
   } catch (error) {
-    console.log(error, "error");
     // navigate to 404 page
     return {
       notFound: true,

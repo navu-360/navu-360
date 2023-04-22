@@ -2,17 +2,43 @@
 import type {
   OnboardingProgram,
   OnboardingProgramTalents,
+  User,
 } from "@prisma/client";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 
 import { motion } from "framer-motion";
+
+import { AnimatePresence } from "framer-motion";
+import { SelectPrograms } from "./selectPrograms";
+import { useGetOrganizationProgramsQuery } from "services/baseApiSlice";
+import { useSelector } from "react-redux";
 
 interface IEnrollment extends OnboardingProgramTalents {
   OnboardingProgram: OnboardingProgram;
 }
 
-export default function MyEnrolledPrograms({ data }: { data: IEnrollment[] }) {
+export default function MyEnrolledPrograms({
+  data,
+  user,
+  refetch,
+}: {
+  data: IEnrollment[];
+  user?: User;
+  refetch?: () => void;
+}) {
+  const [showTalentEnrolModal, setShowTalentEnrolModal] = useState<string[]>(
+    []
+  );
+
+  const orgId = useSelector(
+    (state: { auth: { orgId: string } }) => state.auth.orgId
+  );
+  // get programs created by this organization
+  const { data: allPrograms } = useGetOrganizationProgramsQuery(orgId, {
+    skip: !orgId,
+  });
+
   if (!data) return null;
 
   return (
@@ -32,10 +58,24 @@ export default function MyEnrolledPrograms({ data }: { data: IEnrollment[] }) {
                 clipRule="evenodd"
               />
             </svg>
-            <p className="text-center leading-[150%]">
-              You have not been enrolled yet to any program <br />
-              You will receive an email when enrolled
-            </p>
+            {user ? (
+              <div className="flex flex-col gap-2">
+                <p>{user?.name} has not been enrolled to any program. </p>
+                <button
+                  onClick={() =>
+                    setShowTalentEnrolModal([user?.id, user?.name as string])
+                  }
+                  className="text-blueGray-700 mb-2 block w-max whitespace-nowrap rounded-xl bg-white px-12 py-2 text-sm font-semibold text-secondary"
+                >
+                  Enroll Now
+                </button>
+              </div>
+            ) : (
+              <p className="text-center leading-[150%]">
+                You have not been enrolled yet to any program <br />
+                You will receive an email when enrolled
+              </p>
+            )}
           </div>
         )}
         {data?.length > 0 && (
@@ -45,11 +85,27 @@ export default function MyEnrolledPrograms({ data }: { data: IEnrollment[] }) {
                 key={program.id}
                 program={program}
                 delay={i * 0.1}
+                fromAdmin={!!user}
               />
             ))}
           </div>
         )}
       </div>
+      <AnimatePresence>
+        {showTalentEnrolModal?.length > 0 && (
+          <SelectPrograms
+            closeModal={(val) => {
+              if (val) {
+                refetch && refetch();
+              }
+              setShowTalentEnrolModal([]);
+            }}
+            talentId={showTalentEnrolModal[0] as string}
+            talentName={showTalentEnrolModal[1] as string}
+            programs={allPrograms}
+          />
+        )}
+      </AnimatePresence>
     </section>
   );
 }
@@ -57,9 +113,11 @@ export default function MyEnrolledPrograms({ data }: { data: IEnrollment[] }) {
 export function OneProgramCard({
   program,
   delay,
+  fromAdmin,
 }: {
   program: IEnrollment;
   delay: number;
+  fromAdmin?: boolean;
 }) {
   return (
     <motion.div
@@ -104,8 +162,14 @@ export function OneProgramCard({
           />
         </svg>
 
-        <div className="relative flex w-full flex-col items-start gap-1 rounded-t-lg p-4 text-tertiary">
-          <h2 className="text-lg font-bold">
+        <div
+          className={`relative flex w-full items-start gap-1 rounded-t-lg p-4 text-tertiary ${
+            fromAdmin
+              ? "flex-col justify-between xl:flex-row"
+              : "flex-col justify-start"
+          }`}
+        >
+          <h2 className="text-lg font-bold leading-tight">
             {program?.OnboardingProgram?.name}
           </h2>
           <div
@@ -135,24 +199,26 @@ export function OneProgramCard({
           </div>
         </div>
 
-        <div className="mr-8 flex h-max w-max items-center gap-4 rounded-lg bg-green-600/25 px-6 py-2">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            className="lucide lucide-send"
-          >
-            <line x1="22" x2="11" y1="2" y2="13"></line>
-            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-          </svg>
-          <p className="text-lg font-semibold capitalize">View</p>
-        </div>
+        {!fromAdmin && (
+          <div className="mr-8 flex h-max w-max items-center gap-4 rounded-lg bg-green-600/25 px-6 py-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              className="lucide lucide-send"
+            >
+              <line x1="22" x2="11" y1="2" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+            <p className="text-lg font-semibold capitalize">View</p>
+          </div>
+        )}
       </Link>
     </motion.div>
   );

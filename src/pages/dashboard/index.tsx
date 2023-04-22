@@ -61,7 +61,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <Header title={`${data?.organization?.name ?? ""} dashboard - Navu360`} />
+      <Header title={`${data?.organization?.name ?? ""} | Dashboard - Navu360`} />
       <DashboardWrapper hideSearch>
         <div className="relative ml-[250px] mr-4 mt-[3rem] text-tertiary">
           <h1 className="w-full text-2xl font-bold">
