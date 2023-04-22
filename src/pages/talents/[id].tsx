@@ -20,6 +20,7 @@ import { useSelector } from "react-redux";
 import { AnimatePresence } from "framer-motion";
 import { SelectPrograms } from "components/dashboard/selectPrograms";
 import { ConfirmUnenroll } from "components/dashboard/confirmUnenroll";
+import { RemoveUserConfirmModal } from "components/dashboard/confirmRemoveUser";
 
 export default function Talent({ data }: { data: User }) {
   const talentId = data?.id;
@@ -47,6 +48,8 @@ export default function Talent({ data }: { data: User }) {
   const [showUnenrollModal, setShowUnenrollModal] = useState<boolean | string>(
     false
   );
+
+  const [showRemoveUser, setShowRemoveUser] = useState<boolean | string>(false);
 
   // remove from organization
 
@@ -155,7 +158,10 @@ export default function Talent({ data }: { data: User }) {
               </div>
               <div className="hr-color h-[1px] w-full"></div>
               <div className="flex w-full flex-col gap-4">
-                <button className="flex items-center justify-center gap-2 rounded-md bg-red-400 py-2 text-base font-semibold text-white">
+                <button
+                  onClick={() => setShowRemoveUser(data?.id)}
+                  className="flex items-center justify-center gap-2 rounded-md bg-red-400 py-2 text-base font-semibold text-white"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -244,6 +250,16 @@ export default function Talent({ data }: { data: User }) {
                 refetch();
                 setShowUnenrollModal(false);
               }}
+              userName={data?.name as string}
+            />
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {showRemoveUser && (
+            <RemoveUserConfirmModal
+              id={showRemoveUser as string}
+              setShowConfirmModal={() => setShowRemoveUser(false)}
               userName={data?.name as string}
             />
           )}

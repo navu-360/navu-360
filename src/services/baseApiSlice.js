@@ -216,6 +216,13 @@ export const baseApiSlice = createApi({
         body,
       }),
     }),
+
+    removeUserFromOrganization: builder.mutation({
+      query: (id) => ({
+        url: `organization/remove-user/${id}`,
+        method: "POST",
+      }),
+    }),
   }),
 });
 
@@ -248,4 +255,5 @@ export const {
   useGetProgramEnrollmentsQuery,
   useMarkEnrollmentCompletedMutation,
   useUnregisterTalentMutation,
+  useRemoveUserFromOrganizationMutation,
 } = baseApiSlice;
