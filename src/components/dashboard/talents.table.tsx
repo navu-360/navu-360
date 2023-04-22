@@ -17,9 +17,11 @@ import type {
   OnboardingProgram,
   OnboardingProgramTalents,
   User,
+  invites,
 } from "@prisma/client";
 import { SelectPrograms } from "./selectPrograms";
 import { AnimatePresence } from "framer-motion";
+import type { IEnrollment } from "./myPrograms";
 
 export default function AllTalents({
   sendTotalTalents,
@@ -97,7 +99,16 @@ export default function AllTalents({
     selectedType === "Enrolled"
       ? setShowingTalents(data?.data ?? [])
       : selectedType === "Invited"
-      ? setShowingTalents(sentInvites?.data ?? [])
+      ? // filter invites, remove those who are already enrolled, filter by email
+        setShowingTalents(
+          sentInvites?.data?.filter(
+            (invite: invites) =>
+              !data?.data?.find(
+                (enrolledTalent: { User: { email: string } }) =>
+                  enrolledTalent?.User?.email === invite?.email
+              )
+          ) ?? []
+        )
       : setShowingTalents(talentsWithoutPrograms ?? []);
   }, [data?.data, selectedType, sentInvites?.data, talentsWithoutPrograms]);
 

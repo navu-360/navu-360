@@ -9,7 +9,7 @@ import React from "react";
 
 import { motion } from "framer-motion";
 
-interface IEnrollment extends OnboardingProgramTalents {
+export interface IEnrollment extends OnboardingProgramTalents {
   OnboardingProgram: OnboardingProgram;
 }
 
