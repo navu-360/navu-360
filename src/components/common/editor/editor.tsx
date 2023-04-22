@@ -50,7 +50,7 @@ function MyEditor({
 
   return (
     <div
-      className={`mb-8 min-w-[400px] rounded-lg bg-tertiary p-8 text-white ${
+      className={`mb-8 min-w-[400px] rounded-lg  bg-tertiary p-8 text-white md:min-w-[50vw] ${
         isReadOnly
           ? `${
               router?.pathname === "/learn"

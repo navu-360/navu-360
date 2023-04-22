@@ -190,10 +190,12 @@ export const baseApiSlice = createApi({
 
     // get all enrollments for a program
     getProgramEnrollments: builder.query({
-      query: (body) => ({
+      query: (programId) => ({
         url: `enrollment/get-program-enrollments`,
         method: "POST",
-        body,
+        body: {
+          programId,
+        },
       }),
     }),
 

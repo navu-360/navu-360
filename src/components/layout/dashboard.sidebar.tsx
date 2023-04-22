@@ -85,7 +85,7 @@ export default function AdminNav({
               text={
                 session?.user?.role === "admin" ? "Programs" : "My Programs"
               }
-              isActive={router.pathname === "/programs"}
+              isActive={router.pathname.includes("programs")}
               to={"/programs"}
             />
           )}
@@ -112,7 +112,7 @@ export default function AdminNav({
                 </svg>
               }
               text={"Talents"}
-              isActive={router.pathname === "/talents"}
+              isActive={router.pathname.includes("talents")}
               to={"/talents"}
             />
           )}

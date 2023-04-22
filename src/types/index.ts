@@ -7,4 +7,5 @@ export interface OnboardingProgram {
     organizationId: string;
     createdAt: Date;
     updatedAt: Date;
+    createdBy: string;
 }

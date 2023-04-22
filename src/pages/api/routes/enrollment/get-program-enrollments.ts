@@ -34,6 +34,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         where: {
             programId: programId,
         },
+        include: {
+            User: true,
+        }
     });
 
     return res.status(200).json({ message: `Program enrollments found!`, data: programEnrollments });
