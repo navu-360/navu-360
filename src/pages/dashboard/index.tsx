@@ -63,7 +63,7 @@ export default function Dashboard() {
     <>
       <Header title={`${data?.organization?.name ?? ""} dashboard - Navu360`} />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[300px] mt-[4rem] text-tertiary">
+        <div className="relative ml-[300px] mt-[3rem] text-tertiary">
           <h1 className="w-full text-2xl font-bold">
             Hi, {userProfile?.name?.split(" ")[0] ?? ""}
           </h1>
@@ -150,7 +150,7 @@ export default function Dashboard() {
               num={countOfOnboarded}
             />
           </div>
-          <section className="mr-4 mt-8 flex w-full max-w-full gap-2">
+          <section className="mt-8 flex w-[98%] gap-2">
             <AllTalents
               sendTotalTalents={(num: number) => setCountOfTalents(num)}
               setTotalOnboarded={(num: number) => setCountOfOnboarded(num)}

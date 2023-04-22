@@ -33,18 +33,18 @@ export default function Programs({
 
   if (isFetching || !orgId)
     return (
-      <section className="w-[25%] min-w-[400px]">
+      <section className="w-[25%] min-w-[300px]">
         <section className="bg-blueGray-50 relative py-16">
-          <div className="mb-12 w-full px-4">
+          <div className="mb-12 w-full px-2">
             <div
               className="table-shadow relative mb-6 flex h-max w-full min-w-0 flex-col break-words rounded bg-tertiary
   text-white shadow-lg"
             >
               {data?.data?.length > 0 && (
-                <div className="mb-0 rounded-t border-0 px-4 py-3">
+                <div className="mb-0 rounded-t border-0 px-2 py-3">
                   <div className="flex flex-wrap items-center">
-                    <div className="relative w-full max-w-full flex-1 flex-grow px-4 ">
-                      <h3 className="text-lg font-semibold text-white">
+                    <div className="relative w-full max-w-full flex-1 flex-grow px-2 ">
+                      <h3 className="text-base font-semibold text-white">
                         Recently created programs
                       </h3>
                     </div>
@@ -67,18 +67,18 @@ export default function Programs({
     );
 
   return (
-    <section className="w-[25%] min-w-[400px]">
-      <section className="bg-blueGray-50 relative py-16">
+    <section className="w-[25%] min-w-[300px]">
+      <section className="bg-blueGray-50 relative">
         <div className="mb-12 w-full px-4">
           <div
             className="table-shadow relative mb-6 flex h-max w-full min-w-0 flex-col break-words rounded bg-tertiary
   text-white shadow-lg"
           >
             {data?.data?.length > 0 && (
-              <div className="mb-0 rounded-t border-0 px-4 py-3">
+              <div className="mb-0 rounded-t border-0 px-2 py-3">
                 <div className="flex flex-wrap items-center">
-                  <div className="relative w-full max-w-full flex-1 flex-grow px-4 ">
-                    <h3 className="text-lg font-semibold text-white">
+                  <div className="relative w-full max-w-full flex-1 flex-grow px-2 ">
+                    <h3 className="text-base font-semibold text-white">
                       Recently created programs
                     </h3>
                   </div>
@@ -107,7 +107,7 @@ export default function Programs({
                 </div>
               )}
               {!isFetching && (
-                <div className="mx-auto flex w-4/5 flex-col gap-4">
+                <div className="mx-auto flex w-[90%] flex-col gap-4">
                   {data?.data
                     ?.slice(0, 3)
                     .map(
@@ -154,10 +154,10 @@ function TemplateCard({
   return (
     <Link
       href={`/programs/${template.id}`}
-      className={`group relative flex w-full cursor-pointer items-center justify-between rounded-md bg-[#28293E] p-6 text-white`}
+      className={`group relative flex w-full cursor-pointer items-center justify-between rounded-md bg-[#28293E] p-6 py-2 text-white`}
     >
       <div className="flex flex-col break-all">
-        <h3 className="text-base font-bold">{template.name}</h3>
+        <h3 className="font-bold text-sm">{template.name}</h3>
         {enrolledTalents ? (
           <p className="mt-1 text-sm font-medium ">
             {enrolledTalents?.data?.length} talents enrolled

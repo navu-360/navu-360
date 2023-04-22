@@ -46,8 +46,6 @@ export default function LearnCenter() {
     skip: !talentId,
   });
 
-  console.log(data);
-
   if (!isReady) return null;
 
   return (

@@ -105,7 +105,7 @@ export default function AllTalents({
 
   if (isFetching || fetchingInvited || !orgId)
     return (
-      <section className="w-[75%] rounded-md border-[1px] border-tertiary/50 bg-tertiary/10 p-2">
+      <section className="w-[70%] rounded-md border-[1px] border-tertiary/50 bg-tertiary/10 p-2">
         <section className="bg-blueGray-50 relative py-16">
           <TalentSwitch
             selectedOption={selectedType}
@@ -181,8 +181,8 @@ export default function AllTalents({
     );
 
   return (
-    <section className="w-[75%] rounded-md border-[1px] border-tertiary/50 bg-tertiary/5 p-2">
-      <section className="relative py-16">
+    <section className="w-[70%] rounded-md border-[1px] border-tertiary/50 bg-tertiary/5 p-2">
+      <section className="relative w-full py-16">
         <TalentSwitch
           selectedOption={selectedType}
           setSelectedOption={setSelectedType}
@@ -202,7 +202,7 @@ export default function AllTalents({
               </div>
             </div>
             <div className="block w-full overflow-x-auto ">
-              <table className="w-full border-collapse items-center bg-transparent">
+              <table className="w-full max-w-[100%] border-collapse items-center overflow-x-auto bg-transparent">
                 <thead>
                   {selectedType !== "Invited" ? (
                     <tr>
@@ -258,7 +258,7 @@ export default function AllTalents({
                     showingTalents?.map((talent: any) =>
                       selectedType !== "Invited" ? (
                         <tr key={talent?.id}>
-                          <th className="flex items-center whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left align-middle text-xs">
+                          <td className="flex items-center w-[225px] whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left align-middle text-xs">
                             <img
                               src={generateAvatar(
                                 talent?.User?.id ?? talent?.id
@@ -269,7 +269,7 @@ export default function AllTalents({
                             <span className="ml-3 font-bold text-white">
                               {talent?.User?.name ?? talent?.name}
                             </span>
-                          </th>
+                          </td>
                           <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
                             {talent?.User?.position ?? talent?.position}
                           </td>
