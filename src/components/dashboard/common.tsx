@@ -68,7 +68,7 @@ export function GoBack() {
   return (
     <div
       onClick={() => router.back()}
-      className="absolute left-0 top-0 flex w-max cursor-pointer items-center gap-2 rounded-md p-2 text-tertiary hover:bg-gray-100"
+      className="absolute left-0 z-50 top-0 flex w-max cursor-pointer items-center gap-2 rounded-md p-2 text-tertiary hover:bg-gray-100"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

@@ -113,7 +113,7 @@ export function SelectPrograms({
           <div className="flex flex-col gap-8">
             <h1 className="text-center text-xl font-semibold text-[#243669]">
               Choose programs to enroll{" "}
-              <span className="font-black">{talentName}</span>
+              <span className="font-black capitalize">{talentName}</span>
             </h1>
             <div className="flex w-full justify-between">
               <form className="">
@@ -179,7 +179,7 @@ export function SelectPrograms({
               <button
                 disabled={isEnrolling || selectedProgramIds?.length === 0}
                 onClick={() => handleEnrollTalent()}
-                className="ml-2 flex items-center justify-center rounded-md bg-secondary px-8 py-2 text-sm font-semibold text-white disabled:opacity-50"
+                className="ml-2 flex items-center justify-center rounded-md bg-secondary px-8 py-2 text-sm font-semibold capitalize text-white disabled:opacity-50"
               >
                 {isEnrolling ? "Loading..." : `Enroll ${talentName}`}
               </button>

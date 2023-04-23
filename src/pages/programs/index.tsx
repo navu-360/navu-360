@@ -16,6 +16,7 @@ import { processDate } from "utils/date";
 import { AnimatePresence, motion } from "framer-motion";
 import { DeleteConfirmModal } from "components/dashboard/confirmDeleteProgram";
 import { useRouter } from "next/router";
+import SelectTemplate from "components/dashboard/selectTemplate";
 
 export default function Programs() {
   const orgId = useSelector(
@@ -47,6 +48,8 @@ export default function Programs() {
     }
   }, [data]);
 
+  const [showSelectTemplate, setShowSelectTemplate] = useState(false);
+
   if (!isReady) return null;
 
   if (isFetching && !data)
@@ -69,7 +72,26 @@ export default function Programs() {
     <>
       <Header title={`All Onboarding Programs - Navu360`} />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[250px] mt-[4rem] flex h-full flex-col items-center justify-center gap-8 2xl:ml-[250px]">
+        <div className="relative ml-[250px] mt-[3rem] flex h-full flex-col items-center justify-center gap-8 pt-20 2xl:ml-[250px]">
+          <button
+            onClick={() => setShowSelectTemplate(true)}
+            className="absolute right-12 top-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-[#fa3264] focus:outline-none focus:ring-4 md:mr-0"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="h-6 w-6"
+            >
+              <path
+                fillRule="evenodd"
+                d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
+                clipRule="evenodd"
+              />
+            </svg>
+
+            <span>Create Program</span>
+          </button>
           {programsArray?.length === 0 && (
             <div className="flex min-h-[70vh] w-full items-center justify-center gap-4">
               <svg
@@ -115,6 +137,12 @@ export default function Programs() {
                 setShowDeleteProgramModal(false);
               }}
             />
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {showSelectTemplate && (
+            <SelectTemplate closeModal={() => setShowSelectTemplate(false)} />
           )}
         </AnimatePresence>
       </DashboardWrapper>

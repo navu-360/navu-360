@@ -6,6 +6,8 @@ import { useGetSentInvitesQuery } from "services/baseApiSlice";
 import { useSelector } from "react-redux";
 import type { invites } from "@prisma/client";
 
+import { AnimatePresence } from "framer-motion";
+
 export default function DashboardWrapper({
   children,
   hideNav,
@@ -36,20 +38,21 @@ export default function DashboardWrapper({
       {!hideNav && <AdminNav showInviteTalent={() => setShowModal(true)} />}
       <TopNavAdmin hideSearch={hideSearch} />
       {children}
-
-      {showModal && (
-        <InviteTalentsModal
-          closeModal={() => {
-            setShowModal(false);
-            refetch();
-          }}
-          invitedEmails={
-            sentInvites?.data
-              ? sentInvites?.data?.map((inv: invites) => inv?.email)
-              : []
-          }
-        />
-      )}
+      <AnimatePresence>
+        {showModal && (
+          <InviteTalentsModal
+            closeModal={() => {
+              setShowModal(false);
+              refetch();
+            }}
+            invitedEmails={
+              sentInvites?.data
+                ? sentInvites?.data?.map((inv: invites) => inv?.email)
+                : []
+            }
+          />
+        )}
+      </AnimatePresence>
     </main>
   );
 }

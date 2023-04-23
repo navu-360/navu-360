@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { useInviteTalentMutation } from "services/baseApiSlice";
 import toaster from "utils/toaster";
 
+import { motion } from "framer-motion";
+
 export default function InviteTalentsModal({
   closeModal,
   invitedEmails,
@@ -81,7 +83,13 @@ export default function InviteTalentsModal({
       onClick={(e) => (e.target === e.currentTarget ? closeModal() : null)}
       className={`fixed inset-0 z-[120] flex h-full w-full items-center justify-center  bg-black/50 backdrop-blur-sm`}
     >
-      <div className="flex h-max w-max flex-col items-center justify-center rounded-lg bg-white p-8 md:max-h-[600px] md:max-w-[700px]">
+      <motion.div
+        initial={{ y: 30, opacity: 0.7 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: 20, opacity: 0 }}
+        transition={{ duration: 0.3, ease: "easeIn" }}
+        className="flex h-max w-max flex-col items-center justify-center rounded-lg bg-white p-8 md:max-h-[600px] md:max-w-[700px]"
+      >
         <h1 className="text-lg font-bold text-tertiary">
           Invite Talents to this organization
         </h1>
@@ -418,7 +426,7 @@ export default function InviteTalentsModal({
             </svg>
           </button>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

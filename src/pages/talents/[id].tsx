@@ -21,6 +21,7 @@ import { AnimatePresence } from "framer-motion";
 import { SelectPrograms } from "components/dashboard/selectPrograms";
 import { ConfirmUnenroll } from "components/dashboard/confirmUnenroll";
 import { RemoveUserConfirmModal } from "components/dashboard/confirmRemoveUser";
+import { GoBack } from "components/dashboard/common";
 
 export default function Talent({ data }: { data: User }) {
   const talentId = data?.id;
@@ -57,11 +58,12 @@ export default function Talent({ data }: { data: User }) {
     <>
       <Header title={`${data?.name} - Navu360`} />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[300px] mt-[20px] flex h-full items-start justify-start gap-8">
+        <div className="relative ml-[300px] mt-[20px] flex h-full items-start justify-start gap-8 pt-0">
+          <GoBack />
           {/* sections */}
           {/* user details part - like on talent feed */}
           <section className="relative flex w-[95%] gap-8">
-            <div className="fixed left-[300px] top-[120px] flex h-[300px] w-[400px] flex-col justify-between rounded-xl bg-white p-4 shadow-lg">
+            <div className="fixed left-[300px] top-[140px] flex h-[300px] w-[400px] flex-col justify-between rounded-xl bg-white p-4 shadow-lg">
               <div className="w-full">
                 <div className="flex gap-4">
                   <img
@@ -180,7 +182,7 @@ export default function Talent({ data }: { data: User }) {
                 </button>
               </div>
             </div>
-            <div className="relative ml-[450px] mt-8 h-max min-h-[400px] w-full rounded-xl bg-white p-4 pt-12 shadow-lg">
+            <div className="relative ml-[450px] mt-12 h-max min-h-[400px] w-full rounded-xl bg-white p-4 pt-12 shadow-lg">
               <button
                 onClick={() =>
                   setShowTalentEnrolModal([data?.id, data?.name as string])
@@ -214,6 +216,7 @@ export default function Talent({ data }: { data: User }) {
                   unenroll={(id) => {
                     setShowUnenrollModal(id);
                   }}
+                  setShowTalentEnrolModal={setShowTalentEnrolModal}
                 />
               )}
             </div>

@@ -30,7 +30,11 @@ export default function MyEnrolledPrograms({
     <section className="w-[95%]">
       <div className="relative mt-[20px] flex h-full flex-col items-center justify-center gap-8">
         {data?.length === 0 && (
-          <div className="flex min-h-[400px] w-1/2 mr-auto flex-col items-center justify-center gap-4">
+          <div
+            className={`mr-auto flex min-h-[400px] flex-col items-center justify-center gap-4 outline ${
+              user ? "w-full" : "w-1/2"
+            }`}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -45,13 +49,16 @@ export default function MyEnrolledPrograms({
             </svg>
             {user ? (
               <div className="flex flex-col gap-2">
-                <p>{user?.name} has not been enrolled to any program. </p>
+                <p>
+                  <span className="capitalize">{user?.name}</span> has not been
+                  enrolled to any program
+                </p>
                 <button
                   onClick={() =>
                     setShowTalentEnrolModal &&
                     setShowTalentEnrolModal([user?.id, user?.name as string])
                   }
-                  className="text-blueGray-700 mb-2 block w-max whitespace-nowrap rounded-xl bg-white px-12 py-2 text-sm font-semibold text-secondary"
+                  className="mx-auto mb-2 mt-2 block w-max whitespace-nowrap rounded-xl bg-tertiary px-12 py-2 text-sm font-semibold text-white"
                 >
                   Enroll Now
                 </button>

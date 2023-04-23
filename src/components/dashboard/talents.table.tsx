@@ -70,10 +70,9 @@ export default function AllTalents({
   const id = orgId;
 
   // get invited talents - INVITED
-  const { data: sentInvites } =
-    useGetSentInvitesQuery(id, {
-      skip: !id,
-    });
+  const { data: sentInvites } = useGetSentInvitesQuery(id, {
+    skip: !id,
+  });
 
   useEffect(() => {
     sendTotalTalents(data?.data?.length || 0);
@@ -272,7 +271,7 @@ export default function AllTalents({
                               className="h-12 w-12 rounded-full border bg-white"
                               alt={talent?.User?.name ?? talent?.name}
                             />
-                            <span className="ml-3 font-bold text-white capitalize">
+                            <span className="ml-3 font-bold capitalize text-white">
                               {talent?.User?.name ?? talent?.name}
                             </span>
                           </td>
@@ -372,6 +371,7 @@ export function CompletionStatus({
   });
 
   const checkCompletionStatus = () => {
+    if (data?.data?.length === 0) return 0;
     // check all enrollment objects field enrollmentStatus for values pending, completed then return the percentage completed
     const completed = data?.data?.filter(
       (enrollment: OnboardingProgramTalents) =>
@@ -404,11 +404,13 @@ export function CompletionStatus({
 
   return (
     <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs">
-      {isFetching ? (
+      {isFetching || !data ? (
         <div className="h-[30px] w-4/5 animate-pulse rounded bg-gray-400" />
       ) : (
         <div className="flex items-center">
-          <span className="mr-2 font-semibold">{checkCompletionStatus()}%</span>
+          <span className="mr-2 font-semibold">
+            {checkCompletionStatus().toFixed(0)}%
+          </span>
           <div className="relative w-full">
             <div className="flex h-2 overflow-hidden rounded bg-white text-xs">
               <div

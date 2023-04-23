@@ -5,7 +5,7 @@ import Spinner from "components/common/spinner";
 import { CompletionStatus } from "components/dashboard/talents.table";
 import DashboardWrapper from "components/layout/dashboardWrapper";
 import Link from "next/link";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useFetchUsersQuery } from "services/baseApiSlice";
 import { generateAvatar } from "utils/avatar";
@@ -18,6 +18,14 @@ export default function Talents() {
 
   // get all talents for the org
   const { data, isFetching } = useFetchUsersQuery(orgId, { skip: !orgId });
+
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    setIsReady(true);
+  }, []);
+
+  if (!isReady) return null;
 
   if (isFetching)
     return (
@@ -82,7 +90,7 @@ export default function Talents() {
                         className="h-12 w-12 rounded-full border bg-white"
                         alt={talent?.id}
                       />
-                      <span className="ml-3 font-bold text-white">
+                      <span className="ml-3 font-bold capitalize text-white">
                         {talent?.name}
                       </span>
                     </th>

@@ -51,12 +51,13 @@ export function RemoveUserConfirmModal({
       >
         <div className="flex h-full flex-col justify-between">
           <div className="flex flex-col gap-8">
-            <h1 className="text-center text-xl font-bold text-[#243669]">
+            <h1 className="text-center text-xl font-bold capitalize text-[#243669]">
               Remove {userName}?
             </h1>
             <p className="text-center text-sm font-medium text-[#243669]">
-              {userName} will be removed from this organization and all their
-              data will be deleted permanently.
+              <span className="capitalize">{userName}</span> will be removed
+              from this organization and all their data will be deleted
+              permanently.
             </p>
 
             <div className="flex justify-center gap-4">

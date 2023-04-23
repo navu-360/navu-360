@@ -82,7 +82,7 @@ export default function CreateProgram() {
     await createProgram(body)
       .unwrap()
       .then(() => {
-        router.push("/dashboard");
+        router.back();
       })
       .catch((error) => {
         console.log(error);
@@ -99,7 +99,7 @@ export default function CreateProgram() {
     await editProgram(body)
       .unwrap()
       .then(() => {
-        router.push("/dashboard");
+        router.back();
       })
       .catch((error) => {
         console.log(error);
