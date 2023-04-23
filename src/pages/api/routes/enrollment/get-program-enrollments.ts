@@ -18,7 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     // validations: 1) programId exists
 
-    const { programId } = req.body as { programId: string };
+    const { programId } = req.query as { programId: string };
 
     const program = await prisma.onboardingProgram.findUnique({
       where: {

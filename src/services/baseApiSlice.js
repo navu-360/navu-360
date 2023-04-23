@@ -16,6 +16,7 @@ const baseQuery = fetchBaseQuery({
 
 export const baseApiSlice = createApi({
   baseQuery,
+  tagTypes: ["User", "Dashboard", "Programs", "ProgramView", "TalentView"],
   endpoints: (builder) => ({
     joinWaitlist: builder.mutation({
       query: (email) => ({
@@ -57,12 +58,16 @@ export const baseApiSlice = createApi({
     // fetch all users
     fetchUsers: builder.query({
       query: (org) => `users?orgId=${org}`,
+      keepUnusedDataFor: 60 * 10, // 10 minutes,
+      providesTags: ["Dashboard"],
     }),
     getUserById: builder.query({
       query: (id) => `users/${id}`,
+      keepUnusedDataFor: 60 * 10, // 10 minutes,
     }),
     getAllTalents: builder.query({
       query: (orgId) => `users/orgTalents?orgId=${orgId}`,
+      keepUnusedDataFor: 60 * 10, // 10 minutes,
     }),
     // delete user
     deleteUser: builder.mutation({
@@ -70,6 +75,7 @@ export const baseApiSlice = createApi({
         url: `users/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["Dashboard"],
     }),
 
     // Organization endpoints
@@ -83,9 +89,11 @@ export const baseApiSlice = createApi({
     }),
     getOneOrganization: builder.query({
       query: (userId) => `organization/${userId}`,
+      keepUnusedDataFor: 60 * 60 * 1, // 1 hour,
     }),
     getOrganizationById: builder.query({
       query: (id) => `organization/id/${id}`,
+      keepUnusedDataFor: 60 * 60 * 1, // 1 hour,
     }),
 
     // Programs
@@ -96,16 +104,20 @@ export const baseApiSlice = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["Dashboard"],
     }),
     // fetch organization's program
     getOrganizationPrograms: builder.query({
       query: (orgId) => ({
         url: `programs?orgId=${orgId}`,
       }),
+      keepUnusedDataFor: 60 * 10, // 10 minutes,
+      providesTags: ["Programs"],
     }),
 
     getOneProgram: builder.query({
       query: (id) => `programs/${id}`,
+      keepUnusedDataFor: 60 * 10, // 10 minutes,
     }),
     editProgram: builder.mutation({
       query: (body) => ({
@@ -113,18 +125,21 @@ export const baseApiSlice = createApi({
         method: "PATCH",
         body,
       }),
+      invalidatesTags: ["Dashboard", "Programs"],
     }),
     deleteProgram: builder.mutation({
       query: (id) => ({
         url: `programs/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["Dashboard", "Programs"],
     }),
 
     // templates
     // fetch all templates
     fetchTemplates: builder.query({
       query: () => `templates`,
+      keepUnusedDataFor: 60 * 60 * 1, // 1 hour,
     }),
     // create template
     createTemplate: builder.mutation({
@@ -137,6 +152,7 @@ export const baseApiSlice = createApi({
     // get one template
     getOneTemplate: builder.query({
       query: (id) => `templates/${id}`,
+      keepUnusedDataFor: 60 * 60 * 1, // 1 hour,
     }),
 
     // emails
@@ -147,14 +163,18 @@ export const baseApiSlice = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["Dashboard"],
     }),
     // get sent invites for a program
     getSentInvites: builder.query({
       query: (id) => `invite?orgId=${id}`,
+      keepUnusedDataFor: 60 * 10, // 10 minutes,
+      providesTags: ["Dashboard"],
     }),
     // get all talents for a program
     getProgramTalents: builder.query({
       query: (programId) => `users/talents/${programId}`,
+      keepUnusedDataFor: 60 * 10, // 10 minutes
     }),
 
     // enrollment actions
@@ -165,38 +185,36 @@ export const baseApiSlice = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["Dashboard"],
     }),
     // get all enrollments for a talent
     getTalentEnrollments: builder.query({
       query: (talentId) => ({
-        url: `enrollment/get-my-enrollments`,
-        method: "POST",
-        body: {
-          talentId,
-        },
+        url: `enrollment/get-my-enrollments?talentId=${talentId}`,
+        method: "GET",
       }),
+      keepUnusedDataFor: 60 * 5, // 5 minutes,
+      providesTags: ["Dashboard"],
     }),
 
     // get all enrollments for organization
     getOrganizationEnrollments: builder.query({
       query: (organizationId) => ({
-        url: `enrollment/get-org-enrollments`,
-        method: "POST",
-        body: {
-          organizationId,
-        },
+        url: `enrollment/get-org-enrollments?organizationId=${organizationId}`,
+        method: "GET",
       }),
+      keepUnusedDataFor: 60 * 10, // 10 minutes,
+      providesTags: ["Dashboard"],
     }),
 
     // get all enrollments for a program
     getProgramEnrollments: builder.query({
       query: (programId) => ({
-        url: `enrollment/get-program-enrollments`,
-        method: "POST",
-        body: {
-          programId,
-        },
+        url: `enrollment/get-program-enrollments?programId=${programId}`,
+        method: "GET",
       }),
+      keepUnusedDataFor: 60 * 10, // 10 minutes,
+      providesTags: ["ProgramView"],
     }),
 
     // mark enrollment as completed
@@ -206,6 +224,7 @@ export const baseApiSlice = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["ProgramView", "Dashboard"],
     }),
 
     // unregister a talent from a program
@@ -215,6 +234,7 @@ export const baseApiSlice = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["ProgramView", "Dashboard"],
     }),
 
     removeUserFromOrganization: builder.mutation({
@@ -222,6 +242,7 @@ export const baseApiSlice = createApi({
         url: `organization/remove-user/${id}`,
         method: "POST",
       }),
+      invalidatesTags: ["Dashboard"],
     }),
   }),
 });

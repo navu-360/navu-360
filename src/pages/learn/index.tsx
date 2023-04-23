@@ -3,7 +3,6 @@ import Header from "components/common/head";
 import Spinner from "components/common/spinner";
 import MyEnrolledPrograms from "components/dashboard/myPrograms";
 import DashboardWrapper from "components/layout/dashboardWrapper";
-import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setOrgId, setOrganizationData } from "redux/auth/authSlice";
@@ -17,9 +16,11 @@ export default function LearnCenter() {
     (state: { auth: { userProfile: User } }) => state.auth.userProfile
   );
 
-  const { data: session } = useSession();
+  const orgId = useSelector(
+    (state: { auth: { orgId: string } }) => state.auth.orgId
+  );
 
-  const id = session?.user?.orgId;
+  const id = orgId;
   // get organization data
   const { data: organizationData } = useGetOrganizationByIdQuery(id, {
     skip: !id,

@@ -65,7 +65,6 @@ export default function AllTalents({
               enrolledTalent.userId === talent.id
           )
       );
-      console.log(talentsWithoutPrograms);
       setTalentsWithoutPrograms(talentsWithoutPrograms ?? []);
       setLoadingJoined(false);
     }
@@ -115,7 +114,7 @@ export default function AllTalents({
     []
   );
 
-  if (isFetching || fetchingInvited || !orgId || loadingJoined)
+  if (isFetching || !orgId)
     return (
       <section className="w-[70%] rounded-md border-[1px] border-tertiary/50 bg-tertiary/10 p-2">
         <section className="bg-blueGray-50 relative py-16">
@@ -261,6 +260,7 @@ export default function AllTalents({
                     </tr>
                   )}
                   {showingTalents?.length > 0 &&
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     showingTalents?.map((talent: any) =>
                       selectedType !== "Invited" ? (
                         <tr

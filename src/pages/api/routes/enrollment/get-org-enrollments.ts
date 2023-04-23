@@ -18,7 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     // validations: 1) organizationId exists
 
-    const { organizationId } = req.body as { organizationId: string };
+    const { organizationId } = req.query as { organizationId: string };
 
     const organization = await prisma.organization.findUnique({
       where: {

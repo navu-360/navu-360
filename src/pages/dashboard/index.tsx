@@ -1,4 +1,4 @@
-import type { OnboardingProgram, User } from "@prisma/client";
+import type { OnboardingProgram, Organization, User } from "@prisma/client";
 import Header from "components/common/head";
 import Programs from "components/dashboard/programs.table";
 import SelectTemplate from "components/dashboard/selectTemplate";
@@ -16,10 +16,19 @@ export default function Dashboard() {
     (state: { auth: { userProfile: User } }) => state.auth.userProfile
   );
 
+  const orgId = useSelector(
+    (state: { auth: { orgId: string } }) => state.auth.orgId
+  );
+
+  const organizationData = useSelector(
+    (state: { auth: { organizationData: Organization } }) =>
+      state.auth.organizationData
+  );
+
   // get organization created by this user then set the orgId in state
   const userId = userProfile?.id;
   const { data } = useGetOneOrganizationQuery(userId, {
-    skip: !userId,
+    skip: !userId || !!orgId,
   });
 
   const dispatch = useDispatch();
@@ -61,9 +70,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <Header
-        title={`${data?.organization?.name ?? ""} | Dashboard - Navu360`}
-      />
+      <Header title={`${organizationData?.name ?? ""} | Dashboard - Navu360`} />
       <DashboardWrapper hideSearch>
         <div className="relative ml-[250px] mr-4 mt-[3rem] text-tertiary">
           <h1 className="w-full text-2xl font-bold">

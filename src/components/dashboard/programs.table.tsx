@@ -20,6 +20,7 @@ export default function Programs({
   const orgId = useSelector(
     (state: { auth: { orgId: string } }) => state.auth.orgId
   );
+
   // get programs created by this organization
   const { data, isFetching } = useGetOrganizationProgramsQuery(orgId, {
     skip: !orgId,
@@ -31,7 +32,7 @@ export default function Programs({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.data?.length]);
 
-  if (isFetching || !orgId)
+  if (isFetching)
     return (
       <section className="w-[25%] min-w-[300px]">
         <section className="bg-blueGray-50 relative py-16">

@@ -18,7 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     // validations: 1) talentId exists
 
-    const { talentId } = req.body as { talentId: string };
+    const { talentId } = req.query as { talentId: string };
 
     const talent = await prisma.user.findUnique({
       where: {

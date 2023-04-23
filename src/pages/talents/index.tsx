@@ -16,6 +16,7 @@ export default function Talents() {
     (state: { auth: { orgId: string } }) => state.auth.orgId
   );
 
+  // get all talents for the org
   const { data, isFetching } = useFetchUsersQuery(orgId, { skip: !orgId });
 
   if (isFetching)
