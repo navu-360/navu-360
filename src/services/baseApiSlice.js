@@ -244,6 +244,14 @@ export const baseApiSlice = createApi({
       }),
       invalidatesTags: ["Dashboard"],
     }),
+
+    sendEnrolledEmail: builder.mutation({
+      query: (body) => ({
+        url: `email/enroll`,
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -277,4 +285,5 @@ export const {
   useMarkEnrollmentCompletedMutation,
   useUnregisterTalentMutation,
   useRemoveUserFromOrganizationMutation,
+  useSendEnrolledEmailMutation,
 } = baseApiSlice;
