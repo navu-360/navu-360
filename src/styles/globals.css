@@ -374,3 +374,21 @@ span {
         transform: rotate(0deg);
     }
 }
+
+.spotlight-two {
+    background: #FF9CE3;
+    filter: blur(87.5px);
+}
+
+.spotlight-one {
+    background: #924FFF;
+    filter: blur(87.5px);
+}
+
+.glow-text {
+    background: linear-gradient(180deg, #FCFCFF 0%, #FF9CE3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
