@@ -30,7 +30,7 @@ export default function MyEnrolledPrograms({
     <section className="w-[95%]">
       <div className="relative mt-[20px] flex h-full flex-col items-center justify-center gap-8">
         {data?.length === 0 && (
-          <div className="flex min-h-[400px] w-full flex-col items-center justify-center gap-4">
+          <div className="flex min-h-[400px] w-1/2 mr-auto flex-col items-center justify-center gap-4">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
