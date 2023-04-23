@@ -51,12 +51,10 @@ export default function AllTalents({
   });
 
   const [talentsWithoutPrograms, setTalentsWithoutPrograms] = useState([]);
-  const [loadingJoined, setLoadingJoined] = useState(false);
 
   // joined but not enrolled - JOINED
   useEffect(() => {
     if (allUsers && data?.data) {
-      setLoadingJoined(true);
       // get all talents who are not enrolled in any program. comparing allUsers and data
       const talentsWithoutPrograms = allUsers?.data?.filter(
         (talent: User) =>
@@ -66,14 +64,13 @@ export default function AllTalents({
           )
       );
       setTalentsWithoutPrograms(talentsWithoutPrograms ?? []);
-      setLoadingJoined(false);
     }
   }, [allUsers, data?.data]);
 
   const id = orgId;
 
   // get invited talents - INVITED
-  const { data: sentInvites, isFetching: fetchingInvited } =
+  const { data: sentInvites } =
     useGetSentInvitesQuery(id, {
       skip: !id,
     });
