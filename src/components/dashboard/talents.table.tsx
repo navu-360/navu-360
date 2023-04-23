@@ -275,7 +275,7 @@ export default function AllTalents({
                               className="h-12 w-12 rounded-full border bg-white"
                               alt={talent?.User?.name ?? talent?.name}
                             />
-                            <span className="ml-3 font-bold text-white">
+                            <span className="ml-3 font-bold text-white capitalize">
                               {talent?.User?.name ?? talent?.name}
                             </span>
                           </td>
