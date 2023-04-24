@@ -8,13 +8,14 @@ export default function Hero() {
   const { status, data: session } = useSession();
   return (
     <section className="relative flex h-max min-h-[calc(100vh_-_65px)] w-full flex-col-reverse items-center justify-center gap-6 bg-dark px-8 pb-8 text-white md:flex-row md:justify-start md:pb-32 xl:gap-12 2xl:gap-32 2xl:px-32">
-      <div className="flex min-w-max max-w-[500px] flex-col items-center gap-8 md:items-start 2xl:gap-16">
+      <div className="flex flex-col items-center gap-8 md:min-w-max md:max-w-[500px] md:items-start 2xl:gap-16">
         <h1 className="text-center text-3xl font-bold md:text-left md:text-2xl xl:text-5xl 2xl:text-7xl">
-          Simplify <br /> your onboarding <br /> experience.
+          Simplify <br className="hidden md:block" /> your onboarding{" "}
+          <br className="hidden md:block" /> experience.
         </h1>
         <p className="text-medium text-center text-base md:text-left xl:text-lg 2xl:text-xl">
-          Onboard new talents with confidence using the <br /> ultimate
-          onboarding platform
+          Onboard new talents with confidence using the{" "}
+          <br className="hidden md:block" /> ultimate onboarding platform
         </p>
         <button
           onClick={() => {
@@ -37,10 +38,10 @@ export default function Hero() {
           fill
           className="z-20 object-contain"
         />
-        <div className="spotlight absolute left-0 right-0 top-0 z-10 mx-auto h-[500px] w-[400px]">
+        <div className="spotlight absolute left-0 right-0 top-0 z-10 mx-auto h-[40vw] w-[30vw]">
           <div className="">
-            <div className="spotlight-one absolute right-0 top-0 h-[250px] w-[250px] rounded-full"></div>
-            <div className="spotlight-two absolute bottom-0 left-0 h-[250px] w-[250px] rounded-full"></div>
+            <div className="spotlight-one absolute right-0 top-0 h-[10vw] w-[10vw] rounded-full"></div>
+            <div className="spotlight-two absolute bottom-0 left-0 h-[10vw] w-[10vw] rounded-full"></div>
           </div>
         </div>
       </div>

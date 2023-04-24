@@ -31,8 +31,8 @@ export default function MyEnrolledPrograms({
       <div className="relative mt-[20px] flex h-full flex-col items-center justify-center gap-8">
         {data?.length === 0 && (
           <div
-            className={`mr-auto flex min-h-[400px] flex-col items-center justify-center gap-4 ${
-              user ? "w-full" : "w-1/2"
+            className={`mr-auto flex md:min-h-[400px] flex-col items-center justify-center gap-4 ${
+              user ? "w-full" : "w-full md:w-1/2"
             }`}
           >
             <svg
@@ -65,8 +65,9 @@ export default function MyEnrolledPrograms({
               </div>
             ) : (
               <p className="text-center leading-[150%]">
-                You have not been enrolled yet to any program <br />
-                You will receive an email when enrolled
+                You have not been enrolled yet to any program.{" "}
+                <br className="hidden md:block" />
+                You will receive an email when enrolled to a program.
               </p>
             )}
           </div>
@@ -220,7 +221,7 @@ export function OneProgramCard({
             </button>
           ) : null
         ) : (
-          <div className="mx-auto flex h-max w-[90%] mb-2 items-center gap-4 rounded-lg bg-green-600/25 px-6 py-2 md:mx-0 md:mr-8 md:w-max">
+          <div className="mx-auto mb-2 flex h-max w-[90%] items-center gap-4 rounded-lg bg-green-600/25 px-6 py-2 md:mx-0 md:mr-8 md:w-max">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"

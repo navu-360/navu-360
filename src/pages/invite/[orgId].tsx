@@ -15,7 +15,9 @@ import toaster from "utils/toaster";
 import { useRouter } from "next/router";
 
 import { motion } from "framer-motion";
-import { GoBack } from "components/dashboard/common";
+
+import { useDispatch } from "react-redux";
+import { setUserProfile } from "redux/auth/authSlice";
 
 export default function InviteTalent() {
   const [role, setRole] = useState("");
@@ -60,6 +62,8 @@ export default function InviteTalent() {
 
   const [updateUser, { isLoading }] = useUpdateUserMutation();
 
+  const dispatch = useDispatch();
+
   const createHandler = async () => {
     if (!role) {
       toaster({
@@ -77,10 +81,11 @@ export default function InviteTalent() {
 
     await updateUser(body)
       .unwrap()
-      .then(() => {
+      .then((payload) => {
+        dispatch(setUserProfile(payload?.data));
         toaster({
           status: "success",
-          message: `Your details have been updated!`,
+          message: `You have successfully joined ${organizationData?.organization?.name}`,
         });
         router.push("/learn");
       })
@@ -99,9 +104,8 @@ export default function InviteTalent() {
           organizationData?.organization?.name ?? ""
         }`}
       />
-      <LandingWrapper hideNav>
-        <section className="relative flex h-[100vh] w-screen">
-          <GoBack />
+      <LandingWrapper>
+        <section className="relative mt-6 flex h-[100vh] w-screen">
           <div className="relative hidden h-full md:block md:w-1/3">
             <Image
               src="https://res.cloudinary.com/dpnbddror/image/upload/v1678044671/Rectangle_417_1_1_pq5jum.png"
@@ -150,21 +154,23 @@ export default function InviteTalent() {
                   Join {organizationData?.organization?.name} onboarding
                   programs
                 </h1>
-                <p className="text-base font-medium">
-                  You have been invited by{" "}
-                  <span className="font-semibold capitalize text-secondary">
-                    {organizationData?.organization?.user?.name}
-                  </span>{" "}
-                  to join{" "}
-                  <span className="font-semibold capitalize text-secondary">
-                    {organizationData?.organization?.name}
-                  </span>{" "}
-                  . Create your account to access the onboarding programs.
-                </p>
+                {!session?.user && (
+                  <p className="text-base font-medium">
+                    You have been invited by{" "}
+                    <span className="font-semibold capitalize text-secondary">
+                      {organizationData?.organization?.user?.name}
+                    </span>{" "}
+                    to join{" "}
+                    <span className="font-semibold capitalize text-secondary">
+                      {organizationData?.organization?.name}
+                    </span>{" "}
+                    . Create your account to access the onboarding programs.
+                  </p>
+                )}
               </div>
               {session?.user ? (
                 session?.user?.orgId ? null : (
-                  <form className="mt-8 flex h-max w-1/2 flex-col gap-6 text-left">
+                  <form className="mt-8 flex h-max w-full flex-col gap-6 text-left md:w-1/2">
                     <div className="flex flex-col gap-2">
                       <label htmlFor="role">What is your role?</label>
                       <input
@@ -181,7 +187,7 @@ export default function InviteTalent() {
                     <button
                       type="button"
                       onClick={() => createHandler()}
-                      disabled={isLoading}
+                      disabled={isLoading || !role}
                       className="flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center self-center rounded-3xl bg-secondary px-12 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 md:mr-0"
                     >
                       {isLoading ? <SmallSpinner /> : <span>Continue</span>}

@@ -32,12 +32,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const stringTemplate = readFileSync(path, "utf8");
 
     // email link: staging.navu360.com/onboarding/organizationId/onboardingProgramId
+    const originBaseUrl = req.headers.origin;
 
-    const link = `${
-      process.env.NODE_ENV === "production"
-        ? "https://navu360.com"
-        : "http://localhost:3000"
-    }/invite/${organizationId}`;
+    const link = `${originBaseUrl}/invite/${organizationId}`;
 
     const createInviteRecord = async (talentEmail: string) => {
       const body = {

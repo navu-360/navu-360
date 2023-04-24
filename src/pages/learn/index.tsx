@@ -113,7 +113,7 @@ export default function LearnCenter() {
           </div>
           <section className="mr-4 mt-8 flex w-full max-w-full gap-2 pb-8">
             {isFetching || !data?.data ? (
-              <div className="relative mt-[20px] flex h-full min-h-[400px] w-[50%] flex-col items-center justify-center gap-8">
+              <div className="relative mt-[20px] flex h-full w-full flex-col items-center justify-center gap-8 md:min-h-[400px] md:w-[50%]">
                 <Spinner />
               </div>
             ) : (

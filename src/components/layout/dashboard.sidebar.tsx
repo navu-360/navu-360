@@ -40,7 +40,7 @@ export default function AdminNav({
           />
           <img
             src="/small-logo-color.svg"
-            className="md:mr-3 block h-8 sm:h-9 md:hidden"
+            className="block h-8 sm:h-9 md:mr-3 md:hidden"
             alt="Navu360"
           />
         </Link>
@@ -58,7 +58,7 @@ export default function AdminNav({
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                className="transition-all duration-300 ease-in group-hover:rotate-[-25deg]"
+                className="transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
               >
                 <rect x="3" y="3" width="7" height="9"></rect>
                 <rect x="14" y="3" width="7" height="5"></rect>
@@ -82,7 +82,7 @@ export default function AdminNav({
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  className=" transition-all duration-300 ease-in group-hover:rotate-[-25deg]"
+                  className=" transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
                   stroke-width="2"
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -111,7 +111,7 @@ export default function AdminNav({
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  className="transition-all duration-300 ease-in group-hover:rotate-[-25deg]"
+                  className="transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
                   stroke-width="2"
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -136,7 +136,7 @@ export default function AdminNav({
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="h-6 w-6 transition-all duration-300 ease-in group-hover:rotate-[-25deg]"
+                  className="h-6 w-6 transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
                 >
                   <path
                     strokeLinecap="round"
@@ -166,7 +166,7 @@ export default function AdminNav({
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                className="transition-all duration-300 ease-in group-hover:rotate-[-25deg]"
+                className="transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
               >
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                 <polyline points="16 17 21 12 16 7"></polyline>
