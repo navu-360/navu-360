@@ -155,7 +155,7 @@ function TemplateCard({
   return (
     <Link
       href={`/programs/${template.id}`}
-      className={`group relative flex w-full cursor-pointer items-center justify-between rounded-md bg-[#28293E] p-6 py-2 text-white`}
+      className={`group relative flex w-full cursor-pointer items-center justify-between rounded-md bg-[#28293E] p-6 py-2 pb-4 text-white`}
     >
       <div className="flex flex-col break-all">
         <h3 className="text-sm font-bold">{template.name}</h3>

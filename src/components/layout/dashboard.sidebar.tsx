@@ -58,7 +58,9 @@ export default function AdminNav({
               </svg>
             }
             text={"Dashboard"}
-            isActive={router.pathname === "/dashboard"}
+            isActive={
+              router.pathname === "/dashboard" || router.pathname === "/learn"
+            }
             to={session?.user?.role === "admin" ? "/dashboard" : "/learn"}
           />
           {userProfile?.role === "admin" && (

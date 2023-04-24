@@ -72,7 +72,7 @@ export default function Talent({ data }: { data: User }) {
                     alt={data?.name as string}
                   />
                   <div className="flex flex-col gap-0">
-                    <h1 className="text-2xl font-bold text-tertiary">
+                    <h1 className="text-2xl font-bold capitalize text-tertiary">
                       {data?.name}
                     </h1>
                     <div className="mt-3 flex items-center gap-1">

@@ -57,7 +57,7 @@ export default function LearnCenter() {
       />
       <DashboardWrapper hideSearch>
         <div className="relative ml-[250px] mt-[1rem] text-tertiary">
-          <h1 className="w-full text-2xl font-bold">
+          <h1 className="w-full text-2xl font-bold capitalize">
             Hi, {userProfile?.name?.split(" ")[0] ?? ""}
           </h1>
           <div className="mt-16 flex w-[98%] justify-start gap-6 2xl:mt-8">

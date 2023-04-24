@@ -70,9 +70,19 @@ export default function AllTalents({
   const id = orgId;
 
   // get invited talents - INVITED
-  const { data: sentInvites } = useGetSentInvitesQuery(id, {
-    skip: !id,
-  });
+  const { data: sentInvites, refetch: getInvites } = useGetSentInvitesQuery(
+    id,
+    {
+      skip: !id,
+    }
+  );
+
+  useEffect(() => {
+    if (isFetching) {
+      getInvites();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFetching]);
 
   useEffect(() => {
     sendTotalTalents(data?.data?.length || 0);

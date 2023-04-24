@@ -57,6 +57,8 @@ model User {
   createdAt                DateTime                   @default(now())
   updatedAt                DateTime                   @updatedAt
   OnboardingProgramTalents OnboardingProgramTalents[]
+
+  @@index([email], name: "email")
 }
 
 // Define the Organization entity
@@ -100,6 +102,9 @@ model OnboardingProgramTalents {
   organizationId    String?
 
   @@unique([userId, programId])
+  @@index([userId], name: "userId")
+  @@index([programId], name: "programId")
+  @@index([organizationId], name: "organizationId")
 }
 
 model waitlist {
@@ -123,4 +128,6 @@ model invites {
   orgId     String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([orgId], name: "orgId")
 }

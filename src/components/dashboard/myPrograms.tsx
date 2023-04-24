@@ -31,7 +31,7 @@ export default function MyEnrolledPrograms({
       <div className="relative mt-[20px] flex h-full flex-col items-center justify-center gap-8">
         {data?.length === 0 && (
           <div
-            className={`mr-auto flex min-h-[400px] flex-col items-center justify-center gap-4 outline ${
+            className={`mr-auto flex min-h-[400px] flex-col items-center justify-center gap-4 ${
               user ? "w-full" : "w-1/2"
             }`}
           >

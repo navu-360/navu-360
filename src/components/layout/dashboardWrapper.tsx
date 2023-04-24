@@ -25,7 +25,7 @@ export default function DashboardWrapper({
 
   const id = orgId;
 
-  const { data: sentInvites, refetch } = useGetSentInvitesQuery(id, {
+  const { data: sentInvites } = useGetSentInvitesQuery(id, {
     skip: !id,
   });
 
@@ -43,7 +43,6 @@ export default function DashboardWrapper({
           <InviteTalentsModal
             closeModal={() => {
               setShowModal(false);
-              refetch();
             }}
             invitedEmails={
               sentInvites?.data
