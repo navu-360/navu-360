@@ -97,7 +97,7 @@ function AdminCard() {
   if (!isReady) return null;
 
   return (
-    <div className="md:fixed right-4 top-2 flex items-center gap-2 transition-all duration-300 ease-in">
+    <div className="md:fixed right-4 top-2 pt-4 flex items-center gap-2 transition-all duration-300 ease-in">
       <div className="relative flex h-[70px] w-[70px] items-center justify-center rounded-full bg-tertiary">
         {userProfile?.id ? (
           <img

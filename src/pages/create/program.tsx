@@ -104,7 +104,7 @@ export default function CreateProgram() {
     await editProgram(body)
       .unwrap()
       .then(() => {
-        
+
         router.back();
       })
       .catch((error) => {
@@ -152,7 +152,7 @@ export default function CreateProgram() {
     <>
       <Header title="Create an Onboarding Program" />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[90px] mt-[20px] flex h-full flex-col items-start justify-start gap-8 pt-8 md:ml-[250px] md:w-max">
+        <div className="relative ml-[90px] mt-[40px] flex h-full flex-col items-start justify-start gap-8 pt-4 md:ml-[250px] md:w-max">
           <GoBack />
           <div className="mt-8 flex w-full relative flex-col-reverse justify-between md:flex-row">
             <form className="mt-8 md:mt-0">

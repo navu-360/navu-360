@@ -58,12 +58,12 @@ export default function Talent({ data }: { data: User }) {
     <>
       <Header title={`${data?.name} - Navu360`} />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[90px] mt-[20px] flex h-full items-start justify-start gap-8 pt-0 md:ml-[250px]">
+        <div className="relative ml-[90px] mt-[40px] flex h-full items-start justify-start gap-8 pt-4 md:ml-[250px]">
           <GoBack />
           {/* sections */}
           {/* user details part - like on talent feed */}
           <section className="relative flex w-[95%] flex-col gap-8 xl:flex-row">
-            <div className="mt-16 flex h-max w-full flex-col justify-between rounded-xl bg-white p-4 pb-4 shadow-lg xl:fixed xl:left-[300px] xl:top-[140px] xl:mt-0 xl:h-[300px] xl:w-[400px] xl:pb-0">
+            <div className="mt-16 flex h-max w-full flex-col justify-between rounded-xl bg-white p-4 pb-4 shadow-lg xl:fixed xl:left-[300px] xl:top-[140px] xl:mt-0 xl:h-[300px] xl:w-[400px] xl:pb-6">
               <div className="w-full">
                 <div className="flex flex-col gap-4 md:flex-row">
                   <img
@@ -182,7 +182,7 @@ export default function Talent({ data }: { data: User }) {
                 </button>
               </div>
             </div>
-            <div className="relative mt-12 h-max min-h-[400px] w-full rounded-xl bg-white p-4 pb-8 pt-12 shadow-lg xl:ml-[450px]">
+            <div className="relative mt-12 h-max min-h-[400px] w-full rounded-xl bg-white p-4 pb-8 pt-12 shadow-lg xl:ml-[500px]">
               <button
                 onClick={() =>
                   setShowTalentEnrolModal([data?.id, data?.name as string])
