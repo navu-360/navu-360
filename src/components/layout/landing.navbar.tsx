@@ -65,7 +65,7 @@ export default function NavBar() {
               );
             }}
             disabled={status === "loading"}
-            className="flex hidden h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-1 md:mr-0 md:block"
+            className="hidden h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-1 md:mr-0 md:flex"
           >
             {status === "loading" ? (
               <SmallSpinner />
