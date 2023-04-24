@@ -28,6 +28,7 @@ export const serverSchema = z.object({
   SENDGRID_API_KEY: z.string().min(1),
   EMAIL_FROM: z.string().min(1),
   REPLY_TO: z.string().min(1),
+  DIRECT_URL: z.string().min(1),
 });
 
 /**
@@ -49,6 +50,7 @@ export const serverEnv = {
   SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
   EMAIL_FROM: process.env.EMAIL_FROM,
   REPLY_TO: process.env.REPLY_TO,
+  DIRECT_URL: process.env.DIRECT_URL,
 };
 
 /**
