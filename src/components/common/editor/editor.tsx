@@ -3,6 +3,7 @@ import type { EditorConfig, OutputData } from "@editorjs/editorjs";
 import EditorJS from "@editorjs/editorjs";
 import { EDITOR_JS_TOOLS } from "./editor.tools";
 import { useRouter } from "next/router";
+import toaster from "utils/toaster";
 
 function MyEditor({
   initialData,
@@ -19,6 +20,12 @@ function MyEditor({
 
   const router = useRouter();
 
+  const [outputData, setOutputData] = React.useState<OutputData | null>(null);
+  
+  useEffect(() => {
+    setOutputData(initialData);
+  }, [initialData])
+
   useEffect(() => {
     const holder = document.getElementById("editorjs");
     if (!holder) return;
@@ -30,15 +37,31 @@ function MyEditor({
         tools: EDITOR_JS_TOOLS,
         placeholder: "Create your content here...",
         readOnly: isReadOnly,
+        onChange: async () => {
+          // @ts-ignore
+          const data = await editorRef.current?.save();
+          setOutputData(data);
+        }
       });
+
+      // callbacks
+      // @ts-ignore
+      editorRef.current?.isReady.then(() => {
+        console.log("Editor.js is ready to work!");
+      }
+      // @ts-ignore
+      ).catch((error) => {
+        toaster({
+          message: "The editor is not ready yet.",
+          status: "info",
+        })
+      });
+      
     }
   }, [initialData, isReadOnly]);
 
   const saveData = async () => {
-    // @ts-ignore
-    editorRef.current?.save().then((outputData: OutputData) => {
-      receiveData && receiveData(outputData);
-    });
+   if(outputData){receiveData && receiveData(outputData);}
   };
 
   useEffect(() => {

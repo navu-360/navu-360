@@ -177,7 +177,7 @@ export default function SelectTemplate({
               </div>
             )}
           </div>
-          <div className="mt-8 flex flex-col items-center justify-center md:mt-4">
+          <div className="mt-8 flex flex-col items-center justify-center md:mt-0">
             <div className="relative mx-auto mt-4 flex h-[40px] w-[90%] items-center">
               <div className="hr-color h-[1px] w-full"></div>
               <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-4 text-[#62646a]">
@@ -186,7 +186,7 @@ export default function SelectTemplate({
             </div>
             <Link
               href="/create/program"
-              className="mt-8 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 md:mr-0"
+              className="mt-4 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 md:mr-0"
             >
               Create Blank Program
             </Link>

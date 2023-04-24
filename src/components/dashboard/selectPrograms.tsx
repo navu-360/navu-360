@@ -160,7 +160,7 @@ export function SelectPrograms({
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 20, opacity: 0 }}
         transition={{ duration: 0.3, ease: "easeIn" }}
-        className="h-full relative w-full rounded-lg bg-white px-8 py-4 lg:h-max lg:w-full"
+        className="h-full relative w-full rounded-lg bg-white px-8 py-4 lg:h-max lg:w-[700px]"
       >
         <div className="flex h-full flex-col justify-between">
           <div className="flex flex-col gap-8">
@@ -180,25 +180,7 @@ export function SelectPrograms({
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </form>
-              {selectedProgramIds?.length > 0 && (
-                <button className="flex items-center gap-2 rounded p-2 py-1 hover:underline">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="h-6 w-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                  Unselect all
-                </button>
-              )}
+               
             </div>
             <div className="no-scrollbar flex h-max max-h-[350px] flex-col gap-4 overflow-y-auto">
               {showingItems.map((program) => (

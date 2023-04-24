@@ -20,6 +20,7 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import Spinner from "components/common/spinner";
 import { GoBack } from "components/dashboard/common";
+import toaster from "utils/toaster";
 
 interface CustomTemplate extends OutputData {
   id?: string;
@@ -73,12 +74,15 @@ export default function CreateProgram() {
     (state: { auth: { orgId: string } }) => state.auth.orgId
   );
 
+  const [hasCreated, setHasCreated] = useState(false);
+
   const createProgramHandler = async (data: OutputData) => {
     const body = {
       name,
       organizationId: orgId,
       content: JSON.stringify(data),
     };
+    setHasCreated(true);
     await createProgram(body)
       .unwrap()
       .then(() => {
@@ -90,15 +94,17 @@ export default function CreateProgram() {
   };
 
   const editProgramHandler = async (data: OutputData) => {
+    if(name?.length === 0) {toaster({message: "Program name is required", status: "info"});}
     const body = {
       name,
       content: JSON.stringify(data),
       id,
     };
-
+    setHasCreated(true);
     await editProgram(body)
       .unwrap()
       .then(() => {
+        
         router.back();
       })
       .catch((error) => {
@@ -148,7 +154,7 @@ export default function CreateProgram() {
       <DashboardWrapper hideSearch>
         <div className="relative ml-[90px] mt-[20px] flex h-full flex-col items-start justify-start gap-8 pt-8 md:ml-[250px] md:w-max">
           <GoBack />
-          <div className="mt-8 flex w-full flex-col-reverse justify-between md:flex-row">
+          <div className="mt-8 flex w-full relative flex-col-reverse justify-between md:flex-row">
             <form className="mt-8 md:mt-0">
               <input
                 type="text"
@@ -167,11 +173,11 @@ export default function CreateProgram() {
             >
               {isLoading || loading || editingProgramLoading
                 ? "Saving..."
-                : "Save Program"}
+                : `${edit ? "Edit Program" :"Create Program"}`}
             </button>
           </div>
 
-          <MyEditor
+          {(!isLoading && !hasCreated) && <MyEditor
             key={chosenTemplate as unknown as Key}
             getData={save}
             receiveData={(data: OutputData) => {
@@ -215,7 +221,7 @@ export default function CreateProgram() {
               // );
             }}
             initialData={chosenTemplate ?? { blocks: [] }}
-          />
+          />}
         </div>
       </DashboardWrapper>
     </>

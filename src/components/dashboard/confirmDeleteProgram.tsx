@@ -37,7 +37,7 @@ export function DeleteConfirmModal({
       onClick={(e) =>
         e.target === e.currentTarget ? setShowConfirmModal(false) : null
       }
-      className="fixed inset-0 z-[130] flex h-full w-full items-center justify-center bg-black/50 backdrop:blur-md md:absolute"
+      className="fixed inset-0 z-[130] flex h-full w-full items-center justify-center bg-black/50 backdrop:blur-md md:fixed"
     >
       <motion.div
         initial={{ y: 30, opacity: 0.7 }}

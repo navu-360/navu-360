@@ -147,27 +147,24 @@ export default function AllTalents({
                   <thead>
                     {selectedType !== "Invited" ? (
                       <tr>
-                        <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                          Talent
+                      <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                        Talent
+                      </th>
+                      <th className="role whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                        Role
+                      </th>
+                      <th className="date whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                        {selectedType === "Enrolled" ? "Enrolled" : "Joined"}
+                      </th>
+                      {selectedType === "Enrolled" && (
+                        <th className="progress whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                          Completion{" "}
                         </th>
-                        <th className="hidden whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white lg:block">
-                          Role
-                        </th>
-                        <th className="hidden whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white xl:block">
-                          {selectedType === "Enrolled" ? "Enrolled" : "Joined"}
-                        </th>
-                        {selectedType === "Enrolled" && (
-                          <th className="hidden progress whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white xl:block">
-                            Completion{" "}
-                          </th>
-                        )}
-                        <th
-                          id="button"
-                          className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white"
-                        >
-                          Action
-                        </th>
-                      </tr>
+                      )}
+                      <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                        Action
+                      </th>
+                    </tr>
                     ) : (
                       <tr className="invite">
                         <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
