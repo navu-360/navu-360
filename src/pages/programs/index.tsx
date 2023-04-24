@@ -97,7 +97,7 @@ export default function Programs() {
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
-                fill="#8e264e"
+                fill="#9d2a57"
                 className="h-8 w-8"
               >
                 <path

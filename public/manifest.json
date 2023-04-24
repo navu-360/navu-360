@@ -1,6 +1,6 @@
 {
-  "theme_color": "#8e264e",
-  "background_color": "#8e264e",
+  "theme_color": "#9d2a57",
+  "background_color": "#9d2a57",
   "display": "standalone",
   "scope": "/",
   "start_url": "/",
@@ -10,11 +10,7 @@
   "description": "Your onboarding platform",
   "dir": "auto",
   "lang": "en",
-  "categories": [
-    "onboarding",
-    "human resources",
-    "hiring"
-  ],
+  "categories": ["onboarding", "human resources", "hiring"],
   "icons": [
     {
       "src": "/android-chrome-192x192.png",

@@ -164,7 +164,7 @@ span {
 }
 
 .ce-toolbar__plus, .ce-toolbar__settings-btn {
-    color: #8e264e;
+    color: #9d2a57;
 }
 
 .ce-toolbar__plus>svg {
@@ -177,7 +177,7 @@ span {
 }
 
 .ce-popover__item:hover, .ce-conversion-tool--focused:hover, .cdx-attaches__download-button {
-    background-color: #8e264e !important;
+    background-color: #9d2a57 !important;
 }
 
 .ce-inline-toolbar__toggler-and-button-wrapper {
@@ -191,7 +191,7 @@ span {
 }
 
 .ce-conversion-tool:hover {
-    background-color: #8e264e !important;
+    background-color: #9d2a57 !important;
 }
 
 .program-input {
@@ -202,7 +202,7 @@ span {
 }
 
 .program-input:focus {
-    border-bottom: 1.5px solid #8e264e;
+    border-bottom: 1.5px solid #9d2a57;
 }
 
 .hr-color {

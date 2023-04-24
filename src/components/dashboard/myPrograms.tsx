@@ -31,14 +31,14 @@ export default function MyEnrolledPrograms({
       <div className="relative mt-[20px] flex h-full flex-col items-center justify-center gap-8">
         {data?.length === 0 && (
           <div
-            className={`mr-auto flex md:min-h-[400px] flex-col items-center justify-center gap-4 ${
+            className={`mr-auto flex flex-col items-center justify-center gap-4 md:min-h-[400px] ${
               user ? "w-full" : "w-full md:w-1/2"
             }`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
-              fill="#8e264e"
+              fill="#9d2a57"
               className="h-8 w-8"
             >
               <path
