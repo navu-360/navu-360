@@ -47,23 +47,23 @@ export default function Talents() {
     <>
       <Header title={`All Talents - Navu360`} />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[250px] mt-[20px] flex h-full flex-col items-center justify-center gap-8 2xl:ml-[250px]">
-          <table className="mt-8 w-auto min-w-[80vw] border-collapse items-center border bg-tertiary text-white">
+        <div className="relative ml-[60px] mt-[20px] flex h-full flex-col items-center justify-center gap-8 md:ml-[200px] 2xl:ml-[230px]">
+          <table className="mt-8 min-w-[70vw] border-collapse items-center border bg-tertiary text-white md:w-auto md:min-w-[70vw] 2xl:min-w-[80vw]">
             <thead>
               <tr>
-                <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                <th className="whitespace-nowrap bg-[#52324c] px-4 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                   Talent
                 </th>
-                <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                <th className="role whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                   Role
                 </th>
-                <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                <th className="date whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                   Joined
                 </th>
-                <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                <th className="progress whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                   Completion{" "}
                 </th>
-                <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                <th className="bg-[#52324c] py-3 text-left align-middle text-xs font-semibold uppercase text-white md:px-6">
                   Actions
                 </th>
               </tr>
@@ -84,31 +84,31 @@ export default function Talents() {
               {data?.data?.length > 0 &&
                 data?.data?.map((talent: User) => (
                   <tr key={talent?.id} className="border border-secondary/25">
-                    <th className="flex items-center whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left align-middle text-xs">
+                    <th className="flex flex-col gap-3 whitespace-nowrap  border-l-0 border-r-0 border-t-0 p-3 text-left text-xs md:flex-row md:items-center md:gap-0 md:px-6">
                       <img
                         src={generateAvatar(talent?.id)}
                         className="h-12 w-12 rounded-full border bg-white"
                         alt={talent?.id}
                       />
-                      <span className="ml-3 font-bold capitalize text-white">
+                      <span className="ml-0 font-bold capitalize text-white md:ml-3">
                         {talent?.name}
                       </span>
                     </th>
-                    <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-sm font-semibold">
+                    <td className="role whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-sm font-semibold">
                       {talent?.position}
                     </td>
-                    <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-sm font-semibold">
+                    <td className="date whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-sm font-semibold">
                       {processDate(talent?.createdAt)}
                     </td>
                     <CompletionStatus enrollment={{ userId: talent?.id }} />
-                    <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-right align-middle text-xs">
+                    <td className="border-l-0 border-r-0 border-t-0 px-0 text-right align-middle text-xs md:p-4 md:px-6">
                       <div
-                        className="min-w-48 z-50 list-none rounded py-2 text-left text-base"
+                        className="z-50 rounded py-2 text-left text-base"
                         id="table-dark-1-dropdown"
                       >
                         <Link
                           href={`/talents/${talent?.id}`}
-                          className="mb-2 block w-max whitespace-nowrap rounded-xl bg-white px-12 py-2 text-sm font-semibold text-tertiary"
+                          className="mb-2 block w-max rounded-xl bg-white px-4 py-2 text-sm font-semibold text-tertiary md:px-12"
                         >
                           View
                         </Link>

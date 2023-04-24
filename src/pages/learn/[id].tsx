@@ -67,7 +67,7 @@ export default function ViewTalent({
     <>
       <Header title={`${data?.OnboardingProgram?.name} - Navu360`} />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[300px] mt-[20px] flex h-full items-start justify-start gap-8 pt-16">
+        <div className="relative ml-[90px] mt-[30px] flex h-full items-start justify-start gap-8 pt-16 md:ml-[250px]">
           <GoBack />
           <div className="flex w-[95%] min-w-[95%] flex-col gap-3 pb-8">
             <h1 className="w-full text-left text-2xl font-bold text-tertiary">

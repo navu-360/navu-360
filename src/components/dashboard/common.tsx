@@ -8,7 +8,7 @@ export function TalentSwitch({
   setSelectedOption: (option: string) => void;
 }) {
   return (
-    <div className="absolute left-0 right-0 top-0 flex w-full justify-center">
+    <div className="left-0 right-0 top-0 mb-4 flex w-full justify-center md:absolute md:mb-0">
       <OneOption
         text="Enrolled"
         isSelected={selectedOption === "Enrolled"}
@@ -68,7 +68,7 @@ export function GoBack() {
   return (
     <div
       onClick={() => router.back()}
-      className="absolute left-0 z-50 top-0 flex w-max cursor-pointer items-center gap-2 rounded-md p-2 text-tertiary hover:bg-gray-100"
+      className="absolute left-0 top-0 z-50 flex w-max cursor-pointer items-center gap-2 rounded-md p-2 text-tertiary hover:bg-gray-100"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

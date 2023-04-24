@@ -56,11 +56,11 @@ export default function LearnCenter() {
         title={`${organizationData?.organization?.name ?? ""} Learn Center`}
       />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[250px] mt-[1rem] text-tertiary">
+        <div className="relative ml-[90px] mt-[1rem] pt-8 text-tertiary md:ml-[250px]">
           <h1 className="w-full text-2xl font-bold capitalize">
             Hi, {userProfile?.name?.split(" ")[0] ?? ""}
           </h1>
-          <div className="mt-16 flex w-[98%] justify-start gap-6 2xl:mt-8">
+          <div className="mt-8 flex w-[95%] flex-wrap gap-4 lg:justify-start lg:gap-5 2xl:mt-8">
             <OneStat
               svg={
                 <svg
@@ -136,7 +136,7 @@ function OneStat({
   num: number;
 }) {
   return (
-    <div className="stat-shadow flex w-1/4 min-w-[300px] flex-col items-center gap-1 rounded-xl bg-tertiary p-2 text-white">
+    <div className="stat-shadow flex w-full flex-row items-center gap-3  rounded-xl bg-tertiary p-2 text-white sm:w-max lg:w-[25%] lg:flex-col xl:min-w-[300px]">
       <div className="">{svg}</div>
 
       <div className="flex items-center gap-2 text-center text-base">

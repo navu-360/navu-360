@@ -15,6 +15,7 @@ import toaster from "utils/toaster";
 import { useRouter } from "next/router";
 
 import { motion } from "framer-motion";
+import { GoBack } from "components/dashboard/common";
 
 export default function InviteTalent() {
   const [role, setRole] = useState("");
@@ -99,8 +100,9 @@ export default function InviteTalent() {
         }`}
       />
       <LandingWrapper hideNav>
-        <section className="flex h-[100vh] w-screen">
-          <div className="relative h-full w-1/3">
+        <section className="relative flex h-[100vh] w-screen">
+          <GoBack />
+          <div className="relative hidden h-full md:block md:w-1/3">
             <Image
               src="https://res.cloudinary.com/dpnbddror/image/upload/v1678044671/Rectangle_417_1_1_pq5jum.png"
               fill
@@ -128,7 +130,7 @@ export default function InviteTalent() {
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.3, ease: "easeIn" }}
-              className={`flex h-full w-2/3 flex-col items-center justify-center p-8 pt-4 text-center ${
+              className={`flex h-full w-full flex-col items-center justify-center p-8 pt-4 text-center md:w-2/3 ${
                 session?.user ? "" : ""
               }`}
             >
@@ -139,11 +141,11 @@ export default function InviteTalent() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, ease: "easeIn" }}
-              className={`flex h-full w-2/3 flex-col items-center justify-center p-8 pt-4 text-center ${
+              className={`flex h-full w-full flex-col items-center justify-center p-8 pt-4 text-center md:w-2/3 ${
                 session?.user ? "" : ""
               }`}
             >
-              <div className="flex w-1/2 flex-col gap-1 text-tertiary">
+              <div className="flex flex-col gap-1 text-tertiary md:w-1/2">
                 <h1 className="text-2xl font-bold">
                   Join {organizationData?.organization?.name} onboarding
                   programs

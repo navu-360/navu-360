@@ -30,10 +30,19 @@ export default function AdminNav({
   if (!isReady) return null;
 
   return (
-    <nav className="fixed left-0 top-0 z-20 h-full w-[200px] bg-dark py-2.5 sm:px-4">
+    <nav className="fixed left-0 top-0 z-20 h-full w-[70px] bg-dark py-2.5 sm:px-4 md:w-[200px]">
       <div className="mx-auto flex h-full flex-col items-center md:mx-0">
-        <Link href="/dashboard" className="flex items-center pl-4">
-          <img src="/logo.svg" className="mr-3 h-6 sm:h-9" alt="Navu360" />
+        <Link href="/dashboard" className="flex items-center md:pl-4">
+          <img
+            src="/logo.svg"
+            className="mr-3 hidden h-6 sm:h-9 md:block"
+            alt="Navu360"
+          />
+          <img
+            src="/small-logo-color.svg"
+            className="md:mr-3 block h-8 sm:h-9 md:hidden"
+            alt="Navu360"
+          />
         </Link>
 
         <div className="mt-[50px] flex flex-col gap-4 text-white">
@@ -144,7 +153,7 @@ export default function AdminNav({
           )}
         </div>
 
-        <div className="absolute bottom-8 mx-auto w-4/5 flex-col gap-4 text-white">
+        <div className="mt-4 text-white md:absolute md:bottom-8 md:mx-auto md:w-4/5 md:flex-col md:gap-4">
           <OneItem
             svg={
               <svg
@@ -207,11 +216,11 @@ function OneItem({
           action();
         }
       }}
-      className={`group flex items-center gap-2 rounded-md px-8 py-2 pl-2 font-medium transition-all duration-300 ease-in hover:bg-secondary/50 ${
+      className={`group flex items-center gap-2 rounded-md px-4 py-4 font-medium transition-all duration-300 ease-in hover:bg-secondary/50 md:px-8 md:py-2 md:pl-2 ${
         isActive ? "bg-secondary/20" : "bg-transparent"
       }`}
     >
-      {svg} <span>{text}</span>
+      {svg} <span className="hidden md:block">{text}</span>
     </Link>
   );
 }

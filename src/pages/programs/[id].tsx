@@ -66,15 +66,15 @@ export default function Program({ data }: { data: OnboardingProgram }) {
     <>
       <Header title={`${data?.name} - Navu360`} />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[300px] mt-[20px] flex h-full items-start justify-start gap-8 pt-16">
+        <div className="relative md:ml-[250px] ml-[90px] mt-[20px] flex h-full flex-col-reverse items-start justify-start gap-8 pt-16 lg:flex-row">
           <GoBack />
-          <div className="flex flex-col gap-3">
+          <div className="flex lg:w-[calc(100%_-_400px)] w-[95%] flex-col gap-3">
             <h1 className="w-full text-left text-2xl font-bold text-tertiary">
               {data?.name}
             </h1>
             {content && <MyEditor isReadOnly initialData={content} />}
           </div>
-          <div className="fixed right-4 mr-16 mt-16 flex h-[80vh] w-[20vw] min-w-[400px] flex-col overflow-y-auto text-tertiary">
+          <div className="lg:fixed right-8 mr-0 lg:mt-16 flex lg:h-[80vh] lg:w-[350px] w-[95%] flex-col overflow-y-auto text-tertiary">
             <div className="flex flex-col gap-4 rounded border-[1px] border-gray-400 p-4 text-tertiary">
               {/* created by */}
               <div className="flex items-center gap-2 px-4">

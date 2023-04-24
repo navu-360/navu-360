@@ -50,14 +50,14 @@ function MyEditor({
 
   return (
     <div
-      className={`mb-8 min-w-[400px] rounded-lg  bg-tertiary p-8 text-white md:min-w-[50vw] ${
+      className={`mb-8 rounded-lg  bg-tertiary p-8 text-white md:min-w-[35vw] ${
         isReadOnly
           ? `${
               router?.pathname.includes("learn")
                 ? "w-full max-w-[unset]"
-                : "w-[65%] max-w-[unset]"
+                : "w-full md:max-w-[unset]"
             }`
-          : "w-full max-w-[80vw]"
+          : "w-full max-w-[95%] md:max-w-[80vw]"
       }`}
       id="editorjs"
     />

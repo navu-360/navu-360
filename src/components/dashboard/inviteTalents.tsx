@@ -88,9 +88,23 @@ export default function InviteTalentsModal({
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 20, opacity: 0 }}
         transition={{ duration: 0.3, ease: "easeIn" }}
-        className="flex h-max w-max flex-col items-center justify-center rounded-lg bg-white p-8 md:max-h-[600px] md:max-w-[700px]"
+        className="relative flex h-full w-full flex-col items-center justify-center rounded-lg bg-white p-4 text-center md:h-max md:max-h-[600px] md:w-max md:max-w-[700px] md:p-8"
       >
-        <h1 className="text-lg font-bold text-tertiary">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="#686868"
+          onClick={() => closeModal()}
+          className="absolute right-2 top-2 h-12 w-12"
+        >
+          <path
+            fillRule="evenodd"
+            d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z"
+            clipRule="evenodd"
+          />
+        </svg>
+
+        <h1 className="text-xl font-bold text-tertiary">
           Invite Talents to this organization
         </h1>
 
@@ -103,7 +117,7 @@ export default function InviteTalentsModal({
 
         <div className="mt-4 flex items-center gap-4">
           <div className="flex flex-col gap-2">
-            <div className="flex min-w-[400px] items-center gap-4">
+            <div className="flex items-center gap-4 md:min-w-[400px]">
               <input
                 type="email"
                 placeholder="Email address"

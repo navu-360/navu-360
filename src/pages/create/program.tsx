@@ -146,21 +146,21 @@ export default function CreateProgram() {
     <>
       <Header title="Create an Onboarding Program" />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[250px] mt-[20px] flex h-full w-max flex-col items-start justify-start gap-8 pt-8">
+        <div className="relative ml-[90px] mt-[20px] flex h-full flex-col items-start justify-start gap-8 pt-8 md:ml-[250px] md:w-max">
           <GoBack />
-          <div className="mt-8 flex w-full justify-between">
-            <form>
+          <div className="mt-8 flex w-full flex-col-reverse justify-between md:flex-row">
+            <form className="mt-8 md:mt-0">
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter program name ..."
-                className="program-input w-[40vw] max-w-[500px] text-lg font-bold text-tertiary"
+                className="program-input w-[95%] text-lg font-bold text-tertiary md:w-[40vw] md:max-w-[500px]"
               />
             </form>
             <button
               disabled={isLoading || !name || loading || editingProgramLoading}
-              className="flex items-center justify-center rounded-xl bg-secondary px-12 py-2 text-center text-base font-semibold text-white hover:bg-secondary"
+              className="flex w-max items-center self-end md:mr-0 mr-3 md:self-auto justify-center rounded-xl bg-secondary px-12 py-2 text-center text-base font-semibold text-white hover:bg-secondary"
               onClick={() => {
                 setSave(true);
               }}

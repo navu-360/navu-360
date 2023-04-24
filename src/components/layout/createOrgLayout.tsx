@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { GoBack } from "components/dashboard/common";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -36,18 +37,18 @@ export default function CreateOrganizationLayout({
   const { data: session } = useSession();
   return (
     <section className="flex h-[100vh] w-screen">
-      <div className="relative h-full w-1/3">
+      <div className="relative hidden h-full w-1/3 md:block">
         <Image
           src="https://res.cloudinary.com/dpnbddror/image/upload/v1678044671/Rectangle_417_1_1_pq5jum.png"
           fill
           alt="Onboarding Image z-10"
         />
         <div className="overlay" />
-        <div className="absolute inset-x-0 top-1/2 z-20 mx-auto flex w-4/5 -translate-y-1/2 flex-col gap-6  text-center">
-          <h1 className="text-center text-2xl font-bold text-white">
+        <div className="absolute inset-x-0 top-1/2 z-20 mx-auto flex w-[95%] -translate-y-1/2 flex-col gap-6  text-center">
+          <h1 className="text-center text-xl font-bold text-white md:text-2xl">
             Welcome to Navu360, {session?.user?.name.split(" ")[0]}
           </h1>
-          <p className="text-xl font-medium text-white">
+          <p className="text-base font-medium text-white md:text-xl">
             Setup your organization to experience the power of Navu360.
           </p>
         </div>
@@ -55,11 +56,12 @@ export default function CreateOrganizationLayout({
           <img src="logo.svg" className="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
         </Link>
       </div>
-      <div className="flex h-full w-2/3 flex-col p-8 pt-4">
+      <div className="relative flex h-full w-full flex-col p-8 pt-16 md:w-2/3 md:pt-4">
         <div className="flex flex-col gap-1 text-tertiary">
           <h1 className="text-2xl font-bold">{title}</h1>
           <p className="text-base font-medium">{desc}</p>
         </div>
+        <GoBack />
         {children}
         <div className={`flex w-full items-end justify-end px-8`}>
           <button
@@ -67,7 +69,7 @@ export default function CreateOrganizationLayout({
             onClick={() => {
               goToNext(role, companyDetails);
             }}
-            className="rounded-md bg-secondary px-6 py-2 text-base font-semibold text-white"
+            className="rounded-md bg-secondary px-12 py-2 text-base font-semibold text-white"
           >
             {loading ? "Loading..." : "Continue"}
           </button>

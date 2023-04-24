@@ -72,13 +72,13 @@ export default function Dashboard() {
     <>
       <Header title={`${organizationData?.name ?? ""} | Dashboard - Navu360`} />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[250px] mr-4 mt-[3rem] text-tertiary">
+        <div className="relative ml-[90px] mr-4 mt-[3rem] text-tertiary md:ml-[230px]">
           <h1 className="w-full text-2xl font-bold">
             Hi, {userProfile?.name?.split(" ")[0] ?? ""}
           </h1>
           <button
             onClick={() => setShowSelectTemplate(true)}
-            className="absolute right-0 top-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-[#fa3264] focus:outline-none focus:ring-4 md:mr-0"
+            className="fixed bottom-2 right-2 z-50 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-[#fa3264] focus:outline-none focus:ring-4 md:absolute md:right-0 md:top-0 md:mr-0"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -95,13 +95,14 @@ export default function Dashboard() {
 
             <span>Create Program</span>
           </button>
-          <div className="mt-16 flex w-full justify-between 2xl:mt-8">
+          <div className="mt-16 flex w-full flex-wrap gap-4 lg:justify-between lg:gap-0 2xl:mt-8">
             <OneStat
               svg={
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="52"
                   height="52"
+                  className="h-6 w-6 md:h-12 md:w-12"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -129,6 +130,7 @@ export default function Dashboard() {
                   fill="none"
                   stroke="currentColor"
                   stroke-width="2"
+                  className="h-6 w-6 md:h-12 md:w-12"
                   stroke-linecap="round"
                   stroke-linejoin="round"
                 >
@@ -147,7 +149,7 @@ export default function Dashboard() {
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="currentColor"
-                  className="h-12 w-12"
+                  className="h-6 w-6 md:h-12 md:w-12"
                 >
                   <path
                     fillRule="evenodd"
@@ -159,7 +161,7 @@ export default function Dashboard() {
               num={countOfOnboarded}
             />
           </div>
-          <section className="mt-8 flex w-full justify-between gap-2">
+          <section className="mt-8 flex w-full flex-col justify-between gap-2 lg:flex-row">
             <AllTalents
               sendTotalTalents={(num: number) => setCountOfTalents(num)}
               setTotalOnboarded={(num: number) => setCountOfOnboarded(num)}
@@ -194,11 +196,11 @@ function OneStat({
   num: number;
 }) {
   return (
-    <div className="stat-shadow flex w-[25%] min-w-[300px] flex-col items-center gap-1 rounded-xl bg-tertiary p-2 text-white">
+    <div className="stat-shadow flex w-full flex-row items-center gap-3  rounded-xl bg-tertiary p-2 text-white sm:w-max lg:w-[25%] lg:flex-col xl:min-w-[300px]">
       <div className="">{svg}</div>
 
       <div className="flex items-center gap-2 text-center text-base">
-        <span className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-secondary/50 p-2 text-base leading-normal">
+        <span className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-secondary p-2 text-base leading-normal">
           {num}
         </span>
         <span>{text}</span>

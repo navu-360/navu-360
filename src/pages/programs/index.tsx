@@ -57,7 +57,7 @@ export default function Programs() {
       <>
         <Header title="All Onboarding Programs - Loading ..." />
         <DashboardWrapper hideSearch>
-          <div className="relative ml-[300px] mt-[20px] flex h-full flex-col items-center justify-center gap-8">
+          <div className="relative ml-[80px] mt-[20px] flex h-full flex-col items-center justify-center gap-8 md:ml-[300px]">
             <div className="flex w-full flex-wrap gap-8">
               <div className="flex min-h-[70vh] w-full items-center justify-center">
                 <Spinner />
@@ -72,7 +72,7 @@ export default function Programs() {
     <>
       <Header title={`All Onboarding Programs - Navu360`} />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[250px] mt-[3rem] flex h-full flex-col items-center justify-center gap-8 pt-20 2xl:ml-[250px]">
+        <div className="relative ml-[80px] mt-[3rem] flex h-full flex-col items-center justify-center gap-8 pb-16 pt-20 md:ml-[250px] 2xl:ml-[250px]">
           <button
             onClick={() => setShowSelectTemplate(true)}
             className="absolute right-12 top-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-[#fa3264] focus:outline-none focus:ring-4 md:mr-0"
@@ -97,7 +97,7 @@ export default function Programs() {
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
-                fill="#FB5881"
+                fill="#8e264e"
                 className="h-8 w-8"
               >
                 <path
@@ -110,7 +110,7 @@ export default function Programs() {
             </div>
           )}
           {programsArray?.length > 0 && (
-            <div className="flex w-full flex-wrap gap-8">
+            <div className="flex w-full flex-wrap justify-center gap-8 md:justify-start">
               {programsArray?.map((program: OnboardingProgram, i: number) => (
                 <OneProgramCard
                   key={program.id}

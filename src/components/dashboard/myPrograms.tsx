@@ -38,7 +38,7 @@ export default function MyEnrolledPrograms({
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
-              fill="#FB5881"
+              fill="#8e264e"
               className="h-8 w-8"
             >
               <path
@@ -129,7 +129,7 @@ export function OneProgramCard({
             }
           }
         }}
-        className="relative flex items-center gap-4 rounded-lg border-[1px] border-[#964f70] bg-white pl-4 text-tertiary"
+        className="relative flex w-full flex-col items-center gap-4 rounded-lg border-[1px] border-[#964f70] bg-white text-tertiary md:flex-row md:pl-4"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -137,7 +137,7 @@ export function OneProgramCard({
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="#964f70"
-          className="h-16 w-16"
+          className="hidden h-16 w-16 md:block"
         >
           <path
             strokeLinecap="round"
@@ -220,7 +220,7 @@ export function OneProgramCard({
             </button>
           ) : null
         ) : (
-          <div className="mr-8 flex h-max w-max items-center gap-4 rounded-lg bg-green-600/25 px-6 py-2">
+          <div className="mx-auto flex h-max w-[90%] mb-2 items-center gap-4 rounded-lg bg-green-600/25 px-6 py-2 md:mx-0 md:mr-8 md:w-max">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"

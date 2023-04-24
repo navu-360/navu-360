@@ -122,8 +122,8 @@ export default function AllTalents({
 
   if (isFetching || !orgId)
     return (
-      <section className="w-[70%] rounded-md border-[1px] border-tertiary/50 bg-tertiary/10 p-2">
-        <section className="bg-blueGray-50 relative py-16">
+      <section className="w-full rounded-md border-[1px] border-tertiary/50 bg-tertiary/10 p-2 lg:w-[70%]">
+        <section className="bg-blueGray-50 relative md:py-16">
           <TalentSwitch
             selectedOption={selectedType}
             setSelectedOption={setSelectedType}
@@ -150,21 +150,26 @@ export default function AllTalents({
                         <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                           Talent
                         </th>
-                        <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                        <th className="hidden whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white lg:block">
                           Role
                         </th>
-                        <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                        <th className="hidden whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white xl:block">
                           {selectedType === "Enrolled" ? "Enrolled" : "Joined"}
                         </th>
-                        <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                          Completion{" "}
-                        </th>
-                        <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                          Actions
+                        {selectedType === "Enrolled" && (
+                          <th className="hidden progress whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white xl:block">
+                            Completion{" "}
+                          </th>
+                        )}
+                        <th
+                          id="button"
+                          className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white"
+                        >
+                          Action
                         </th>
                       </tr>
                     ) : (
-                      <tr>
+                      <tr className="invite">
                         <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                           Talent
                         </th>
@@ -195,8 +200,8 @@ export default function AllTalents({
     );
 
   return (
-    <section className="w-[70%] rounded-md border-[1px] border-tertiary/50 p-2">
-      <section className="relative w-full py-16">
+    <section className="h-max w-full rounded-md border-[1px] border-tertiary/50 p-2 lg:w-[70%]">
+      <section className="relative w-full md:py-16">
         <TalentSwitch
           selectedOption={selectedType}
           setSelectedOption={setSelectedType}
@@ -223,27 +228,27 @@ export default function AllTalents({
                       <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                         Talent
                       </th>
-                      <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                      <th className="role whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                         Role
                       </th>
-                      <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                      <th className="date whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                         {selectedType === "Enrolled" ? "Enrolled" : "Joined"}
                       </th>
                       {selectedType === "Enrolled" && (
-                        <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                        <th className="progress whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                           Completion{" "}
                         </th>
                       )}
                       <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                        Actions
+                        Action
                       </th>
                     </tr>
                   ) : (
-                    <tr>
+                    <tr className="invite">
                       <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                        Talent
+                        Email
                       </th>
-                      <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                      <th className="invite-date whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                         Invite Date
                       </th>
                     </tr>
@@ -273,7 +278,7 @@ export default function AllTalents({
                           key={talent?.id}
                           className="border border-secondary/25"
                         >
-                          <td className="flex w-[225px] items-center whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left align-middle text-xs">
+                          <td className="flex flex-col gap-3 whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left text-xs md:flex-row md:items-center md:gap-0">
                             <img
                               src={generateAvatar(
                                 talent?.User?.id ?? talent?.id
@@ -285,10 +290,10 @@ export default function AllTalents({
                               {talent?.User?.name ?? talent?.name}
                             </span>
                           </td>
-                          <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
+                          <td className="role whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
                             {talent?.User?.position ?? talent?.position}
                           </td>
-                          <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
+                          <td className="date whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
                             {processDate(talent?.createdAt)}
                           </td>
                           {selectedType === "Enrolled" && (
@@ -302,7 +307,7 @@ export default function AllTalents({
                               {selectedType === "Enrolled" ? (
                                 <Link
                                   href={`/talents/${talent?.User?.id}`}
-                                  className="text-blueGray-700 mb-2 block w-max whitespace-nowrap rounded-xl bg-white px-12 py-2 text-sm font-semibold text-secondary"
+                                  className="text-blueGray-700 mb-2 block w-max rounded-xl bg-white px-4 py-2 text-sm font-semibold text-secondary md:px-12"
                                 >
                                   View
                                 </Link>
@@ -314,7 +319,7 @@ export default function AllTalents({
                                       talent?.name as string,
                                     ])
                                   }
-                                  className="text-blueGray-700 mb-2 block w-max whitespace-nowrap rounded-xl bg-white px-12 py-2 text-sm font-semibold text-secondary"
+                                  className="text-blueGray-700 mb-2 block w-max whitespace-nowrap rounded-xl bg-white px-4 py-2 text-sm font-semibold text-secondary md:px-12"
                                 >
                                   Enroll Now
                                 </button>
@@ -324,20 +329,21 @@ export default function AllTalents({
                         </tr>
                       ) : (
                         <tr
-                          className="border border-secondary/25"
+                          className="invite border border-secondary/25"
                           key={talent?.id}
                         >
-                          <th className="flex items-center whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left align-middle text-xs">
+                          <th className="flex flex-col gap-2 whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 text-left text-xs lg:flex-row lg:items-center lg:gap-0 lg:px-6 lg:align-middle">
                             <img
                               src={generateAvatar(talent?.id)}
-                              className="h-12 w-12 rounded-full border bg-white"
+                              className="ml-4 h-12 w-12 rounded-full border bg-white lg:ml-0"
                               alt={talent?.email as string}
                             />
                             <span className="ml-3 font-bold text-white">
                               {talent?.email}
                             </span>
                           </th>
-                          <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
+
+                          <td className="invite-date whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
                             {processDate(talent?.createdAt)}
                           </td>
                         </tr>
@@ -413,7 +419,7 @@ export function CompletionStatus({
   };
 
   return (
-    <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs">
+    <td className="progress whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs">
       {isFetching || !data ? (
         <div className="h-[30px] w-4/5 animate-pulse rounded bg-gray-400" />
       ) : (

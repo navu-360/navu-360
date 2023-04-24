@@ -34,7 +34,7 @@ export default function Programs({
 
   if (isFetching)
     return (
-      <section className="w-[25%] min-w-[300px]">
+      <section className="w-full lg:w-[25%] lg:min-w-[300px]">
         <section className="bg-blueGray-50 relative py-16">
           <div className="mb-12 w-full px-2 pr-0">
             <div
@@ -68,7 +68,7 @@ export default function Programs({
     );
 
   return (
-    <section className="w-[25%] min-w-[300px]">
+    <section className="w-full lg:w-[25%] lg:min-w-[300px]">
       <section className="bg-blueGray-50 relative">
         <div className="mb-12 w-full px-0">
           <div
@@ -125,7 +125,7 @@ export default function Programs({
               {!isFetching && data?.data?.length > 0 && (
                 <Link
                   href={`/programs`}
-                  className="mt-6 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl border border-secondary bg-tertiary px-8 py-2 text-center text-lg font-semibold text-secondary transition-all duration-300 ease-in hover:bg-secondary hover:text-white focus:outline-none focus:ring-4 md:mr-0"
+                  className="mt-6 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl border hover:border-secondary border-white bg-tertiary px-8 py-2 text-center text-lg font-semibold text-white transition-all duration-300 ease-in hover:bg-secondary hover:text-white focus:outline-none focus:ring-4 md:mr-0"
                 >
                   View All Programs
                 </Link>

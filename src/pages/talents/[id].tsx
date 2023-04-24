@@ -58,20 +58,20 @@ export default function Talent({ data }: { data: User }) {
     <>
       <Header title={`${data?.name} - Navu360`} />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[300px] mt-[20px] flex h-full items-start justify-start gap-8 pt-0">
+        <div className="relative ml-[90px] mt-[20px] flex h-full items-start justify-start gap-8 pt-0 md:ml-[250px]">
           <GoBack />
           {/* sections */}
           {/* user details part - like on talent feed */}
-          <section className="relative flex w-[95%] gap-8">
-            <div className="fixed left-[300px] top-[140px] flex h-[300px] w-[400px] flex-col justify-between rounded-xl bg-white p-4 shadow-lg">
+          <section className="relative flex w-[95%] flex-col gap-8 xl:flex-row">
+            <div className="mt-16 flex h-max w-full flex-col justify-between rounded-xl bg-white p-4 pb-4 shadow-lg xl:fixed xl:left-[300px] xl:top-[140px] xl:mt-0 xl:h-[300px] xl:w-[400px] xl:pb-0">
               <div className="w-full">
-                <div className="flex gap-4">
+                <div className="flex flex-col gap-4 md:flex-row">
                   <img
                     src={generateAvatar(data?.id)}
-                    className="h-20 w-20 rounded-full border bg-white"
+                    className="mx-auto h-20 w-20 rounded-full border bg-white md:mx-0"
                     alt={data?.name as string}
                   />
-                  <div className="flex flex-col gap-0">
+                  <div className="flex flex-col gap-0 pb-8">
                     <h1 className="text-2xl font-bold capitalize text-tertiary">
                       {data?.name}
                     </h1>
@@ -159,7 +159,7 @@ export default function Talent({ data }: { data: User }) {
                 </div>
               </div>
               <div className="hr-color h-[1px] w-full"></div>
-              <div className="flex w-full flex-col gap-4">
+              <div className="mt-8 flex w-full flex-col gap-4 md:mt-0">
                 <button
                   onClick={() => setShowRemoveUser(data?.id)}
                   className="flex items-center justify-center gap-2 rounded-md bg-red-400 py-2 text-base font-semibold text-white"
@@ -182,7 +182,7 @@ export default function Talent({ data }: { data: User }) {
                 </button>
               </div>
             </div>
-            <div className="relative ml-[450px] mt-12 h-max min-h-[400px] w-full rounded-xl bg-white p-4 pt-12 shadow-lg">
+            <div className="relative mt-12 h-max min-h-[400px] w-full rounded-xl bg-white p-4 pb-8 pt-12 shadow-lg xl:ml-[450px]">
               <button
                 onClick={() =>
                   setShowTalentEnrolModal([data?.id, data?.name as string])

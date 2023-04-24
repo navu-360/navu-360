@@ -84,19 +84,32 @@ export default function SelectTemplate({
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 20, opacity: 0 }}
         transition={{ duration: 0.3, ease: "easeIn" }}
-        className="flex h-full w-full flex-col rounded-lg bg-white p-8 md:h-[600px] md:w-[1000px]"
+        className="relative flex h-full w-full flex-col rounded-lg bg-white p-4 pt-16 md:h-[600px] md:w-[1000px] md:p-8 md:pt-8"
       >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="#686868"
+          onClick={() => closeModal()}
+          className="absolute right-2 top-2 h-12 w-12"
+        >
+          <path
+            fillRule="evenodd"
+            d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z"
+            clipRule="evenodd"
+          />
+        </svg>
         <h1 className="text-lg font-bold text-tertiary">
           Create an Onboarding Program
         </h1>
         <p className="text-base font-medium text-gray-600">
           Select a template to continue or create a blank program
         </p>
-        <div className="relative bg-white pt-12">
-          <form className="absolute right-8 top-1 mt-2 w-max pl-8">
+        <div className="relative w-full bg-white pt-6 md:pt-12">
+          <form className="right-8 top-1 md:absolute md:mt-2 md:w-max md:pl-8">
             <input
               type="text"
-              className="common-input max-w-[600px]"
+              className="common-input md:max-w-[600px]"
               placeholder="Search for templates"
               id="search"
               name="search"
@@ -111,7 +124,7 @@ export default function SelectTemplate({
                 : `Found ${results?.length} templates for: ${search}`}
             </p>
           )}
-          <div className="relative p-4 px-8">
+          <div className="relative pt-4 md:p-4 md:px-8 md:pt-8">
             {((search && results?.length > 3) ||
               (!search && templates?.length > 3)) && (
               <>
@@ -119,7 +132,7 @@ export default function SelectTemplate({
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="#28293E"
-                  className="absolute -left-6 top-1/2 h-12 w-12 -translate-y-1/2"
+                  className="absolute -bottom-12  h-12 w-12 md:-left-6 md:top-1/2 md:-translate-y-1/2"
                   onClick={() => goPrev()}
                 >
                   <path
@@ -132,7 +145,7 @@ export default function SelectTemplate({
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="#28293E"
-                  className="absolute -right-6 top-1/2 h-12 w-12 -translate-y-1/2"
+                  className="absolute -bottom-12 right-0 h-12 w-12 md:-right-6 md:top-1/2 md:-translate-y-1/2"
                   onClick={() => goNext()}
                 >
                   <path
@@ -164,7 +177,7 @@ export default function SelectTemplate({
               </div>
             )}
           </div>
-          <div className="mt-4 flex flex-col items-center justify-center">
+          <div className="mt-8 flex flex-col items-center justify-center md:mt-4">
             <div className="relative mx-auto mt-4 flex h-[40px] w-[90%] items-center">
               <div className="hr-color h-[1px] w-full"></div>
               <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-4 text-[#62646a]">
@@ -199,7 +212,7 @@ export function TemplateCard({
   return (
     <Link
       href={`/create/program?template=${template.id}`}
-      className={`relative mx-2 h-[15rem] w-[20rem] min-w-[20rem] cursor-pointer rounded-md p-4 hover:ring-2 hover:ring-[#30475E]/60 ${template.backgroundColor}`}
+      className={`relative mx-2 h-[15rem] w-[20rem] min-w-[20rem] cursor-pointer rounded-md p-4 hover:ring-1 hover:ring-tertiary ${template.backgroundColor}`}
     >
       <h3 className="text-lg font-bold">{template.name}</h3>
       <p className="mt-2 text-sm text-gray-600">{template.description}</p>
