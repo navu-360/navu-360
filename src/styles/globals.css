@@ -393,10 +393,6 @@ span {
     text-fill-color: transparent;
 }
 
-td {
-    outline: thin solid limegreen;
-}
-
 @media screen and (max-width: 1280px) {
     .role {
         display: none;
