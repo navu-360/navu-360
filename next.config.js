@@ -1,15 +1,25 @@
-// @ts-check
-
+/* eslint-disable @typescript-eslint/no-var-requires */
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
  * This is especially useful for Docker builds.
  */
-!process.env.SKIP_ENV_VALIDATION && (await import("./src/env/server.mjs"));
 
-import { withSentryConfig } from "@sentry/nextjs";
+const { withSentryConfig } = require("@sentry/nextjs");
+
+// @ts-ignore
+const runtimeCaching = require("next-pwa/cache");
+
+// @ts-ignore
+const withPWA = require("next-pwa")({
+  dest: "public",
+  register: true,
+  skipWaiting: true,
+  runtimeCaching,
+  disable: process.env.NODE_ENV === "development",
+});
 
 /** @type {import("next").NextConfig} */
-const config = {
+const config = withPWA({
   reactStrictMode: true,
   sentry: {
     // Use `hidden-source-map` rather than `source-map` as the Webpack `devtool`
@@ -38,7 +48,7 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
-};
+});
 
 const sentryWebpackPluginOptions = {
   // Additional config options for the Sentry Webpack plugin. Keep in mind that
@@ -54,4 +64,4 @@ const sentryWebpackPluginOptions = {
 
 const modifiedConfig = withSentryConfig(config, sentryWebpackPluginOptions);
 
-export default modifiedConfig;
+module.exports = modifiedConfig;

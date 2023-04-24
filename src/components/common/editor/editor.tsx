@@ -21,10 +21,10 @@ function MyEditor({
   const router = useRouter();
 
   const [outputData, setOutputData] = React.useState<OutputData | null>(null);
-  
+
   useEffect(() => {
     setOutputData(initialData);
-  }, [initialData])
+  }, [initialData]);
 
   useEffect(() => {
     const holder = document.getElementById("editorjs");
@@ -41,27 +41,31 @@ function MyEditor({
           // @ts-ignore
           const data = await editorRef.current?.save();
           setOutputData(data);
-        }
+        },
       });
 
       // callbacks
       // @ts-ignore
-      editorRef.current?.isReady.then(() => {
-        console.log("Editor.js is ready to work!");
-      }
-      // @ts-ignore
-      ).catch((error) => {
-        toaster({
-          message: "The editor is not ready yet.",
-          status: "info",
-        })
-      });
-      
+      editorRef.current?.isReady
+        .then(
+          () => {
+            console.log("Editor.js is ready to work!");
+          }
+          // @ts-ignore
+        )
+        .catch(() => {
+          toaster({
+            message: "The editor is not ready yet.",
+            status: "info",
+          });
+        });
     }
   }, [initialData, isReadOnly]);
 
   const saveData = async () => {
-   if(outputData){receiveData && receiveData(outputData);}
+    if (outputData) {
+      receiveData && receiveData(outputData);
+    }
   };
 
   useEffect(() => {

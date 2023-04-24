@@ -1,0 +1,33 @@
+{
+  "theme_color": "#8e264e",
+  "background_color": "#8e264e",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "name": "Navu360",
+  "orientation": "portrait",
+  "short_name": "Navu360",
+  "description": "Your onboarding platform",
+  "dir": "auto",
+  "lang": "en",
+  "categories": [
+    "onboarding",
+    "human resources",
+    "hiring"
+  ],
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "prefer_related_applications": false
+}
