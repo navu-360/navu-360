@@ -59,7 +59,6 @@ export default function Talent({ data }: { data: User }) {
       <Header title={`${data?.name} - Navu360`} />
       <DashboardWrapper hideSearch>
         <div className="relative ml-[90px] mt-[40px] flex h-full items-start justify-start gap-8 pt-4 md:ml-[250px]">
-          <GoBack />
           {/* sections */}
           {/* user details part - like on talent feed */}
           <section className="relative flex w-[95%] flex-col gap-8 xl:flex-row">

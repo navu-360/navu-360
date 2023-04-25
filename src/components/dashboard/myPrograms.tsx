@@ -150,7 +150,7 @@ export function OneProgramCard({
         <div
           className={`relative flex w-full flex-col items-start justify-start gap-1 rounded-t-lg p-4 text-tertiary`}
         >
-          <h2 className="text-lg font-bold leading-tight">
+          <h2 className="text-base font-bold leading-tight">
             {program?.OnboardingProgram?.name}
           </h2>
           <div
@@ -191,7 +191,7 @@ export function OneProgramCard({
                 />
               </svg>
             )}
-            <p className={`text-lg font-semibold capitalize`}>
+            <p className={`text-xs font-semibold capitalize`}>
               {program?.enrollmentStatus}
             </p>
           </div>
@@ -201,7 +201,7 @@ export function OneProgramCard({
           program?.enrollmentStatus === "pending" ? (
             <button
               onClick={() => (unenroll ? unenroll(program.id) : null)}
-              className="mr-3 flex w-[150px] items-center justify-center gap-2 rounded-md border-[1px] border-tertiary bg-white px-4 py-2 text-base font-semibold text-tertiary"
+              className="mr-3 flex w-[150px] items-center justify-center gap-2 rounded-md border-[1px] border-tertiary bg-white px-4 py-1 text-sm font-semibold text-tertiary"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

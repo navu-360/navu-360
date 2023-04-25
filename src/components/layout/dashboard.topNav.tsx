@@ -97,16 +97,16 @@ function AdminCard() {
   if (!isReady) return null;
 
   return (
-    <div className="md:fixed right-4 top-2 pt-4 flex items-center gap-2 transition-all duration-300 ease-in">
-      <div className="relative flex h-[70px] w-[70px] items-center justify-center rounded-full bg-tertiary">
+    <div className="md:fixed right-4 top-2 pt-0 flex items-center gap-2 transition-all duration-300 ease-in">
+      <div className="relative flex h-[50px] w-[50px] items-center justify-center rounded-full bg-tertiary">
         {userProfile?.id ? (
           <img
             src={generateAvatar(userProfile?.id)}
-            className="h-[50px] w-[50px]"
+            className="h-[40px] w-[40px]"
             alt={userProfile?.name as string}
           />
         ) : (
-          <div className="h-[50px] w-[50px] rounded-full bg-white/5" />
+          <div className="h-[40px] w-[40px] rounded-full bg-white/5" />
         )}
       </div>
 
