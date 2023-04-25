@@ -61,7 +61,10 @@ export default function CreateOrganizationLayout({
           <h1 className="text-2xl font-bold">{title}</h1>
           <p className="text-base font-medium">{desc}</p>
         </div>
-        <GoBack />
+        <div className="block md:hidden">
+          <GoBack />
+        </div>
+
         {children}
         <div className={`flex w-full items-end justify-end px-8`}>
           <button
