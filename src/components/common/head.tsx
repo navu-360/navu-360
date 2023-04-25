@@ -4,7 +4,7 @@ import React from "react";
 export default function Header({
   title = "Navu360 - Talent Onboarding. Redefined.",
   description = "Onboard your new hires with confidence and achieve your hiring goals with Navu360",
-  image = "https://res.cloudinary.com/dpnbddror/image/upload/v1676842054/navu/pinterest_profile_image_isuqh3.png",
+  image = "https://res.cloudinary.com/dpnbddror/image/upload/v1682427741/navu/Group_1_1_s3dduo.png",
 }) {
   return (
     <Head>
