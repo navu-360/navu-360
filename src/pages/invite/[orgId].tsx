@@ -97,6 +97,14 @@ export default function InviteTalent() {
       });
   };
 
+  const [isMobile, setIsMobile] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
+
+  if (isMobile === null) return null;
+
   return (
     <>
       <Header
@@ -104,8 +112,8 @@ export default function InviteTalent() {
           organizationData?.organization?.name ?? ""
         }`}
       />
-      <LandingWrapper>
-        <section className="relative mt-6 flex h-[100vh] w-screen">
+      <LandingWrapper hideNav={isMobile === false}>
+        <section className="relative mt-6 flex h-[100vh] w-screen md:mt-0">
           <div className="relative hidden h-full md:block md:w-1/3">
             <Image
               src="https://res.cloudinary.com/dpnbddror/image/upload/v1678044671/Rectangle_417_1_1_pq5jum.png"
