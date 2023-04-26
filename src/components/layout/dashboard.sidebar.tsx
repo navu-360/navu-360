@@ -25,8 +25,6 @@ export default function AdminNav({
     (state: { auth: { userProfile: User } }) => state.auth.userProfile
   );
 
-  const { data: session } = useSession();
-
   if (!isReady) return null;
 
   return (
@@ -70,7 +68,7 @@ export default function AdminNav({
             isActive={
               router.pathname === "/dashboard" || router.pathname === "/learn"
             }
-            to={session?.user?.role === "admin" ? "/dashboard" : "/learn"}
+            to={userProfile?.role === "admin" ? "/dashboard" : "/learn"}
           />
           {userProfile?.role === "admin" && (
             <OneItem
@@ -93,9 +91,7 @@ export default function AdminNav({
                   <path d="M4 4v16"></path>
                 </svg>
               }
-              text={
-                session?.user?.role === "admin" ? "Programs" : "My Programs"
-              }
+              text={userProfile?.role === "admin" ? "Programs" : "My Programs"}
               isActive={router.pathname.includes("programs")}
               to={"/programs"}
             />
