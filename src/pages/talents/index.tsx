@@ -48,7 +48,7 @@ export default function Talents() {
       <Header title={`All Talents - Navu360`} />
       <DashboardWrapper hideSearch>
         <div className="relative ml-[60px] mt-[20px] flex h-full flex-col items-center justify-center gap-8 md:ml-[200px] 2xl:ml-[230px]">
-          <table className="mt-8 min-w-[70vw] border-collapse items-center border bg-tertiary text-white md:w-auto md:min-w-[70vw] 2xl:min-w-[80vw]">
+          <table className="mt-8 min-w-[70vw] border-collapse items-center border bg-white text-tertiary md:w-auto md:min-w-[70vw] 2xl:min-w-[80vw]">
             <thead>
               <tr>
                 <th className="whitespace-nowrap bg-[#52324c] px-4 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
@@ -90,7 +90,7 @@ export default function Talents() {
                         className="h-12 w-12 rounded-full border bg-white"
                         alt={talent?.id}
                       />
-                      <span className="ml-0 font-bold capitalize text-white md:ml-3">
+                      <span className="ml-0 font-bold capitalize md:ml-3">
                         {talent?.name}
                       </span>
                     </th>
@@ -108,7 +108,7 @@ export default function Talents() {
                       >
                         <Link
                           href={`/talents/${talent?.id}`}
-                          className="mb-2 block w-max rounded-xl bg-white px-4 py-2 text-sm font-semibold text-tertiary md:px-12"
+                          className="mb-2 block w-max rounded-xl border-[1px] border-secondary/50 bg-white px-4 py-2 text-sm font-semibold text-secondary md:px-12"
                         >
                           View
                         </Link>

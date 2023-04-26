@@ -78,7 +78,7 @@ export default function Dashboard() {
           </h1>
           <button
             onClick={() => setShowSelectTemplate(true)}
-            className="fixed bottom-2 right-2 z-50 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-[#fa3264] focus:outline-none focus:ring-4 md:absolute md:right-0 md:top-0 md:mr-0"
+            className="fixed bottom-2 right-2 z-50 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white transition-all duration-150 ease-in hover:bg-[#fa3264] focus:outline-none focus:ring-4 md:absolute md:right-0 md:top-0 md:mr-0"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

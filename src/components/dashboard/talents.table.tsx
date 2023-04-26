@@ -22,6 +22,8 @@ import type {
 import { SelectPrograms } from "./selectPrograms";
 import { AnimatePresence } from "framer-motion";
 
+import { motion } from "framer-motion";
+
 export default function AllTalents({
   sendTotalTalents,
   setTotalOnboarded,
@@ -54,7 +56,7 @@ export default function AllTalents({
 
   // joined but not enrolled - JOINED
   useEffect(() => {
-    if (allUsers && data?.data) {
+    if (allUsers?.data && data?.data) {
       // get all talents who are not enrolled in any program. comparing allUsers and data
       const talentsWithoutPrograms = allUsers?.data?.filter(
         (talent: User) =>
@@ -99,6 +101,7 @@ export default function AllTalents({
 
   const [selectedType, setSelectedType] = useState("Enrolled");
 
+  // set correct data to table on switch
   useEffect(() => {
     selectedType === "Enrolled"
       ? setShowingTalents(data?.data ?? [])
@@ -130,8 +133,8 @@ export default function AllTalents({
           />
           <div className="mb-12 w-full">
             <div
-              className="relative mb-6 flex w-full min-w-0 flex-col break-words rounded bg-tertiary
-  text-white shadow-lg"
+              className="relative mb-6 flex w-full min-w-0 flex-col break-words rounded bg-white
+  text-tertiary shadow-lg"
             >
               <div className="mb-0 rounded-t border-0 px-4 py-3">
                 <div className="flex flex-wrap items-center">
@@ -147,24 +150,24 @@ export default function AllTalents({
                   <thead>
                     {selectedType !== "Invited" ? (
                       <tr>
-                      <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                        Talent
-                      </th>
-                      <th className="role whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                        Role
-                      </th>
-                      <th className="date whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                        {selectedType === "Enrolled" ? "Enrolled" : "Joined"}
-                      </th>
-                      {selectedType === "Enrolled" && (
-                        <th className="progress whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                          Completion{" "}
+                        <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                          Talent
                         </th>
-                      )}
-                      <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                        Action
-                      </th>
-                    </tr>
+                        <th className="role whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                          Role
+                        </th>
+                        <th className="date whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                          {selectedType === "Enrolled" ? "Enrolled" : "Joined"}
+                        </th>
+                        {selectedType === "Enrolled" && (
+                          <th className="progress whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                            Completion{" "}
+                          </th>
+                        )}
+                        <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                          Action
+                        </th>
+                      </tr>
                     ) : (
                       <tr className="invite">
                         <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
@@ -205,8 +208,8 @@ export default function AllTalents({
         />
         <div className="mb-12 w-full">
           <div
-            className="relative mb-6 flex w-full min-w-0 flex-col break-words rounded bg-tertiary
-  text-white shadow-lg"
+            className="relative mb-6 flex w-full min-w-0 flex-col break-words rounded bg-white
+  text-tertiary shadow-lg"
           >
             <div className="mb-0 rounded-t border-0 px-4 py-3">
               <div className="flex flex-wrap items-center">
@@ -275,7 +278,7 @@ export default function AllTalents({
                           key={talent?.id}
                           className="border border-secondary/25"
                         >
-                          <td className="flex flex-col gap-3 whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left text-xs md:flex-row md:items-center md:gap-0">
+                          <td className="relative flex flex-col gap-3 whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left text-xs md:flex-row md:items-center md:gap-0">
                             <img
                               src={generateAvatar(
                                 talent?.User?.id ?? talent?.id
@@ -283,8 +286,11 @@ export default function AllTalents({
                               className="h-12 w-12 rounded-full border bg-white"
                               alt={talent?.User?.name ?? talent?.name}
                             />
-                            <span className="ml-3 font-bold capitalize text-white">
+                            <span className="ml-3 font-bold capitalize">
                               {talent?.User?.name ?? talent?.name}
+                            </span>
+                            <span className="absolute bottom-0 left-20 text-xs font-medium">
+                              {talent?.User?.email ?? talent?.email}
                             </span>
                           </td>
                           <td className="role whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
@@ -304,7 +310,7 @@ export default function AllTalents({
                               {selectedType === "Enrolled" ? (
                                 <Link
                                   href={`/talents/${talent?.User?.id}`}
-                                  className="text-blueGray-700 mb-2 block w-max rounded-xl bg-white px-4 py-2 text-sm font-semibold text-secondary md:px-12"
+                                  className="text-blueGray-700 mb-2 block w-max rounded-xl border-[1px] border-secondary/50 bg-white px-4 py-2 text-sm font-semibold text-secondary transition-all duration-150 ease-in hover:bg-secondary hover:text-white md:px-12"
                                 >
                                   View
                                 </Link>
@@ -316,7 +322,7 @@ export default function AllTalents({
                                       talent?.name as string,
                                     ])
                                   }
-                                  className="text-blueGray-700 mb-2 block w-max whitespace-nowrap rounded-xl bg-white px-4 py-2 text-sm font-semibold text-secondary md:px-12"
+                                  className="text-blueGray-700 mb-2 block w-max rounded-xl border-[1px] border-secondary/50 bg-white px-4 py-2 text-sm font-semibold text-secondary transition-all duration-150 ease-in hover:bg-secondary hover:text-white md:px-12"
                                 >
                                   Enroll Now
                                 </button>
@@ -335,7 +341,7 @@ export default function AllTalents({
                               className="ml-4 h-12 w-12 rounded-full border bg-white lg:ml-0"
                               alt={talent?.email as string}
                             />
-                            <span className="ml-3 font-bold text-white">
+                            <span className="ml-3 font-bold">
                               {talent?.email}
                             </span>
                           </th>
@@ -415,23 +421,46 @@ export function CompletionStatus({
     }
   };
 
+  const getSliderColorBorder = (percentage: number) => {
+    // 0 - 30 red
+    // 31 - 60 orange
+    // 61 - 100 green
+
+    if (percentage >= 0 && percentage <= 30) {
+      return "border-black/50";
+    }
+    if (percentage >= 31 && percentage <= 60) {
+      return "border-yellow-500";
+    }
+    if (percentage >= 61 && percentage <= 100) {
+      return "border-green-500";
+    }
+  };
+
   return (
     <td className="progress whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs">
       {isFetching || !data ? (
         <div className="h-[30px] w-4/5 animate-pulse rounded bg-gray-400" />
       ) : (
         <div className="flex items-center">
-          <span className="mr-2 font-semibold">
+          <span className="mr-2 w-[50px] text-right font-semibold">
             {checkCompletionStatus().toFixed(0)}%
           </span>
           <div className="relative w-full">
-            <div className="flex h-2 overflow-hidden rounded bg-white text-xs">
-              <div
+            <div
+              className={`flex h-3 overflow-hidden rounded-none border-[1px] border-amber-600 bg-transparent text-xs ${getSliderColorBorder(
+                checkCompletionStatus()
+              )}`}
+            >
+              <motion.div
                 style={{ width: `${checkCompletionStatus()}%` }}
-                className={`flex h-2 flex-col justify-center whitespace-nowrap rounded text-center text-white shadow-none ${getSliderColor(
+                initial={{ width: 0 }}
+                whileInView={{ width: `${checkCompletionStatus()}%` }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className={`flex h-3 flex-col justify-center whitespace-nowrap rounded-none text-center text-white ${getSliderColor(
                   checkCompletionStatus()
                 )}`}
-              ></div>
+              ></motion.div>
             </div>
           </div>
         </div>

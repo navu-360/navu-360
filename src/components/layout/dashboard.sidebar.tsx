@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 
 import { signOut, useSession } from "next-auth/react";
 import { useDispatch, useSelector } from "react-redux";
-import { setUserId } from "redux/auth/authSlice";
+import { setUserId, setUserProfile } from "redux/auth/authSlice";
 import type { User } from "@prisma/client";
 
 export default function AdminNav({
@@ -210,6 +210,7 @@ function OneItem({
             callbackUrl: "/",
           });
           dispatch(setUserId(""));
+          dispatch(setUserProfile(undefined));
         }
         if (action) {
           e.preventDefault();
