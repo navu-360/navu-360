@@ -9,7 +9,7 @@ export default function Custom500() {
       </Head>
       <div className="flex h-screen w-screen flex-col items-center justify-center gap-6 bg-tertiary text-center text-gray-200">
         <div className="flex flex-col gap-4">
-          <h1 className="text-2xl font-bold text-red-500">Error</h1>
+          <h1 className="text-5xl font-bold text-red-500">Error</h1>
           <p className="text-md font-medium leading-[150%]">
             Whoops, looks like our system got a little too excited. <br />{" "}
             Don&apos;t worry, we&apos;ve got our team on it!

@@ -289,9 +289,6 @@ export default function AllTalents({
                             <span className="ml-3 font-bold capitalize">
                               {talent?.User?.name ?? talent?.name}
                             </span>
-                            <span className="absolute bottom-0 left-20 text-xs font-medium">
-                              {talent?.User?.email ?? talent?.email}
-                            </span>
                           </td>
                           <td className="role whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
                             {talent?.User?.position ?? talent?.position}
