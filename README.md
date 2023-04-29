@@ -32,7 +32,7 @@ git clone https://github.com/navu-360/navu-360.git
 2. Install dependencies
 
 ```bash
-npm install
+pnpm install
 ```
 
 3. Create a `.env` file in the root directory and request for the environment variables from the owner of the repository.
@@ -40,7 +40,5 @@ npm install
 4. Run the development server
 
 ```bash
-npm run dev
+pnpm run dev
 ```
-
-5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
