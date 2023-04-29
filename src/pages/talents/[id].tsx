@@ -21,7 +21,6 @@ import { AnimatePresence } from "framer-motion";
 import { SelectPrograms } from "components/dashboard/selectPrograms";
 import { ConfirmUnenroll } from "components/dashboard/confirmUnenroll";
 import { RemoveUserConfirmModal } from "components/dashboard/confirmRemoveUser";
-import { GoBack } from "components/dashboard/common";
 
 export default function Talent({ data }: { data: User }) {
   const talentId = data?.id;

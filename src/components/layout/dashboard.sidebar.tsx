@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserId, setUserProfile } from "redux/auth/authSlice";
 import type { User } from "@prisma/client";
