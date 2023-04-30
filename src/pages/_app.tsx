@@ -45,12 +45,12 @@ const MyApp: AppType<{ session: Session | null }> = ({
       router.events.off("routeChangeComplete", handleRouteDone);
       router.events.off("routeChangeError", handleRouteDone);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <ErrorBoundary>
-      <SessionProvider session={session}>
+    <SessionProvider session={session}>
+      <ErrorBoundary>
         <Provider store={makeStore}>
           <ToastContainer
             position="top-center"
@@ -72,8 +72,8 @@ const MyApp: AppType<{ session: Session | null }> = ({
           <Component {...pageProps} />
           <Analytics />
         </Provider>
-      </SessionProvider>
-    </ErrorBoundary>
+      </ErrorBoundary>
+    </SessionProvider>
   );
 };
 
