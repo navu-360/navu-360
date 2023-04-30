@@ -161,10 +161,21 @@ span {
 
 .ce-inline-toolbar {
     background-color: white !important;
+    border: 0 !important;
+    outline: none !important;
 }
 
 .ce-toolbar__plus, .ce-toolbar__settings-btn {
     color: #9d2a57;
+    width: 40px !important;
+    height: 40px !important;
+}
+
+.ce-toolbar__plus:hover, .ce-toolbar__settings-btn:hover {
+    background-color: #9d2a57 !important;
+    color: #fff;
+    width: 40px !important;
+    height: 40px !important;
 }
 
 .ce-toolbar__plus>svg {
@@ -181,17 +192,37 @@ span {
 }
 
 .ce-inline-toolbar__toggler-and-button-wrapper {
-    background-color: #28293e !important;
+    background-color: #9d2a57 !important;
     border: none !important;
     outline: none !important;
 }
 
 .ce-inline-toolbar__dropdown, .ce-conversion-toolbar, .ce-conversion-toolbar--showed, .cdx-attaches {
+    background-color: #9d2a57 !important;
+}
+
+.ce-inline-toolbar__dropdown:hover {
     background-color: #28293e !important;
 }
 
 .ce-conversion-tool:hover {
     background-color: #9d2a57 !important;
+}
+
+.tc-popover {
+    background-color: #9d2a57 !important;
+}
+
+.tc-popover__item-icon {
+    background-color: #28293e !important;
+}
+
+.tc-popover__item:hover {
+    background-color: #28293e !important;
+}
+
+.ce-inline-tool:hover {
+    background-color: #28293e !important;
 }
 
 .program-input {

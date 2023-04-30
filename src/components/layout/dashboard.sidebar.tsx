@@ -30,7 +30,7 @@ export default function AdminNav({
   return (
     <nav className="fixed left-0 top-0 z-20 h-full w-[70px] bg-dark py-2.5 sm:px-4 md:w-[200px]">
       <div className="mx-auto flex h-full flex-col items-center md:mx-0">
-        <Link href="/dashboard" className="flex items-center md:pl-4">
+        <Link href="/dashboard" className="flex items-center md:pl-0">
           <img
             src="/logo.svg"
             className="mr-3 hidden h-6 sm:h-9 md:block"

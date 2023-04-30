@@ -6,6 +6,13 @@ import Header from "@editorjs/header";
 import List from "@editorjs/list";
 // @ts-ignore
 import AttachesTool from "@editorjs/attaches";
+// @ts-ignore
+import Table from "@editorjs/table";
+// @ts-ignore
+import Code from "@editorjs/code";
+// @ts-ignore
+import Checklist from "@editorjs/checklist";
+
 import { uploadOne } from "../uploader";
 
 export const EDITOR_JS_TOOLS = {
@@ -75,5 +82,14 @@ export const EDITOR_JS_TOOLS = {
         },
       },
     },
+  },
+  table: {
+    class: Table,
+    inlineToolbar: true,
+  },
+  code: Code,
+  checklist: {
+    class: Checklist,
+    inlineToolbar: true,
   },
 };

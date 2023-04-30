@@ -139,7 +139,7 @@ export default function AllTalents({
               <div className="mb-0 rounded-t border-0 px-4 py-3">
                 <div className="flex flex-wrap items-center">
                   <div className="relative w-full max-w-full flex-1 flex-grow px-4 ">
-                    <h3 className="text-lg font-semibold text-white">
+                    <h3 className="text-lg font-semibold text-tertiary">
                       {selectedType} Talents
                     </h3>
                   </div>
@@ -214,7 +214,7 @@ export default function AllTalents({
             <div className="mb-0 rounded-t border-0 px-4 py-3">
               <div className="flex flex-wrap items-center">
                 <div className="relative w-full max-w-full flex-1 flex-grow px-4 ">
-                  <h3 className="text-lg font-semibold text-white">
+                  <h3 className="text-lg font-semibold text-tertiary">
                     {selectedType} talents ({showingTalents?.length || 0})
                   </h3>
                 </div>
