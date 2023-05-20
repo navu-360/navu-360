@@ -42,3 +42,4 @@ pnpm install
 ```bash
 pnpm run dev
 ```
+Happy Hacking 🚀
