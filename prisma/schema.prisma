@@ -4,8 +4,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
@@ -16,12 +16,12 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?  @db.Text
+  access_token      String?  @db.Text
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?  @db.Text
   session_state     String?
   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt         DateTime @default(now())
@@ -76,6 +76,14 @@ model Organization {
   updatedAt                DateTime                   @updatedAt
 }
 
+model CourseModule {
+  id        String              @id @default(cuid())
+  name      String
+  programs  OnboardingProgram[]
+  createdAt DateTime            @default(now())
+  updatedAt DateTime            @updatedAt
+}
+
 // Define the OnboardingProgram entity
 model OnboardingProgram {
   id                       String                     @id @default(uuid())
@@ -88,6 +96,8 @@ model OnboardingProgram {
   onboardingProgramTalents OnboardingProgramTalents[]
   createdAt                DateTime                   @default(now())
   updatedAt                DateTime                   @updatedAt
+  CourseModule             CourseModule?              @relation(fields: [courseModuleId], references: [id])
+  courseModuleId           String?
 }
 
 model OnboardingProgramTalents {
@@ -106,6 +116,46 @@ model OnboardingProgramTalents {
   @@index([userId], name: "userId")
   @@index([programId], name: "programId")
   @@index([organizationId], name: "organizationId")
+}
+
+model programQuiz {
+  id        String   @id @default(cuid())
+  programId String
+  questionIds String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model QuizQuestion {
+  id        String   @id @default(cuid())
+  question  String
+  choiceA  String
+  choiceB  String
+  choiceC  String
+  choiceD  String
+  answer  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TalentProgramResults {
+  id        String   @id @default(cuid())
+  userId String
+  programId String
+  quizAnswers String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TalentQuizAnswers {
+  id        String   @id @default(cuid())
+  userId String
+  programId String
+  questionId String
+  answer String
+  isCorrect Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model waitlist {
