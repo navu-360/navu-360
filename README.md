@@ -1,4 +1,4 @@
-# Navu360 - Talent Onboarding. Redefined
+# Navu360 - Talent Training. Redefined
 
 Welcome to Navu360 repository. This repository contains the source code for the Navu360 platform. Navu360 is a talent training platform that helps companies revolutionize training and development for individuals and organizations
 
