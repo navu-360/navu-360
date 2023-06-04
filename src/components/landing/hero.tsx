@@ -35,14 +35,14 @@ export default function Hero() {
             )}
           </button>
         </div>
-        <div className="max-w-1/2 relative mt-[50px] h-[20vw] min-h-[200px] w-[80vw] min-w-[300px] md:h-[30vw] md:min-w-[50vw]">
+        <div className="max-w-1/2 relative z-10 mt-[50px] h-[20vw] min-h-[200px] w-[80vw] min-w-[300px] md:h-[30vw] md:min-w-[50vw]">
           <Image
             src="https://res.cloudinary.com/dpnbddror/image/upload/v1677952140/7450159_2_uweuhi.png"
             alt="Simpify your workflow"
             fill
             className="z-20 object-contain"
           />
-          <div className="spotlight absolute left-0 right-0 top-0 z-10 mx-auto h-[40vw] w-[30vw]">
+          <div className="spotlight absolute left-0 right-0 top-0 z-10 mx-auto h-[30vw] w-[30vw]">
             <div className="">
               <div className="spotlight-one absolute right-0 top-0 h-[10vw] w-[10vw] rounded-full"></div>
               <div className="spotlight-two absolute bottom-0 left-0 h-[10vw] w-[10vw] rounded-full"></div>

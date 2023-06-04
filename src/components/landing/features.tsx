@@ -2,13 +2,13 @@ import React from "react";
 
 export default function Features() {
   return (
-    <section className="flex">
+    <section className="flex justify-around bg-dark text-white py-8">
       <OneFeature
         svg={
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
+            width="48"
+            height="48"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -20,14 +20,14 @@ export default function Features() {
           </svg>
         }
         title="Streamlined onboarding"
-        description="Take the guesswork out of the onboarding process, providing a clear roadmap for new employees that is tailored to their specific needs and preferences."
+        description="Take the guesswork out of the onboarding process, providing a clear roadmap for new"
       />
       <OneFeature
         svg={
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
+            width="48"
+            height="48"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -52,14 +52,14 @@ export default function Features() {
           </svg>
         }
         title="Customizable per role"
-        description="Support your new hires to be successful in their new role, and that they feel valued and supported from day one by providing a tailored onboarding experience."
+        description="Support your new hires to be successful in their new role, and that they feel"
       />
       <OneFeature
         svg={
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
+            width="48"
+            height="48"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -79,7 +79,7 @@ export default function Features() {
           </svg>
         }
         title="Reduced administrative workload"
-        description="We reduce the administrative workload associated with onboarding so that you can focus on other critical tasks. "
+        description="We reduce the administrative workload associated with onboarding"
       />
     </section>
   );
@@ -95,11 +95,11 @@ function OneFeature({
   description: string;
 }) {
   return (
-    <div className="flex">
+    <div className="flex max-w-[450px] flex-col items-center gap-4 rounded-xl bg-white text-tertiary text-center px-8 py-4">
       {svg}{" "}
-      <div className="flex flex-col gap-2">
-        <h3 className="">{title}</h3>
-        <p className="">{description}</p>
+      <div className="flex flex-col gap-4">
+        <h3 className="text-xl font-bold">{title}</h3>
+        <p className="leading-[150%]">{description}</p>
       </div>
     </div>
   );
