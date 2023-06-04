@@ -156,8 +156,8 @@ export default function Talent({ data }: { data: User }) {
                   </div>
                 </div>
               </div>
-              <div className="hr-color h-[1px] w-full"></div>
-              <div className="mt-8 flex w-full flex-col gap-4 md:mt-0">
+              <div className="hr-color h-[1px] hidden w-full"></div>
+              <div className="mt-8 hidden w-full flex-col gap-4 md:mt-0">
                 <button
                   onClick={() => setShowRemoveUser(data?.id)}
                   className="flex items-center justify-center gap-2 rounded-md bg-red-400 py-2 text-base font-semibold text-white"

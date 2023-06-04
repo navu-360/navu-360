@@ -53,7 +53,7 @@ function OneOption({
       >
         <p className="text-[15px] font-semibold">{text}</p>
         <div
-          className="h-1 w-1 rounded-full bg-secondary transition-all duration-200 ease-in"
+          className="h-1 w-1 rounded-full bg-white transition-all duration-200 ease-in"
           style={{
             opacity: isSelected ? 1 : 0,
           }}

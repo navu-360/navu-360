@@ -191,8 +191,8 @@ packages:
     dependencies:
       '@babel/highlight': 7.18.6
 
-  /@babel/compat-data@7.21.5:
-    resolution: {integrity: sha512-M+XAiQ7GzQ3FDPf0KOLkugzptnIypt0X0ma0wmlTKPR3IchgNFdx2JXxZdvd18JY5s7QkaFD/qyX0dsMpog/Ug==}
+  /@babel/compat-data@7.21.7:
+    resolution: {integrity: sha512-KYMqFYTaenzMK4yUtf4EW9wc4N9ef80FsbMtkwool5zpwl4YrT1SdWYSTRcT94KO4hannogdS+LxY7L+arP3gA==}
     engines: {node: '>=6.9.0'}
 
   /@babel/core@7.21.5:
@@ -244,7 +244,7 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0
     dependencies:
-      '@babel/compat-data': 7.21.5
+      '@babel/compat-data': 7.21.7
       '@babel/core': 7.21.5
       '@babel/helper-validator-option': 7.21.0
       browserslist: 4.21.5
@@ -568,7 +568,7 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
-      '@babel/compat-data': 7.21.5
+      '@babel/compat-data': 7.21.7
       '@babel/core': 7.21.5
       '@babel/helper-compilation-targets': 7.21.5(@babel/core@7.21.5)
       '@babel/helper-plugin-utils': 7.21.5
@@ -1099,7 +1099,7 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
-      '@babel/compat-data': 7.21.5
+      '@babel/compat-data': 7.21.7
       '@babel/core': 7.21.5
       '@babel/helper-compilation-targets': 7.21.5(@babel/core@7.21.5)
       '@babel/helper-plugin-utils': 7.21.5
@@ -1345,8 +1345,8 @@ packages:
       eslint-visitor-keys: 3.4.0
     dev: true
 
-  /@eslint-community/regexpp@4.5.0:
-    resolution: {integrity: sha512-vITaYzIcNmjn5tF5uxcZ/ft7/RXGrMUIS9HalWckEOF6ESiwXKoMzAQf2UW0aVd6rnOeExTJVd5hmWXucBKGXQ==}
+  /@eslint-community/regexpp@4.5.1:
+    resolution: {integrity: sha512-Z5ba73P98O1KUYCCJTUeVpja9RcGoMdncZ6T49FCUl2lN38JtCJ+3WgIDBv0AuY4WChU5PmtJmOCTlN6FZTFKQ==}
     engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
     dev: true
 
@@ -2132,7 +2132,7 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@eslint-community/regexpp': 4.5.0
+      '@eslint-community/regexpp': 4.5.1
       '@typescript-eslint/parser': 5.59.1(eslint@8.39.0)(typescript@5.0.4)
       '@typescript-eslint/scope-manager': 5.59.1
       '@typescript-eslint/type-utils': 5.59.1(eslint@8.39.0)(typescript@5.0.4)
@@ -2621,7 +2621,7 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
     dependencies:
-      '@babel/compat-data': 7.21.5
+      '@babel/compat-data': 7.21.7
       '@babel/core': 7.21.5
       '@babel/helper-define-polyfill-provider': 0.3.3(@babel/core@7.21.5)
       semver: 6.3.0
@@ -2684,7 +2684,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001481
-      electron-to-chromium: 1.4.377
+      electron-to-chromium: 1.4.378
       node-releases: 2.0.10
       update-browserslist-db: 1.0.11(browserslist@4.21.5)
 
@@ -3128,8 +3128,8 @@ packages:
     dependencies:
       jake: 10.8.5
 
-  /electron-to-chromium@1.4.377:
-    resolution: {integrity: sha512-H3BYG6DW5Z+l0xcfXaicJGxrpA4kMlCxnN71+iNX+dBLkRMOdVJqFJiAmbNZZKA1zISpRg17JR03qGifXNsJtw==}
+  /electron-to-chromium@1.4.378:
+    resolution: {integrity: sha512-RfCD26kGStl6+XalfX3DGgt3z2DNwJS5DKRHCpkPq5T/PqpZMPB1moSRXuK9xhkt/sF57LlpzJgNoYl7mO7Z6w==}
 
   /emoji-regex@9.2.2:
     resolution: {integrity: sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==}
@@ -3483,7 +3483,7 @@ packages:
     hasBin: true
     dependencies:
       '@eslint-community/eslint-utils': 4.4.0(eslint@8.39.0)
-      '@eslint-community/regexpp': 4.5.0
+      '@eslint-community/regexpp': 4.5.1
       '@eslint/eslintrc': 2.0.2
       '@eslint/js': 8.39.0
       '@humanwhocodes/config-array': 0.11.8
@@ -4349,8 +4349,8 @@ packages:
     hasBin: true
     dev: true
 
-  /jose@4.14.3:
-    resolution: {integrity: sha512-YPM9Q+dmsna4CGWNn5+oHFsuXJdxvKAOVoNjpe2nje3odSoX5Xz4s71rP50vM8uUKJyQtMnEGPmbVCVR+G4W5g==}
+  /jose@4.14.4:
+    resolution: {integrity: sha512-j8GhLiKmUAh+dsFXlX1aJCbt5KMibuKb+d7j1JaOJG6s2UjX1PQlW+OKB/sD4a/5ZYF4RcmYmLSndOoU3Lt/3g==}
     dev: false
 
   /js-sdsl@4.4.0:
@@ -4680,7 +4680,7 @@ packages:
       '@babel/runtime': 7.21.5
       '@panva/hkdf': 1.1.1
       cookie: 0.5.0
-      jose: 4.14.3
+      jose: 4.14.4
       next: 13.3.2(@babel/core@7.21.5)(react-dom@18.2.0)(react@18.2.0)
       oauth: 0.9.15
       openid-client: 5.4.2
@@ -4914,7 +4914,7 @@ packages:
   /openid-client@5.4.2:
     resolution: {integrity: sha512-lIhsdPvJ2RneBm3nGBBhQchpe3Uka//xf7WPHTIglery8gnckvW7Bd9IaQzekzXJvWthCMyi/xVEyGW0RFPytw==}
     dependencies:
-      jose: 4.14.3
+      jose: 4.14.4
       lru-cache: 6.0.0
       object-hash: 2.2.0
       oidc-token-hash: 5.0.3
@@ -5145,7 +5145,7 @@ packages:
     dependencies:
       icss-utils: 5.1.0(postcss@8.4.23)
       postcss: 8.4.23
-      postcss-selector-parser: 6.0.11
+      postcss-selector-parser: 6.0.12
       postcss-value-parser: 4.2.0
     dev: true
 
@@ -5156,7 +5156,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       postcss: 8.4.23
-      postcss-selector-parser: 6.0.11
+      postcss-selector-parser: 6.0.12
     dev: true
 
   /postcss-modules-values@4.0.0(postcss@8.4.23):
@@ -5176,11 +5176,11 @@ packages:
       postcss: ^8.2.14
     dependencies:
       postcss: 8.4.23
-      postcss-selector-parser: 6.0.11
+      postcss-selector-parser: 6.0.12
     dev: true
 
-  /postcss-selector-parser@6.0.11:
-    resolution: {integrity: sha512-zbARubNdogI9j7WY4nQJBiNqQf3sLS3wCP4WfOidu+p28LofJqDH1tcXypGrcmMHhDk2t9wGhCsYe/+szLTy1g==}
+  /postcss-selector-parser@6.0.12:
+    resolution: {integrity: sha512-NdxGCAZdRrwVI1sy59+Wzrh+pMMHxapGnpfenDVlMEXoOcvt4pGE0JLK9YY2F5dLxcFYA/YbVQKhcGU+FtSYQg==}
     engines: {node: '>=4'}
     dependencies:
       cssesc: 3.0.0
@@ -6017,7 +6017,7 @@ packages:
       postcss-js: 4.0.1(postcss@8.4.23)
       postcss-load-config: 4.0.1(postcss@8.4.23)
       postcss-nested: 6.0.1(postcss@8.4.23)
-      postcss-selector-parser: 6.0.11
+      postcss-selector-parser: 6.0.12
       postcss-value-parser: 4.2.0
       resolve: 1.22.2
       sucrase: 3.32.0
