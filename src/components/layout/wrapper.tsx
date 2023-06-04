@@ -10,7 +10,7 @@ export default function LandingWrapper({
 }) {
   return (
     <main
-      className={`flex h-max min-h-screen w-full flex-col gap-0 ${
+      className={`flex h-max min-h-screen w-full flex-col gap-0 bg-dark ${
         hideNav ? "pt-0" : "pt-[65px]"
       }`}
     >

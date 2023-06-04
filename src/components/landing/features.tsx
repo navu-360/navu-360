@@ -1,8 +1,10 @@
 import React from "react";
 
+import { motion } from "framer-motion";
+
 export default function Features() {
   return (
-    <section className="flex justify-around bg-dark text-white py-8">
+    <section className="flex justify-around bg-dark py-8 text-white">
       <OneFeature
         svg={
           <svg
@@ -19,8 +21,9 @@ export default function Features() {
             <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
           </svg>
         }
-        title="Streamlined onboarding"
+        title="Create rich training content"
         description="Take the guesswork out of the onboarding process, providing a clear roadmap for new"
+        delay={0}
       />
       <OneFeature
         svg={
@@ -51,8 +54,9 @@ export default function Features() {
             <path d="m11 13.73-4 6.93"></path>
           </svg>
         }
-        title="Customizable per role"
+        title="Exceptional learning experience"
         description="Support your new hires to be successful in their new role, and that they feel"
+        delay={1}
       />
       <OneFeature
         svg={
@@ -78,8 +82,9 @@ export default function Features() {
             <path d="M12.2 6.2 11 5"></path>
           </svg>
         }
-        title="Reduced administrative workload"
+        title="Track progress"
         description="We reduce the administrative workload associated with onboarding"
+        delay={2}
       />
     </section>
   );
@@ -89,18 +94,26 @@ function OneFeature({
   svg,
   title,
   description,
+  delay,
 }: {
   svg: React.ReactNode;
   title: string;
   description: string;
+  delay: number;
 }) {
   return (
-    <div className="flex max-w-[450px] flex-col items-center gap-4 rounded-xl bg-white text-tertiary text-center px-8 py-4">
+    <motion.div
+      initial={{ y: 30 }}
+      whileInView={{ y: 0 }}
+      transition={{ duration: 0.5, ease: "easeIn", delay: delay * 0.1 }}
+      viewport={{ amount: 1, once: true }}
+      className="flex max-w-[450px] flex-col items-center gap-4 rounded-xl bg-white px-8 py-4 text-center text-tertiary"
+    >
       {svg}{" "}
       <div className="flex flex-col gap-4">
         <h3 className="text-xl font-bold">{title}</h3>
         <p className="leading-[150%]">{description}</p>
       </div>
-    </div>
+    </motion.div>
   );
 }

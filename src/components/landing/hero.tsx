@@ -18,8 +18,7 @@ export default function Hero() {
           <p className="text-medium text-center text-base md:text-left xl:text-lg 2xl:text-xl">
             Unlock the full potential of your talent with navu360&apos;s
             innovative platform, <br className="hidden md:block" />{" "}
-            revolutionizing training and development for individuals and
-            organizations alike.
+            revolutionizing training and development
           </p>
           <button
             onClick={() => {

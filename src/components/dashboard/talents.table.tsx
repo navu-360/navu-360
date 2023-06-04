@@ -125,8 +125,8 @@ export default function AllTalents({
 
   if (isFetching || !orgId)
     return (
-      <section className="w-full rounded-md border-[1px] border-tertiary/50 bg-tertiary/10 p-2 lg:w-[70%]">
-        <section className="bg-blueGray-50 relative md:py-16">
+      <section className="w-full rounded-md p-2 lg:w-[70%]">
+        <section className="relative md:py-16">
           <TalentSwitch
             selectedOption={selectedType}
             setSelectedOption={setSelectedType}
@@ -200,7 +200,7 @@ export default function AllTalents({
     );
 
   return (
-    <section className="h-max w-full rounded-md border-[1px] border-tertiary/50 p-2 lg:w-[70%]">
+    <section className="h-max w-full rounded-md p-2 lg:w-[70%]">
       <section className="relative w-full md:py-16">
         <TalentSwitch
           selectedOption={selectedType}
