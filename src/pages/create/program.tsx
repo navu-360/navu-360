@@ -150,7 +150,7 @@ export default function CreateProgram() {
 
   return (
     <>
-      <Header title="Create an Onboarding Program" />
+      <Header title="Create a Training Program" />
       <DashboardWrapper hideSearch>
         <div className="relative ml-[90px] mt-[40px] flex h-full flex-col items-start justify-start gap-8 pt-4 md:ml-[300px] md:w-max">
           <GoBack />

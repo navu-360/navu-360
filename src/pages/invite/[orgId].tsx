@@ -20,8 +20,6 @@ import { useDispatch } from "react-redux";
 import { setUserProfile } from "redux/auth/authSlice";
 
 export default function InviteTalent() {
-  const [role, setRole] = useState("");
-
   const [baseUrl, setBaseUrl] = useState("");
 
   useEffect(() => {
@@ -48,14 +46,10 @@ export default function InviteTalent() {
       session?.user?.role === "talent"
     ) {
       router.push("/learn");
-    } else if (
-      session?.user?.position &&
-      session?.user?.orgId &&
-      session?.user?.role === "admin"
-    ) {
+    } else if (session?.user?.orgId && session?.user?.role === "admin") {
       router.push("/dashboard");
-    } else if (session?.user?.position) {
-      setRole(session?.user?.position);
+    } else {
+      createHandler();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session?.user]);
@@ -65,15 +59,8 @@ export default function InviteTalent() {
   const dispatch = useDispatch();
 
   const createHandler = async () => {
-    if (!role) {
-      toaster({
-        status: "error",
-        message: "Please enter your role",
-      });
-      return;
-    }
     const body = {
-      position: role,
+      position: "",
       role: "talent",
       hasBeenOnboarded: true,
       orgId: id,
@@ -113,7 +100,7 @@ export default function InviteTalent() {
         }`}
       />
       <LandingWrapper hideNav={isMobile === false}>
-        <section className="relative bg-white mt-6 flex h-[100vh] w-screen md:mt-0">
+        <section className="relative mt-6 flex h-[100vh] w-screen bg-white md:mt-0">
           <div className="relative hidden h-full md:block md:w-1/3">
             <Image
               src="https://res.cloudinary.com/dpnbddror/image/upload/v1678044671/Rectangle_417_1_1_pq5jum.png"
@@ -127,7 +114,7 @@ export default function InviteTalent() {
                 Welcome to Navu360
               </h1>
               <p className="text-xl font-medium text-white">
-                Create your account to kick start your onboarding!
+                Create your account to kick start your training!
               </p>
             </div>
             <Link
@@ -159,7 +146,7 @@ export default function InviteTalent() {
             >
               <div className="flex flex-col gap-1 text-tertiary md:w-1/2">
                 <h1 className="text-2xl font-bold">
-                  Join {organizationData?.organization?.name} onboarding
+                  Join {organizationData?.organization?.name} training
                   programs
                 </h1>
                 {!session?.user && (
@@ -172,37 +159,11 @@ export default function InviteTalent() {
                     <span className="font-semibold capitalize text-secondary">
                       {organizationData?.organization?.name}
                     </span>{" "}
-                    . Create your account to access the onboarding programs.
+                    . Create your account to access the training programs.
                   </p>
                 )}
               </div>
-              {session?.user ? (
-                session?.user?.orgId ? null : (
-                  <form className="mt-8 flex h-max w-full flex-col gap-6 text-left md:w-1/2">
-                    <div className="flex flex-col gap-2">
-                      <label htmlFor="role">What is your role?</label>
-                      <input
-                        type="text"
-                        name="role"
-                        id="role"
-                        value={role}
-                        onChange={(e) => setRole(e.target.value)}
-                        placeholder="Enter role"
-                        className="common-input"
-                        required
-                      />
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => createHandler()}
-                      disabled={isLoading || !role}
-                      className="flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center self-center rounded-3xl bg-secondary px-12 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 md:mr-0"
-                    >
-                      {isLoading ? <SmallSpinner /> : <span>Continue</span>}
-                    </button>
-                  </form>
-                )
-              ) : (
+              {session?.user ? null : (
                 <div className="mt-8 flex flex-col gap-6">
                   <button
                     type="button"

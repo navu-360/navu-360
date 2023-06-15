@@ -35,8 +35,25 @@ export default function Setup() {
       noOfEmployees: string;
     }
   ) => {
-    await createHandler(role);
-    await createOrganization(companyDetails);
+    if (!role || role === "") {
+      toast({
+        status: "error",
+        message: "Please provide your role",
+      });
+      return;
+    }
+    if (
+      companyDetails.companyName === "" ||
+      companyDetails.industry === "" ||
+      companyDetails.noOfEmployees === ""
+    ) {
+      toast({
+        status: "error",
+        message: "Please fill all fields",
+      });
+      return;
+    }
+    await createHandler(role, companyDetails);
   };
 
   const dispatch = useDispatch();
@@ -85,7 +102,7 @@ export default function Setup() {
     </>
   );
 
-  async function createHandler(role: string) {
+  async function createHandler(role: string, companyDetails: CompanyDetails) {
     const body = {
       position: role,
       role: "admin",
@@ -94,12 +111,16 @@ export default function Setup() {
     await updateUser(body)
       .unwrap()
       .then(() => {
-        toast({
-          status: "success",
-          message: `Hi ${
-            session?.user?.name.split(" ")[0]
-          }, your details have been updated`,
-        });
+        createOrganization(companyDetails)
+          .then(() => {
+            console.log();
+          })
+          .catch((error) => {
+            toast({
+              status: "error",
+              message: error.message,
+            });
+          });
       })
       .catch((error) => {
         toast({

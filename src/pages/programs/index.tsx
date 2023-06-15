@@ -55,7 +55,7 @@ export default function Programs() {
   if (isFetching && !data)
     return (
       <>
-        <Header title="All Onboarding Programs - Loading ..." />
+        <Header title="All Training Programs - Loading ..." />
         <DashboardWrapper hideSearch>
           <div className="relative ml-[80px] mt-[20px] flex h-full flex-col items-center justify-center gap-8 md:ml-[300px]">
             <div className="flex w-full flex-wrap gap-8">
@@ -70,7 +70,7 @@ export default function Programs() {
 
   return (
     <>
-      <Header title={`All Onboarding Programs - Navu360`} />
+      <Header title={`All Training Programs - Navu360`} />
       <DashboardWrapper hideSearch>
         <div className="relative ml-[80px] mt-[3rem] flex h-full flex-col items-center justify-center gap-8 pb-16 pt-20 md:ml-[250px] 2xl:ml-[250px]">
           <button

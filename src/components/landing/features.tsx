@@ -21,8 +21,8 @@ export default function Features() {
             <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
           </svg>
         }
-        title="Create rich training content"
-        description="Take the guesswork out of the onboarding process, providing a clear roadmap for new"
+        title="Create Rich Training Content"
+        description="Take the guesswork out of the onboarding and training process, providing a clear roadmap."
         delay={0}
       />
       <OneFeature
@@ -54,8 +54,8 @@ export default function Features() {
             <path d="m11 13.73-4 6.93"></path>
           </svg>
         }
-        title="Exceptional learning experience"
-        description="Support your new hires to be successful in their new role, and that they feel"
+        title="Exceptional Learning Experience"
+        description="Support your new hires to be successful in their new role, and help them grow in their career."
         delay={1}
       />
       <OneFeature
@@ -82,8 +82,8 @@ export default function Features() {
             <path d="M12.2 6.2 11 5"></path>
           </svg>
         }
-        title="Track progress"
-        description="We reduce the administrative workload associated with onboarding"
+        title="Track Progress"
+        description="We reduce the administrative workload associated with training talents"
         delay={2}
       />
     </section>
