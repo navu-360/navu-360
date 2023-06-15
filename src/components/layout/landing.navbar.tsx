@@ -35,12 +35,13 @@ export default function NavBar() {
   return (
     <nav className="fixed left-0 top-0 z-20 h-[65px] w-full bg-dark py-2.5 sm:px-4">
       <div className="mx-auto flex flex-wrap items-center justify-between md:mx-0">
-        <Link href="/" className="flex items-center pl-4">
+        <Link href="/" className="flex relative items-center pl-4">
           <img
             src="/logo.svg"
             className="mr-3 h-6 sm:h-9"
             alt="Flowbite Logo"
           />
+          <span className="text-white absolute bottom-0 -right-8 font-semibold">Beta</span>
         </Link>
         <div className="flex items-center md:order-2">
           <button

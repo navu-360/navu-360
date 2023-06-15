@@ -113,7 +113,7 @@ export default function InviteTalent() {
         }`}
       />
       <LandingWrapper hideNav={isMobile === false}>
-        <section className="relative mt-6 flex h-[100vh] w-screen md:mt-0">
+        <section className="relative bg-white mt-6 flex h-[100vh] w-screen md:mt-0">
           <div className="relative hidden h-full md:block md:w-1/3">
             <Image
               src="https://res.cloudinary.com/dpnbddror/image/upload/v1678044671/Rectangle_417_1_1_pq5jum.png"

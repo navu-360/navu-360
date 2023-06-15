@@ -7,12 +7,13 @@ import {
   useEnrollTalentMutation,
   useGetUserByIdQuery,
   useSendEnrolledEmailMutation,
+  useGetOrganizationProgramsQuery,
 } from "services/baseApiSlice";
 import { useSelector } from "react-redux";
 import useDebounce from "utils/useDebounce";
+import { SmallSpinner } from "components/common/spinner";
 
 export function SelectPrograms({
-  programs,
   talentName,
   talentId,
   closeModal,
@@ -26,11 +27,18 @@ export function SelectPrograms({
     (state: { auth: { orgId: string } }) => state.auth.orgId
   );
 
-  const [showingItems, setShowingItems] =
-    useState<OnboardingProgram[]>(programs);
+  const [showingItems, setShowingItems] = useState<OnboardingProgram[]>([]);
+
+  // get programs created by this organization
+  const { data: programs, isFetching } = useGetOrganizationProgramsQuery(
+    orgId,
+    {
+      skip: !orgId,
+    }
+  );
 
   useEffect(() => {
-    setShowingItems(programs);
+    setShowingItems(programs?.data);
   }, [programs]);
 
   const [selectedProgramIds, setSelectedProgramIds] = useState<string[]>([]);
@@ -92,7 +100,7 @@ export function SelectPrograms({
         // for every program, send email
         selectedProgramIds.forEach(async (programId) => {
           const programName = programs.find(
-            (program) => program.id === programId
+            (program: OnboardingProgram) => program.id === programId
           )?.name;
           if (programName) {
             await sendEmail(programName);
@@ -131,7 +139,7 @@ export function SelectPrograms({
   useEffect(() => {
     if (programs && debouncedValue?.length > 0) {
       const templatesFound: OnboardingProgram[] = [];
-      programs.forEach((template) => {
+      programs.forEach((template: OnboardingProgram) => {
         if (
           template.name.toLowerCase().includes(debouncedValue.toLowerCase())
         ) {
@@ -160,7 +168,7 @@ export function SelectPrograms({
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 20, opacity: 0 }}
         transition={{ duration: 0.3, ease: "easeIn" }}
-        className="h-full relative w-full rounded-lg bg-white px-8 py-4 lg:h-max lg:w-[700px]"
+        className="relative h-full w-full rounded-lg bg-white px-8 py-4 lg:h-max lg:w-[700px]"
       >
         <div className="flex h-full flex-col justify-between">
           <div className="flex flex-col gap-8">
@@ -180,10 +188,14 @@ export function SelectPrograms({
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </form>
-               
             </div>
             <div className="no-scrollbar flex h-max max-h-[350px] flex-col gap-4 overflow-y-auto">
-              {showingItems.map((program) => (
+              {isFetching && (
+                <div className="flex items-center justify-center">
+                  <SmallSpinner />
+                </div>
+              )}
+              {showingItems?.map((program: OnboardingProgram) => (
                 <div
                   key={program.id}
                   className="flex items-center justify-between rounded-md bg-[#f5f5f5] px-4 py-3 hover:bg-secondary/25"
