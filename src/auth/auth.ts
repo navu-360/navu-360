@@ -9,7 +9,6 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { env } from "../env/server.mjs";
 import { prisma } from "./db";
 
-
 /**
  * Module augmentation for `next-auth` types.
  * Allows us to add custom properties to the `session` object and keep type
@@ -21,15 +20,28 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
-      // ...other properties
-      // role: UserRole;
+      name: string;
+      email: string;
+      emailVerified: string;
+      image: string;
+      role: string;
+      orgId: string;
+      hasBeenOnboarded: boolean;
+      position: string;
     } & DefaultSession["user"];
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  interface User {
+    id: string;
+    name: string;
+    email: string;
+    emailVerified: string;
+    image: string;
+    role: string;
+    orgId: string;
+    hasBeenOnboarded: boolean;
+    position: string;
+  }
 }
 
 /**
@@ -40,11 +52,20 @@ declare module "next-auth" {
  **/
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session({ session, user }) {
-      if (session.user) {
-        session.user.id = user.id;
-        // session.user.role = user.role; <-- put other properties on the session here
+    async session({ session }) {
+      const userObj = await prisma.user.findUnique({
+        where: { email: session.user.email },
+      });
+      if (userObj) {
+        session.user.id = userObj?.id ?? "";
+        session.user.name = userObj?.name ?? "";
+        session.user.image = userObj?.image ?? "";
+        session.user.role = userObj?.role ?? "admin";
+        session.user.hasBeenOnboarded = userObj?.hasBeenOnboarded ?? false;
+        session.user.position = userObj?.position ?? "";
+        session.user.orgId = userObj?.orgId ?? "";
       }
+
       return session;
     },
   },
@@ -53,8 +74,12 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
-    })
+    }),
   ],
+  debug: process.env.NODE_ENV === "development",
+  session: {
+    strategy: "jwt",
+  },
 };
 
 /**

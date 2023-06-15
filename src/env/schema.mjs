@@ -21,6 +21,14 @@ export const serverSchema = z.object({
   ),
   GOOGLE_CLIENT_ID: z.string().min(1),
   GOOGLE_CLIENT_SECRET: z.string().min(1),
+  CLOUDINARY_API: z.string().min(1),
+  CLOUDINARY_API_KEY: z.string().min(1),
+  CLOUDINARY_API_SECRET: z.string().min(1),
+  CLOUDINARY_CLOUD_NAME: z.string().min(1),
+  SENDGRID_API_KEY: z.string().min(1),
+  EMAIL_FROM: z.string().min(1),
+  REPLY_TO: z.string().min(1),
+  DIRECT_URL: z.string().min(1),
 });
 
 /**
@@ -35,6 +43,14 @@ export const serverEnv = {
   NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+  CLOUDINARY_API: process.env.CLOUDINARY_API,
+  CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
+  CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
+  CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
+  SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
+  EMAIL_FROM: process.env.EMAIL_FROM,
+  REPLY_TO: process.env.REPLY_TO,
+  DIRECT_URL: process.env.DIRECT_URL,
 };
 
 /**
@@ -44,6 +60,7 @@ export const serverEnv = {
  */
 export const clientSchema = z.object({
   NEXT_PUBLIC_API_BASE_URL_V1: z.string().min(1),
+  NEXT_PUBLIC_CLOUDINARY_API_KEY: z.string().min(1),
 });
 
 /**
@@ -54,4 +71,5 @@ export const clientSchema = z.object({
  */
 export const clientEnv = {
   NEXT_PUBLIC_API_BASE_URL_V1: process.env.NEXT_PUBLIC_API_BASE_URL_V1,
+  NEXT_PUBLIC_CLOUDINARY_API_KEY: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
 };

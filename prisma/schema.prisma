@@ -1,60 +1,184 @@
 generator client {
-    provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["jsonProtocol"]
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 // Necessary for Next auth
 model Account {
-    id                String  @id @default(cuid())
-    userId            String
-    type              String
-    provider          String
-    providerAccountId String
-    refresh_token     String? // @db.Text
-    access_token      String? // @db.Text
-    expires_at        Int?
-    token_type        String?
-    scope             String?
-    id_token          String? // @db.Text
-    session_state     String?
-    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String   @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?  @db.Text
+  access_token      String?  @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?  @db.Text
+  session_state     String?
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
-    @@unique([provider, providerAccountId])
+  @@unique([provider, providerAccountId])
 }
 
 model Session {
-    id           String   @id @default(cuid())
-    sessionToken String   @unique
-    userId       String
-    expires      DateTime
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
+  id                       String                     @id @default(cuid())
+  name                     String?
+  email                    String?                    @unique
+  emailVerified            DateTime?
+  image                    String?
+  publicId                 String?
+  position                 String?
+  role                     String?
+  orgId                    String?
+  hasBeenOnboarded         Boolean?                   @default(false)
+  accounts                 Account[]
+  sessions                 Session[]
+  organization             Organization?
+  onboardingProgs          OnboardingProgram[]
+  createdAt                DateTime                   @default(now())
+  updatedAt                DateTime                   @updatedAt
+  OnboardingProgramTalents OnboardingProgramTalents[]
+
+  @@index([email], name: "email")
 }
 
-model VerificationToken {
-    identifier String
-    token      String   @unique
-    expires    DateTime
+// Define the Organization entity
+model Organization {
+  id                       String                     @id @default(uuid())
+  name                     String
+  noOfEmployees            String
+  industry                 String
+  user                     User                       @relation(fields: [userId], references: [id])
+  userId                   String                     @unique
+  onboardingProgs          OnboardingProgram[]
+  onboardingProgramTalents OnboardingProgramTalents[]
+  createdAt                DateTime                   @default(now())
+  updatedAt                DateTime                   @updatedAt
+}
 
-    @@unique([identifier, token])
+model CourseModule {
+  id        String              @id @default(cuid())
+  name      String
+  programs  OnboardingProgram[]
+  createdAt DateTime            @default(now())
+  updatedAt DateTime            @updatedAt
+}
+
+// Define the OnboardingProgram entity
+model OnboardingProgram {
+  id                       String                     @id @default(uuid())
+  name                     String
+  content                  String
+  createdBy                String?
+  organization             Organization               @relation(fields: [organizationId], references: [id])
+  organizationId           String
+  users                    User[]
+  onboardingProgramTalents OnboardingProgramTalents[]
+  createdAt                DateTime                   @default(now())
+  updatedAt                DateTime                   @updatedAt
+  CourseModule             CourseModule?              @relation(fields: [courseModuleId], references: [id])
+  courseModuleId           String?
+}
+
+model OnboardingProgramTalents {
+  id                String            @id @default(uuid())
+  enrollmentStatus  String            @default("pending") // pending, enrolled, completed
+  userId            String
+  User              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  programId         String
+  OnboardingProgram OnboardingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  Organization      Organization?     @relation(fields: [organizationId], references: [id])
+  organizationId    String?
+
+  @@unique([userId, programId])
+  @@index([userId], name: "userId")
+  @@index([programId], name: "programId")
+  @@index([organizationId], name: "organizationId")
+}
+
+model programQuiz {
+  id        String   @id @default(cuid())
+  programId String
+  questionIds String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model QuizQuestion {
+  id        String   @id @default(cuid())
+  question  String
+  choiceA  String
+  choiceB  String
+  choiceC  String
+  choiceD  String
+  answer  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TalentProgramResults {
+  id        String   @id @default(cuid())
+  userId String
+  programId String
+  quizAnswers String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TalentQuizAnswers {
+  id        String   @id @default(cuid())
+  userId String
+  programId String
+  questionId String
+  answer String
+  isCorrect Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model waitlist {
-    id        String   @id @default(cuid())
-    email     String   @unique
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model template {
+  id        String   @id @default(cuid())
+  name      String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model invites {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  orgId     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([orgId], name: "orgId")
 }

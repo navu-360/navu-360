@@ -1,74 +1,48 @@
-import Header from "components/head";
-import React, { useState } from "react";
-import { useJoinWaitlistMutation } from "services/baseApiSlice";
-import toast from "utils/toast";
+import Header from "components/common/head";
+import Features from "components/landing/features";
+import Hero from "components/landing/hero";
+import LandingWrapper from "components/layout/wrapper";
+import React from "react";
 
 export default function Home() {
-  const [joinWaitlist, { isLoading }] = useJoinWaitlistMutation();
-
-  const joinWaitListHandler = async (email: string) => {
-    await joinWaitlist(email)
-      .unwrap()
-      .then((payload: { message: string }) => {
-        toast({
-          status: "success",
-          message: payload.message,
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-        toast({
-          status: "error",
-          message: "Something went wrong, please try again later",
-        });
-      });
-  };
-
-  const [email, setEmail] = useState<string>("");
-
   return (
     <>
       <Header />
-      <main
-        className={`flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-center`}
-      >
-        <div className="flex flex-col items-center justify-center gap-6 px-4 py-16 ">
-          <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-            Navu <span className="text-[hsl(280,100%,70%)]">360</span>
-          </h1>
-          <div className="mx-auto md:w-max">
-            <div className="mx-auto flex w-full flex-col gap-4 rounded-xl p-4 text-white md:w-1/2">
-              <h2 className="text-2xl font-bold">Launching Soon!</h2>
-              <div className="text-md">
-                Join Navu360&apos;s waitlist now and be among the first to
-                revolutionize your company&apos;s onboarding experience, keeping
-                your top talents and driving growth like never before!
-              </div>
-              <form className="mx-auto flex w-full max-w-xs flex-col gap-4">
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter email"
-                  className="generic-input"
-                />
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    void joinWaitListHandler(email);
-                  }}
-                  disabled={isLoading || !email}
-                  className="rounded-3xl bg-[#cc66ff]/30 py-4 px-6 font-semibold leading-[100%]"
-                >
-                  {isLoading ? "Loading..." : "Secure spot!"}
-                </button>
-              </form>
-            </div>
-          </div>
+      <LandingWrapper>
+        <Hero />
+        <Features />
+        <div className="inset-x-0 flex h-max w-full flex-col items-center justify-center gap-2 bg-dark py-16 text-center text-white">
+          <h4 className="flex w-max items-center gap-4 text-2xl">
+            Navu360 is currently in Beta{" "}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="2" y="6" width="20" height="8" rx="1" />
+              <path d="M17 14v7" />
+              <path d="M7 14v7" />
+              <path d="M17 3v3" />
+              <path d="M7 3v3" />
+              <path d="M10 14 2.3 6.3" />
+              <path d="m14 6 7.7 7.7" />
+              <path d="m8 6 8 8" />
+            </svg>
+          </h4>
+          <p className="w-max text-base leading-tight">
+            We are currently in beta and would love to hear your feedback.{" "}
+            <br />
+            Please reach out to us at{" "}
+            <a href="mailto:business@navu360.com">business@navu360.com </a>
+          </p>
         </div>
-      </main>
+      </LandingWrapper>
     </>
   );
 }

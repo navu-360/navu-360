@@ -1,0 +1,17 @@
+{
+  "recommendations": [
+    "formulahendry.auto-close-tag",
+    "formulahendry.auto-rename-tag",
+    "WallabyJs.console-ninja",
+    "usernamehw.errorlens",
+    "dbaeumer.vscode-eslint",
+    "eamodio.gitlens",
+    "ms-vscode.vscode-typescript-next",
+    "Tyriar.lorem-ipsum",
+    "attilabuti.vscode-mjml",
+    "christian-kohler.npm-intellisense",
+    "christian-kohler.path-intellisense",
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss"
+  ]
+}
