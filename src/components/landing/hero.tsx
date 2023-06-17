@@ -12,8 +12,7 @@ export default function Hero() {
       <section className="relative flex h-max min-h-[calc(100vh_-_65px)] w-full flex-col-reverse items-center justify-center gap-6 overflow-hidden bg-dark px-8 pb-8 text-white md:flex-row md:justify-start md:pb-32 xl:gap-12 2xl:gap-32 2xl:px-32">
         <div className="flex flex-col items-center gap-8 md:min-w-max md:max-w-[500px] md:items-start 2xl:gap-16">
           <h1 className="text-center text-3xl font-bold md:text-left md:text-2xl xl:text-5xl 2xl:text-7xl">
-            Transforming Talent: <br className="hidden md:block" /> Unleash
-            Success <br className="hidden md:block" /> with navu360
+            Talent Training <br className="hidden md:block" />& Onboarding
           </h1>
           <p className="text-medium text-center text-base md:text-left xl:text-lg 2xl:text-xl">
             Unlock the full potential of your talent with navu360&apos;s

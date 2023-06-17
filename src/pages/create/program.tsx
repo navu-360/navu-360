@@ -152,9 +152,9 @@ export default function CreateProgram() {
     <>
       <Header title="Create a Training Program" />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[90px] mt-[40px] flex h-full flex-col items-start justify-start gap-8 pt-4 md:ml-[300px] md:w-max">
+        <div className="relative ml-[90px] mt-[40px] flex h-full flex-col items-start justify-start gap-8 pt-4 md:ml-[300px] md:w-[calc(100%_-_400px)]">
           <GoBack />
-          <div className="mt-8 flex w-full relative flex-col-reverse justify-between md:flex-row">
+          <div className="relative mt-8 flex w-full flex-col-reverse justify-between md:flex-row">
             <form className="mt-8 md:mt-0">
               <input
                 type="text"
@@ -166,62 +166,64 @@ export default function CreateProgram() {
             </form>
             <button
               disabled={isLoading || !name || loading || editingProgramLoading}
-              className="flex w-max items-center self-end md:mr-0 mr-3 md:self-auto justify-center rounded-xl bg-secondary px-12 py-2 text-center text-base font-semibold text-white hover:bg-secondary"
+              className="mr-3 flex w-max items-center justify-center self-end rounded-xl bg-secondary px-12 py-2 text-center text-base font-semibold text-white hover:bg-secondary md:mr-0 md:self-auto"
               onClick={() => {
                 setSave(true);
               }}
             >
               {isLoading || loading || editingProgramLoading
                 ? "Saving..."
-                : `${edit ? "Edit Program" :"Create Program"}`}
+                : `${edit ? "Edit Program" : "Create Program"}`}
             </button>
           </div>
 
-          {(!isLoading && !hasCreated) && <MyEditor
-            key={chosenTemplate as unknown as Key}
-            getData={save}
-            receiveData={(data: OutputData) => {
-              setChosenTemplate(data);
-              if (edit) {
-                toast.promise(
-                  editProgramHandler(data),
-                  {
-                    pending: "Saving...",
-                    success: "Program edited!",
-                    error: "Error editing program",
-                  },
-                  {
-                    theme: "dark",
-                  }
-                );
-              } else {
-                toast.promise(
-                  createProgramHandler(data),
-                  {
-                    pending: "Saving...",
-                    success: "Program created!",
-                    error: "Error creating program",
-                  },
-                  {
-                    theme: "dark",
-                  }
-                );
-              }
+          {!isLoading && !hasCreated && (
+            <MyEditor
+              key={chosenTemplate as unknown as Key}
+              getData={save}
+              receiveData={(data: OutputData) => {
+                setChosenTemplate(data);
+                if (edit) {
+                  toast.promise(
+                    editProgramHandler(data),
+                    {
+                      pending: "Saving...",
+                      success: "Program edited!",
+                      error: "Error editing program",
+                    },
+                    {
+                      theme: "dark",
+                    }
+                  );
+                } else {
+                  toast.promise(
+                    createProgramHandler(data),
+                    {
+                      pending: "Saving...",
+                      success: "Program created!",
+                      error: "Error creating program",
+                    },
+                    {
+                      theme: "dark",
+                    }
+                  );
+                }
 
-              // toast.promise(
-              //   createTemplateHandler(),
-              //   {
-              //     pending: "Creating...",
-              //     success: "Program created!",
-              //     error: "Error creating program",
-              //   },
-              //   {
-              //     theme: "dark",
-              //   }
-              // );
-            }}
-            initialData={chosenTemplate ?? { blocks: [] }}
-          />}
+                // toast.promise(
+                //   createTemplateHandler(),
+                //   {
+                //     pending: "Creating...",
+                //     success: "Program created!",
+                //     error: "Error creating program",
+                //   },
+                //   {
+                //     theme: "dark",
+                //   }
+                // );
+              }}
+              initialData={chosenTemplate ?? { blocks: [] }}
+            />
+          )}
         </div>
       </DashboardWrapper>
     </>

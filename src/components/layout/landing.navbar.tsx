@@ -52,7 +52,7 @@ export default function NavBar() {
                 }
               );
             }}
-            className="mr-8 h-max w-max rounded-xl border-[1px] border-secondary px-8 py-1 text-base font-medium tracking-tight text-secondary"
+            className="mr-8 h-max w-max rounded-xl border-[1px] border-white px-8 py-1 text-base font-medium tracking-tight text-white"
           >
             Login
           </button>
