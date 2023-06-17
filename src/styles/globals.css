@@ -171,6 +171,10 @@ span {
     height: 40px !important;
 }
 
+.ce-toolbar__plus {
+    border: 2px solid #9d2a57 !important;
+}
+
 .ce-toolbar__plus:hover, .ce-toolbar__settings-btn:hover {
     background-color: #9d2a57 !important;
     color: #fff;
@@ -188,7 +192,13 @@ span {
 }
 
 .ce-popover__item:hover, .ce-conversion-tool--focused:hover, .cdx-attaches__download-button {
-    background-color: #9d2a57 !important;
+    background-color: #fff !important;
+}
+
+.cdx-attaches__download-button>svg {
+    color: #9d2a57 !important;
+    width: 32px !important;
+    height: 32px !important;
 }
 
 .ce-inline-toolbar__toggler-and-button-wrapper {
@@ -223,6 +233,39 @@ span {
 
 .ce-inline-tool:hover {
     background-color: #28293e !important;
+}
+
+.ce-popover-item__title {
+    color: #fff !important;
+}
+
+.ce-popover-item__title:hover {
+    color: #fff !important;
+}
+
+.cdx-search-field__input::placeholder {
+    color: #f5f5f5 !important;
+}
+
+.cdx-search-field__icon {
+    color: #f5f5f5 !important;
+}
+
+.ce-popover-item {
+    background-color: #9d2a57 !important;
+    margin-bottom: 3px !important;
+}
+
+.ce-popover--opened {
+    border: none !important;
+}
+
+.ce-popover__items {
+    scrollbar-width: none;
+}
+
+.ce-popover__items::-webkit-scrollbar {
+    display: none;
 }
 
 .program-input {

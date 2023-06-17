@@ -100,7 +100,7 @@ export default function SelectTemplate({
           />
         </svg>
         <h1 className="text-lg font-bold text-tertiary">
-          Create an Onboarding Program
+          Create a Program
         </h1>
         <p className="text-base font-medium text-gray-600">
           Select a template to continue or create a blank program
