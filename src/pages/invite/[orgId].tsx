@@ -54,7 +54,7 @@ export default function InviteTalent() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session?.user]);
 
-  const [updateUser, { isLoading }] = useUpdateUserMutation();
+  const [updateUser] = useUpdateUserMutation();
 
   const dispatch = useDispatch();
 

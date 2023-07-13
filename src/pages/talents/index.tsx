@@ -4,7 +4,6 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
-  useFetchUsersQuery,
   useGetOrganizationEnrollmentsQuery,
   useGetTalentEnrollmentsQuery,
 } from "services/baseApiSlice";
@@ -14,17 +13,16 @@ import { processDate } from "utils/date";
 import DashboardWrapper from "components/layout/dashboardWrapper";
 
 import { useGetSentInvitesQuery } from "services/baseApiSlice";
-import type { OnboardingProgramTalents, User, invites } from "@prisma/client";
+import type { OnboardingProgramTalents } from "@prisma/client";
 import { AnimatePresence } from "framer-motion";
 
 import { motion } from "framer-motion";
-import { TalentSwitch } from "components/dashboard/common";
 import { SelectPrograms } from "components/dashboard/selectPrograms";
 import Header from "components/common/head";
 
 export default function AllTalents() {
   const orgId = useSelector(
-    (state: { auth: { orgId: string } }) => state.auth.orgId
+    (state: { auth: { orgId: string } }) => state.auth.orgId,
   );
 
   // get enrolled talents -  ENROLLED
@@ -33,31 +31,8 @@ export default function AllTalents() {
     organizationId,
     {
       skip: !organizationId,
-    }
+    },
   );
-
-  // get all talents in the organization
-  const org = orgId;
-  const { data: allUsers } = useFetchUsersQuery(org, {
-    skip: !org,
-  });
-
-  const [talentsWithoutPrograms, setTalentsWithoutPrograms] = useState([]);
-
-  // joined but not enrolled - JOINED
-  useEffect(() => {
-    if (allUsers?.data && data?.data) {
-      // get all talents who are not enrolled in any program. comparing allUsers and data
-      const talentsWithoutPrograms = allUsers?.data?.filter(
-        (talent: User) =>
-          !data?.data?.find(
-            (enrolledTalent: OnboardingProgramTalents) =>
-              enrolledTalent.userId === talent.id
-          )
-      );
-      setTalentsWithoutPrograms(talentsWithoutPrograms ?? []);
-    }
-  }, [allUsers, data?.data]);
 
   const id = orgId;
 
@@ -66,7 +41,7 @@ export default function AllTalents() {
     id,
     {
       skip: !id,
-    }
+    },
   );
 
   useEffect(() => {
@@ -78,33 +53,18 @@ export default function AllTalents() {
 
   const [showingTalents, setShowingTalents] = useState([]);
 
-  const [selectedType, setSelectedType] = useState("Enrolled");
-
   // set correct data to table on switch
   useEffect(() => {
-    selectedType === "Enrolled"
-      ? setShowingTalents(data?.data ?? [])
-      : selectedType === "Invited"
-      ? // filter invites, remove those who are already enrolled, filter by email
-        setShowingTalents(
-          sentInvites?.data?.filter(
-            (invite: invites) =>
-              !data?.data?.find(
-                (enrolledTalent: { User: { email: string } }) =>
-                  enrolledTalent?.User?.email === invite?.email
-              )
-          ) ?? []
-        )
-      : setShowingTalents(talentsWithoutPrograms ?? []);
-  }, [data?.data, selectedType, sentInvites?.data, talentsWithoutPrograms]);
+    setShowingTalents(data?.data ?? []);
+  }, [data?.data]);
 
   const [showTalentEnrolModal, setShowTalentEnrolModal] = useState<string[]>(
-    []
+    [],
   );
 
   return (
     <>
-      <Header title={`${data?.name} - Navu360`} />
+      <Header title={`Enrolled Talents - Navu360`} />
       <DashboardWrapper hideSearch>
         <div className="relative ml-[90px] mt-[40px] flex h-full items-start justify-start gap-8 pt-4 md:ml-[250px]">
           <div className="h-max w-full rounded-md p-2 lg:w-[90%]">
@@ -118,7 +78,7 @@ export default function AllTalents() {
                     <div className="flex flex-wrap items-center">
                       <div className="relative w-full max-w-full flex-1 flex-grow px-4 ">
                         <h3 className="text-lg font-semibold text-tertiary">
-                          {selectedType} talents ({showingTalents?.length || 0})
+                          Enrolled talents ({showingTalents?.length || 0})
                         </h3>
                       </div>
                     </div>
@@ -126,38 +86,25 @@ export default function AllTalents() {
                   <div className="block w-full overflow-x-auto ">
                     <table className="w-full max-w-[100%] border-collapse items-center overflow-x-auto bg-transparent">
                       <thead>
-                        {selectedType !== "Invited" ? (
-                          <tr>
-                            <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                              Talent
-                            </th>
-                            <th className="role whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                              Role
-                            </th>
-                            <th className="date whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                              {selectedType === "Enrolled"
-                                ? "Enrolled"
-                                : "Joined"}
-                            </th>
-                            {selectedType === "Enrolled" && (
-                              <th className="progress whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                                Completion{" "}
-                              </th>
-                            )}
-                            <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                              Action
-                            </th>
-                          </tr>
-                        ) : (
-                          <tr className="invite">
-                            <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                              Email
-                            </th>
-                            <th className="invite-date whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                              Invite Date
-                            </th>
-                          </tr>
-                        )}
+                        <tr>
+                          <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                            Talent
+                          </th>
+                          <th className="role whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                            Role
+                          </th>
+                          <th className="date whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                            Enrolled
+                          </th>
+
+                          <th className="progress whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                            Completion{" "}
+                          </th>
+
+                          <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                            Action
+                          </th>
+                        </tr>
                       </thead>
 
                       {isFetching || !orgId ? (
@@ -165,7 +112,7 @@ export default function AllTalents() {
                           <tr>
                             <td
                               align="center"
-                              colSpan={selectedType !== "Invited" ? 6 : 4}
+                              colSpan={6}
                               className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs"
                             >
                               <Spinner smaller />
@@ -181,94 +128,55 @@ export default function AllTalents() {
                               <tr>
                                 <td
                                   align="center"
-                                  colSpan={selectedType !== "Invited" ? 6 : 4}
+                                  colSpan={6}
                                   className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-lg font-bold"
                                 >
-                                  No talents have{" "}
-                                  {selectedType !== "Joined" ? "been" : ""}{" "}
-                                  {selectedType.toLowerCase()} yet
+                                  No talents have enrolled yet
                                 </td>
                               </tr>
                             )}
                           {showingTalents?.length > 0 &&
                             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            showingTalents?.map((talent: any) =>
-                              selectedType !== "Invited" ? (
-                                <tr
-                                  key={talent?.id}
-                                  className="border border-secondary/25"
-                                >
-                                  <td className="relative flex flex-col gap-3 whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left text-xs md:flex-row md:items-center md:gap-0">
-                                    <img
-                                      src={generateAvatar(
-                                        talent?.User?.id ?? talent?.id
-                                      )}
-                                      className="h-12 w-12 rounded-full border bg-white"
-                                      alt={talent?.User?.name ?? talent?.name}
-                                    />
-                                    <span className="ml-3 font-bold capitalize">
-                                      {talent?.User?.name ?? talent?.name}
-                                    </span>
-                                  </td>
-                                  <td className="role whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
-                                    {talent?.User?.position ?? talent?.position}
-                                  </td>
-                                  <td className="date whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
-                                    {processDate(talent?.createdAt)}
-                                  </td>
-                                  {selectedType === "Enrolled" && (
-                                    <CompletionStatus enrollment={talent} />
-                                  )}
-                                  <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-right align-middle text-xs">
-                                    <div
-                                      className="min-w-48 z-50 list-none rounded py-2 text-left text-base"
-                                      id="table-dark-1-dropdown"
-                                    >
-                                      {selectedType === "Enrolled" ? (
-                                        <Link
-                                          href={`/talents/${talent?.User?.id}`}
-                                          className="text-blueGray-700 mb-2 block w-max rounded-xl border-[1px] border-secondary/50 bg-white px-4 py-2 text-sm font-semibold text-secondary transition-all duration-150 ease-in hover:bg-secondary hover:text-white md:px-12"
-                                        >
-                                          View
-                                        </Link>
-                                      ) : (
-                                        <button
-                                          onClick={() =>
-                                            setShowTalentEnrolModal([
-                                              talent?.id,
-                                              talent?.name as string,
-                                            ])
-                                          }
-                                          className="text-blueGray-700 mb-2 block w-max rounded-xl border-[1px] border-secondary/50 bg-white px-4 py-2 text-sm font-semibold text-secondary transition-all duration-150 ease-in hover:bg-secondary hover:text-white md:px-12"
-                                        >
-                                          Enroll Now
-                                        </button>
-                                      )}
-                                    </div>
-                                  </td>
-                                </tr>
-                              ) : (
-                                <tr
-                                  className="invite border border-secondary/25"
-                                  key={talent?.id}
-                                >
-                                  <th className="flex flex-col gap-2 whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 text-left text-xs lg:flex-row lg:items-center lg:gap-0 lg:px-6 lg:align-middle">
-                                    <img
-                                      src={generateAvatar(talent?.id)}
-                                      className="ml-4 h-12 w-12 rounded-full border bg-white lg:ml-0"
-                                      alt={talent?.email as string}
-                                    />
-                                    <span className="ml-3 font-bold">
-                                      {talent?.email}
-                                    </span>
-                                  </th>
+                            showingTalents?.map((talent: any) => (
+                              <tr
+                                key={talent?.id}
+                                className="border border-secondary/25"
+                              >
+                                <td className="relative flex flex-col gap-3 whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left text-xs md:flex-row md:items-center md:gap-0">
+                                  <img
+                                    src={generateAvatar(
+                                      talent?.User?.id ?? talent?.id,
+                                    )}
+                                    className="h-12 w-12 rounded-full border bg-white"
+                                    alt={talent?.User?.name ?? talent?.name}
+                                  />
+                                  <span className="ml-3 font-bold capitalize">
+                                    {talent?.User?.name ?? talent?.name}
+                                  </span>
+                                </td>
+                                <td className="role whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
+                                  {talent?.User?.position ?? talent?.position}
+                                </td>
+                                <td className="date whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
+                                  {processDate(talent?.createdAt)}
+                                </td>
+                                <CompletionStatus enrollment={talent} />
 
-                                  <td className="invite-date whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
-                                    {processDate(talent?.createdAt)}
-                                  </td>
-                                </tr>
-                              )
-                            )}
+                                <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-right align-middle text-xs">
+                                  <div
+                                    className="min-w-48 z-50 list-none rounded py-2 text-left text-base"
+                                    id="table-dark-1-dropdown"
+                                  >
+                                    <Link
+                                      href={`/talents/${talent?.User?.id}`}
+                                      className="text-blueGray-700 mb-2 block w-max rounded-xl border-[1px] border-secondary/50 bg-white px-4 py-2 text-sm font-semibold text-secondary transition-all duration-150 ease-in hover:bg-secondary hover:text-white md:px-12"
+                                    >
+                                      View
+                                    </Link>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
                         </tbody>
                       )}
                     </table>
@@ -315,11 +223,11 @@ export function CompletionStatus({
     // check all enrollment objects field enrollmentStatus for values pending, completed then return the percentage completed
     const completed = data?.data?.filter(
       (enrollment: OnboardingProgramTalents) =>
-        enrollment?.enrollmentStatus === "completed"
+        enrollment?.enrollmentStatus === "completed",
     );
     const pending = data?.data?.filter(
       (enrollment: OnboardingProgramTalents) =>
-        enrollment?.enrollmentStatus === "pending"
+        enrollment?.enrollmentStatus === "pending",
     );
     const total = completed?.length + pending?.length;
     const percentage = (completed?.length / total) * 100;
@@ -370,7 +278,7 @@ export function CompletionStatus({
           <div className="relative w-full">
             <div
               className={`flex h-3 overflow-hidden rounded-none border-[1px] border-amber-600 bg-transparent text-xs ${getSliderColorBorder(
-                checkCompletionStatus()
+                checkCompletionStatus(),
               )}`}
             >
               <motion.div
@@ -379,7 +287,7 @@ export function CompletionStatus({
                 whileInView={{ width: `${checkCompletionStatus()}%` }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
                 className={`flex h-3 flex-col justify-center whitespace-nowrap rounded-none text-center text-white ${getSliderColor(
-                  checkCompletionStatus()
+                  checkCompletionStatus(),
                 )}`}
               ></motion.div>
             </div>
