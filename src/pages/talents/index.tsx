@@ -64,7 +64,7 @@ export default function AllTalents() {
 
   return (
     <>
-      <Header title={`${data?.name} - Navu360`} />
+      <Header title={`Enrolled Talents - Navu360`} />
       <DashboardWrapper hideSearch>
         <div className="relative ml-[90px] mt-[40px] flex h-full items-start justify-start gap-8 pt-4 md:ml-[250px]">
           <div className="h-max w-full rounded-md p-2 lg:w-[90%]">
