@@ -15,7 +15,7 @@ export default function Features() {
       <h2
         className={`textGradientTitles absolute top-12 text-3xl font-semibold ${font.className}`}
       >
-        Empower Your Team: Next-Level Onboarding and Training Solutions
+        Empower Your Team: Next-Level Onboarding and Training Tool
       </h2>
       <OneFeature
         svg={
@@ -119,7 +119,7 @@ function OneFeature({
       whileInView={{ y: 0 }}
       transition={{ duration: 0.5, ease: "easeIn", delay: delay * 0.1 }}
       viewport={{ amount: 1, once: true }}
-      className="flex max-w-[450px] flex-col items-center gap-4 rounded-xl shadowAroundFeature bg-white px-8 py-4 text-center text-tertiary"
+      className="shadowAroundFeature flex max-w-[450px] flex-col items-center gap-4 rounded-xl bg-white px-8 py-4 text-center text-tertiary"
     >
       {svg}{" "}
       <div className="flex flex-col gap-4">
