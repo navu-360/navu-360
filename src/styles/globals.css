@@ -215,6 +215,10 @@ span {
     background-color: #28293e !important;
 }
 
+.ce-toolbar__plus {
+    background-color: #ffffff !important;
+}
+
 .ce-conversion-tool:hover {
     background-color: #9d2a57 !important;
 }

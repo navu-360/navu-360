@@ -20,7 +20,7 @@ import SelectTemplate from "components/dashboard/selectTemplate";
 
 export default function Programs() {
   const orgId = useSelector(
-    (state: { auth: { orgId: string } }) => state.auth.orgId
+    (state: { auth: { orgId: string } }) => state.auth.orgId,
   );
   // get organization programs
   const { data, isFetching, refetch } = useGetOrganizationProgramsQuery(orgId, {
@@ -39,7 +39,7 @@ export default function Programs() {
   >(false);
 
   const [programsArray, setProgramsArray] = useState<OnboardingProgram[]>(
-    data?.data
+    data?.data,
   );
 
   useEffect(() => {
@@ -131,8 +131,8 @@ export default function Programs() {
                 refetch();
                 setProgramsArray((prev) =>
                   prev.filter(
-                    (program) => program.id !== showDeleteProgramModal
-                  )
+                    (program) => program.id !== showDeleteProgramModal,
+                  ),
                 );
                 setShowDeleteProgramModal(false);
               }}
@@ -176,6 +176,7 @@ export function OneProgramCard({
       initial={{ y: 10 }}
       transition={{ duration: 0.3, ease: "easeIn", delay }}
       whileInView={{ y: 0 }}
+      className="stat-shadow"
     >
       <Link
         href={`/programs/${program.id}`}

@@ -74,7 +74,7 @@ export default function Program({ data }: { data: OnboardingProgram }) {
             </h1>
             {content && <MyEditor isReadOnly initialData={content} />}
           </div>
-          <div className="lg:fixed right-8 mr-0 lg:mt-16 flex lg:h-[80vh] lg:w-[350px] w-[95%] flex-col overflow-y-auto text-tertiary">
+          <div className="lg:fixed right-8 mr-0 lg:mt-12 flex lg:h-[80vh] lg:w-[350px] w-[95%] flex-col overflow-y-auto text-tertiary">
             <div className="flex flex-col gap-4 rounded border-[1px] border-gray-400 p-4 text-tertiary">
               {/* created by */}
               <div className="flex items-center gap-2 px-4">
