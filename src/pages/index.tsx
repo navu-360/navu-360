@@ -11,7 +11,7 @@ export default function Home() {
       <LandingWrapper>
         <Hero />
         <Features />
-        <div className="inset-x-0 flex h-max w-full flex-col items-center justify-center gap-2 bg-dark py-16 text-center text-white">
+        <div className="inset-x-0 hidden h-max w-full flex-col items-center justify-center gap-2 bg-white py-16 text-center text-dark">
           <h4 className="flex w-max items-center gap-4 text-2xl">
             Navu360 is currently in Beta{" "}
             <svg
