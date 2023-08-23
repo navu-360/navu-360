@@ -196,7 +196,7 @@ function OneStat({
   num: number;
 }) {
   return (
-    <div className="stat-shadow flex w-full flex-row items-center gap-3  rounded-xl bg-tertiary p-2 text-white sm:w-max lg:w-[25%] lg:flex-col xl:min-w-[300px]">
+    <div className="stat-shadow flex w-full flex-row items-center gap-3 rounded-xl bg-tertiary p-2 text-white sm:w-max lg:w-[25%] lg:flex-col xl:min-w-[300px]">
       <div className="">{svg}</div>
 
       <div className="flex items-center gap-2 text-center text-base">

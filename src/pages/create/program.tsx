@@ -173,7 +173,7 @@ export default function CreateProgram() {
             >
               {isLoading || loading || editingProgramLoading
                 ? "Saving..."
-                : `${edit ? "Edit Program" : "Create Program"}`}
+                : `${edit ? "Save Changes" : "Create Program"}`}
             </button>
           </div>
 

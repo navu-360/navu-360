@@ -1,10 +1,22 @@
 import React from "react";
 
 import { motion } from "framer-motion";
+import { Play } from "next/font/google";
+
+const font = Play({
+  weight: ["700"],
+  display: "swap",
+  subsets: ["cyrillic"],
+});
 
 export default function Features() {
   return (
-    <section className="flex justify-around bg-dark py-8 text-white">
+    <section className="relative flex justify-around bg-white py-8 pt-44 text-white">
+      <h2
+        className={`textGradientTitles absolute top-12 text-3xl font-semibold ${font.className}`}
+      >
+        Empower Your Team: Next-Level Onboarding and Training Tool
+      </h2>
       <OneFeature
         svg={
           <svg
@@ -107,7 +119,7 @@ function OneFeature({
       whileInView={{ y: 0 }}
       transition={{ duration: 0.5, ease: "easeIn", delay: delay * 0.1 }}
       viewport={{ amount: 1, once: true }}
-      className="flex max-w-[450px] flex-col items-center gap-4 rounded-xl bg-white px-8 py-4 text-center text-tertiary"
+      className="shadowAroundFeature flex max-w-[450px] flex-col items-center gap-4 rounded-xl bg-white px-8 py-4 text-center text-tertiary"
     >
       {svg}{" "}
       <div className="flex flex-col gap-4">
