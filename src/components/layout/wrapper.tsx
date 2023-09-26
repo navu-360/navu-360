@@ -25,24 +25,24 @@ export default function LandingWrapper({
               <img
                 src="/logo.svg"
                 className="mb-1 mr-3 h-6 sm:h-9"
-                alt="Flowbite Logo"
+                alt="Navu360"
               />
             </Link>
             © 2023 . All Rights Reserved.
           </div>
           <ul className="mt-3 flex flex-wrap items-center text-sm font-medium text-gray-300 sm:mt-0">
             <li>
-              <Link href="#" className="mr-4 hover:underline md:mr-6 ">
+              <Link href="#features" className="mr-4 hover:underline md:mr-6 ">
                 Features
               </Link>
             </li>
             <li>
-              <Link href="#" className="mr-4 hover:underline md:mr-6">
+              <Link href="#features" className="mr-4 hover:underline md:mr-6">
                 Pricing
               </Link>
             </li>
             <li>
-              <Link href="#" className="mr-4 hover:underline md:mr-6">
+              <Link href="#features" className="mr-4 hover:underline md:mr-6">
                 About
               </Link>
             </li>

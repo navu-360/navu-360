@@ -25,6 +25,7 @@ const config = withPWA({
       "res.cloudinary.com",
       "lh3.googleusercontent.com",
       "avatars.dicebear.com",
+      "mdbcdn.b-cdn.net",
     ],
   },
 
