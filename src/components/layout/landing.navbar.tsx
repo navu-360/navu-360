@@ -35,13 +35,12 @@ export default function NavBar() {
   return (
     <nav className="fixed left-0 top-0 z-20 h-[65px] w-full bg-dark py-2.5 sm:px-4">
       <div className="mx-auto flex flex-wrap items-center justify-between md:mx-0">
-        <Link href="/" className="flex relative items-center pl-4">
+        <Link href="/" className="relative flex items-center pl-4">
           <img
             src="/logo.svg"
             className="mr-3 h-6 sm:h-9"
-            alt="Flowbite Logo"
+            alt="Navu360 Logo"
           />
-          <span className="text-white absolute bottom-0 -right-8 font-semibold">Beta</span>
         </Link>
         <div className="flex items-center md:order-2">
           <button
@@ -49,7 +48,7 @@ export default function NavBar() {
               signIn("google", { callbackUrl: "/", redirect: false }).catch(
                 (err) => {
                   console.log(err);
-                }
+                },
               );
             }}
             className="mr-8 h-max w-max rounded-xl border-[1px] border-white px-8 py-1 text-base font-medium tracking-tight text-white"
@@ -62,7 +61,7 @@ export default function NavBar() {
               signIn("google", { callbackUrl: "/", redirect: false }).catch(
                 (err) => {
                   console.log(err);
-                }
+                },
               );
             }}
             disabled={status === "loading"}
