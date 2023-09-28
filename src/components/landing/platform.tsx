@@ -11,9 +11,9 @@ const font = Play({
 
 export default function Features() {
   return (
-    <section className="relative flex justify-around bg-white py-8 pt-44 text-white">
+    <section className="relative flex w-full justify-around bg-white py-8 pt-44 text-white">
       <h2
-        className={`textGradientTitles absolute top-20 text-3xl font-semibold ${font.className}`}
+        className={`textGradientTitles absolute top-20 cursor-default text-3xl font-semibold ${font.className}`}
       >
         Superior Features
       </h2>
@@ -29,6 +29,7 @@ export default function Features() {
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
+            className="transition-all duration-300 ease-in group-hover:text-secondary"
           >
             <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
           </svg>
@@ -49,6 +50,7 @@ export default function Features() {
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
+            className="transition-all duration-300 ease-in group-hover:text-secondary"
           >
             <path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z"></path>
             <path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"></path>
@@ -82,6 +84,7 @@ export default function Features() {
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
+            className="transition-all duration-300 ease-in group-hover:text-secondary"
           >
             <path d="M15 4V2"></path>
             <path d="M15 16v-2"></path>
@@ -119,11 +122,13 @@ function OneFeature({
       whileInView={{ y: 0 }}
       transition={{ duration: 0.5, ease: "easeIn", delay: delay * 0.1 }}
       viewport={{ amount: 1, once: true }}
-      className="shadowAroundFeature flex max-w-[450px] flex-col items-center gap-4 rounded-xl bg-white px-8 py-4 text-center text-tertiary"
+      className="shadowAroundFeature group flex max-w-[450px] cursor-default flex-col items-center gap-4 rounded-xl bg-white px-8 py-4 text-center text-tertiary"
     >
       {svg}{" "}
       <div className="flex flex-col gap-4">
-        <h3 className="text-xl font-bold">{title}</h3>
+        <h3 className="text-xl font-bold transition-all duration-300 ease-in group-hover:text-secondary">
+          {title}
+        </h3>
         <p className="leading-[150%]">{description}</p>
       </div>
     </motion.div>

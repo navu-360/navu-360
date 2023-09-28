@@ -10,7 +10,7 @@ export default function Hero() {
   return (
     <>
       <section className="relative flex h-max min-h-[calc(100vh_-_65px)] w-full flex-col-reverse items-center justify-center gap-6 overflow-hidden bg-dark px-8 pb-8 text-white md:flex-row md:justify-start md:pb-32 xl:gap-12 2xl:gap-32 2xl:px-32">
-        <div className="flex flex-col items-center gap-8 md:min-w-max md:max-w-[500px] md:items-start 2xl:gap-16">
+        <div className="flex cursor-default flex-col items-center gap-8 md:min-w-max md:max-w-[500px] md:items-start 2xl:gap-16">
           <h1 className="text-center text-3xl font-bold md:text-left md:text-2xl xl:text-5xl 2xl:text-7xl">
             Talent Training <br className="hidden md:block" />& Onboarding
           </h1>
@@ -24,7 +24,7 @@ export default function Hero() {
               signIn("google", { callbackUrl: "/" });
             }}
             disabled={status === "loading"}
-            className="h-max w-max rounded-[2rem] bg-secondary px-24 hover:px-28 transition-all ease-in duration-300 py-3 text-center text-lg font-bold text-white hover:bg-secondary focus:outline-none focus:ring-4 focus:ring-blue-300"
+            className="h-max w-max rounded-[2rem] bg-secondary px-24 py-3 text-center text-lg font-bold text-white transition-all duration-300 ease-in hover:bg-secondary hover:px-28 focus:outline-none focus:ring-4 focus:ring-blue-300"
           >
             {status === "loading" ? (
               <SmallSpinner />
