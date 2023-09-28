@@ -24,7 +24,7 @@ export default function Hero() {
               signIn("google", { callbackUrl: "/" });
             }}
             disabled={status === "loading"}
-            className="h-max w-max rounded-[2rem] bg-secondary px-24 py-3 text-center text-lg font-bold text-white hover:bg-secondary focus:outline-none focus:ring-4 focus:ring-blue-300"
+            className="h-max w-max rounded-[2rem] bg-secondary px-24 hover:px-28 transition-all ease-in duration-300 py-3 text-center text-lg font-bold text-white hover:bg-secondary focus:outline-none focus:ring-4 focus:ring-blue-300"
           >
             {status === "loading" ? (
               <SmallSpinner />
