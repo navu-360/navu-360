@@ -36,12 +36,12 @@ export default function FeaturesNavu() {
     <section id="features" className="mt-16 flex flex-col">
       {features?.map((feature, i) => (
         <motion.div
-          initial={{ y: 50, scale: 0.9 }}
+          initial={{ y: 30, scale: 0.9 }}
           whileInView={{ y: 0, scale: 1 }}
-          transition={{ ease: "easeIn", duration: 0.3, delay: i * 0.1 }}
-          viewport={{ amount: 0.8, once: true }}
+          transition={{ ease: "easeOut", duration: 0.5, delay: i * 0.1 }}
+          viewport={{ amount: 0.7, once: true }}
           key={i}
-          className="container mx-auto my-8 md:px-6"
+          className="group container mx-auto my-8 md:px-6"
         >
           <section className="">
             <div
@@ -71,7 +71,7 @@ export default function FeaturesNavu() {
                     feature.reverse ? "rounded-l-lg pl-0" : "rounded-r-lg pl-0"
                   }`}
                 >
-                  <div className="lg:pl-12">
+                  <div className="cursor-default lg:pl-12">
                     <h2 className="mb-6 text-3xl font-bold">{feature.title}</h2>
                     <p className="mb-6 pb-2 lg:pb-0">{feature.description}</p>
                     <button
@@ -79,7 +79,7 @@ export default function FeaturesNavu() {
                       onClick={() => {
                         signIn("google", { callbackUrl: "/" });
                       }}
-                      className="rounded-full border-2 border-neutral-50 px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-neutral-50 transition-all duration-300 ease-in hover:border-neutral-100 hover:bg-neutral-100 hover:bg-opacity-10 hover:px-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200"
+                      className="rounded-full border-2 border-neutral-50 px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-neutral-50 transition-all duration-300 ease-in hover:border-neutral-100 hover:bg-neutral-100 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 group-hover:px-10"
                       data-te-ripple-init
                       data-te-ripple-color="light"
                     >
