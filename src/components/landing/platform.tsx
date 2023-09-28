@@ -97,7 +97,7 @@ export default function Features() {
             <path d="M12.2 6.2 11 5"></path>
           </svg>
         }
-        title="Track Progress"
+        title="Track TalentProgress"
         description="We reduce the administrative workload associated with training talents"
         delay={2}
       />

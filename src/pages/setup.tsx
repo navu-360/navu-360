@@ -90,7 +90,7 @@ export default function Setup() {
 
   return (
     <>
-      <Header title="Complete Registration - Navu360" />
+      <Header title="Innovative Talent Onboarding - Navu360" />
       <LandingWrapper hideNav>
         <AdminCompanyDetails
           goToNext={(role: string, companyDetails: CompanyDetails) =>
