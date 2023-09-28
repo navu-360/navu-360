@@ -36,11 +36,7 @@ export default function NavBar() {
     <nav className="fixed left-0 top-0 z-20 h-[65px] w-full bg-dark py-2.5 sm:px-4">
       <div className="mx-auto flex flex-wrap items-center justify-between md:mx-0">
         <Link href="/" className="relative flex items-center pl-4">
-          <img
-            src="/logo.svg"
-            className="mr-3 h-6 sm:h-9"
-            alt="Navu360 Logo"
-          />
+          <img src="/logo.svg" className="mr-3 h-6 sm:h-9" alt="Navu360 Logo" />
         </Link>
         <div className="flex items-center md:order-2">
           <button
@@ -51,7 +47,7 @@ export default function NavBar() {
                 },
               );
             }}
-            className="mr-8 h-max w-max rounded-xl border-[1px] border-white px-8 py-1 text-base font-medium tracking-tight text-white"
+            className="mr-8 h-max w-max rounded-xl border-[1px] border-white px-8 py-1 text-base font-medium tracking-tight text-white transition-all duration-300 ease-in hover:border-secondary hover:text-secondary"
           >
             Login
           </button>
@@ -65,7 +61,7 @@ export default function NavBar() {
               );
             }}
             disabled={status === "loading"}
-            className="hidden h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-1 md:mr-0 md:flex"
+            className="hidden h-max min-h-[45px] hover:px-10 transition-all ease-in duration-300 w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-1 md:mr-0 md:flex"
           >
             {status === "loading" ? (
               <SmallSpinner />

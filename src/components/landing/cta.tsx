@@ -17,7 +17,7 @@ export default function Cta() {
                   onClick={() => {
                     signIn("google", { callbackUrl: "/" });
                   }}
-                  className="rounded-3xl border-2 border-neutral-50 px-[46px] pb-[12px] pt-[14px] text-sm font-semibold uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-100 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200"
+                  className="rounded-3xl border-2  border-neutral-50 px-[46px] hover:px-[52px] transition-all ease-in duration-300 pb-[12px] pt-[14px] text-sm font-semibold uppercase leading-normal text-neutral-50 hover:border-neutral-100 hover:bg-neutral-100 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200"
                 >
                   Get started
                 </button>

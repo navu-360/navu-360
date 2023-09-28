@@ -3,6 +3,8 @@ import Image from "next/image";
 import React from "react";
 import { signIn } from "next-auth/react";
 
+import { motion } from "framer-motion";
+
 export default function FeaturesNavu() {
   const features = [
     {
@@ -33,7 +35,14 @@ export default function FeaturesNavu() {
   return (
     <section id="features" className="mt-16 flex flex-col">
       {features?.map((feature, i) => (
-        <div key={i} className="container mx-auto my-8 md:px-6">
+        <motion.div
+          initial={{ y: 50, scale: 0.9 }}
+          whileInView={{ y: 0, scale: 1 }}
+          transition={{ ease: "easeIn", duration: 0.3, delay: i * 0.1 }}
+          viewport={{ amount: 0.8, once: true }}
+          key={i}
+          className="container mx-auto my-8 md:px-6"
+        >
           <section className="">
             <div
               className={`shadowAroundFeature mx-auto flex h-[350px] w-max max-w-6xl flex-wrap justify-end rounded-lg ${
@@ -70,7 +79,7 @@ export default function FeaturesNavu() {
                       onClick={() => {
                         signIn("google", { callbackUrl: "/" });
                       }}
-                      className="rounded-full border-2 border-neutral-50 px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-100 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200"
+                      className="rounded-full border-2 border-neutral-50 px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-neutral-50 transition-all duration-300 ease-in hover:border-neutral-100 hover:bg-neutral-100 hover:bg-opacity-10 hover:px-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200"
                       data-te-ripple-init
                       data-te-ripple-color="light"
                     >
@@ -81,7 +90,7 @@ export default function FeaturesNavu() {
               </div>
             </div>
           </section>
-        </div>
+        </motion.div>
       ))}
     </section>
   );
