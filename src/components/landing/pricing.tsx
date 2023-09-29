@@ -12,7 +12,10 @@ import { motion } from "framer-motion";
 
 export default function Pricing() {
   return (
-    <section id="pricing" className="mx-auto my-16 w-full px-5 py-10 text-gray-600">
+    <section
+      id="pricing"
+      className="mx-auto my-16 w-full px-5 py-10 text-gray-600"
+    >
       <div className="mx-auto max-w-7xl md:flex">
         <div className="md:flex md:w-1/4 md:flex-col">
           <div className="w-full flex-grow text-left md:pr-5">
@@ -32,7 +35,7 @@ export default function Pricing() {
               initial={{ x: -30, scale: 1 }}
               whileInView={{ x: 0, scale: 1 }}
               transition={{ ease: "easeOut", duration: 0.5, delay: 0.1 }}
-              viewport={{ amount: 0.9 }}
+              viewport={{ amount: 0.9, once: true }}
               className="shadowAroundFeature featureThreeGradient mx-auto mb-3 w-full rounded-md px-8 py-8 text-white md:my-2 md:flex md:w-1/3 md:max-w-none md:flex-col md:px-10 md:py-10"
             >
               <div className="w-full flex-grow">
@@ -132,8 +135,8 @@ export default function Pricing() {
               initial={{ scale: 1 }}
               whileInView={{ scale: 1.1 }}
               transition={{ ease: "easeOut", duration: 0.5, delay: 0.2 }}
-              viewport={{ amount: 0.9 }}
-              className="shadowAroundFeature featureThreeGradient mx-auto mb-3 w-full rounded-md px-8 py-8 text-white md:relative md:z-50 md:-mx-3 md:mb-0 md:flex md:w-1/3 md:max-w-none md:flex-col md:px-10 md:py-10"
+              viewport={{ amount: 0.9, once: true }}
+              className="shadowAroundFeature featureThreeGradient mx-auto mb-3 w-full rounded-md px-8 py-8 text-white md:relative md:z-10 md:-mx-3 md:mb-0 md:flex md:w-1/3 md:max-w-none md:flex-col md:px-10 md:py-10"
             >
               <div className="w-full flex-grow">
                 <h3
@@ -232,7 +235,7 @@ export default function Pricing() {
               initial={{ x: 30, scale: 1 }}
               whileInView={{ x: 0, scale: 1 }}
               transition={{ ease: "easeOut", duration: 0.5, delay: 0.3 }}
-              viewport={{ amount: 0.9 }}
+              viewport={{ amount: 0.9, once: true }}
               className="shadowAroundFeature featureThreeGradient mx-auto mb-3 w-full rounded-md px-8 py-8 text-white md:my-2 md:flex md:w-1/3 md:max-w-none md:flex-col md:px-10 md:py-10"
             >
               <div className="w-full flex-grow">
