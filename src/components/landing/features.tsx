@@ -5,6 +5,14 @@ import { signIn } from "next-auth/react";
 
 import { motion } from "framer-motion";
 
+import { Play } from "next/font/google";
+
+const font = Play({
+  weight: ["700"],
+  display: "swap",
+  subsets: ["cyrillic"],
+});
+
 export default function FeaturesNavu() {
   const features = [
     {
@@ -72,7 +80,9 @@ export default function FeaturesNavu() {
                   }`}
                 >
                   <div className="cursor-default lg:pl-12">
-                    <h2 className="mb-6 text-3xl font-bold">{feature.title}</h2>
+                    <h2 className={`mb-6 text-3xl font-bold ${font.className}`}>
+                      {feature.title}
+                    </h2>
                     <p className="mb-6 pb-2 lg:pb-0">{feature.description}</p>
                     <button
                       type="button"

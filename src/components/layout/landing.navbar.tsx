@@ -7,6 +7,14 @@ import { signIn, useSession } from "next-auth/react";
 
 import { SmallSpinner } from "components/common/spinner";
 
+import { Play } from "next/font/google";
+
+const font = Play({
+  weight: ["700"],
+  display: "swap",
+  subsets: ["cyrillic"],
+});
+
 export default function NavBar() {
   const router = useRouter();
 
@@ -38,6 +46,10 @@ export default function NavBar() {
         <Link href="/" className="relative flex items-center pl-4">
           <img src="/logo.svg" className="mr-3 h-6 sm:h-9" alt="Navu360 Logo" />
         </Link>
+        <div className="flex gap-4">
+          <OneLink to="#features" text="Features" />
+          <OneLink to="#pricing" text="Pricing" />
+        </div>
         <div className="flex items-center md:order-2">
           <button
             onClick={() => {
@@ -61,7 +73,7 @@ export default function NavBar() {
               );
             }}
             disabled={status === "loading"}
-            className="hidden h-max min-h-[45px] hover:px-10 transition-all ease-in duration-300 w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-1 md:mr-0 md:flex"
+            className="hidden h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white transition-all duration-300 ease-in hover:bg-secondary hover:px-10 focus:outline-none focus:ring-1 md:mr-0 md:flex"
           >
             {status === "loading" ? (
               <SmallSpinner />
@@ -72,5 +84,16 @@ export default function NavBar() {
         </div>
       </div>
     </nav>
+  );
+}
+
+function OneLink({ to, text }: { to: string; text: string }) {
+  return (
+    <Link
+      className={`rounded-3xl px-4 py-1 text-lg font-medium tracking-wide text-white hover:bg-secondary/10 ${font.className}`}
+      href={to}
+    >
+      {text}
+    </Link>
   );
 }
