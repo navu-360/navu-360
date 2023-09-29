@@ -17,17 +17,20 @@ const font = Play({
 
 export default function NavBar() {
   const router = useRouter();
+  const { sub } = router.query;
 
   const { data: session, status } = useSession();
 
   useEffect(() => {
     if (session) {
+      // when an admin is joining for the first time
       if (router.pathname === "/" && !session?.user?.hasBeenOnboarded) {
-        router.push("/setup");
+        router.push("/setup" + (sub ? `?sub=${sub}` : ""));
       } else if (
         router.pathname === "/setup" &&
         session?.user?.hasBeenOnboarded
       ) {
+        // TODO: why?
         router.push("/");
       } else if (router.pathname === "/" && session?.user?.hasBeenOnboarded) {
         if (session?.user?.role === "admin") {

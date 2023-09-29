@@ -252,6 +252,20 @@ export const baseApiSlice = createApi({
         body,
       }),
     }),
+    verifyPayment: builder.mutation({
+      query: (body) => ({
+        url: `billing/verify`,
+        method: "POST",
+        body,
+      }),
+    }),
+    getCustomerSubscription: builder.mutation({
+      query: (body) => ({
+        url: `billing/customer`,
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -286,4 +300,6 @@ export const {
   useUnregisterTalentMutation,
   useRemoveUserFromOrganizationMutation,
   useSendEnrolledEmailMutation,
+  useVerifyPaymentMutation,
+  useGetCustomerSubscriptionMutation,
 } = baseApiSlice;

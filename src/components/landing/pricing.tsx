@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Play } from "next/font/google";
+import { signIn } from "next-auth/react";
 
 const font = Play({
   weight: ["700"],
@@ -126,7 +127,12 @@ export default function Pricing() {
                 </ul>
               </div>
               <div className="w-full">
-                <button className="w-full rounded-md bg-white px-10 py-2 font-bold text-secondary transition-colors duration-300 ease-in hover:bg-secondary/50 hover:text-white">
+                <button
+                  onClick={() => {
+                    signIn("google", { callbackUrl: "/?sub=starter" });
+                  }}
+                  className="w-full rounded-md bg-white px-10 py-2 font-bold text-secondary transition-colors duration-300 ease-in hover:bg-secondary/50 hover:text-white"
+                >
                   Get Started
                 </button>
               </div>
@@ -226,7 +232,12 @@ export default function Pricing() {
                 </ul>
               </div>
               <div className="w-full">
-                <button className="w-full rounded-md bg-white px-10 py-2 font-bold text-secondary transition-colors duration-300 ease-in hover:bg-secondary/50 hover:text-white">
+                <button
+                  onClick={() => {
+                    signIn("google", { callbackUrl: "/?sub=regular" });
+                  }}
+                  className="w-full rounded-md bg-white px-10 py-2 font-bold text-secondary transition-colors duration-300 ease-in hover:bg-secondary/50 hover:text-white"
+                >
                   Get Started
                 </button>
               </div>
@@ -311,7 +322,12 @@ export default function Pricing() {
                 </ul>
               </div>
               <div className="w-full">
-                <button className="w-full rounded-md bg-white px-10 py-2 font-bold text-secondary transition-colors duration-300 ease-in hover:bg-secondary/50 hover:text-white">
+                <button
+                  onClick={() => {
+                    signIn("google", { callbackUrl: "/?sub=pro" });
+                  }}
+                  className="w-full rounded-md bg-white px-10 py-2 font-bold text-secondary transition-colors duration-300 ease-in hover:bg-secondary/50 hover:text-white"
+                >
                   Get Started
                 </button>
               </div>
