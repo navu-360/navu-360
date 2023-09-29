@@ -77,7 +77,7 @@ export default function Setup() {
           status: "success",
           message:
             "You have successfully subscribed to " +
-            textToCapitalize(sub as string) +
+            textToCapitalize((sub as string) ?? "Starter") +
             " plan",
         });
         router.push("/dashboard");
