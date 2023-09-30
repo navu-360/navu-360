@@ -279,6 +279,9 @@ export const baseApiSlice = createApi({
         url: `billing/transcations?customerId=${customerId}`,
       }),
     }),
+    getUserPayStackDetails: builder.query({
+      query: (email) => `billing/plan?email=${email}`,
+    }),
   }),
 });
 
@@ -316,4 +319,5 @@ export const {
   useVerifyPaymentMutation,
   useGetCustomerSubscriptionMutation,
   useGetCustomerTranscationsQuery,
+  useGetUserPayStackDetailsQuery,
 } = baseApiSlice;

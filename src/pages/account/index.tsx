@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 
 import {
   useGetCustomerTranscationsQuery,
+  useGetUserPayStackDetailsQuery,
   useUpdateUserMutation,
 } from "services/baseApiSlice";
 
@@ -15,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { setUserId, setUserProfile } from "redux/auth/authSlice";
 import toaster from "utils/toaster";
 import { processDate } from "utils/date";
+import { getPlanNameFromAmount } from "pages/setup";
 
 const SecondaryNavigation = [
   { name: "Account" },
@@ -340,6 +342,9 @@ function Billing() {
     (state: { auth: { userProfile: User } }) =>
       state.auth.userProfile?.customerId,
   );
+  const email = useSelector(
+    (state: { auth: { userProfile: User } }) => state.auth.userProfile?.email,
+  );
   const { data, isFetching } = useGetCustomerTranscationsQuery(customerId, {
     skip: !customerId,
   });
@@ -350,15 +355,31 @@ function Billing() {
     return month;
   };
 
+  const { data: details } = useGetUserPayStackDetailsQuery(email, {
+    skip: !email,
+  });
+
   return (
     <section className="flex w-full gap-4 text-left">
       <div className="mb-4 w-1/3 max-w-[400px] rounded-lg bg-white p-4 shadow sm:p-6 xl:mb-0 xl:p-8">
-        <h2 className="text-2xl font-bold text-tertiary">Starter</h2>
-        <p className="mb-2 text-base font-normal text-gray-500">
-          Your current plan is <span>Starter</span>.
-        </p>
+        {details?.data ? (
+          <h2 className="text-2xl font-bold capitalize text-tertiary">
+            {getPlanNameFromAmount(details?.data)}
+          </h2>
+        ) : (
+          <div className="h-[40px] w-[90%] animate-pulse rounded bg-gray-400" />
+        )}
+        {details?.data && (
+          <p className="mb-2 text-base font-normal text-gray-500">
+            Your current plan is{" "}
+            <span>{getPlanNameFromAmount(details?.data)}</span>.
+          </p>
+        )}
         <div className="mt-6 flex flex-col space-y-4">
-          <button className="inline-flex w-full items-center justify-center rounded-lg bg-secondary px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-secondary/90 focus:ring-4 sm:w-auto">
+          <button
+            disabled={!details?.data}
+            className="inline-flex w-full items-center justify-center rounded-lg bg-secondary px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-secondary/90 focus:ring-4 sm:w-auto"
+          >
             <svg
               className="-ml-1 mr-2 h-5 w-5"
               fill="currentColor"
@@ -374,7 +395,10 @@ function Billing() {
             Change Plan
           </button>
 
-          <button className="inline-flex w-full items-center justify-center rounded-lg border border-tertiary px-5 py-2.5 text-center text-sm font-medium text-tertiary hover:bg-gray-100 focus:ring-4 sm:w-auto">
+          <button
+            disabled={!details?.data}
+            className="inline-flex w-full items-center justify-center rounded-lg border border-tertiary px-5 py-2.5 text-center text-sm font-medium text-tertiary hover:bg-gray-100 focus:ring-4 sm:w-auto"
+          >
             Cancel Subscription
           </button>
         </div>

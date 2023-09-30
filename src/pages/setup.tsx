@@ -36,6 +36,19 @@ const getAmountFromPlan = (planName: string) => {
   }
 };
 
+export const getPlanNameFromAmount = (amount: number) => {
+  switch (amount) {
+    case 150000:
+      return "starter";
+    case 4900000:
+      return "regular";
+    case 9900000:
+      return "pro";
+    default:
+      return "starter";
+  }
+};
+
 const getPlanIdFromName = (planName: string) => {
   switch (planName) {
     case "starter":
