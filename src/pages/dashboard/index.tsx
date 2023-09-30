@@ -200,7 +200,7 @@ function OneStat({
       <div className="">{svg}</div>
 
       <div className="flex items-center gap-2 text-center text-base">
-        <span className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-secondary p-2 text-base leading-normal">
+        <span className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white text-secondary p-2 text-base leading-normal">
           {num}
         </span>
         <span>{text}</span>

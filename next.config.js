@@ -24,7 +24,7 @@ const config = withPWA({
     domains: [
       "res.cloudinary.com",
       "lh3.googleusercontent.com",
-      "avatars.dicebear.com",
+      "avatars.navu360.com",
       "mdbcdn.b-cdn.net",
     ],
   },
