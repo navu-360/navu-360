@@ -28,6 +28,7 @@ declare module "next-auth" {
       orgId: string;
       hasBeenOnboarded: boolean;
       position: string;
+      customerId: string;
     } & DefaultSession["user"];
   }
 
@@ -41,6 +42,7 @@ declare module "next-auth" {
     orgId: string;
     hasBeenOnboarded: boolean;
     position: string;
+    customerId: string;
   }
 }
 
@@ -64,6 +66,7 @@ export const authOptions: NextAuthOptions = {
         session.user.hasBeenOnboarded = userObj?.hasBeenOnboarded ?? false;
         session.user.position = userObj?.position ?? "";
         session.user.orgId = userObj?.orgId ?? "";
+        session.user.customerId = userObj?.customerId ?? "";
       }
 
       return session;

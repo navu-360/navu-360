@@ -6,6 +6,7 @@ const baseQuery = fetchBaseQuery({
   baseUrl: env.NEXT_PUBLIC_API_BASE_URL_V1,
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
+    // @ts-ignore
     const { token } = getState().auth;
     if (token) {
       headers.set("authorization", `Bearer ${token}`);
@@ -266,6 +267,18 @@ export const baseApiSlice = createApi({
         body,
       }),
     }),
+    getCustomer: builder.query({
+      query: (body) => ({
+        url: `billing/customer`,
+        method: "POST",
+        body,
+      }),
+    }),
+    getCustomerTranscations: builder.query({
+      query: (customerId) => ({
+        url: `billing/transcations?customerId=${customerId}`,
+      }),
+    }),
   }),
 });
 
@@ -302,4 +315,5 @@ export const {
   useSendEnrolledEmailMutation,
   useVerifyPaymentMutation,
   useGetCustomerSubscriptionMutation,
+  useGetCustomerTranscationsQuery,
 } = baseApiSlice;

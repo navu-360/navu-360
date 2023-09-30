@@ -5,12 +5,16 @@ import DashboardWrapper from "components/layout/dashboardWrapper";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-import { useUpdateUserMutation } from "services/baseApiSlice";
+import {
+  useGetCustomerTranscationsQuery,
+  useUpdateUserMutation,
+} from "services/baseApiSlice";
 
 import { signOut } from "next-auth/react";
 import { useDispatch } from "react-redux";
 import { setUserId, setUserProfile } from "redux/auth/authSlice";
 import toaster from "utils/toaster";
+import { processDate } from "utils/date";
 
 const SecondaryNavigation = [
   { name: "Account" },
@@ -332,6 +336,20 @@ const AccountSettings: React.FC = () => {
 };
 
 function Billing() {
+  const customerId = useSelector(
+    (state: { auth: { userProfile: User } }) =>
+      state.auth.userProfile?.customerId,
+  );
+  const { data, isFetching } = useGetCustomerTranscationsQuery(customerId, {
+    skip: !customerId,
+  });
+
+  const getMonthNameFromDate = (date: string) => {
+    const d = new Date(date);
+    const month = d.toLocaleString("default", { month: "long" });
+    return month;
+  };
+
   return (
     <section className="flex w-full gap-4 text-left">
       <div className="mb-4 w-1/3 max-w-[400px] rounded-lg bg-white p-4 shadow sm:p-6 xl:mb-0 xl:p-8">
@@ -400,57 +418,57 @@ function Billing() {
                     </tr>
                   </thead>
                   <tbody className="bg-white ">
-                    <tr>
-                      <td className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 ">
-                        Payment from{" "}
-                        <span className="font-semibold">Bonnie Green</span>
-                      </td>
-                      <td className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 ">
-                        Apr 23 ,2021
-                      </td>
-                      <td className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 ">
-                        $2300
-                      </td>
-                      <td className="whitespace-nowrap p-4">
-                        <span className="mr-2 rounded-md bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 ">
-                          Completed
-                        </span>
-                      </td>
-                    </tr>
-                    <tr className="bg-gray-50 ">
-                      <td className="whitespace-nowrap rounded-l-lg p-4 text-sm font-normal text-gray-900 ">
-                        Payment refund to{" "}
-                        <span className="font-semibold">#00910</span>
-                      </td>
-                      <td className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 ">
-                        Apr 23 ,2021
-                      </td>
-                      <td className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 ">
-                        -$670
-                      </td>
-                      <td className="whitespace-nowrap rounded-r-lg p-4">
-                        <span className="mr-2 rounded-md bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 ">
-                          Completed
-                        </span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="whitespace-nowrap p-4 pb-0 text-sm font-normal text-gray-900 ">
-                        Payment failed from{" "}
-                        <span className="font-semibold">#087651</span>
-                      </td>
-                      <td className="whitespace-nowrap p-4 pb-0 text-sm font-normal text-gray-500 ">
-                        Apr 18 ,2021
-                      </td>
-                      <td className="whitespace-nowrap p-4 pb-0 text-sm font-semibold text-gray-900 ">
-                        $234
-                      </td>
-                      <td className="whitespace-nowrap p-4 pb-0">
-                        <span className="mr-2 rounded-md bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800 ">
-                          Cancelled
-                        </span>
-                      </td>
-                    </tr>
+                    {isFetching && (
+                      <tr>
+                        <td className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 ">
+                          Loading...
+                        </td>
+                      </tr>
+                    )}
+                    {data?.data?.length === 0 && (
+                      <tr>
+                        <td className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 ">
+                          No transactions yet
+                        </td>
+                      </tr>
+                    )}
+                    {data?.data?.map(
+                      (item: {
+                        id: string;
+                        amount: number;
+                        currency: string;
+                        paid_at: string;
+                        status: string;
+                      }) => (
+                        <tr key={item.id}>
+                          <td className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 ">
+                            Payment for{" "}
+                            <span className="font-semibold">
+                              {getMonthNameFromDate(item.paid_at)}
+                            </span>
+                          </td>
+                          <td className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 ">
+                            {processDate(item.paid_at)}
+                          </td>
+                          <td className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 ">
+                            {item.currency} {item.amount / 100}
+                          </td>
+                          <td className="whitespace-nowrap p-4">
+                            <span
+                              className={`mr-2 rounded-md  px-2.5 py-0.5 text-xs font-medium ${
+                                item.status === "success"
+                                  ? "bg-green-100 text-green-800"
+                                  : "bg-red-100 text-red-800"
+                              }`}
+                            >
+                              {item.status === "success"
+                                ? "Completed"
+                                : "Failed"}
+                            </span>
+                          </td>
+                        </tr>
+                      ),
+                    )}
                   </tbody>
                 </table>
               </div>
