@@ -22,7 +22,7 @@ export default function AdminNav({
   }, []);
 
   const userProfile = useSelector(
-    (state: { auth: { userProfile: User } }) => state.auth.userProfile
+    (state: { auth: { userProfile: User } }) => state.auth.userProfile,
   );
 
   if (!isReady) return null;
@@ -150,6 +150,29 @@ export default function AdminNav({
         </div>
 
         <div className="mt-4 text-white md:absolute md:bottom-8 md:mx-auto md:w-4/5 md:flex-col md:gap-4">
+          <OneItem
+            svg={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <circle cx="12" cy="10" r="3" />
+                <path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662" />
+              </svg>
+            }
+            text={"Account"}
+            isActive={router.pathname === "/account"}
+            to={"/account"}
+          />
           <OneItem
             svg={
               <svg
