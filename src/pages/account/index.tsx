@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import type { User } from "@prisma/client";
 import Header from "components/common/head";
 import DashboardWrapper from "components/layout/dashboardWrapper";
@@ -12,11 +13,11 @@ import { setUserId, setUserProfile } from "redux/auth/authSlice";
 import toaster from "utils/toaster";
 
 const SecondaryNavigation = [
-  { name: "Account", href: "#", current: true },
-  { name: "Notifications", href: "#", current: false },
-  { name: "Billing", href: "#", current: false },
-  { name: "Teams", href: "#", current: false },
-  { name: "Integrations", href: "#", current: false },
+  { name: "Account" },
+  { name: "Billing" },
+  { name: "Notifications" },
+  { name: "Teams" },
+  { name: "Integrations" },
 ];
 
 const AccountSettings: React.FC = () => {
@@ -83,16 +84,33 @@ const AccountSettings: React.FC = () => {
       });
   };
 
+  const getCurrentPageTitle = () => {
+    switch (activeTab) {
+      case "account":
+        return "Account Settings";
+      case "billing":
+        return "Billing";
+      case "notifications":
+        return "Notifications";
+      case "teams":
+        return "Teams";
+      case "integrations":
+        return "Integrations";
+      default:
+        return "";
+    }
+  };
+
   return (
     <>
-      <Header title={`Enrolled Talents - Navu360`} />
+      <Header title={`${getCurrentPageTitle()} - Navu360`} />
       <DashboardWrapper hideSearch>
-        <main className="ml-[90px] bg-white text-tertiary md:ml-[250px]">
+        <main className="ml-[90px] mr-4 bg-white text-tertiary md:ml-[250px]">
           <header className="border-b border-secondary/20">
             <nav className="flex overflow-x-auto py-4">
               <ul
                 role="list"
-                className="flex min-w-full flex-none gap-x-2 px-4 text-sm font-semibold leading-6 text-tertiary sm:px-6 lg:px-8"
+                className="flex min-w-full flex-none gap-x-2 px-4 text-sm font-semibold leading-6 text-tertiary first:pl-0 sm:px-6 lg:px-8"
               >
                 {SecondaryNavigation.map((item) => (
                   <li
@@ -293,8 +311,8 @@ const AccountSettings: React.FC = () => {
             </div>
           )}
           {activeTab === "billing" && (
-            <div className="mt-8 w-full text-center">
-              <p>Coming soon...</p>
+            <div className="mt-8 flex w-full text-center">
+              <Billing />
             </div>
           )}
           {activeTab === "teams" && (
@@ -312,5 +330,136 @@ const AccountSettings: React.FC = () => {
     </>
   );
 };
+
+function Billing() {
+  return (
+    <section className="flex w-full gap-4 text-left">
+      <div className="mb-4 w-1/3 max-w-[400px] rounded-lg bg-white p-4 shadow sm:p-6 xl:mb-0 xl:p-8">
+        <h2 className="text-2xl font-bold text-tertiary">Starter</h2>
+        <p className="mb-2 text-base font-normal text-gray-500">
+          Your current plan is <span>Starter</span>.
+        </p>
+        <div className="mt-6 flex flex-col space-y-4">
+          <button className="inline-flex w-full items-center justify-center rounded-lg bg-secondary px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-secondary/90 focus:ring-4 sm:w-auto">
+            <svg
+              className="-ml-1 mr-2 h-5 w-5"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+            Change Plan
+          </button>
+
+          <button className="inline-flex w-full items-center justify-center rounded-lg border border-tertiary px-5 py-2.5 text-center text-sm font-medium text-tertiary hover:bg-gray-100 focus:ring-4 sm:w-auto">
+            Cancel Subscription
+          </button>
+        </div>
+      </div>
+
+      <div className="w-2/3 rounded-lg bg-white p-4 shadow sm:p-6 xl:p-8">
+        <div className="mb-4 flex items-center justify-between">
+          <h3 className="text-xl font-bold text-tertiary">Payment History</h3>
+        </div>
+        <div className="flex flex-col">
+          <div className="overflow-x-auto rounded-lg">
+            <div className="inline-block min-w-full align-middle">
+              <div className="overflow-hidden shadow sm:rounded-lg">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th
+                        scope="col"
+                        className="p-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500 "
+                      >
+                        Transaction
+                      </th>
+                      <th
+                        scope="col"
+                        className="p-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500 "
+                      >
+                        Date
+                      </th>
+                      <th
+                        scope="col"
+                        className="p-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500 "
+                      >
+                        Amount
+                      </th>
+                      <th
+                        scope="col"
+                        className="p-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500 "
+                      >
+                        Status
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white ">
+                    <tr>
+                      <td className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 ">
+                        Payment from{" "}
+                        <span className="font-semibold">Bonnie Green</span>
+                      </td>
+                      <td className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 ">
+                        Apr 23 ,2021
+                      </td>
+                      <td className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 ">
+                        $2300
+                      </td>
+                      <td className="whitespace-nowrap p-4">
+                        <span className="mr-2 rounded-md bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 ">
+                          Completed
+                        </span>
+                      </td>
+                    </tr>
+                    <tr className="bg-gray-50 ">
+                      <td className="whitespace-nowrap rounded-l-lg p-4 text-sm font-normal text-gray-900 ">
+                        Payment refund to{" "}
+                        <span className="font-semibold">#00910</span>
+                      </td>
+                      <td className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 ">
+                        Apr 23 ,2021
+                      </td>
+                      <td className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 ">
+                        -$670
+                      </td>
+                      <td className="whitespace-nowrap rounded-r-lg p-4">
+                        <span className="mr-2 rounded-md bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 ">
+                          Completed
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="whitespace-nowrap p-4 pb-0 text-sm font-normal text-gray-900 ">
+                        Payment failed from{" "}
+                        <span className="font-semibold">#087651</span>
+                      </td>
+                      <td className="whitespace-nowrap p-4 pb-0 text-sm font-normal text-gray-500 ">
+                        Apr 18 ,2021
+                      </td>
+                      <td className="whitespace-nowrap p-4 pb-0 text-sm font-semibold text-gray-900 ">
+                        $234
+                      </td>
+                      <td className="whitespace-nowrap p-4 pb-0">
+                        <span className="mr-2 rounded-md bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800 ">
+                          Cancelled
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default AccountSettings;

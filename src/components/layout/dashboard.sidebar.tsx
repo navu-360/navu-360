@@ -149,7 +149,7 @@ export default function AdminNav({
           )}
         </div>
 
-        <div className="mt-4 text-white md:absolute md:bottom-8 md:mx-auto md:w-4/5 md:flex-col md:gap-4">
+        <div className="mt-4 text-white md:absolute md:bottom-8 md:mx-auto md:w-4/5 flex md:flex-col md:gap-4">
           <OneItem
             svg={
               <svg
