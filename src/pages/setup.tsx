@@ -26,23 +26,23 @@ export interface CompanyDetails {
 const getAmountFromPlan = (planName: string) => {
   switch (planName) {
     case "starter":
-      return 150000;
+      return Number(process.env.NEXT_PUBLIC_PLAN_STARTER_PRICE!);
     case "regular":
-      return 4900000;
+      return Number(process.env.NEXT_PUBLIC_PLAN_REGULAR_PRICE!);
     case "pro":
-      return 9900000;
+      return Number(process.env.NEXT_PUBLIC_PLAN_PRO_PRICE!);
     default:
-      return 150000;
+      return Number(process.env.NEXT_PUBLIC_PLAN_STARTER_PRICE!);
   }
 };
 
 export const getPlanNameFromAmount = (amount: number) => {
   switch (amount) {
-    case 150000:
+    case Number(process.env.NEXT_PUBLIC_PLAN_STARTER_PRICE!):
       return "starter";
-    case 4900000:
+    case Number(process.env.NEXT_PUBLIC_PLAN_REGULAR_PRICE!):
       return "regular";
-    case 9900000:
+    case Number(process.env.NEXT_PUBLIC_PLAN_PRO_PRICE!):
       return "pro";
     default:
       return "starter";
@@ -52,21 +52,13 @@ export const getPlanNameFromAmount = (amount: number) => {
 const getPlanIdFromName = (planName: string) => {
   switch (planName) {
     case "starter":
-      return process.env.VERCEL_ENV === "production"
-        ? "PLN_daeba4ltni1lvl7"
-        : "PLN_w126x3r5g4tf9v7";
+      return process.env.NEXT_PUBLIC_PLAN_STARTER;
     case "regular":
-      return process.env.VERCEL_ENV === "production"
-        ? "PLN_ag0geiut223774g"
-        : "PLN_pgsaeh34hkfbqza";
+      return process.env.NEXT_PUBLIC_PLAN_REGULAR;
     case "pro":
-      return process.env.VERCEL_ENV === "production"
-        ? "PLN_rb6lnl8tcr1506h"
-        : "PLN_wjdshg3on7p0ppx";
+      return process.env.NEXT_PUBLIC_PLAN_PRO;
     default:
-      return process.env.VERCEL_ENV === "production"
-        ? "PLN_daeba4ltni1lvl7"
-        : "PLN_w126x3r5g4tf9v7";
+      return process.env.NEXT_PUBLIC_PLAN_STARTER;
   }
 };
 
