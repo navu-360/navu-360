@@ -35,6 +35,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       include: {
         User: true,
       },
+      cacheStrategy: { ttl: 60 * 5 },
     });
 
     return res
