@@ -81,7 +81,7 @@ export default function Setup() {
         toaster({
           status: "success",
           message:
-            "You have successfully subscribed to " +
+            "Organization created and successfully subscribed to " +
             textToCapitalize((sub as string) ?? "Starter") +
             " plan",
         });
@@ -178,10 +178,6 @@ export default function Setup() {
       .unwrap()
       .then((payload) => {
         dispatch(setOrgId(payload?.data?.id));
-        toast({
-          status: "success",
-          message: `Organization ${companyDetails.companyName} created!`,
-        });
         subAction();
       })
       .catch((error) => {
