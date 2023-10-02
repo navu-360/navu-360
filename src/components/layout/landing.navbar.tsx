@@ -5,8 +5,6 @@ import React, { useEffect } from "react";
 
 import { signIn, useSession } from "next-auth/react";
 
-import { SmallSpinner } from "components/common/spinner";
-
 import { Play } from "next/font/google";
 
 const font = Play({
@@ -17,15 +15,13 @@ const font = Play({
 
 export default function NavBar() {
   const router = useRouter();
-  const { sub } = router.query;
-
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   useEffect(() => {
     if (session) {
       // when an admin is joining for the first time
       if (router.pathname === "/" && !session?.user?.hasBeenOnboarded) {
-        router.push("/setup" + (sub ? `?sub=${sub}` : ""));
+        router.push("/welcome/plan");
       } else if (
         router.pathname === "/setup" &&
         session?.user?.hasBeenOnboarded
@@ -66,24 +62,12 @@ export default function NavBar() {
           >
             Login
           </button>
-          <button
-            type="button"
-            onClick={() => {
-              signIn("google", { callbackUrl: "/", redirect: false }).catch(
-                (err) => {
-                  console.log(err);
-                },
-              );
-            }}
-            disabled={status === "loading"}
+          <Link
+            href="/welcome/plan"
             className="hidden h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white transition-all duration-300 ease-in hover:bg-secondary hover:px-10 focus:outline-none focus:ring-1 md:mr-0 md:flex"
           >
-            {status === "loading" ? (
-              <SmallSpinner />
-            ) : (
-              <span>{session?.user?.email ?? "Get started"}</span>
-            )}
-          </button>
+            Get started
+          </Link>
         </div>
       </div>
     </nav>

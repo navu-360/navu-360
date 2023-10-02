@@ -1,12 +1,9 @@
 import Image from "next/image";
 import React from "react";
 
-import { signIn, useSession } from "next-auth/react";
-import { SmallSpinner } from "components/common/spinner";
+import Link from "next/link";
 
 export default function Hero() {
-  const { status, data: session } = useSession();
-
   return (
     <>
       <section className="relative flex h-max min-h-[calc(100vh_-_65px)] w-full flex-col-reverse items-center justify-center gap-6 overflow-hidden bg-dark px-8 pb-8 text-white md:flex-row md:justify-start md:pb-32 xl:gap-12 2xl:gap-32 2xl:px-32">
@@ -19,19 +16,12 @@ export default function Hero() {
             innovative platform, <br className="hidden md:block" />{" "}
             revolutionizing employee training and development
           </p>
-          <button
-            onClick={() => {
-              signIn("google", { callbackUrl: "/" });
-            }}
-            disabled={status === "loading"}
+          <Link
+            href="/welcome/plan"
             className="h-max w-max rounded-[2rem] bg-secondary px-24 py-3 text-center text-lg font-bold text-white transition-all duration-300 ease-in hover:bg-secondary hover:px-28 focus:outline-none focus:ring-4 focus:ring-blue-300"
           >
-            {status === "loading" ? (
-              <SmallSpinner />
-            ) : (
-              <span>{session?.user?.email ?? "Get started"}</span>
-            )}
-          </button>
+            Get started
+          </Link>
         </div>
         <div className="max-w-1/2 relative z-10 mt-[50px] h-[20vw] min-h-[200px] w-[80vw] min-w-[300px] md:h-[30vw] md:min-w-[50vw]">
           <Image

@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import Image from "next/image";
 import React from "react";
-import { signIn } from "next-auth/react";
 
 import { motion } from "framer-motion";
 
 import { Play } from "next/font/google";
+import Link from "next/link";
 
 const font = Play({
   weight: ["700"],
@@ -84,17 +84,12 @@ export default function FeaturesNavu() {
                       {feature.title}
                     </h2>
                     <p className="mb-6 pb-2 lg:pb-0">{feature.description}</p>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        signIn("google", { callbackUrl: "/" });
-                      }}
+                    <Link
+                      href="/welcome/plan"
                       className="rounded-full border-2 border-neutral-50 px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-neutral-50 transition-all duration-300 ease-in hover:border-neutral-100 hover:bg-neutral-100 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 group-hover:px-10"
-                      data-te-ripple-init
-                      data-te-ripple-color="light"
                     >
                       Explore Now
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>

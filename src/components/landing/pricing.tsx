@@ -1,7 +1,6 @@
 import React from "react";
 
 import { Play } from "next/font/google";
-import { signIn } from "next-auth/react";
 
 const font = Play({
   weight: ["700"],
@@ -10,27 +9,43 @@ const font = Play({
 });
 
 import { motion } from "framer-motion";
+import { useRouter } from "next/router";
+import { signIn } from "next-auth/react";
 
-export default function Pricing() {
+export default function Pricing({ fromStart }: { fromStart?: boolean }) {
+  const router = useRouter();
+
+  const buttonAction = (plan: string) => {
+    if (fromStart) {
+      signIn("google", {
+        callbackUrl: `/setup?sub=${plan}`,
+      });
+    } else {
+      router.push(`/welcome/plan`);
+    }
+  };
+
   return (
     <section
       id="pricing"
       className="mx-auto my-16 w-full px-5 py-10 text-gray-600"
     >
       <div className="mx-auto max-w-7xl md:flex">
-        <div className="md:flex md:w-1/4 md:flex-col">
-          <div className="w-full flex-grow text-left md:pr-5">
-            <h2
-              className={`textGradientTitles mb-5 text-4xl font-bold ${font.className}`}
-            >
-              Pricing
-            </h2>
-            <p className="text-md mb-5 font-medium tracking-tight">
-              Unleash Talent, Unchain Productivity: Our Plans Make It Happen
-            </p>
+        {!fromStart && (
+          <div className="md:flex md:w-1/4 md:flex-col">
+            <div className="w-full flex-grow text-left md:pr-5">
+              <h2
+                className={`textGradientTitles mb-5 text-4xl font-bold ${font.className}`}
+              >
+                Pricing
+              </h2>
+              <p className="text-md mb-5 font-medium tracking-tight">
+                Unleash Talent, Unchain Productivity: Our Plans Make It Happen
+              </p>
+            </div>
           </div>
-        </div>
-        <div className="md:w-3/4">
+        )}
+        <div className={`${fromStart ? "w-full" : "md:w-3/4"}`}>
           <div className="mx-auto max-w-6xl md:flex">
             <motion.div
               initial={{ x: -30, scale: 1 }}
@@ -126,14 +141,12 @@ export default function Pricing() {
                   </li>
                 </ul>
               </div>
-              <div className="w-full">
+              <div className="flex w-full flex-col">
                 <button
-                  onClick={() => {
-                    signIn("google", { callbackUrl: "/?sub=starter" });
-                  }}
-                  className="w-full rounded-md bg-white px-10 py-2 font-bold text-secondary transition-colors duration-300 ease-in hover:bg-secondary/50 hover:text-white"
+                  onClick={() => buttonAction("starter")}
+                  className="mx-auto w-max rounded-md bg-white px-16 py-2 font-bold text-secondary transition-colors duration-300 ease-in hover:bg-secondary/50 hover:text-white"
                 >
-                  Get Started
+                  {fromStart ? "Continue" : "Get Started"}
                 </button>
               </div>
             </motion.div>
@@ -231,14 +244,12 @@ export default function Pricing() {
                   </li>
                 </ul>
               </div>
-              <div className="w-full">
+              <div className="flex w-full flex-col">
                 <button
-                  onClick={() => {
-                    signIn("google", { callbackUrl: "/?sub=regular" });
-                  }}
-                  className="w-full rounded-md bg-white px-10 py-2 font-bold text-secondary transition-colors duration-300 ease-in hover:bg-secondary/50 hover:text-white"
+                  onClick={() => buttonAction("regular")}
+                  className="mx-auto w-max rounded-md bg-white px-16 py-2 font-bold text-secondary transition-colors duration-300 ease-in hover:bg-secondary/50 hover:text-white"
                 >
-                  Get Started
+                  {fromStart ? "Continue" : "Get Started"}
                 </button>
               </div>
             </motion.div>
@@ -321,14 +332,12 @@ export default function Pricing() {
                   </li>
                 </ul>
               </div>
-              <div className="w-full">
+              <div className="flex w-full flex-col">
                 <button
-                  onClick={() => {
-                    signIn("google", { callbackUrl: "/?sub=pro" });
-                  }}
-                  className="w-full rounded-md bg-white px-10 py-2 font-bold text-secondary transition-colors duration-300 ease-in hover:bg-secondary/50 hover:text-white"
+                  onClick={() => buttonAction("pro")}
+                  className="mx-auto w-max rounded-md bg-white px-16 py-2 font-bold text-secondary transition-colors duration-300 ease-in hover:bg-secondary/50 hover:text-white"
                 >
-                  Get Started
+                  {fromStart ? "Continue" : "Get Started"}
                 </button>
               </div>
             </motion.div>
