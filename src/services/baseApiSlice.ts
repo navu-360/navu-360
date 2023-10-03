@@ -29,14 +29,6 @@ export const baseApiSlice = createApi({
       }),
     }),
     // USER AUTH ENDPOINTS
-    // create user
-    createUser: builder.mutation({
-      query: (body) => ({
-        url: `users`,
-        method: "POST",
-        body,
-      }),
-    }),
     // update user
     updateUser: builder.mutation({
       query: (body) => ({
@@ -56,27 +48,9 @@ export const baseApiSlice = createApi({
       }),
     }),
 
-    // fetch all users
-    fetchUsers: builder.query({
-      query: (org) => `users?orgId=${org}`,
-      keepUnusedDataFor: 60 * 10, // 10 minutes,
-      providesTags: ["Dashboard"],
-    }),
-    getUserById: builder.query({
-      query: (id) => `users/${id}`,
-      keepUnusedDataFor: 60 * 10, // 10 minutes,
-    }),
     getAllTalents: builder.query({
-      query: (orgId) => `users/orgTalents?orgId=${orgId}`,
-      keepUnusedDataFor: 60 * 10, // 10 minutes,
-    }),
-    // delete user
-    deleteUser: builder.mutation({
-      query: (id) => ({
-        url: `users/${id}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: ["Dashboard"],
+      query: () => `users/orgTalents`,
+      // keepUnusedDataFor: 60 * 10, // 10 minutes,
     }),
 
     // Organization endpoints
@@ -89,8 +63,8 @@ export const baseApiSlice = createApi({
       }),
     }),
     getOneOrganization: builder.query({
-      query: (userId) => `organization/${userId}`,
-      keepUnusedDataFor: 60 * 60 * 1, // 1 hour,
+      query: () => `organization/me`,
+      // keepUnusedDataFor: 60 * 60 * 1, // 1 hour,
     }),
     getOrganizationById: builder.query({
       query: (id) => `organization/id/${id}`,
@@ -165,6 +139,13 @@ export const baseApiSlice = createApi({
         body,
       }),
       invalidatesTags: ["Dashboard"],
+    }),
+    acceptInvite: builder.mutation({
+      query: (body) => ({
+        url: `invite/accept`,
+        method: "POST",
+        body,
+      }),
     }),
     // get sent invites for a program
     getSentInvites: builder.query({
@@ -287,11 +268,8 @@ export const baseApiSlice = createApi({
 
 export const {
   useJoinWaitlistMutation,
-  useCreateUserMutation,
   useUpdateUserMutation,
   useUploadImageMutation,
-  useFetchUsersQuery,
-  useDeleteUserMutation,
   useCreateOrganizationMutation,
   useCreateProgramMutation,
   useGetOrganizationProgramsQuery,
@@ -305,7 +283,6 @@ export const {
   useGetSentInvitesQuery,
   useGetProgramTalentsQuery,
   useGetOrganizationByIdQuery,
-  useGetUserByIdQuery,
   useDeleteProgramMutation,
   useEditProgramMutation,
   useEnrollTalentMutation,
@@ -320,4 +297,5 @@ export const {
   useGetCustomerSubscriptionMutation,
   useGetCustomerTranscationsQuery,
   useGetUserPayStackDetailsQuery,
+  useAcceptInviteMutation
 } = baseApiSlice;

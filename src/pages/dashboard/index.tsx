@@ -13,21 +13,21 @@ import { useGetOneOrganizationQuery } from "services/baseApiSlice";
 
 export default function Dashboard() {
   const userProfile = useSelector(
-    (state: { auth: { userProfile: User } }) => state.auth.userProfile
+    (state: { auth: { userProfile: User } }) => state.auth.userProfile,
   );
 
   const orgId = useSelector(
-    (state: { auth: { orgId: string } }) => state.auth.orgId
+    (state: { auth: { orgId: string } }) => state.auth.orgId,
   );
 
   const organizationData = useSelector(
     (state: { auth: { organizationData: Organization } }) =>
-      state.auth.organizationData
+      state.auth.organizationData,
   );
 
   // get organization created by this user then set the orgId in state
   const userId = userProfile?.id;
-  const { data } = useGetOneOrganizationQuery(userId, {
+  const { currentData: data } = useGetOneOrganizationQuery(undefined, {
     skip: !userId || !!orgId,
   });
 
@@ -200,7 +200,7 @@ function OneStat({
       <div className="">{svg}</div>
 
       <div className="flex items-center gap-2 text-center text-base">
-        <span className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white text-secondary p-2 text-base leading-normal">
+        <span className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white p-2 text-base leading-normal text-secondary">
           {num}
         </span>
         <span>{text}</span>

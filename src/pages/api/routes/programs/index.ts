@@ -31,11 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             name,
             content,
             createdBy: session?.user?.id,
-            organization: {
-              connect: {
-                id: organizationId,
-              },
-            },
+            organizationId: organizationId,
           },
         });
 
@@ -67,7 +63,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           orderBy: {
             createdAt: "desc",
           },
-          cacheStrategy: { ttl: 60 * 5 },
+          cacheStrategy: {
+            ttl: 30,
+            swr: 60,
+          },
         });
 
         return res

@@ -4,7 +4,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
-  useFetchUsersQuery,
+  useGetAllTalentsQuery,
   useGetOrganizationEnrollmentsQuery,
   useGetTalentEnrollmentsQuery,
 } from "services/baseApiSlice";
@@ -34,7 +34,7 @@ export default function AllTalents({
   onboardingPrograms: OnboardingProgram[];
 }) {
   const orgId = useSelector(
-    (state: { auth: { orgId: string } }) => state.auth.orgId
+    (state: { auth: { orgId: string } }) => state.auth.orgId,
   );
 
   // get enrolled talents -  ENROLLED
@@ -43,12 +43,12 @@ export default function AllTalents({
     organizationId,
     {
       skip: !organizationId,
-    }
+    },
   );
 
   // get all talents in the organization
   const org = orgId;
-  const { data: allUsers } = useFetchUsersQuery(org, {
+  const { data: allUsers } = useGetAllTalentsQuery(org, {
     skip: !org,
   });
 
@@ -62,8 +62,8 @@ export default function AllTalents({
         (talent: User) =>
           !data?.data?.find(
             (enrolledTalent: OnboardingProgramTalents) =>
-              enrolledTalent.userId === talent.id
-          )
+              enrolledTalent.userId === talent.id,
+          ),
       );
       setTalentsWithoutPrograms(talentsWithoutPrograms ?? []);
     }
@@ -76,7 +76,7 @@ export default function AllTalents({
     id,
     {
       skip: !id,
-    }
+    },
   );
 
   useEffect(() => {
@@ -91,8 +91,8 @@ export default function AllTalents({
     setTotalOnboarded(
       data?.data?.filter(
         (talent: OnboardingProgramTalents) =>
-          talent.enrollmentStatus === "completed"
-      ).length || 0
+          talent.enrollmentStatus === "completed",
+      ).length || 0,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.data]);
@@ -112,15 +112,15 @@ export default function AllTalents({
             (invite: invites) =>
               !data?.data?.find(
                 (enrolledTalent: { User: { email: string } }) =>
-                  enrolledTalent?.User?.email === invite?.email
-              )
-          ) ?? []
+                  enrolledTalent?.User?.email === invite?.email,
+              ),
+          ) ?? [],
         )
       : setShowingTalents(talentsWithoutPrograms ?? []);
   }, [data?.data, selectedType, sentInvites?.data, talentsWithoutPrograms]);
 
   const [showTalentEnrolModal, setShowTalentEnrolModal] = useState<string[]>(
-    []
+    [],
   );
 
   if (isFetching || !orgId)
@@ -281,7 +281,7 @@ export default function AllTalents({
                           <td className="relative flex flex-col gap-3 whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left text-xs md:flex-row md:items-center md:gap-0">
                             <img
                               src={generateAvatar(
-                                talent?.User?.id ?? talent?.id
+                                talent?.User?.id ?? talent?.id,
                               )}
                               className="h-12 w-12 rounded-full border bg-white"
                               alt={talent?.User?.name ?? talent?.name}
@@ -347,7 +347,7 @@ export default function AllTalents({
                             {processDate(talent?.createdAt)}
                           </td>
                         </tr>
-                      )
+                      ),
                     )}
                 </tbody>
               </table>
@@ -391,11 +391,11 @@ export function CompletionStatus({
     // check all enrollment objects field enrollmentStatus for values pending, completed then return the percentage completed
     const completed = data?.data?.filter(
       (enrollment: OnboardingProgramTalents) =>
-        enrollment?.enrollmentStatus === "completed"
+        enrollment?.enrollmentStatus === "completed",
     );
     const pending = data?.data?.filter(
       (enrollment: OnboardingProgramTalents) =>
-        enrollment?.enrollmentStatus === "pending"
+        enrollment?.enrollmentStatus === "pending",
     );
     const total = completed?.length + pending?.length;
     const percentage = (completed?.length / total) * 100;
@@ -446,7 +446,7 @@ export function CompletionStatus({
           <div className="relative w-full">
             <div
               className={`flex h-3 overflow-hidden rounded-none border-[1px] border-amber-600 bg-transparent text-xs ${getSliderColorBorder(
-                checkCompletionStatus()
+                checkCompletionStatus(),
               )}`}
             >
               <motion.div
@@ -455,7 +455,7 @@ export function CompletionStatus({
                 whileInView={{ width: `${checkCompletionStatus()}%` }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
                 className={`flex h-3 flex-col justify-center whitespace-nowrap rounded-none text-center text-white ${getSliderColor(
-                  checkCompletionStatus()
+                  checkCompletionStatus(),
                 )}`}
               ></motion.div>
             </div>

@@ -8,7 +8,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       orderBy: {
         createdAt: "desc",
       },
-      cacheStrategy: { ttl: 60 },
+      cacheStrategy: {
+        ttl: 30,
+        swr: 60,
+      },
     });
 
     return res

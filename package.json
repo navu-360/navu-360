@@ -5,7 +5,7 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "postinstall": "prisma generate --data-proxy",
+    "postinstall": "prisma generate --no-engine",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,scss,json,md}\"",
     "preinstall": "npx only-allow pnpm",
     "typecheck": "tsc --noEmit",

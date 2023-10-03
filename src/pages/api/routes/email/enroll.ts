@@ -5,12 +5,13 @@ const { join } = require("path");
 import sgMail from "@sendgrid/mail";
 
 import { env } from "env/server.mjs";
+import { prisma } from "auth/db";
 
 sgMail.setApiKey(env.SENDGRID_API_KEY);
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { programName, talentName, organizationName, talentEmail } = req.body;
+    const { programName, talentName, organizationName, talentId } = req.body;
 
     // validate the data coming in
     if (!organizationName || !programName) {
@@ -26,9 +27,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const link = `${originBaseUrl}`;
 
+    // get talent by talentId
+    const talent = await prisma.user.findFirst({
+      where: {
+        id: talentId,
+      },
+    });
+
+    if (!talent) {
+      return res.status(400).json({ message: `Talent not found.` });
+    }
 
     const msg = {
-      to: talentEmail,
+      to: talent?.email,
       from: {
         email: env.EMAIL_FROM,
         name: `Navu360`,
@@ -48,7 +59,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     await sgMail.send(msg);
 
     return res.json({
-      message: `Email sent to ${talentEmail}`,
+      message: `Email sent to ${talent?.email}`,
     });
   } catch (error) {
     // @ts-ignore

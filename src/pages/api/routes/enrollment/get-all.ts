@@ -10,7 +10,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         id: true,
         programId: true,
       },
-      cacheStrategy: { ttl: 60 * 5 },
+      cacheStrategy: {
+        ttl: 30,
+        swr: 60,
+      },
     });
 
     return res

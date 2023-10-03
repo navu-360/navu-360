@@ -34,7 +34,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // email link: staging.navu360.com/onboarding/organizationId/onboardingProgramId
     const originBaseUrl = req.headers.origin;
 
-    const link = `${originBaseUrl}/invite/${organizationId}`;
+    const baseLink = `${originBaseUrl}/invite`;
 
     const createInviteRecord = async (talentEmail: string) => {
       const body = {
@@ -46,13 +46,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         data: body,
       });
 
-      return invite;
+      const link = `${baseLink}/${invite.id}`;
+
+      return link
     };
 
     talentEmails.forEach(async (talentEmail: string) => {
       if (talentEmail === "") {
         console.log("empty email");
       } else {
+        const inviteLink = await createInviteRecord(talentEmail);
         const msg = {
           to: talentEmail,
           from: {
@@ -66,13 +69,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           html: stringTemplate
             .replace(/{{adminName}}/g, adminName)
             .replace(/{{organizationName}}/g, organizationName)
-            .replace(/{{link}}/g, link)
+            .replace(/{{link}}/g, inviteLink)
             .replace(/{{todayYear}}/g, new Date().getFullYear().toString()),
         };
 
         // @ts-ignore
         await sgMail.send(msg);
-        await createInviteRecord(talentEmail);
       }
     });
 

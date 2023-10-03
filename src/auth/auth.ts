@@ -2,7 +2,7 @@ import type { GetServerSidePropsContext } from "next";
 import {
   getServerSession,
   type NextAuthOptions,
-  type DefaultSession,
+  type DefaultSession
 } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
@@ -22,10 +22,8 @@ declare module "next-auth" {
       id: string;
       name: string;
       email: string;
-      emailVerified: string;
       image: string;
       role: string;
-      orgId: string;
       hasBeenOnboarded: boolean;
       position: string;
       customerId: string;
@@ -36,10 +34,8 @@ declare module "next-auth" {
     id: string;
     name: string;
     email: string;
-    emailVerified: string;
     image: string;
     role: string;
-    orgId: string;
     hasBeenOnboarded: boolean;
     position: string;
     customerId: string;
@@ -65,7 +61,6 @@ export const authOptions: NextAuthOptions = {
         session.user.role = userObj?.role ?? "admin";
         session.user.hasBeenOnboarded = userObj?.hasBeenOnboarded ?? false;
         session.user.position = userObj?.position ?? "";
-        session.user.orgId = userObj?.orgId ?? "";
         session.user.customerId = userObj?.customerId ?? "";
       }
 
@@ -76,7 +71,7 @@ export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
+      clientSecret: env.GOOGLE_CLIENT_SECRET
     }),
   ],
   debug: process.env.NODE_ENV === "development",

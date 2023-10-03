@@ -20,14 +20,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     case "GET":
       try {
         // fetch organization created by user
-        const { userId } = req.query as { userId: string };
+        const userId = session?.user?.id as string;
 
         const organization = await prisma.organization.findFirst({
           where: {
             userId,
           },
         });
-
         return res.status(200).json({ organization });
       } catch (error) {
         return res

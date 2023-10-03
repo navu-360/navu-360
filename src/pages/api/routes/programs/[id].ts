@@ -13,9 +13,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       });
 
+      let user = null;
+
+      // from field program.createdBy , get user
+      if (program?.createdBy) {
+        user = await prisma.user.findUnique({
+          where: {
+            id: program.createdBy,
+          },
+        });
+      }
+
+
       return res
         .status(200)
-        .json({ message: `Program fetched.`, data: program });
+        .json({ message: `Program fetched.`, data: { ...program, creator: user?.name } });
     } catch (error) {
       return res
         .status(500)

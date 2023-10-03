@@ -12,6 +12,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
+  // get all invites for an organization
+
   try {
     const orgId = req.query.orgId as string;
 
