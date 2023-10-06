@@ -234,10 +234,12 @@ export const baseApiSlice = createApi({
         body,
       }),
     }),
+
     verifyPayment: builder.mutation({
-      query: (customerId) => ({
-        url: `billing/verify?customerId=${customerId}`,
-        method: "GET",
+      query: (body) => ({
+        url: `billing/verify`,
+        method: "POST",
+        body,
       }),
     }),
     getCustomerSubscription: builder.query({
@@ -261,6 +263,9 @@ export const baseApiSlice = createApi({
     }),
     getUserPayStackDetails: builder.query({
       query: (email) => `billing/plan?email=${email}`,
+    }),
+    changePlan: builder.mutation({
+      query: (planSub) => `billing/change?planSub=${planSub}`,
     }),
   }),
 });
@@ -296,5 +301,6 @@ export const {
   useGetCustomerTranscationsQuery,
   useGetUserPayStackDetailsQuery,
   useAcceptInviteMutation,
-  useGetCustomerQuery
+  useGetCustomerQuery,
+  useChangePlanMutation,
 } = baseApiSlice;

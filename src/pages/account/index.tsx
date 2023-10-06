@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 
 import {
+  useChangePlanMutation,
   useGetCustomerTranscationsQuery,
   useGetUserPayStackDetailsQuery,
   useUpdateUserMutation,
@@ -18,7 +19,7 @@ import { useDispatch } from "react-redux";
 import { setUserId, setUserProfile } from "redux/auth/authSlice";
 import toaster from "utils/toaster";
 import { processDate } from "utils/date";
-import { getPlanNameFromAmount } from "pages/setup";
+import { getPlanIdFromName, getPlanNameFromAmount } from "pages/setup";
 import Pricing from "components/landing/pricing";
 
 const SecondaryNavigation = [
@@ -345,7 +346,9 @@ const AccountSettings: React.FC = () => {
         {showChangePlan && (
           <ChangePlan
             currentPlanName={currentPlanName}
-            close={() => setShowChangePlan(false)}
+            close={() => {
+              setShowChangePlan(false);
+            }}
           />
         )}
       </DashboardWrapper>
@@ -540,6 +543,27 @@ function ChangePlan({
   close: () => void;
   currentPlanName: string;
 }) {
+  const [changePlanAction, { isLoading }] = useChangePlanMutation();
+
+  const changePlan = async (plan: string) => {
+    const planSub = getPlanIdFromName(plan.toLowerCase());
+    await changePlanAction(planSub)
+      .unwrap()
+      .then(() => {
+        toaster({
+          status: "success",
+          message: "You have successfully changed your plan",
+        });
+        close();
+      })
+      .catch((error) => {
+        toaster({
+          status: "error",
+          message: error.data.message,
+        });
+      });
+  };
+
   return (
     <div className="fixed inset-0 z-[120] flex h-full w-full items-center justify-center  bg-black/50 backdrop-blur-sm">
       <motion.div
@@ -563,7 +587,12 @@ function ChangePlan({
           />
         </svg>
         <section className="flex h-full w-full flex-col items-center">
-          <Pricing fromStart currentPlan={currentPlanName} />
+          <Pricing
+            fromStart
+            currentPlan={currentPlanName}
+            changeTo={(plan: string) => changePlan(plan)}
+            isLoading={isLoading}
+          />
         </section>
       </motion.div>
     </div>

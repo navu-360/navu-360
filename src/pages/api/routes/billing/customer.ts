@@ -29,6 +29,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             if (responseData.status) {
                 const transactionData = responseData.data;
 
+                console.log(transactionData);
+
                 res.status(200).json({ message: 'Customer details fetched', data: transactionData });
             } else {
                 res.status(400).json({ message: 'Could not get customer details' });

@@ -50,7 +50,7 @@ export const getPlanNameFromAmount = (amount: number) => {
   }
 };
 
-const getPlanIdFromName = (planName: string) => {
+export const getPlanIdFromName = (planName: string) => {
   switch (planName) {
     case "starter":
       return process.env.NEXT_PUBLIC_PLAN_STARTER;
@@ -102,12 +102,14 @@ export default function Setup() {
       });
   };
 
-  //billing
+  // billing
   const config: PaystackProps = {
     email: session?.user.email as string,
     amount: getAmountFromPlan(sub as string),
     publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY as string,
     plan: getPlanIdFromName(sub as string),
+    firstname: session?.user.name?.split(" ")[0],
+    lastname: session?.user.name?.split(" ")[1],
   };
 
   const textToCapitalize = (text: string) => {

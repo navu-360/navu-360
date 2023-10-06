@@ -15,9 +15,13 @@ import { signIn, useSession } from "next-auth/react";
 export default function Pricing({
   fromStart,
   currentPlan,
+  changeTo,
+  isLoading,
 }: {
   fromStart?: boolean;
   currentPlan?: string;
+  changeTo?: (plan: string) => void;
+  isLoading?: boolean;
 }) {
   const router = useRouter();
 
@@ -25,6 +29,7 @@ export default function Pricing({
 
   const buttonAction = (plan: string) => {
     if (currentPlan) {
+      changeTo && changeTo(plan);
     } else {
       if (fromStart) {
         if (session?.user) {
@@ -45,10 +50,18 @@ export default function Pricing({
   };
 
   const upgradeOrDowngradeText = (toPlanName: string) => {
-    if (currentPlan === "starter") {
-      return "Upgrade to " + textToCapitalize(toPlanName);
-    } else {
-      return "Downgrade to " + textToCapitalize(toPlanName);
+    switch (toPlanName) {
+      case "starter":
+        return `Downgrade to ${textToCapitalize(toPlanName)}`;
+      case "regular":
+        return currentPlan === "pro"
+          ? `Downgrade to ${textToCapitalize(toPlanName)}`
+          : `Upgrade to ${textToCapitalize(toPlanName)}`;
+      case "pro":
+        return `Upgrade to ${textToCapitalize(toPlanName)}`;
+
+      default:
+        return `Upgrade to ${textToCapitalize(toPlanName)}`;
     }
   };
 
@@ -174,6 +187,7 @@ export default function Pricing({
                 ) : (
                   <button
                     onClick={() => buttonAction("starter")}
+                    disabled={isLoading}
                     className="mx-auto w-max rounded-md bg-white px-12 py-2 text-sm font-bold text-secondary transition-colors duration-300 ease-in hover:bg-secondary/50 hover:text-white"
                   >
                     {fromStart
@@ -285,6 +299,7 @@ export default function Pricing({
                 ) : (
                   <button
                     onClick={() => buttonAction("regular")}
+                    disabled={isLoading}
                     className="mx-auto w-max rounded-md bg-white px-12 py-2 text-sm font-bold text-secondary transition-colors duration-300 ease-in hover:bg-secondary/50 hover:text-white"
                   >
                     {fromStart
@@ -380,6 +395,7 @@ export default function Pricing({
                   <span className="font-semibold text-white">Current Plan</span>
                 ) : (
                   <button
+                    disabled={isLoading}
                     onClick={() => buttonAction("pro")}
                     className="mx-auto w-max rounded-md bg-white px-12 py-2 text-sm font-bold text-secondary transition-colors duration-300 ease-in hover:bg-secondary/50 hover:text-white"
                   >
