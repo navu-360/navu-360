@@ -10,8 +10,18 @@ import { env } from "env/server.mjs";
 
 sgMail.setApiKey(env.SENDGRID_API_KEY);
 
+import { getServerSession } from "next-auth";
+import { authOptions } from 'auth/auth';
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+
+    const session = await getServerSession(req, res, authOptions);
+    if (!session) {
+      res.status(401).json({ message: `Unauthorized.` });
+      return;
+    }
+
     const { adminName, talentEmails, organizationId } = req.body;
 
     // get organization name from organizationId

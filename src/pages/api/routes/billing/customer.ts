@@ -1,9 +1,23 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import https from 'https';
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-    const { customerId } = req.query;
+import { getServerSession } from "next-auth";
+import { authOptions } from 'auth/auth';
 
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+
+    const session = await getServerSession(req, res, authOptions);
+    if (!session) {
+        res.status(401).json({ message: `Unauthorized.` });
+        return;
+    }
+
+    const customerId = session.user.customerId;
+
+    if (!customerId) {
+        res.status(400).json({ message: `Failed. You do not have subscriptions` });
+        return;
+    }
 
     const options = {
         hostname: 'api.paystack.co',

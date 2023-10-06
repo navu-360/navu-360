@@ -2,10 +2,19 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import { prisma } from "../../../../../auth/db";
 
+import { getServerSession } from "next-auth";
+import { authOptions } from 'auth/auth';
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   /*
     Get organization created by user
     */
+
+  const session = await getServerSession(req, res, authOptions);
+  if (!session) {
+    res.status(401).json({ message: `Unauthorized.` });
+    return;
+  }
 
   switch (req.method) {
     case "GET":

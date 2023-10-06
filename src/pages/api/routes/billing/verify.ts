@@ -1,12 +1,22 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import https from 'https';
 
-
 import { prisma } from "../../../../auth/db";
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-    const { reference, email } = req.body;
+import { getServerSession } from "next-auth";
+import { authOptions } from 'auth/auth';
 
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+
+    const session = await getServerSession(req, res, authOptions);
+    if (!session) {
+        res.status(401).json({ message: `Unauthorized.` });
+        return;
+    }
+
+    const email = session.user.email;
+
+    const { reference } = req.body;
 
     const options = {
         hostname: 'api.paystack.co',

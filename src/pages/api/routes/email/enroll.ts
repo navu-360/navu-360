@@ -7,10 +7,21 @@ import sgMail from "@sendgrid/mail";
 import { env } from "env/server.mjs";
 import { prisma } from "auth/db";
 
+
+import { getServerSession } from "next-auth";
+import { authOptions } from 'auth/auth';
+
 sgMail.setApiKey(env.SENDGRID_API_KEY);
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+
+    const session = await getServerSession(req, res, authOptions);
+    if (!session) {
+      res.status(401).json({ message: `Unauthorized.` });
+      return;
+    }
+
     const { programName, talentName, organizationName, talentId } = req.body;
 
     // validate the data coming in
