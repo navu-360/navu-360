@@ -10,8 +10,18 @@ import { env } from "env/server.mjs";
 
 sgMail.setApiKey(env.SENDGRID_API_KEY);
 
+import { getServerSession } from "next-auth";
+import { authOptions } from 'auth/auth';
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+
+    const session = await getServerSession(req, res, authOptions);
+    if (!session) {
+      res.status(401).json({ message: `Unauthorized.` });
+      return;
+    }
+
     const { adminName, talentEmails, organizationId } = req.body;
 
     // get organization name from organizationId
@@ -34,7 +44,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // email link: staging.navu360.com/onboarding/organizationId/onboardingProgramId
     const originBaseUrl = req.headers.origin;
 
-    const link = `${originBaseUrl}/invite/${organizationId}`;
+    const baseLink = `${originBaseUrl}/invite`;
 
     const createInviteRecord = async (talentEmail: string) => {
       const body = {
@@ -46,13 +56,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         data: body,
       });
 
-      return invite;
+      const link = `${baseLink}/${invite.id}`;
+
+      return link
     };
 
     talentEmails.forEach(async (talentEmail: string) => {
       if (talentEmail === "") {
         console.log("empty email");
       } else {
+        const inviteLink = await createInviteRecord(talentEmail);
         const msg = {
           to: talentEmail,
           from: {
@@ -66,13 +79,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           html: stringTemplate
             .replace(/{{adminName}}/g, adminName)
             .replace(/{{organizationName}}/g, organizationName)
-            .replace(/{{link}}/g, link)
+            .replace(/{{link}}/g, inviteLink)
             .replace(/{{todayYear}}/g, new Date().getFullYear().toString()),
         };
 
         // @ts-ignore
         await sgMail.send(msg);
-        await createInviteRecord(talentEmail);
       }
     });
 

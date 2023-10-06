@@ -10,10 +10,7 @@ import DashboardWrapper from "components/layout/dashboardWrapper";
 import React, { useEffect, useState } from "react";
 import type { OnboardingProgram } from "types";
 import { generateAvatar } from "utils/avatar";
-import {
-  useGetProgramEnrollmentsQuery,
-  useGetUserByIdQuery,
-} from "services/baseApiSlice";
+import { useGetProgramEnrollmentsQuery } from "services/baseApiSlice";
 import type { OnboardingProgramTalents, User } from "@prisma/client";
 import { SmallSpinner } from "components/common/spinner";
 
@@ -31,7 +28,13 @@ export interface IEnrollmentWithTalent extends OnboardingProgramTalents {
   User: User;
 }
 
-export default function Program({ data }: { data: OnboardingProgram }) {
+export default function Program({
+  data,
+}: {
+  data: OnboardingProgram & {
+    creator: string;
+  };
+}) {
   const [content, setContent] = useState<OutputData | null>(null);
 
   const router = useRouter();
@@ -51,13 +54,6 @@ export default function Program({ data }: { data: OnboardingProgram }) {
       skip: !programId,
     });
 
-  const id = data?.createdBy;
-
-  // get user
-  const { data: userInfo } = useGetUserByIdQuery(id, {
-    skip: !id,
-  });
-
   const [showDeleteProgramModal, setShowDeleteProgramModal] = useState<
     boolean | string
   >(false);
@@ -66,29 +62,21 @@ export default function Program({ data }: { data: OnboardingProgram }) {
     <>
       <Header title={`${data?.name} - Navu360`} />
       <DashboardWrapper hideSearch>
-        <div className="relative md:ml-[250px] ml-[90px] mt-[40px] flex h-full flex-col-reverse items-start justify-start gap-8 pt-16 lg:flex-row">
+        <div className="relative ml-[90px] mt-[40px] flex h-full flex-col-reverse items-start justify-start gap-8 pt-16 md:ml-[250px] lg:flex-row">
           <GoBack />
-          <div className="flex lg:w-[calc(100%_-_400px)] w-[95%] flex-col gap-3">
+          <div className="flex w-[95%] flex-col gap-3 lg:w-[calc(100%_-_400px)]">
             <h1 className="w-full text-left text-2xl font-bold text-tertiary">
               {data?.name}
             </h1>
             {content && <MyEditor isReadOnly initialData={content} />}
           </div>
-          <div className="lg:fixed right-8 mr-0 lg:mt-12 flex lg:h-[80vh] lg:w-[350px] w-[95%] flex-col overflow-y-auto text-tertiary">
+          <div className="right-8 mr-0 flex w-[95%] flex-col overflow-y-auto text-tertiary lg:fixed lg:mt-12 lg:h-[80vh] lg:w-[350px]">
             <div className="flex flex-col gap-4 rounded border-[1px] border-gray-400 p-4 text-tertiary">
               {/* created by */}
               <div className="flex items-center gap-2 px-4">
                 <p className="text-xs font-medium">Created By</p>
                 <div className="flex items-center gap-4">
-                  {!userInfo ? (
-                    <div className="flex w-[50px] scale-75 justify-center">
-                      <SmallSpinner />
-                    </div>
-                  ) : (
-                    <p className="text-[14px] font-semibold">
-                      {userInfo?.data?.name}
-                    </p>
-                  )}
+                  <p className="text-[14px] font-semibold">{data?.creator}</p>
                 </div>
               </div>
               {/* created on */}
@@ -265,7 +253,7 @@ export default function Program({ data }: { data: OnboardingProgram }) {
                         </p>
                       </div>
                     </motion.div>
-                  )
+                  ),
                 )}
                 {fetchingEnrolled && (
                   <div className="mt-3 flex w-full items-center justify-center">
@@ -299,7 +287,7 @@ export const getStaticPaths = async () => {
       `${process.env.NEXT_PUBLIC_API_BASE_URL_V1}programs/all`,
       {
         headers: { "Accept-Encoding": "gzip,deflate,compress" },
-      }
+      },
     );
     const paths = res.data.data.map((program: OnboardingProgram) => ({
       params: { id: program.id.toString() },
@@ -321,7 +309,7 @@ export const getStaticProps = async ({
       `${process.env.NEXT_PUBLIC_API_BASE_URL_V1}/programs/${params.id}`,
       {
         headers: { "Accept-Encoding": "gzip,deflate,compress" },
-      }
+      },
     );
     if (res.data.data) {
       return {

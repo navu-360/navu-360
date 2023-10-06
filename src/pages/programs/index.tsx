@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
 import type { OnboardingProgram } from "@prisma/client";
 import Header from "components/common/head";
@@ -9,7 +10,6 @@ import { useSelector } from "react-redux";
 import {
   useGetOrganizationProgramsQuery,
   useGetProgramTalentsQuery,
-  useGetUserByIdQuery,
 } from "services/baseApiSlice";
 import { generateAvatar } from "utils/avatar";
 import { processDate } from "utils/date";
@@ -38,9 +38,7 @@ export default function Programs() {
     boolean | string
   >(false);
 
-  const [programsArray, setProgramsArray] = useState<OnboardingProgram[]>(
-    data?.data,
-  );
+  const [programsArray, setProgramsArray] = useState<any[]>(data?.data);
 
   useEffect(() => {
     if (data) {
@@ -111,7 +109,7 @@ export default function Programs() {
           )}
           {programsArray?.length > 0 && (
             <div className="flex w-full flex-wrap justify-center gap-8 md:justify-start">
-              {programsArray?.map((program: OnboardingProgram, i: number) => (
+              {programsArray?.map((program, i) => (
                 <OneProgramCard
                   key={program.id}
                   program={program}
@@ -155,19 +153,18 @@ export function OneProgramCard({
   delay,
   deleteProgram,
 }: {
-  program: OnboardingProgram;
+  program: OnboardingProgram & {
+    createdBy: {
+      id: string;
+      name: string;
+    };
+  };
   delay: number;
   deleteProgram: (id: string) => void;
 }) {
   const programId = program?.id;
 
   const { data: enrolledTalents } = useGetProgramTalentsQuery(programId);
-
-  const id = program?.createdBy;
-
-  const { data: userInfo, isFetching } = useGetUserByIdQuery(id, {
-    skip: !id,
-  });
 
   const router = useRouter();
 
@@ -202,23 +199,19 @@ export function OneProgramCard({
           <h2 className="text-lg font-bold">{program.name}</h2>
         </div>
 
-        {userInfo ? (
-          <div className="absolute bottom-16 right-4 flex items-center gap-2">
-            <p className="text-xs font-medium">Created By</p>
-            <div className="flex items-center gap-4">
-              <p className="text-[14px] font-semibold">
-                {userInfo?.data?.name}
-              </p>
-              <img
-                src={generateAvatar(userInfo?.data?.id)}
-                className="h-[50px] w-[50px] rounded-full bg-tertiary"
-                alt={userInfo?.data?.id}
-              />
-            </div>
+        <div className="absolute bottom-16 right-4 flex items-center gap-2">
+          <p className="text-xs font-medium">Created By</p>
+          <div className="flex items-center gap-4">
+            <p className="text-[14px] font-semibold">
+              {program?.createdBy?.name}
+            </p>
+            <img
+              src={generateAvatar(program?.createdBy?.id)}
+              className="h-[50px] w-[50px] rounded-full bg-tertiary"
+              alt={program?.createdBy?.name}
+            />
           </div>
-        ) : !isFetching ? null : (
-          <div className="absolute bottom-16 right-4 mt-1 h-[50px] w-[90%] animate-pulse rounded bg-gray-400" />
-        )}
+        </div>
 
         <div className="absolute bottom-2 right-4 flex flex-row-reverse items-center justify-end gap-6">
           <div

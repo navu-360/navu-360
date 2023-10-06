@@ -11,6 +11,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     */
 
   const session = await getServerSession(req, res, authOptions);
+
   if (!session) {
     res.status(401).json({ message: `Unauthorized.` });
     return;
@@ -26,7 +27,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const orgIdtalent = req.query.orgId as string;
         const users = await prisma.user.findMany({
           where: {
-            orgId: orgIdtalent,
+            talentOrgId: orgIdtalent,
             role: "talent",
           },
           orderBy: {
@@ -49,36 +50,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         // editable fields: image
         const {
           image: toEdit,
-          publicId,
           position,
           role,
-          hasBeenOnboarded,
-          orgId,
         } = req.body as {
           image: string;
           publicId: string;
           position: string;
           role: string;
-          hasBeenOnboarded: boolean;
-          orgId: string;
         };
-
-        // validations
-        // 1. A user can only belong to one organization. Check if the user already belongs to an organization.
-        const user = await prisma.user.findUnique({
-          where: {
-            email: session.user.email,
-          },
-        });
-
-        if (user?.orgId) {
-          res
-            .status(400)
-            .json({
-              message: `User ${user.name} already belongs to an organization.`,
-            });
-          return;
-        }
 
         const userToEdit = await prisma.user.update({
           where: {
@@ -86,11 +65,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           },
           data: {
             image: toEdit,
-            publicId: publicId,
             position,
             role,
-            hasBeenOnboarded,
-            orgId,
           },
         });
 

@@ -38,7 +38,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           User: true,
         },
         // only return distinct userIds. We only consider one enrollment per talent
-        distinct: ["userId"],
+        cacheStrategy: {
+          ttl: 30,
+          swr: 60,
+        },
       });
 
     return res

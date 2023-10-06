@@ -41,6 +41,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       orderBy: {
         enrollmentStatus: "desc",
       },
+      cacheStrategy: {
+        ttl: 30,
+        swr: 60,
+      },
     });
 
     return res

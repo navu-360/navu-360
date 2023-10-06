@@ -6,6 +6,7 @@ const baseQuery = fetchBaseQuery({
   baseUrl: env.NEXT_PUBLIC_API_BASE_URL_V1,
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
+    // @ts-ignore
     const { token } = getState().auth;
     if (token) {
       headers.set("authorization", `Bearer ${token}`);
@@ -28,14 +29,6 @@ export const baseApiSlice = createApi({
       }),
     }),
     // USER AUTH ENDPOINTS
-    // create user
-    createUser: builder.mutation({
-      query: (body) => ({
-        url: `users`,
-        method: "POST",
-        body,
-      }),
-    }),
     // update user
     updateUser: builder.mutation({
       query: (body) => ({
@@ -55,27 +48,9 @@ export const baseApiSlice = createApi({
       }),
     }),
 
-    // fetch all users
-    fetchUsers: builder.query({
-      query: (org) => `users?orgId=${org}`,
-      keepUnusedDataFor: 60 * 10, // 10 minutes,
-      providesTags: ["Dashboard"],
-    }),
-    getUserById: builder.query({
-      query: (id) => `users/${id}`,
-      keepUnusedDataFor: 60 * 10, // 10 minutes,
-    }),
     getAllTalents: builder.query({
-      query: (orgId) => `users/orgTalents?orgId=${orgId}`,
-      keepUnusedDataFor: 60 * 10, // 10 minutes,
-    }),
-    // delete user
-    deleteUser: builder.mutation({
-      query: (id) => ({
-        url: `users/${id}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: ["Dashboard"],
+      query: () => `users/orgTalents`,
+      // keepUnusedDataFor: 60 * 10, // 10 minutes,
     }),
 
     // Organization endpoints
@@ -88,8 +63,15 @@ export const baseApiSlice = createApi({
       }),
     }),
     getOneOrganization: builder.query({
-      query: (userId) => `organization/${userId}`,
-      keepUnusedDataFor: 60 * 60 * 1, // 1 hour,
+      query: () => `organization/me`,
+      // keepUnusedDataFor: 60 * 60 * 1, // 1 hour,
+    }),
+    updateOrg: builder.mutation({
+      query: (body) => ({
+        url: `organization/id/me`,
+        method: "PATCH",
+        body,
+      }),
     }),
     getOrganizationById: builder.query({
       query: (id) => `organization/id/${id}`,
@@ -164,6 +146,13 @@ export const baseApiSlice = createApi({
         body,
       }),
       invalidatesTags: ["Dashboard"],
+    }),
+    acceptInvite: builder.mutation({
+      query: (body) => ({
+        url: `invite/accept`,
+        method: "POST",
+        body,
+      }),
     }),
     // get sent invites for a program
     getSentInvites: builder.query({
@@ -252,16 +241,39 @@ export const baseApiSlice = createApi({
         body,
       }),
     }),
+
+    verifyPayment: builder.mutation({
+      query: (body) => ({
+        url: `billing/verify`,
+        method: "POST",
+        body,
+      }),
+    }),
+    getCustomerSubscription: builder.query({
+      query: (body) => ({
+        url: `billing/customer`,
+        method: "POST",
+        body,
+      }),
+    }),
+    getCustomerTranscations: builder.query({
+      query: (customerId) => ({
+        url: `billing/transcations?customerId=${customerId}`,
+      }),
+    }),
+    getUserPayStackDetails: builder.query({
+      query: (email) => `billing/plan?email=${email}`,
+    }),
+    changePlan: builder.mutation({
+      query: (planSub) => `billing/change?planSub=${planSub}`,
+    }),
   }),
 });
 
 export const {
   useJoinWaitlistMutation,
-  useCreateUserMutation,
   useUpdateUserMutation,
   useUploadImageMutation,
-  useFetchUsersQuery,
-  useDeleteUserMutation,
   useCreateOrganizationMutation,
   useCreateProgramMutation,
   useGetOrganizationProgramsQuery,
@@ -275,7 +287,6 @@ export const {
   useGetSentInvitesQuery,
   useGetProgramTalentsQuery,
   useGetOrganizationByIdQuery,
-  useGetUserByIdQuery,
   useDeleteProgramMutation,
   useEditProgramMutation,
   useEnrollTalentMutation,
@@ -286,4 +297,10 @@ export const {
   useUnregisterTalentMutation,
   useRemoveUserFromOrganizationMutation,
   useSendEnrolledEmailMutation,
+  useVerifyPaymentMutation,
+  useGetCustomerTranscationsQuery,
+  useGetUserPayStackDetailsQuery,
+  useAcceptInviteMutation,
+  useChangePlanMutation,
+  useUpdateOrgMutation
 } = baseApiSlice;

@@ -34,13 +34,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
 
         // create organization
-        const organization = await prisma.organization.create({
-          data: {
+        const organization = await prisma.organization.upsert({
+          where: { userId },
+          update: {
             name: name,
             industry: industry,
             noOfEmployees: noOfEmployees,
             userId: userId,
           },
+          create: {
+            name: name,
+            industry: industry,
+            noOfEmployees: noOfEmployees,
+            userId: userId,
+          }
         });
 
         // update user field hasBeenOnboarded to true

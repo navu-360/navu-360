@@ -5,7 +5,6 @@ import React, { useState, useEffect } from "react";
 import toaster from "utils/toaster";
 import {
   useEnrollTalentMutation,
-  useGetUserByIdQuery,
   useSendEnrolledEmailMutation,
   useGetOrganizationProgramsQuery,
 } from "services/baseApiSlice";
@@ -45,11 +44,6 @@ export function SelectPrograms({
 
   const [enrollTalent, { isLoading: isEnrolling }] = useEnrollTalentMutation();
 
-  const id = talentId;
-  const { data: talentData } = useGetUserByIdQuery(id, {
-    skip: !id,
-  });
-
   const organizationData = useSelector(
     (state: { auth: { organizationData: Organization } }) =>
       state.auth.organizationData
@@ -62,7 +56,7 @@ export function SelectPrograms({
       programName,
       talentName: talentName.split(" ")[0],
       organizationName: organizationData?.name,
-      talentEmail: talentData?.data?.email,
+      talentId: talentId,
     };
     await sendEmailAction(body)
       .unwrap()

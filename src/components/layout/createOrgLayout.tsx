@@ -13,6 +13,7 @@ export default function CreateOrganizationLayout({
   role,
   loading,
   companyDetails,
+  fromStart,
 }: {
   children: React.ReactNode;
   title: string;
@@ -23,7 +24,7 @@ export default function CreateOrganizationLayout({
       companyName: string;
       industry: string;
       noOfEmployees: string;
-    }
+    },
   ) => void;
   files: File[];
   role: string;
@@ -32,7 +33,8 @@ export default function CreateOrganizationLayout({
     companyName: string;
     industry: string;
     noOfEmployees: string;
-  };
+  } | null;
+  fromStart?: boolean;
 }) {
   const { data: session } = useSession();
   return (
@@ -46,14 +48,14 @@ export default function CreateOrganizationLayout({
         <div className="overlay" />
         <div className="absolute inset-x-0 top-1/2 z-20 mx-auto flex w-[95%] -translate-y-1/2 flex-col gap-6  text-center">
           <h1 className="text-center text-xl font-bold text-white md:text-2xl">
-            Welcome to Navu360, {session?.user?.name.split(" ")[0]}
+            Welcome to Navu360 {session?.user?.name.split(" ")[0]}
           </h1>
           <p className="text-base font-medium text-white md:text-xl">
             Setup your organization to experience the power of Navu360.
           </p>
         </div>
         <Link href="/" className="absolute top-2 z-20 flex items-center pl-4">
-          <img src="logo.svg" className="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
+          <img src="/logo.svg" className="mr-3 h-6 sm:h-9" alt="Navu360" />
         </Link>
       </div>
       <div className="relative flex h-full w-full flex-col p-8 pt-16 md:w-2/3 md:pt-4">
@@ -66,17 +68,19 @@ export default function CreateOrganizationLayout({
         </div>
 
         {children}
-        <div className={`flex w-full items-end justify-end px-8`}>
-          <button
-            disabled={loading}
-            onClick={() => {
-              goToNext(role, companyDetails);
-            }}
-            className="rounded-md bg-secondary px-12 py-2 text-base font-semibold text-white"
-          >
-            {loading ? "Loading..." : "Continue"}
-          </button>
-        </div>
+        {!fromStart && (
+          <div className={`flex w-full items-end justify-end px-8`}>
+            <button
+              disabled={loading}
+              onClick={() => {
+                goToNext(role, companyDetails!);
+              }}
+              className="rounded-md bg-secondary px-12 py-2 text-base font-semibold text-white"
+            >
+              {loading ? "Loading..." : "Continue"}
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

@@ -1,5 +1,5 @@
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -40,23 +40,24 @@ model Session {
 }
 
 model User {
-  id                       String                     @id @default(cuid())
-  name                     String?
-  email                    String?                    @unique
-  emailVerified            DateTime?
-  image                    String?
-  publicId                 String?
-  position                 String?
-  role                     String?
-  orgId                    String?
-  hasBeenOnboarded         Boolean?                   @default(false)
-  accounts                 Account[]
-  sessions                 Session[]
-  organization             Organization?
-  onboardingProgs          OnboardingProgram[]
-  createdAt                DateTime                   @default(now())
-  updatedAt                DateTime                   @updatedAt
-  OnboardingProgramTalents OnboardingProgramTalents[]
+  id                        String                     @id @default(cuid())
+  name                      String?
+  email                     String?                    @unique
+  emailVerified             DateTime?
+  image                     String?
+  position                  String?
+  role                      String?
+  talentOrgId               String?
+  customerId                String?
+  hasBeenOnboarded          Boolean?                   @default(false)
+  accounts                  Account[]
+  sessions                  Session[]
+  organization              Organization?
+  onboardingProgs           OnboardingProgram[]
+  createdAt                 DateTime                   @default(now())
+  updatedAt                 DateTime                   @updatedAt
+  OnboardingProgramTalents  OnboardingProgramTalents[]
+  CreatedOnboardingPrograms OnboardingProgram[]        @relation("createdBy")
 
   @@index([email], name: "email")
 }
@@ -67,6 +68,7 @@ model Organization {
   name                     String
   noOfEmployees            String
   industry                 String
+  website                  String?
   user                     User                       @relation(fields: [userId], references: [id])
   userId                   String                     @unique
   onboardingProgs          OnboardingProgram[]
@@ -88,7 +90,8 @@ model OnboardingProgram {
   id                       String                     @id @default(uuid())
   name                     String
   content                  String
-  createdBy                String?
+  creator                  User                       @relation(fields: [createdBy], references: [id], name: "createdBy")
+  createdBy                String
   organization             Organization               @relation(fields: [organizationId], references: [id])
   organizationId           String
   users                    User[]
@@ -118,43 +121,43 @@ model OnboardingProgramTalents {
 }
 
 model programQuiz {
-  id        String   @id @default(cuid())
-  programId String
+  id          String   @id @default(cuid())
+  programId   String
   questionIds String[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model QuizQuestion {
   id        String   @id @default(cuid())
   question  String
-  choiceA  String
-  choiceB  String
-  choiceC  String
-  choiceD  String
-  answer  String
+  choiceA   String
+  choiceB   String
+  choiceC   String
+  choiceD   String
+  answer    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model TalentProgramResults {
-  id        String   @id @default(cuid())
-  userId String
-  programId String
+  id          String   @id @default(cuid())
+  userId      String
+  programId   String
   quizAnswers String[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model TalentQuizAnswers {
-  id        String   @id @default(cuid())
-  userId String
-  programId String
+  id         String   @id @default(cuid())
+  userId     String
+  programId  String
   questionId String
-  answer String
-  isCorrect Boolean
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  answer     String
+  isCorrect  Boolean
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model waitlist {

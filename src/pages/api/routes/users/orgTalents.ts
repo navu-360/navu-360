@@ -14,13 +14,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(401).json({ message: `Unauthorized.` });
     return;
   }
+
   try {
-    const { orgId } = req.query as { orgId: string };
+
+    // using user id, we get the org
+    const organization = await prisma.organization.findFirst({
+      where: {
+        userId: session?.user?.id as string,
+      },
+      select: {
+        id: true,
+      }
+    });
+
 
     // find all users with role of talent and orgId
     const users = await prisma.user.findMany({
       where: {
-        orgId: orgId,
+        talentOrgId: organization?.id,
         role: "talent",
       },
     });
