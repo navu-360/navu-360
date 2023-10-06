@@ -12,22 +12,43 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { signIn, useSession } from "next-auth/react";
 
-export default function Pricing({ fromStart }: { fromStart?: boolean }) {
+export default function Pricing({
+  fromStart,
+  currentPlan,
+}: {
+  fromStart?: boolean;
+  currentPlan?: string;
+}) {
   const router = useRouter();
 
   const { data: session } = useSession();
 
   const buttonAction = (plan: string) => {
-    if (fromStart) {
-      if (session?.user) {
-        router.push(`/setup?sub=${plan}`);
-      } else {
-        signIn("google", {
-          callbackUrl: `/setup?sub=${plan}`,
-        });
-      }
+    if (currentPlan) {
     } else {
-      router.push(`/welcome/plan`);
+      if (fromStart) {
+        if (session?.user) {
+          router.push(`/setup?sub=${plan}`);
+        } else {
+          signIn("google", {
+            callbackUrl: `/setup?sub=${plan}`,
+          });
+        }
+      } else {
+        router.push(`/welcome/plan`);
+      }
+    }
+  };
+
+  const textToCapitalize = (text: string) => {
+    return text.charAt(0).toUpperCase() + text.slice(1);
+  };
+
+  const upgradeOrDowngradeText = (toPlanName: string) => {
+    if (currentPlan === "starter") {
+      return "Upgrade to " + textToCapitalize(toPlanName);
+    } else {
+      return "Downgrade to " + textToCapitalize(toPlanName);
     }
   };
 
@@ -58,7 +79,7 @@ export default function Pricing({ fromStart }: { fromStart?: boolean }) {
               whileInView={{ x: 0, scale: 1 }}
               transition={{ ease: "easeOut", duration: 0.5, delay: 0.1 }}
               viewport={{ amount: 0.9, once: true }}
-              className="shadowAroundFeature featureThreeGradient mx-auto mb-3 w-full rounded-md px-8 py-8 text-white md:my-2 md:flex md:w-1/3 md:max-w-none md:flex-col md:px-10 md:py-10"
+              className="shadowAroundFeature featureThreeGradient relative mx-auto mb-3 w-full rounded-md px-8 py-8 text-white md:my-2 md:flex md:w-1/3 md:max-w-none md:flex-col md:px-10 md:py-10"
             >
               <div className="w-full flex-grow">
                 <h3
@@ -148,12 +169,20 @@ export default function Pricing({ fromStart }: { fromStart?: boolean }) {
                 </ul>
               </div>
               <div className="flex w-full flex-col">
-                <button
-                  onClick={() => buttonAction("starter")}
-                  className="mx-auto w-max rounded-md bg-white px-16 py-2 font-bold text-secondary transition-colors duration-300 ease-in hover:bg-secondary/50 hover:text-white"
-                >
-                  {fromStart ? "Continue" : "Get Started"}
-                </button>
+                {currentPlan === "starter" ? (
+                  <span className="font-semibold text-white">Current Plan</span>
+                ) : (
+                  <button
+                    onClick={() => buttonAction("starter")}
+                    className="mx-auto w-max rounded-md bg-white px-12 py-2 text-sm font-bold text-secondary transition-colors duration-300 ease-in hover:bg-secondary/50 hover:text-white"
+                  >
+                    {fromStart
+                      ? currentPlan
+                        ? upgradeOrDowngradeText("starter")
+                        : "Continue"
+                      : "Get Started"}
+                  </button>
+                )}
               </div>
             </motion.div>
             <motion.div
@@ -251,12 +280,20 @@ export default function Pricing({ fromStart }: { fromStart?: boolean }) {
                 </ul>
               </div>
               <div className="flex w-full flex-col">
-                <button
-                  onClick={() => buttonAction("regular")}
-                  className="mx-auto w-max rounded-md bg-white px-16 py-2 font-bold text-secondary transition-colors duration-300 ease-in hover:bg-secondary/50 hover:text-white"
-                >
-                  {fromStart ? "Continue" : "Get Started"}
-                </button>
+                {currentPlan === "regular" ? (
+                  <span className="font-semibold text-white">Current Plan</span>
+                ) : (
+                  <button
+                    onClick={() => buttonAction("regular")}
+                    className="mx-auto w-max rounded-md bg-white px-12 py-2 text-sm font-bold text-secondary transition-colors duration-300 ease-in hover:bg-secondary/50 hover:text-white"
+                  >
+                    {fromStart
+                      ? currentPlan
+                        ? upgradeOrDowngradeText("regular")
+                        : "Continue"
+                      : "Get Started"}
+                  </button>
+                )}
               </div>
             </motion.div>
             <motion.div
@@ -339,12 +376,20 @@ export default function Pricing({ fromStart }: { fromStart?: boolean }) {
                 </ul>
               </div>
               <div className="flex w-full flex-col">
-                <button
-                  onClick={() => buttonAction("pro")}
-                  className="mx-auto w-max rounded-md bg-white px-16 py-2 font-bold text-secondary transition-colors duration-300 ease-in hover:bg-secondary/50 hover:text-white"
-                >
-                  {fromStart ? "Continue" : "Get Started"}
-                </button>
+                {currentPlan === "pro" ? (
+                  <span className="font-semibold text-white">Current Plan</span>
+                ) : (
+                  <button
+                    onClick={() => buttonAction("pro")}
+                    className="mx-auto w-max rounded-md bg-white px-12 py-2 text-sm font-bold text-secondary transition-colors duration-300 ease-in hover:bg-secondary/50 hover:text-white"
+                  >
+                    {fromStart
+                      ? currentPlan
+                        ? upgradeOrDowngradeText("pro")
+                        : "Continue"
+                      : "Get Started"}
+                  </button>
+                )}
               </div>
             </motion.div>
           </div>

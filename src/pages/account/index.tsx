@@ -5,6 +5,8 @@ import DashboardWrapper from "components/layout/dashboardWrapper";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
+import { motion } from "framer-motion";
+
 import {
   useGetCustomerTranscationsQuery,
   useGetUserPayStackDetailsQuery,
@@ -17,6 +19,7 @@ import { setUserId, setUserProfile } from "redux/auth/authSlice";
 import toaster from "utils/toaster";
 import { processDate } from "utils/date";
 import { getPlanNameFromAmount } from "pages/setup";
+import Pricing from "components/landing/pricing";
 
 const SecondaryNavigation = [
   { name: "Account" },
@@ -106,6 +109,9 @@ const AccountSettings: React.FC = () => {
         return "";
     }
   };
+
+  const [showChangePlan, setShowChangePlan] = useState(false);
+  const [currentPlanName, setCurrentPlanName] = useState("");
 
   return (
     <>
@@ -318,7 +324,10 @@ const AccountSettings: React.FC = () => {
           )}
           {activeTab === "billing" && (
             <div className="mt-8 flex w-full text-center">
-              <Billing />
+              <Billing
+                changePlan={() => setShowChangePlan(true)}
+                setPlan={(val: string) => setCurrentPlanName(val)}
+              />
             </div>
           )}
           {activeTab === "teams" && (
@@ -332,12 +341,25 @@ const AccountSettings: React.FC = () => {
             </div>
           )}
         </main>
+
+        {showChangePlan && (
+          <ChangePlan
+            currentPlanName={currentPlanName}
+            close={() => setShowChangePlan(false)}
+          />
+        )}
       </DashboardWrapper>
     </>
   );
 };
 
-function Billing() {
+function Billing({
+  changePlan,
+  setPlan,
+}: {
+  changePlan: () => void;
+  setPlan: (val: string) => void;
+}) {
   const customerId = useSelector(
     (state: { auth: { userProfile: User } }) =>
       state.auth.userProfile?.customerId,
@@ -359,6 +381,12 @@ function Billing() {
     skip: !email,
   });
 
+  useEffect(() => {
+    if (details?.data) {
+      setPlan(getPlanNameFromAmount(details?.data as number));
+    }
+  }, [data]);
+
   return (
     <section className="flex w-full gap-4 text-left">
       <div className="mb-4 w-1/3 max-w-[400px] rounded-lg bg-white p-4 shadow sm:p-6 xl:mb-0 xl:p-8">
@@ -378,6 +406,7 @@ function Billing() {
         <div className="mt-6 flex flex-col space-y-4">
           <button
             disabled={!details?.data}
+            onClick={() => changePlan()}
             className="inline-flex w-full items-center justify-center rounded-lg bg-secondary px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-secondary/90 focus:ring-4 sm:w-auto"
           >
             <svg
@@ -501,6 +530,43 @@ function Billing() {
         </div>
       </div>
     </section>
+  );
+}
+
+function ChangePlan({
+  close,
+  currentPlanName,
+}: {
+  close: () => void;
+  currentPlanName: string;
+}) {
+  return (
+    <div className="fixed inset-0 z-[120] flex h-full w-full items-center justify-center  bg-black/50 backdrop-blur-sm">
+      <motion.div
+        initial={{ y: 30, opacity: 0.7 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: 20, opacity: 0 }}
+        transition={{ duration: 0.3, ease: "easeIn" }}
+        className="relative flex h-full w-full flex-col items-center justify-center rounded-lg bg-white p-4 px-16 text-center md:h-max md:max-h-[600px] md:w-max md:p-8"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="#686868"
+          onClick={() => close()}
+          className="absolute right-2 top-2 h-12 w-12"
+        >
+          <path
+            fillRule="evenodd"
+            d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z"
+            clipRule="evenodd"
+          />
+        </svg>
+        <section className="flex h-full w-full flex-col items-center">
+          <Pricing fromStart currentPlan={currentPlanName} />
+        </section>
+      </motion.div>
+    </div>
   );
 }
 
