@@ -12,7 +12,7 @@ export default function AdminCompanyDetails({
       companyName: string;
       industry: string;
       noOfEmployees: string;
-    }
+    },
   ) => void;
   loading: boolean;
 }) {
