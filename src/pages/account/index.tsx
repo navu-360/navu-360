@@ -21,6 +21,7 @@ import toaster from "utils/toaster";
 import { processDate } from "utils/date";
 import { getPlanIdFromName, getPlanNameFromAmount } from "pages/setup";
 import Pricing from "components/landing/pricing";
+import { thousandSeparator } from "utils/num-utils";
 
 const SecondaryNavigation = [
   { name: "Account" },
@@ -388,7 +389,8 @@ function Billing({
     if (details?.data) {
       setPlan(getPlanNameFromAmount(details?.data as number));
     }
-  }, [data]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [details?.data]);
 
   return (
     <section className="flex w-full gap-4 text-left">
@@ -425,13 +427,6 @@ function Billing({
               ></path>
             </svg>
             Change Plan
-          </button>
-
-          <button
-            disabled={!details?.data}
-            className="inline-flex w-full items-center justify-center rounded-lg border border-tertiary px-5 py-2.5 text-center text-sm font-medium text-tertiary hover:bg-gray-100 focus:ring-4 sm:w-auto"
-          >
-            Cancel Subscription
           </button>
         </div>
       </div>
@@ -507,7 +502,8 @@ function Billing({
                             {processDate(item.paid_at)}
                           </td>
                           <td className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 ">
-                            {item.currency} {item.amount / 100}
+                            {item.currency}{" "}
+                            {thousandSeparator(item.amount / 100)}
                           </td>
                           <td className="whitespace-nowrap p-4">
                             <span

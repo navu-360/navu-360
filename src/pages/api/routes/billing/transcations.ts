@@ -43,7 +43,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             if (responseData.status) {
                 const transactionData = responseData.data;
 
-                res.status(200).json({ message: 'Customer transcations fetched', data: transactionData });
+                // fields to return id: string; amount: number; currency: string; paid_at: string; status: string;
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const formattedTransactionData = transactionData.map((transaction: any) => {
+                    return {
+                        id: transaction.id,
+                        amount: transaction.amount,
+                        currency: transaction.currency,
+                        paid_at: transaction.paid_at,
+                        status: transaction.status
+                    };
+                });
+
+                res.status(200).json({ message: 'Customer transcations fetched', data: formattedTransactionData });
             } else {
                 res.status(400).json({ message: 'Could not get customer transcations' });
             }

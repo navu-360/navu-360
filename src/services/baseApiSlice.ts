@@ -249,13 +249,6 @@ export const baseApiSlice = createApi({
         body,
       }),
     }),
-    getCustomer: builder.query({
-      query: (body) => ({
-        url: `billing/customer`,
-        method: "POST",
-        body,
-      }),
-    }),
     getCustomerTranscations: builder.query({
       query: (customerId) => ({
         url: `billing/transcations?customerId=${customerId}`,
@@ -301,6 +294,5 @@ export const {
   useGetCustomerTranscationsQuery,
   useGetUserPayStackDetailsQuery,
   useAcceptInviteMutation,
-  useGetCustomerQuery,
   useChangePlanMutation,
 } = baseApiSlice;

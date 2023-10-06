@@ -38,8 +38,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             if (responseData.status) {
                 const transactionData = responseData.data;
 
-                console.log(transactionData);
-
                 res.status(200).json({ message: 'Customer details fetched', data: transactionData?.subscriptions[transactionData?.subscriptions?.length - 1]?.amount ?? -1 });
             } else {
                 console.log(responseData);
