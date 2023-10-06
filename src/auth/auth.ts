@@ -67,6 +67,7 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
+  // @ts-ignore
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
