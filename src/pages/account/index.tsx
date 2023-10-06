@@ -10,7 +10,9 @@ import { motion } from "framer-motion";
 import {
   useChangePlanMutation,
   useGetCustomerTranscationsQuery,
+  useGetOneOrganizationQuery,
   useGetUserPayStackDetailsQuery,
+  useUpdateOrgMutation,
   useUpdateUserMutation,
 } from "services/baseApiSlice";
 
@@ -46,6 +48,10 @@ const AccountSettings: React.FC = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [position, setPosition] = useState("");
+
+  const [companyName, setCompanyName] = useState("");
+  const [industry, setIndustry] = useState("");
+  const [website, setWebsite] = useState("");
 
   useEffect(() => {
     if (userProfile) {
@@ -114,6 +120,57 @@ const AccountSettings: React.FC = () => {
 
   const [showChangePlan, setShowChangePlan] = useState(false);
   const [currentPlanName, setCurrentPlanName] = useState("");
+
+  const { currentData: orgData, refetch } =
+    useGetOneOrganizationQuery(undefined);
+
+  useEffect(() => {
+    if (orgData) {
+      setCompanyName(orgData?.organization?.name || "");
+      setIndustry(orgData?.organization?.industry || "");
+      setWebsite(orgData?.organization?.website || "");
+    }
+  }, [orgData]);
+
+  const [updateOrg, { isLoading: editingOrg }] = useUpdateOrgMutation();
+
+  const updateOrgInfo = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    if (
+      orgData?.organization?.name === companyName &&
+      orgData?.organization?.industry === industry &&
+      orgData?.organization?.website === website
+    ) {
+      toaster({
+        status: "info",
+        message: "No changes made",
+      });
+      return;
+    }
+    // only send updated fields
+    const body = {
+      name:
+        orgData?.organization?.name !== companyName ? companyName : undefined,
+      industry:
+        orgData?.organization?.industry !== industry ? industry : undefined,
+      website: orgData?.organization?.website !== website ? website : undefined,
+    };
+    await updateOrg(body)
+      .unwrap()
+      .then(() => {
+        toaster({
+          status: "success",
+          message: "Organization updated successfully",
+        });
+        refetch();
+      })
+      .catch((error) => {
+        toaster({
+          status: "error",
+          message: error.data.message,
+        });
+      });
+  };
 
   return (
     <>
@@ -264,6 +321,90 @@ const AccountSettings: React.FC = () => {
               <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
                 <div>
                   <h2 className="text-base font-semibold leading-7 text-tertiary">
+                    Organization Information
+                  </h2>
+                  <p className="mt-1 text-sm leading-6 text-gray-500">
+                    View and update your organization information here
+                  </p>
+                </div>
+
+                <form className="md:col-span-1">
+                  <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-1">
+                    <div className="sm:col-span-3">
+                      <label
+                        htmlFor="company-name"
+                        className="block text-sm font-semibold leading-6 text-tertiary"
+                      >
+                        Company Name
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          id="company-name"
+                          type="text"
+                          name="company-name"
+                          value={companyName}
+                          onChange={(e) => setCompanyName(e.target.value)}
+                          className="block w-full rounded-md border-0 bg-white/5 py-1.5 pl-2 text-tertiary shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                        />
+                      </div>
+                    </div>
+                    <div className="sm:col-span-3">
+                      <label
+                        htmlFor="industry"
+                        className="block text-sm font-semibold leading-6 text-tertiary"
+                      >
+                        Industry
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          id="industry"
+                          type="text"
+                          name="industry"
+                          value={industry}
+                          onChange={(e) => setIndustry(e.target.value)}
+                          className="block w-full rounded-md border-0 bg-white/5 py-1.5 pl-2 text-tertiary shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                        />
+                      </div>
+                    </div>
+                    <div className="sm:col-span-3">
+                      <label
+                        htmlFor="website"
+                        className="block text-sm font-semibold leading-6 text-tertiary"
+                      >
+                        Website
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          id="website"
+                          type="url"
+                          name="website"
+                          autoComplete="website"
+                          value={website}
+                          onChange={(e) => setWebsite(e.target.value)}
+                          className="block w-full rounded-md border-0 bg-white/5 py-1.5 pl-2 text-tertiary shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-8 flex">
+                    <button
+                      type="submit"
+                      disabled={editingOrg}
+                      onClick={(e: { preventDefault: () => void }) =>
+                        updateOrgInfo(e)
+                      }
+                      className="rounded-md bg-tertiary px-12 py-2 text-sm font-semibold text-white shadow-sm hover:bg-tertiary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+                <div>
+                  <h2 className="text-base font-semibold leading-7 text-tertiary">
                     Log out
                   </h2>
                   <p className="mt-1 text-sm leading-6 text-gray-500">
@@ -389,7 +530,7 @@ function Billing({
     if (details?.data) {
       setPlan(getPlanNameFromAmount(details?.data as number));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [details?.data]);
 
   return (

@@ -66,6 +66,13 @@ export const baseApiSlice = createApi({
       query: () => `organization/me`,
       // keepUnusedDataFor: 60 * 60 * 1, // 1 hour,
     }),
+    updateOrg: builder.mutation({
+      query: (body) => ({
+        url: `organization/id/me`,
+        method: "PATCH",
+        body,
+      }),
+    }),
     getOrganizationById: builder.query({
       query: (id) => `organization/id/${id}`,
       keepUnusedDataFor: 60 * 60 * 1, // 1 hour,
@@ -295,4 +302,5 @@ export const {
   useGetUserPayStackDetailsQuery,
   useAcceptInviteMutation,
   useChangePlanMutation,
+  useUpdateOrgMutation
 } = baseApiSlice;

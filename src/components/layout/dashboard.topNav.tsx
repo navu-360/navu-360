@@ -35,7 +35,7 @@ export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
   return (
-    <header className="fixed md:left-[200px] left-[80px] top-0 z-[100] flex h-[75px] w-full bg-white py-2">
+    <header className="fixed left-[80px] top-0 z-[100] flex h-[75px] w-full bg-white py-2 md:left-[200px]">
       {!hideSearch && (
         <form className="relative ml-4 h-full w-[50%] rounded-md bg-blue-700/10 px-4 py-2 pr-16 2xl:w-[70%]">
           <input
@@ -75,8 +75,10 @@ export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
 function AdminCard() {
   const { data: session } = useSession();
 
+  const router = useRouter();
+
   const userProfile = useSelector(
-    (state: { auth: { userProfile: User } }) => state.auth.userProfile
+    (state: { auth: { userProfile: User } }) => state.auth.userProfile,
   );
 
   const dispatch = useDispatch();
@@ -97,7 +99,10 @@ function AdminCard() {
   if (!isReady) return null;
 
   return (
-    <div className="md:fixed right-4 top-2 pt-0 flex items-center gap-2 transition-all duration-300 ease-in">
+    <div
+      onClick={() => router.push("/account")}
+      className="right-4 top-2 flex cursor-pointer items-center gap-2 pt-0 transition-all duration-300 ease-in md:fixed"
+    >
       <div className="relative flex h-[50px] w-[50px] items-center justify-center rounded-full bg-tertiary">
         {userProfile?.id ? (
           <img
