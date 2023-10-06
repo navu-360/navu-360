@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { setOrgId } from "redux/auth/authSlice";
 import {
   useCreateOrganizationMutation,
+  useGetUserPayStackDetailsQuery,
   useUpdateUserMutation,
   useVerifyPaymentMutation,
 } from "services/baseApiSlice";
@@ -68,6 +69,12 @@ export default function Setup() {
   const router = useRouter();
   const { sub } = router.query;
 
+  const email = session?.user.email as string;
+
+  const { error: details } = useGetUserPayStackDetailsQuery(email, {
+    skip: !email,
+  });
+
   const [verify] = useVerifyPaymentMutation();
 
   const verifyAction = async (reference: string) => {
@@ -90,7 +97,7 @@ export default function Setup() {
       .catch((error) => {
         toast({
           status: "error",
-          message: error.message,
+          message: error?.data?.message,
         });
       });
   };
@@ -178,7 +185,12 @@ export default function Setup() {
       .unwrap()
       .then((payload) => {
         dispatch(setOrgId(payload?.data?.id));
-        subAction();
+        // @ts-ignore
+        if (details?.status === 404) {
+          subAction();
+        } else {
+          router.push("/dashboard");
+        }
       })
       .catch((error) => {
         toast({

@@ -10,16 +10,22 @@ const font = Play({
 
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 export default function Pricing({ fromStart }: { fromStart?: boolean }) {
   const router = useRouter();
 
+  const { data: session } = useSession();
+
   const buttonAction = (plan: string) => {
     if (fromStart) {
-      signIn("google", {
-        callbackUrl: `/setup?sub=${plan}`,
-      });
+      if (session?.user) {
+        router.push(`/setup?sub=${plan}`);
+      } else {
+        signIn("google", {
+          callbackUrl: `/setup?sub=${plan}`,
+        });
+      }
     } else {
       router.push(`/welcome/plan`);
     }

@@ -235,13 +235,12 @@ export const baseApiSlice = createApi({
       }),
     }),
     verifyPayment: builder.mutation({
-      query: (body) => ({
-        url: `billing/verify`,
-        method: "POST",
-        body,
+      query: (customerId) => ({
+        url: `billing/verify?customerId=${customerId}`,
+        method: "GET",
       }),
     }),
-    getCustomerSubscription: builder.mutation({
+    getCustomerSubscription: builder.query({
       query: (body) => ({
         url: `billing/customer`,
         method: "POST",
@@ -294,8 +293,8 @@ export const {
   useRemoveUserFromOrganizationMutation,
   useSendEnrolledEmailMutation,
   useVerifyPaymentMutation,
-  useGetCustomerSubscriptionMutation,
   useGetCustomerTranscationsQuery,
   useGetUserPayStackDetailsQuery,
-  useAcceptInviteMutation
+  useAcceptInviteMutation,
+  useGetCustomerQuery
 } = baseApiSlice;

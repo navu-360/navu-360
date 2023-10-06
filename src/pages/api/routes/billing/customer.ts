@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import https from 'https';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-    const { customerId } = req.body;
+    const { customerId } = req.query;
 
 
     const options = {
