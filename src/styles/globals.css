@@ -85,6 +85,9 @@ textarea {
 
 textarea {
     resize: none;
+    form-sizing: content;
+    min-height: 2lh;
+    max-height: 10lh;
 }
 
 input:focus,
@@ -106,6 +109,19 @@ textarea:focus {
 .common-input:focus {
     border: 1.5px solid #fff;
     box-shadow: 0 0 10px #e5e5e5;
+}
+
+.program-create-form {
+    border-radius: 4px;
+    border: none;
+    background-color: #f2f4f7;
+    max-width: 600px;
+    padding-left: 10px;
+}
+
+.program-create-form:focus {
+    border: none;
+    box-shadow: none;
 }
 
 .common-input-error {
@@ -509,7 +525,7 @@ button:disabled {
 }
 
 .shadowAroundFeature {
-    box-shadow: rgba(157, 42, 87, 0.5) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+    box-shadow: rgba(157, 42, 87, 0.5) 0px 1px 2px 1px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
 }
 
 .featureOneGradient {
