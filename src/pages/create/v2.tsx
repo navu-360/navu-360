@@ -1,4 +1,5 @@
 import Header from "components/common/head";
+import Tooltip from "components/common/tooltip";
 import DashboardWrapper from "components/layout/dashboardWrapper";
 import React, { useState } from "react";
 
@@ -297,20 +298,56 @@ function ProgramDetails() {
 function CreateProgramContent() {
   return (
     <div>
-      <InsertNewSection />
+      <InsertNewSection isFirst />
     </div>
   );
 }
 
-function InsertNewSection() {
+function InsertNewSection({ isFirst }: { isFirst?: boolean }) {
   return (
-    <div className="flex w-[400px] flex-col gap-4 rounded-md p-4 shadow-md">
-      <h3 className="text-lg font-semibold text-blue-500">
-        Choose type of section to add
+    <div className="flex w-[500px] flex-col gap-4 rounded-md p-4 shadow-md">
+      <h3 className="flex items-center gap-1 text-lg font-semibold text-blue-500">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          className="lucide lucide-plus"
+        >
+          <path d="M5 12h14" />
+          <path d="M12 5v14" />
+        </svg>{" "}
+        {isFirst ? "Add first section" : "Choose type of section to add"}
       </h3>
       <div className="flex w-full flex-col gap-2 font-medium text-gray-500">
-        <div className="flex w-full cursor-pointer items-center justify-between p-2 hover:bg-gray-50">
-          <div className="flex items-center gap-2">
+        <Tooltip
+          direction="right"
+          content="Create content from text, images, checkboxes, tables, lists"
+        >
+          <div className="flex w-full cursor-pointer items-center justify-between p-2 hover:bg-gray-50 hover:text-gray-600">
+            <div className="flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="lucide lucide-blocks"
+              >
+                <rect width="7" height="7" x="14" y="3" rx="1" />
+                <path d="M10 21V8a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H3" />
+              </svg>
+              <span>Add a Block Editor</span>
+            </div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -321,33 +358,38 @@ function InsertNewSection() {
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              className="lucide lucide-blocks"
+              className="lucide lucide-info"
             >
-              <rect width="7" height="7" x="14" y="3" rx="1" />
-              <path d="M10 21V8a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H3" />
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 16v-4" />
+              <path d="M12 8h.01" />
             </svg>
-            <span>Block Editor</span>
           </div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            className="lucide lucide-info"
-          >
-            <circle cx="12" cy="12" r="10" />
-            <path d="M12 16v-4" />
-            <path d="M12 8h.01" />
-          </svg>
-        </div>
+        </Tooltip>
 
-        <div className="flex w-full cursor-pointer items-center justify-between p-2 hover:bg-gray-50">
-          <div className="flex items-center gap-2">
+        <Tooltip
+          direction="right"
+          content="Add a Document. Supported PDF and MicroSoft Word(.docx)"
+        >
+          <div className="flex w-full cursor-pointer items-center justify-between p-2 hover:bg-gray-50 hover:text-gray-600">
+            <div className="flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="lucide lucide-file"
+              >
+                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                <polyline points="14 2 14 8 20 8" />
+              </svg>
+              <span>Add a Document</span>
+            </div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -358,33 +400,39 @@ function InsertNewSection() {
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              className="lucide lucide-blocks"
+              className="lucide lucide-info"
             >
-              <rect width="7" height="7" x="14" y="3" rx="1" />
-              <path d="M10 21V8a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H3" />
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 16v-4" />
+              <path d="M12 8h.01" />
             </svg>
-            <span>PDF</span>
           </div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            className="lucide lucide-info"
-          >
-            <circle cx="12" cy="12" r="10" />
-            <path d="M12 16v-4" />
-            <path d="M12 8h.01" />
-          </svg>
-        </div>
+        </Tooltip>
 
-        <div className="flex w-full cursor-pointer items-center justify-between p-2 hover:bg-gray-50">
-          <div className="flex items-center gap-2">
+        <Tooltip
+          direction="right"
+          content="Add a presentation. Supported Microsoft PowerPoint(.pptx)"
+        >
+          <div className="flex w-full cursor-pointer items-center justify-between p-2 hover:bg-gray-50 hover:text-gray-600">
+            <div className="flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="lucide lucide-presentation"
+              >
+                <path d="M2 3h20" />
+                <path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3" />
+                <path d="m7 21 5-5 5 5" />
+              </svg>
+              <span>Add Slides/Presentation</span>
+            </div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -395,30 +443,56 @@ function InsertNewSection() {
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              className="lucide lucide-blocks"
+              className="lucide lucide-info"
             >
-              <rect width="7" height="7" x="14" y="3" rx="1" />
-              <path d="M10 21V8a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H3" />
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 16v-4" />
+              <path d="M12 8h.01" />
             </svg>
-            <span>Slides/Presentation</span>
           </div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            className="lucide lucide-info"
-          >
-            <circle cx="12" cy="12" r="10" />
-            <path d="M12 16v-4" />
-            <path d="M12 8h.01" />
-          </svg>
-        </div>
+        </Tooltip>
+
+        <Tooltip
+          direction="right"
+          content="Link to a Google Docs or Google Slides"
+        >
+          <div className="flex w-full cursor-pointer items-center justify-between p-2 hover:bg-gray-50 hover:text-gray-600">
+            <div className="flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="lucide lucide-link"
+              >
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+              </svg>
+              <span>Add a Link for Google Docs or Google Slides</span>
+            </div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              className="lucide lucide-info"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 16v-4" />
+              <path d="M12 8h.01" />
+            </svg>
+          </div>
+        </Tooltip>
       </div>
     </div>
   );
