@@ -46,6 +46,15 @@ export default function CreateProgram() {
     }
   };
 
+  // TODO
+  /*
+  1. Create schemas. One parent table and tables for blocks, documents, links. Including status field: draft, published, archived
+  2. Integrate step 1. Create draft program, upload image
+  3. Add beforeunload event listener to warn user if they have unsaved changes
+  4. Create content types for step 2. Enable preview mode
+
+  */
+
   return (
     <>
       <Header title="Create a Training Program" />
