@@ -32,6 +32,7 @@ export default function CreateProgram() {
           <Steps doneSteps={getDoneSteps()} activeStep={activeTab} />
           <div className="shadowAroundFeature relative h-full min-h-[80vh] w-full rounded-md bg-white p-4 pb-16">
             {activeTab === 0 && <ProgramDetails />}
+            {activeTab === 1 && <CreateProgramContent />}
 
             <div className="absolute inset-x-0 bottom-2 flex w-full justify-between px-4">
               <button className="rounded-md border-[1px] border-gray-400 bg-transparent px-8 py-1.5 text-sm font-medium text-gray-500">
@@ -290,5 +291,135 @@ function ProgramDetails() {
         </div>
       </div>
     </form>
+  );
+}
+
+function CreateProgramContent() {
+  return (
+    <div>
+      <InsertNewSection />
+    </div>
+  );
+}
+
+function InsertNewSection() {
+  return (
+    <div className="flex w-[400px] flex-col gap-4 rounded-md p-4 shadow-md">
+      <h3 className="text-lg font-semibold text-blue-500">
+        Choose type of section to add
+      </h3>
+      <div className="flex w-full flex-col gap-2 font-medium text-gray-500">
+        <div className="flex w-full cursor-pointer items-center justify-between p-2 hover:bg-gray-50">
+          <div className="flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              className="lucide lucide-blocks"
+            >
+              <rect width="7" height="7" x="14" y="3" rx="1" />
+              <path d="M10 21V8a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H3" />
+            </svg>
+            <span>Block Editor</span>
+          </div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            className="lucide lucide-info"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 16v-4" />
+            <path d="M12 8h.01" />
+          </svg>
+        </div>
+
+        <div className="flex w-full cursor-pointer items-center justify-between p-2 hover:bg-gray-50">
+          <div className="flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              className="lucide lucide-blocks"
+            >
+              <rect width="7" height="7" x="14" y="3" rx="1" />
+              <path d="M10 21V8a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H3" />
+            </svg>
+            <span>PDF</span>
+          </div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            className="lucide lucide-info"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 16v-4" />
+            <path d="M12 8h.01" />
+          </svg>
+        </div>
+
+        <div className="flex w-full cursor-pointer items-center justify-between p-2 hover:bg-gray-50">
+          <div className="flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              className="lucide lucide-blocks"
+            >
+              <rect width="7" height="7" x="14" y="3" rx="1" />
+              <path d="M10 21V8a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H3" />
+            </svg>
+            <span>Slides/Presentation</span>
+          </div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            className="lucide lucide-info"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 16v-4" />
+            <path d="M12 8h.01" />
+          </svg>
+        </div>
+      </div>
+    </div>
   );
 }
