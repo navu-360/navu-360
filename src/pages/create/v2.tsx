@@ -11,28 +11,47 @@ const animatedComponents = makeAnimated();
 export default function CreateProgram() {
   const [activeTab, setActiveTab] = useState(0);
 
+  const getDoneSteps = () => {
+    switch (activeTab) {
+      case 0:
+        return [];
+      case 1:
+        return [0];
+      case 2:
+        return [0, 1];
+      default:
+        return [];
+    }
+  };
+
   return (
     <>
       <Header title="Create a Training Program" />
       <DashboardWrapper hideSearch>
         <div className="relative ml-[90px] mt-[40px] flex h-auto flex-col items-start justify-start gap-8 rounded-md  p-4 md:ml-[300px] md:w-[calc(100%_-_400px)]">
-          <Steps />
+          <Steps doneSteps={getDoneSteps()} activeStep={activeTab} />
           <div className="shadowAroundFeature relative h-full min-h-[80vh] w-full rounded-md bg-white p-4 pb-16">
             {activeTab === 0 && <ProgramDetails />}
 
             <div className="absolute inset-x-0 bottom-2 flex w-full justify-between px-4">
               <button className="rounded-md border-[1px] border-gray-400 bg-transparent px-8 py-1.5 text-sm font-medium text-gray-500">
-                Cancel
+                {activeTab === 0 ? "Cancel" : "Back"}
               </button>
               <div className="flex gap-8">
                 <button className="rounded-md border-[1px] border-secondary px-8 py-1.5 text-sm font-medium text-secondary">
                   Save Draft
                 </button>
                 <button
-                  onClick={() => setActiveTab(activeTab + 1)}
+                  onClick={() => {
+                    if (activeTab === 2) {
+                      console.log("submit");
+                      return;
+                    }
+                    setActiveTab(activeTab + 1);
+                  }}
                   className="rounded-md bg-secondary px-8 py-1.5 text-sm font-semibold text-white"
                 >
-                  Save & Continue
+                  {activeTab === 2 ? "Create Program" : "Save & Continue"}
                 </button>
               </div>
             </div>
@@ -43,11 +62,90 @@ export default function CreateProgram() {
   );
 }
 
-function Steps() {
+function Steps({
+  doneSteps,
+  activeStep,
+}: {
+  activeStep: number;
+  doneSteps: number[];
+}) {
   return (
     <ol className="flex w-full items-center text-center text-sm font-medium text-gray-400 sm:text-base">
-      <li className="after:border-1 flex items-center text-secondary after:mx-6 after:hidden after:h-1 after:w-full after:border-b after:border-gray-200 dark:text-secondary dark:after:border-gray-300 sm:after:inline-block sm:after:content-[''] md:w-full xl:after:mx-5">
-        <span className="flex items-center after:mx-2 after:text-gray-300 after:content-['/'] sm:after:hidden">
+      <li
+        className={`after:border-1 flex items-center text-secondary after:mx-6 after:hidden after:h-1 after:w-full  after:border-b sm:after:inline-block sm:after:content-[''] md:w-full xl:after:mx-5 ${
+          doneSteps?.includes(0)
+            ? "after:border-secondary"
+            : "after:border-gray-200"
+        }`}
+      >
+        <span
+          className={`flex items-center after:mx-2 after:content-['/'] sm:after:hidden ${
+            doneSteps?.includes(0) ? "after:text-secondary" : ""
+          } dark:after:text-gray-500`}
+        >
+          {doneSteps?.includes(0) ? (
+            <svg
+              className="mr-2.5 h-3.5 w-3.5 sm:h-4 sm:w-4"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+            </svg>
+          ) : (
+            <div
+              className={`mr-2 h-4 w-4 rounded-full ${
+                activeStep === 0 ? "bg-secondary" : "bg-gray-300"
+              }`}
+            />
+          )}
+          Program <span className="hidden sm:ml-2 sm:inline-flex">Details</span>
+        </span>
+      </li>
+      <li
+        className={`after:border-1 flex items-center after:mx-6 after:hidden after:h-1 after:w-full after:border-b  after:content-[''] sm:after:inline-block md:w-full xl:after:mx-5 ${
+          doneSteps?.includes(1)
+            ? "after:border-secondary"
+            : "after:border-gray-200"
+        }`}
+      >
+        <span
+          className={`flex items-center after:mx-2  after:content-['/'] sm:after:hidden ${
+            doneSteps?.includes(1) || activeStep === 1
+              ? "text-secondary"
+              : "text-gray-500"
+          }`}
+        >
+          {doneSteps?.includes(1) ? (
+            <svg
+              className="mr-2.5 h-3.5 w-3.5 sm:h-4 sm:w-4"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+            </svg>
+          ) : (
+            <div
+              className={`mr-2 h-4 w-4 rounded-full ${
+                activeStep === 1 ? "bg-secondary" : "bg-gray-300"
+              }`}
+            />
+          )}
+          Program{" "}
+          <span className="hidden sm:ml-2 sm:inline-flex">Materials</span>
+        </span>
+      </li>
+      <li
+        className={`flex items-center ${
+          doneSteps?.includes(2) || activeStep === 2
+            ? "text-secondary"
+            : "text-gray-500"
+        }`}
+      >
+        {doneSteps?.includes(2) ? (
           <svg
             className="mr-2.5 h-3.5 w-3.5 sm:h-4 sm:w-4"
             aria-hidden="true"
@@ -57,18 +155,13 @@ function Steps() {
           >
             <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
           </svg>
-          Program <span className="hidden sm:ml-2 sm:inline-flex">Details</span>
-        </span>
-      </li>
-      <li className="after:border-1 flex items-center after:mx-6 after:hidden after:h-1 after:w-full after:border-b after:border-gray-200 after:content-[''] dark:after:border-gray-300 sm:after:inline-block md:w-full xl:after:mx-5">
-        <span className="flex items-center after:mx-2 after:text-gray-200 after:content-['/'] dark:after:text-gray-500 sm:after:hidden">
-          <div className="mr-2 h-4 w-4 rounded-full bg-gray-300" />
-          Program{" "}
-          <span className="hidden sm:ml-2 sm:inline-flex">Materials</span>
-        </span>
-      </li>
-      <li className="flex items-center">
-        <div className="mr-2 h-4 w-4 rounded-full bg-gray-300" />
+        ) : (
+          <div
+            className={`mr-2 h-4 w-4 rounded-full ${
+              activeStep === 2 ? "bg-secondary" : "bg-gray-300"
+            }`}
+          />
+        )}
         Confirmation
       </li>
     </ol>
