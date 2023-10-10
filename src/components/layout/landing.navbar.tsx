@@ -64,7 +64,7 @@ export default function NavBar() {
           </button>
           <Link
             href="/welcome/plan"
-            className="hidden h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white transition-all duration-300 ease-in hover:bg-secondary hover:px-10 focus:outline-none focus:ring-1 md:mr-0 md:flex"
+            className="hidden h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white transition-all duration-300 ease-in hover:bg-secondary hover:bg-secondary/90 focus:outline-none focus:ring-1 md:mr-0 md:flex"
           >
             Get started
           </Link>
