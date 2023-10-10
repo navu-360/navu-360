@@ -70,10 +70,10 @@ export default function Pricing({
       id="pricing"
       className="mx-auto my-16 w-full px-5 py-10 text-gray-600"
     >
-      <div className="mx-auto max-w-7xl md:flex">
+      <div className="mx-auto max-w-7xl lg:flex xl:flex-row flex-col">
         {!fromStart && (
-          <div className="md:flex md:w-1/4 md:flex-col">
-            <div className="w-full flex-grow text-left md:pr-5">
+          <div className="xl:flex xl:w-1/4 lg:flex-col">
+            <div className="w-full flex-grow text-center xl:pr-5 xl:text-left">
               <h2
                 className={`textGradientTitles mb-5 text-4xl font-bold ${font.className}`}
               >
@@ -85,14 +85,14 @@ export default function Pricing({
             </div>
           </div>
         )}
-        <div className={`${fromStart ? "w-full" : "md:w-3/4"}`}>
-          <div className="mx-auto max-w-6xl md:flex">
+        <div className={`${fromStart ? "w-full" : "lg:w-full xl:w-3/4"} mr-auto`}>
+          <div className="mx-auto max-w-6xl lg:flex">
             <motion.div
               initial={{ x: -30, scale: 1 }}
               whileInView={{ x: 0, scale: 1 }}
               transition={{ ease: "easeOut", duration: 0.5, delay: 0.1 }}
               viewport={{ amount: 0.9, once: true }}
-              className="shadowAroundFeature featureThreeGradient relative mx-auto mb-3 w-full rounded-md px-8 py-8 text-white md:my-2 md:flex md:w-1/3 md:max-w-none md:flex-col md:px-10 md:py-10"
+              className="shadowAroundFeature featureThreeGradient relative mx-auto mb-3 w-max min-w-[300px] rounded-md px-8 py-8 text-white lg:my-2 lg:flex lg:w-1/3 lg:max-w-none lg:flex-col lg:px-10 lg:py-10"
             >
               <div className="w-full flex-grow">
                 <h3
@@ -201,10 +201,10 @@ export default function Pricing({
             </motion.div>
             <motion.div
               initial={{ scale: 1 }}
-              whileInView={{ scale: 1.1 }}
+              whileInView={{ scale: 1 }}
               transition={{ ease: "easeOut", duration: 0.5, delay: 0.2 }}
               viewport={{ amount: 0.9, once: true }}
-              className="shadowAroundFeature featureThreeGradient mx-auto mb-3 w-full rounded-md px-8 py-8 text-white md:relative md:z-10 md:-mx-3 md:mb-0 md:flex md:w-1/3 md:max-w-none md:flex-col md:px-10 md:py-10"
+              className="shadowAroundFeature featureThreeGradient mx-auto mb-3 w-max min-w-[300px] rounded-md px-8 py-8 text-white lg:relative lg:z-10 lg:-mx-3 lg:mb-0 lg:flex lg:w-1/3 lg:max-w-none lg:flex-col lg:px-10 lg:py-10"
             >
               <div className="w-full flex-grow">
                 <h3
@@ -212,7 +212,7 @@ export default function Pricing({
                 >
                   Regular
                 </h3>
-                <span className="mb-5 text-center text-4xl font-bold md:text-5xl">
+                <span className="mb-5 text-center text-4xl font-bold lg:text-5xl">
                   $49<span className="text-sm">/mo</span>
                 </span>
                 <ul className="my-8 flex  flex-col gap-2 text-sm">
@@ -316,7 +316,7 @@ export default function Pricing({
               whileInView={{ x: 0, scale: 1 }}
               transition={{ ease: "easeOut", duration: 0.5, delay: 0.3 }}
               viewport={{ amount: 0.9, once: true }}
-              className="shadowAroundFeature featureThreeGradient mx-auto mb-3 w-full rounded-md px-8 py-8 text-white md:my-2 md:flex md:w-1/3 md:max-w-none md:flex-col md:px-10 md:py-10"
+              className="shadowAroundFeature featureThreeGradient mx-auto mb-3 w-max min-w-[300px] rounded-md px-8 py-8 text-white lg:my-2 lg:flex lg:w-1/3 lg:max-w-none lg:flex-col lg:px-10 lg:py-10"
             >
               <div className="w-full flex-grow">
                 <h3

@@ -41,7 +41,7 @@ export default function FeaturesNavu() {
     },
   ];
   return (
-    <section id="features" className="mt-16 flex flex-col">
+    <section id="features" className="mt-16 flex w-full justify-center flex-col px-6">
       {features?.map((feature, i) => (
         <motion.div
           initial={{ y: 30, scale: 0.9 }}
@@ -49,16 +49,16 @@ export default function FeaturesNavu() {
           transition={{ ease: "easeOut", duration: 0.5, delay: i * 0.1 }}
           viewport={{ amount: 0.7, once: true }}
           key={i}
-          className="group container mx-auto my-8 md:px-6"
+          className="group container mx-auto my-8 w-full lg:px-6"
         >
           <section className="">
             <div
-              className={`shadowAroundFeature mx-auto flex h-[350px] w-max max-w-6xl flex-wrap justify-end rounded-lg ${
+              className={`shadowAroundFeature mx-auto flex lg:h-[350px] h-[650px] lg:w-auto w-full max-w-6xl flex-wrap justify-end rounded-lg ${
                 feature.reverse ? "flex-row-reverse" : "flex-row"
               }`}
             >
               <div
-                className={`mb-12 w-full shrink-0 grow-0 basis-auto rounded-lg lg:mb-0 lg:w-5/12`}
+                className={`mb-12 lg:h-full h-1/2 w-full shrink-0 grow-0 basis-auto rounded-lg lg:mb-0 lg:w-5/12`}
               >
                 <div className="relative flex h-full w-full lg:py-12">
                   <Image
@@ -71,7 +71,7 @@ export default function FeaturesNavu() {
                   />
                 </div>
               </div>
-              <div className={`w-full shrink-0 grow-0 basis-auto lg:w-7/12`}>
+              <div className={`w-full shrink-0 grow-0 basis-auto lg:h-full h-1/2 bg-red-400 lg:w-7/12`}>
                 <div
                   className={`flex h-full items-center py-10 pr-6 text-center text-white lg:text-left ${
                     feature.gradientClass
@@ -80,10 +80,10 @@ export default function FeaturesNavu() {
                   }`}
                 >
                   <div className="cursor-default lg:pl-12">
-                    <h2 className={`mb-6 text-3xl font-bold ${font.className}`}>
+                    <h2 className={`mb-6 md:text-3xl text-xl font-bold ${font.className}`}>
                       {feature.title}
                     </h2>
-                    <p className="mb-6 pb-2 lg:pb-0">{feature.description}</p>
+                    <p className="mb-6 pb-2 lg:pb-0 md:text-base text-sm">{feature.description}</p>
                     <Link
                       href="/welcome/plan"
                       className="rounded-full border-2 border-neutral-50 px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-neutral-50 transition-all duration-300 ease-in hover:border-neutral-100 hover:bg-neutral-100 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 group-hover:px-10"

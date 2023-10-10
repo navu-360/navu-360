@@ -30,7 +30,7 @@ export default function LandingWrapper({
             </Link>
             © 2023 . All Rights Reserved.
           </div>
-          <ul className="mt-3 flex flex-wrap items-center text-sm font-medium text-gray-300 sm:mt-0">
+          <ul className="mt-3 flex flex-wrap items-center justify-center text-sm font-medium text-gray-300 sm:mt-0">
             <li>
               <Link href="#features" className="mr-4 hover:underline md:mr-6 ">
                 Features

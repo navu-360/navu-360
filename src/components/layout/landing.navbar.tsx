@@ -45,7 +45,7 @@ export default function NavBar() {
         <Link href="/" className="relative flex items-center pl-4">
           <img src="/logo.svg" className="mr-3 h-6 sm:h-9" alt="Navu360 Logo" />
         </Link>
-        <div className="flex gap-4">
+        <div className="hidden gap-4 md:flex">
           <OneLink to="#features" text="Features" />
           <OneLink to="#pricing" text="Pricing" />
         </div>
