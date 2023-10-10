@@ -41,7 +41,7 @@ export default function FeaturesNavu() {
     },
   ];
   return (
-    <section id="features" className="mt-16 flex w-full justify-center flex-col px-6">
+    <section id="features" className="mt-16 flex w-full justify-center flex-col gap-8 px-6">
       {features?.map((feature, i) => (
         <motion.div
           initial={{ y: 30, scale: 0.9 }}
@@ -71,7 +71,7 @@ export default function FeaturesNavu() {
                   />
                 </div>
               </div>
-              <div className={`w-full shrink-0 grow-0 basis-auto lg:h-full h-1/2 bg-red-400 lg:w-7/12`}>
+              <div className={`w-full shrink-0 grow-0 basis-auto lg:h-full h-1/2 lg:w-7/12`}>
                 <div
                   className={`flex h-full items-center py-10 pr-6 text-center text-white lg:text-left ${
                     feature.gradientClass
@@ -79,7 +79,7 @@ export default function FeaturesNavu() {
                     feature.reverse ? "rounded-l-lg pl-0" : "rounded-r-lg pl-0"
                   }`}
                 >
-                  <div className="cursor-default lg:pl-12">
+                  <div className="cursor-default lg:pl-12 pl-4">
                     <h2 className={`mb-6 md:text-3xl text-xl font-bold ${font.className}`}>
                       {feature.title}
                     </h2>
