@@ -45,7 +45,7 @@ export default function NavBar() {
         <Link href="/" className="relative flex items-center pl-4">
           <img src="/logo.svg" className="mr-3 h-6 sm:h-9" alt="Navu360 Logo" />
         </Link>
-        <div className="flex gap-4">
+        <div className="hidden gap-4 md:flex">
           <OneLink to="#features" text="Features" />
           <OneLink to="#pricing" text="Pricing" />
         </div>
@@ -64,7 +64,7 @@ export default function NavBar() {
           </button>
           <Link
             href="/welcome/plan"
-            className="hidden h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white transition-all duration-300 ease-in hover:bg-secondary hover:px-10 focus:outline-none focus:ring-1 md:mr-0 md:flex"
+            className="hidden h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white transition-all duration-300 ease-in hover:bg-secondary hover:bg-secondary/90 focus:outline-none focus:ring-1 md:mr-0 md:flex"
           >
             Get started
           </Link>

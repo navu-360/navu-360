@@ -16,9 +16,9 @@ export default function Cta() {
           <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-[hsla(0,0%,0%,0.75)] bg-fixed">
             <div className="flex h-full items-center justify-center">
               <div className="px-6 text-center text-white md:px-12">
-                <h2 className="mb-12 cursor-default text-5xl font-bold leading-tight tracking-tight">
+                <h2 className="mb-12 cursor-default md:text-5xl text-3xl font-bold leading-tight tracking-tight">
                   Are you ready <br />
-                  <span>elevate your team?</span>
+                  <span>to elevate your team?</span>
                 </h2>
                 <Link
                   href="/welcome/plan"

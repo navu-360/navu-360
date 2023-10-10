@@ -15,6 +15,36 @@ import Checklist from "@editorjs/checklist";
 
 import { uploadOne } from "../uploader";
 
+import { IconH1, IconH2, IconH3 } from "@codexteam/icons";
+
+class CustomHeader extends Header {
+  static get toolbox() {
+    return [
+      {
+        icon: IconH1,
+        title: "Heading 1",
+        data: {
+          level: 1,
+        },
+      },
+      {
+        icon: IconH2,
+        title: "Heading 2",
+        data: {
+          level: 2,
+        },
+      },
+      {
+        icon: IconH3,
+        title: "Heading 3",
+        data: {
+          level: 3,
+        },
+      },
+    ];
+  }
+}
+
 export const EDITOR_JS_TOOLS = {
   image: {
     class: Image,
@@ -46,10 +76,7 @@ export const EDITOR_JS_TOOLS = {
       },
     },
   },
-  header: {
-    class: Header,
-    inlineToolbar: true,
-  },
+  header: CustomHeader,
   list: {
     class: List,
     inlineToolbar: true,

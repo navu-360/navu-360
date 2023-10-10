@@ -11,9 +11,9 @@ const font = Play({
 
 export default function Features() {
   return (
-    <section className="relative flex w-full justify-around bg-white py-8 pt-44 text-white">
+    <section className="relative flex w-full lg:justify-around justify-center items-center bg-white py-8 pt-44 text-white lg:flex-row lg:flex-wrap xl:flex-nowrap flex-col lg:gap-8 gap-16 px-6">
       <h2
-        className={`textGradientTitles absolute top-20 cursor-default text-3xl font-semibold ${font.className}`}
+        className={`textGradientTitles absolute lg:left-0 left-0 right-0 top-20 cursor-default text-3xl font-semibold ${font.className} text-center`}
       >
         Superior Features
       </h2>
