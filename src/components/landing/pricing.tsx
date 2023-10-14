@@ -101,7 +101,7 @@ export default function Pricing({
                   Starter
                 </h3>
                 <span className="mb-5 text-center text-4xl font-bold">
-                  $15<span className="text-sm">/mo</span>
+                  $25<span className="text-sm">/mo</span>
                 </span>
                 <ul className="my-8 flex flex-col gap-2 text-sm">
                   <li className="flex items-center gap-2 leading-tight">
@@ -213,7 +213,7 @@ export default function Pricing({
                   Regular
                 </h3>
                 <span className="mb-5 text-center text-4xl font-bold lg:text-5xl">
-                  $49<span className="text-sm">/mo</span>
+                  $69<span className="text-sm">/mo</span>
                 </span>
                 <ul className="my-8 flex  flex-col gap-2 text-sm">
                   <li className="flex items-center gap-2 leading-tight">
@@ -325,7 +325,7 @@ export default function Pricing({
                   Pro
                 </h3>
                 <span className="mb-5 text-center text-4xl font-bold">
-                  $99<span className="text-sm">/mo</span>
+                  $125<span className="text-sm">/mo</span>
                 </span>
                 <ul className="my-8 flex flex-col gap-2 text-sm">
                   <li className="flex items-center gap-2 leading-tight">
