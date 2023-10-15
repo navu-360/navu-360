@@ -148,6 +148,8 @@ export default function Setup() {
       noOfEmployees: string;
     },
   ) => {
+    subAction();
+    return;
     if (!role || role === "") {
       toast({
         status: "error",
