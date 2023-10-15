@@ -38,7 +38,7 @@ export default function CreateOrganizationLayout({
 }) {
   const { data: session } = useSession();
   return (
-    <section className="flex h-[100vh] w-screen">
+    <section className="no-scrollbar flex h-[100vh] w-screen overflow-y-auto overflow-x-hidden">
       <div className="relative hidden h-full w-1/3 md:block">
         <Image
           src="https://res.cloudinary.com/dpnbddror/image/upload/v1678044671/Rectangle_417_1_1_pq5jum.png"
@@ -64,12 +64,14 @@ export default function CreateOrganizationLayout({
           <p className="text-base font-medium">{desc}</p>
         </div>
         <div className="block md:hidden">
-          <GoBack />
+          <GoBack customText="Cancel" />
         </div>
 
         {children}
         {!fromStart && (
-          <div className={`flex w-full items-end justify-end px-8`}>
+          <div
+            className={`flex w-full items-end justify-center px-8 lg:justify-end`}
+          >
             <button
               disabled={loading}
               onClick={() => {

@@ -16,10 +16,6 @@ export default function PickAPlan() {
         router.replace("/learn");
         return;
       }
-      if (!session?.user?.hasBeenOnboarded) {
-        router.push("/setup");
-        return;
-      }
       if (session?.user?.hasBeenOnboarded) {
         router.push("/dashboard");
         return;

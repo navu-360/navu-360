@@ -26,7 +26,6 @@ export default function NavBar() {
         router.pathname === "/setup" &&
         session?.user?.hasBeenOnboarded
       ) {
-        // TODO: why?
         router.push("/");
       } else if (router.pathname === "/" && session?.user?.hasBeenOnboarded) {
         if (session?.user?.role === "admin") {

@@ -1,3 +1,4 @@
+import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 
 export function TalentSwitch({
@@ -63,11 +64,17 @@ function OneOption({
   );
 }
 
-export function GoBack() {
+export function GoBack({ customText }: { customText?: string }) {
   const router = useRouter();
   return (
     <div
-      onClick={() => router.back()}
+      onClick={() => {
+        if (customText === "Cancel") {
+          signOut({ redirect: true, callbackUrl: "/" });
+        } else {
+          router.back();
+        }
+      }}
       className="absolute left-0 top-0 z-50 flex w-max cursor-pointer items-center gap-2 rounded-md p-2 text-tertiary hover:bg-gray-100"
     >
       <svg
@@ -84,7 +91,9 @@ export function GoBack() {
           d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"
         />
       </svg>
-      <p className="cursor-pointer text-[15px] font-semibold">Go Back</p>
+      <p className="cursor-pointer text-[15px] font-semibold">
+        {customText ?? "Go Back"}
+      </p>
     </div>
   );
 }
