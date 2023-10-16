@@ -27,6 +27,7 @@ const MyEditor = dynamic(() => import("components/common/editor/editor"), {
 });
 import type { OutputData } from "@editorjs/editorjs";
 import toaster from "utils/toaster";
+import Image from "next/image";
 
 const animatedComponents = makeAnimated();
 
@@ -101,10 +102,11 @@ function Steps({
   activeStep: number;
   doneSteps: number[];
 }) {
+  // TODO: make steps clickable
   return (
     <ol className="flex w-full items-center text-center text-sm font-medium text-gray-400 sm:text-base">
       <li
-        className={`after:border-1 flex items-center text-secondary after:mx-6 after:hidden after:h-1 after:w-full  after:border-b sm:after:inline-block sm:after:content-[''] md:w-full xl:after:mx-5 ${
+        className={`after:border-1 flex items-center font-medium tracking-tight text-secondary after:mx-6 after:hidden after:h-1 after:w-full  after:border-b sm:after:inline-block sm:after:content-[''] md:w-full xl:after:mx-5 ${
           doneSteps?.includes(0)
             ? "after:border-secondary"
             : "after:border-gray-200"
@@ -136,7 +138,7 @@ function Steps({
         </span>
       </li>
       <li
-        className={`after:border-1 flex items-center after:mx-6 after:hidden after:h-1 after:w-full after:border-b  after:content-[''] sm:after:inline-block md:w-full xl:after:mx-5 ${
+        className={`after:border-1 flex items-center font-medium tracking-tight after:mx-6 after:hidden after:h-1 after:w-full after:border-b  after:content-[''] sm:after:inline-block md:w-full xl:after:mx-5 ${
           doneSteps?.includes(1)
             ? "after:border-secondary"
             : "after:border-gray-200"
@@ -171,7 +173,7 @@ function Steps({
         </span>
       </li>
       <li
-        className={`flex items-center ${
+        className={`flex items-center font-medium tracking-tight ${
           doneSteps?.includes(2) || activeStep === 2
             ? "text-secondary"
             : "text-gray-500"
@@ -326,7 +328,9 @@ function ProgramDetails() {
 }
 
 function CreateProgramContent() {
-  const [activeContentType, setActiveContentType] = useState<string[]>([]);
+  const [activeContentType, setActiveContentType] = useState<string[]>([
+    "block",
+  ]);
   const [addedSectionsIds, setAddedSectionsIds] = useState<string[]>([]);
 
   const [blockContent, setBlockContent] = useState<OutputData>();
@@ -591,40 +595,35 @@ function InsertNewSection({
             onClick={() => chooseType("block")}
             className="flex w-full cursor-pointer items-center justify-between p-2 hover:bg-gray-50 hover:text-gray-600"
           >
-            <div className="flex items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                className="lucide lucide-blocks"
-              >
-                <rect width="7" height="7" x="14" y="3" rx="1" />
-                <path d="M10 21V8a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H3" />
-              </svg>
-              <span>Add a Block Editor</span>
+            <div className="flex items-center gap-4">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-secondary/20 text-secondary shadow-sm">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="lucide lucide-indent"
+                >
+                  <polyline points="3 8 7 12 3 16" />
+                  <line x1="21" x2="11" y1="12" y2="12" />
+                  <line x1="21" x2="11" y1="6" y2="6" />
+                  <line x1="21" x2="11" y1="18" y2="18" />
+                </svg>
+              </div>
+
+              <div className="flex flex-col">
+                <h3 className="text-lg font-semibold">Add a Block Editor</h3>
+                <p className="text-sm font-medium text-gray-600">
+                  Craft detailed section with text formatting, tables, lists,
+                  checkboxes, images, and more.
+                </p>
+              </div>
             </div>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              className="lucide lucide-info"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <path d="M12 16v-4" />
-              <path d="M12 8h.01" />
-            </svg>
           </div>
         </Tooltip>
 
@@ -633,40 +632,24 @@ function InsertNewSection({
             onClick={() => chooseType("document")}
             className="flex w-full cursor-pointer items-center justify-between p-2 hover:bg-gray-50 hover:text-gray-600"
           >
-            <div className="flex items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                className="lucide lucide-file"
-              >
-                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-                <polyline points="14 2 14 8 20 8" />
-              </svg>
-              <span>Add a Document</span>
+            <div className="flex items-center gap-4">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-secondary/20 shadow-sm">
+                <Image
+                  src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
+                  height={24}
+                  width={24}
+                  alt="Add a Document"
+                />
+              </div>
+
+              <div className="flex flex-col">
+                <h3 className="text-lg font-semibold">Add a Document</h3>
+                <p className="text-sm font-medium text-gray-600">
+                  Add a PDF as a section into your program for detailed
+                  instructions, guides, or additional reading.
+                </p>
+              </div>
             </div>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              className="lucide lucide-info"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <path d="M12 16v-4" />
-              <path d="M12 8h.01" />
-            </svg>
           </div>
         </Tooltip>
 
@@ -678,40 +661,26 @@ function InsertNewSection({
             onClick={() => chooseType("link")}
             className="flex w-full cursor-pointer items-center justify-between p-2 hover:bg-gray-50 hover:text-gray-600"
           >
-            <div className="flex items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                className="lucide lucide-link"
-              >
-                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-              </svg>
-              <span>Add a Link for Google Docs or Google Slides</span>
+            <div className="flex items-center gap-4">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-secondary/20 shadow-sm">
+                <Image
+                  src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                  height={24}
+                  width={24}
+                  alt="Add a Link for Google Docs or Google Slides"
+                />
+              </div>
+
+              <div className="flex flex-col">
+                <h3 className="text-lg font-semibold">
+                  Add a Link for Google Docs or Google Slides
+                </h3>
+                <p className="text-sm font-medium text-gray-600">
+                  Embed real-time Google Docs or Slides for collaborative and
+                  up-to-date training content.
+                </p>
+              </div>
             </div>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              className="lucide lucide-info"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <path d="M12 16v-4" />
-              <path d="M12 8h.01" />
-            </svg>
           </div>
         </Tooltip>
       </div>
