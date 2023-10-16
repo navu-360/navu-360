@@ -60,14 +60,24 @@ export default function CreateProgram() {
     <>
       <Header title="Create a Training Program" />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[90px] mt-[40px] flex h-auto flex-col items-start justify-start gap-8 rounded-md  p-4 md:ml-[300px] md:w-[calc(100%_-_400px)]">
+        <div className="relative ml-[90px] mt-[40px] flex h-full flex-col items-start justify-start gap-8 rounded-md  p-4 md:ml-[300px] md:w-[calc(100%_-_400px)]">
           <Steps doneSteps={getDoneSteps()} activeStep={activeTab} />
           <div className="shadowAroundFeature relative h-full min-h-[80vh] w-full rounded-md bg-white p-4 pb-16">
             {activeTab === 0 && <ProgramDetails />}
             {activeTab === 1 && <CreateProgramContent />}
+            {activeTab === 2 && <ConfirmStep />}
 
             <div className="absolute inset-x-0 bottom-2 flex w-full justify-between px-4">
-              <button className="rounded-md border-[1px] border-gray-400 bg-transparent px-8 py-1.5 text-sm font-medium text-gray-500">
+              <button
+                onClick={() => {
+                  if (activeTab === 0) {
+                    console.log("cancel");
+                    return;
+                  }
+                  setActiveTab(activeTab - 1);
+                }}
+                className="rounded-md border-[1px] border-gray-400 bg-transparent px-8 py-1.5 text-sm font-medium text-gray-500"
+              >
                 {activeTab === 0 ? "Cancel" : "Back"}
               </button>
               <div className="flex gap-8">
@@ -358,11 +368,9 @@ function CreateProgramContent() {
   return (
     <div className="relative w-full">
       <div className="my-6 w-[95%] pt-16 text-gray-600">
-        {addedSectionsIds.length > 0 && (
-          <button className="absolute -top-6 right-4 rounded-md border-[1px] border-tertiary px-8 py-1.5 text-tertiary">
-            Preview
-          </button>
-        )}
+        <button className="absolute -top-6 right-4 rounded-md border-[1px] border-tertiary px-8 py-1.5 text-tertiary">
+          Preview
+        </button>
 
         {activeContentType.includes("block") && (
           <div className="relative w-full">
@@ -545,6 +553,643 @@ function CreateProgramContent() {
             }
           />
         )}
+    </div>
+  );
+}
+
+function ConfirmStep() {
+  const [showCreateQuiz, setShowCreateQuiz] = useState(false);
+  return (
+    <section
+      className={`relative flex h-full min-h-[70vh] w-full flex-col items-center gap-4 text-center ${
+        showCreateQuiz ? "justify-start" : "justify-center"
+      }`}
+    >
+      {!showCreateQuiz ? (
+        <>
+          <h2 className="text-2xl font-semibold text-tertiary">
+            Course Creation Complete!
+          </h2>
+          <p className="mx-auto max-w-xl text-sm font-medium text-gray-700">
+            Your program has been successfully created. It has not yet been
+            published. <br /> Do you want to add a quiz to your program?
+          </p>
+          <div className="mx-auto mt-2 flex w-max items-center gap-6">
+            <button
+              onClick={() => console.log("go to programs")}
+              className="rounded-md border-[1px] border-gray-700 px-12 py-1.5 font-semibold text-gray-700"
+            >
+              No, I&apos;m done
+            </button>
+            <button
+              onClick={() => setShowCreateQuiz(true)}
+              className="rounded-md bg-secondary px-12 py-1.5 font-semibold text-white"
+            >
+              Yes, add a quiz
+            </button>
+          </div>
+        </>
+      ) : (
+        <CreateQuiz />
+      )}
+    </section>
+  );
+}
+
+interface IQuizQuestion {
+  question: string;
+  options: IOptions[];
+  answer: string;
+  explanation: string;
+}
+
+interface IOptions {
+  value: string;
+  label: string;
+}
+
+function CreateQuiz() {
+  const [questions, setQuestions] = useState<IQuizQuestion[]>([
+    {
+      question: "What is the capital of India?",
+      options: [
+        {
+          value: "delhi",
+          label: "Delhi",
+        },
+        {
+          value: "mumbai",
+          label: "Mumbai",
+        },
+        {
+          value: "kolkata",
+          label: "Kolkata",
+        },
+        {
+          value: "chennai",
+          label: "Chennai",
+        },
+      ],
+      answer: "delhi",
+      explanation: "Delhi is the capital of India",
+    },
+  ]);
+
+  const saveCurrentQuestion = (obj: IQuizQuestion) => {
+    setQuestions((prev) => [...prev, obj]);
+  };
+
+  const saveEditedQuestion = (obj: IQuizQuestion, index: number) => {
+    setQuestions((prev) => {
+      const newQuestions = [...prev];
+      newQuestions[index] = obj;
+      return newQuestions;
+    });
+  };
+
+  const removeQuestionAtIndex = (index: number) => {
+    setQuestions((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const [showAddQuestion, setShowAddQuestion] = useState(false);
+
+  return (
+    <section className="flex w-full max-w-5xl flex-col gap-2 text-left">
+      <h2 className="text-2xl font-semibold text-tertiary">Create Quiz</h2>
+      <p className="max-w-xl text-sm font-medium text-gray-700">
+        You can add multiple questions to your quiz.
+      </p>
+
+      <div className="relative mt-4 flex w-full flex-col gap-6">
+        {questions.map((question, index) => (
+          <QuestionView
+            {...question}
+            answer={
+              question.options.find(
+                (option) => option.value === question.answer,
+              )?.label ?? ""
+            }
+            answerKey={question.answer}
+            key={index}
+            saveEditedData={(obj: IQuizQuestion) => {
+              saveEditedQuestion(obj, index);
+            }}
+            deleteMe={() => removeQuestionAtIndex(index)}
+          />
+        ))}
+
+        <button
+          onClick={() => setShowAddQuestion(true)}
+          className="w-max rounded-lg border-[1px] border-secondary px-12 py-1.5 text-sm font-semibold text-secondary"
+        >
+          {questions.length > 0 ? "Add Question" : "Add First Question"}
+        </button>
+      </div>
+
+      {showAddQuestion && (
+        <CreateOrEditQuestionPopUp
+          saveOrEditData={(obj: IQuizQuestion) => {
+            saveCurrentQuestion(obj);
+            setShowAddQuestion(false);
+          }}
+          close={() => setShowAddQuestion(false)}
+        />
+      )}
+    </section>
+  );
+}
+
+function QuestionView({
+  question,
+  options,
+  explanation,
+  answerKey,
+  saveEditedData,
+  deleteMe,
+}: IQuizQuestion & {
+  answerKey: string;
+  saveEditedData: (obj: IQuizQuestion) => void;
+  deleteMe: () => void;
+}) {
+  const [showEditQuestion, setShowEditQuestion] = useState(false);
+  return (
+    <div className="shadowAroundFeature flex w-full flex-col gap-4 rounded-xl p-4">
+      <div className="flex w-full items-center justify-between">
+        <h3 className="text-lg font-semibold text-gray-700">{question}</h3>
+      </div>
+      <div className="flex flex-col gap-2">
+        {options.map((option) => (
+          <div
+            key={option.value}
+            className="flex cursor-default items-center gap-2"
+          >
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-200">
+              <div
+                className={`flex h-4 w-4 items-center justify-center rounded-full bg-secondary ${
+                  option.value === answerKey ? "bg-opacity-100" : "bg-opacity-0"
+                }`}
+              />
+            </div>
+            <p className="text-sm font-medium text-gray-700">{option.label}</p>
+          </div>
+        ))}
+      </div>
+      <div className="flex flex-col gap-2">
+        <p className="text-sm font-medium text-gray-700">
+          Explanation: <span className="font-semibold">{explanation}</span>
+        </p>
+      </div>
+      <div className="mt-2 flex w-full items-center justify-between">
+        <button
+          onClick={() => setShowEditQuestion(true)}
+          className="flex items-center gap-2 rounded-md border-[1px] border-gray-700 px-8 py-1.5 text-sm font-medium text-gray-700"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            className="lucide lucide-pencil"
+          >
+            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+            <path d="m15 5 4 4" />
+          </svg>
+          Edit
+        </button>
+        <button
+          onClick={() => deleteMe()}
+          className="flex items-center gap-2 rounded-md border-[1px] border-red-700 px-8 py-1.5 text-sm font-medium text-red-700"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            className="lucide lucide-x"
+          >
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+          Remove
+        </button>
+      </div>
+
+      {showEditQuestion && (
+        <CreateOrEditQuestionPopUp
+          saveOrEditData={(obj: IQuizQuestion) => {
+            saveEditedData(obj);
+            setShowEditQuestion(false);
+          }}
+          editingData={{
+            question,
+            options,
+            answer: answerKey,
+            explanation,
+          }}
+          close={() => setShowEditQuestion(false)}
+        />
+      )}
+    </div>
+  );
+}
+
+function CreateOrEditQuestionPopUp({
+  close,
+  saveOrEditData,
+  editingData,
+}: {
+  close: () => void;
+  saveOrEditData: (obj: IQuizQuestion) => void;
+  editingData?: IQuizQuestion;
+}) {
+  const [question, setQuestion] = useState("");
+  const [optionA, setOptionA] = useState<IOptions>({
+    value: "A",
+    label: "",
+  });
+  const [optionB, setOptionB] = useState<IOptions>({
+    value: "B",
+    label: "",
+  });
+  const [optionC, setOptionC] = useState<IOptions>({
+    value: "C",
+    label: "",
+  });
+  const [optionD, setOptionD] = useState<IOptions>({
+    value: "D",
+    label: "",
+  });
+
+  const [answer, setAnswer] = useState("A");
+
+  const [explanation, setExplanation] = useState("");
+
+  useEffect(() => {
+    if (editingData) {
+      setQuestion(editingData.question);
+      setOptionA(editingData.options[0] as IOptions);
+      setOptionB(editingData.options[1] as IOptions);
+      setOptionC(editingData.options[2] as IOptions);
+      setOptionD(editingData.options[3] as IOptions);
+      setAnswer(editingData.answer);
+      setExplanation(editingData.explanation);
+    }
+  }, [editingData]);
+
+  return (
+    <div
+      onClick={(e) => (e.target === e.currentTarget ? close() : null)}
+      className="fixed inset-0 z-[130] flex h-full w-full items-center justify-center bg-black/50 backdrop:blur-md md:fixed"
+    >
+      <div className="no-scrollbar flex h-[700px] w-[800px] flex-col overflow-y-auto rounded-3xl bg-white p-8">
+        <h3 className="text-center text-lg font-semibold text-tertiary">
+          {editingData ? "Edit Question" : "Add Question"}
+        </h3>
+
+        <form className="flex w-full flex-col gap-8">
+          <div className="sm:col-span-3">
+            <label
+              htmlFor="question"
+              className="block text-sm font-bold leading-6 text-tertiary"
+            >
+              Question
+            </label>
+            <div className="mt-2">
+              <input
+                id="question"
+                type="text"
+                name="question"
+                placeholder="Type your question here"
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                className="question-input block w-full rounded-md bg-white/5 py-1.5 pl-2 text-tertiary shadow-sm sm:text-sm sm:leading-6"
+              />
+            </div>
+          </div>
+
+          <div className="mt-4 flex w-full flex-col gap-4">
+            <h4 className="text-left text-sm font-bold text-tertiary">
+              Choices
+            </h4>
+
+            <div className="flex w-full flex-col gap-8 pl-0">
+              <div
+                className={`relative flex w-full flex-col gap-1 rounded-2xl`}
+              >
+                <label
+                  htmlFor="answera"
+                  className="block w-[60px] text-sm font-medium leading-6 text-tertiary"
+                >
+                  Choice A
+                </label>
+                <div className="relative flex w-full">
+                  <input
+                    id="answera"
+                    type="text"
+                    name="answera"
+                    placeholder="Choice A here"
+                    value={optionA.label}
+                    onChange={(e) =>
+                      setOptionA({
+                        ...optionA,
+                        label: e.target.value,
+                      })
+                    }
+                    className="question-input block w-full rounded-md bg-white/5 py-1.5 pl-2 text-tertiary shadow-sm sm:text-sm sm:leading-6"
+                  />
+                  {optionA?.value === answer && (
+                    <p className="absolute -bottom-5 mt-1 text-xs font-semibold tracking-wide text-green-600">
+                      Correct Answer
+                    </p>
+                  )}
+                  <div
+                    onClick={() => setAnswer("A")}
+                    className="flex w-[100px] cursor-pointer justify-end"
+                  >
+                    {optionA?.value === answer ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="32"
+                        height="32"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        className="lucide lucide-check-circle-2 text-green-500"
+                      >
+                        <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                        <path d="m9 12 2 2 4-4" />
+                      </svg>
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="32"
+                        height="32"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        className="lucide lucide-circle text-gray-300"
+                      >
+                        <circle cx="12" cy="12" r="10" />
+                      </svg>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className={`flex w-full flex-col gap-1 rounded-2xl`}>
+                <label
+                  htmlFor="answerb"
+                  className="block w-[60px] text-sm font-medium leading-6 text-tertiary"
+                >
+                  Choice B
+                </label>
+                <div className="relative flex w-full">
+                  <input
+                    id="answerb"
+                    type="text"
+                    name="answerb"
+                    placeholder="Choice B here"
+                    value={optionB.label}
+                    onChange={(e) =>
+                      setOptionB({
+                        ...optionB,
+                        label: e.target.value,
+                      })
+                    }
+                    className="question-input block w-full rounded-md bg-white/5 py-1.5 pl-2 text-tertiary shadow-sm sm:text-sm sm:leading-6"
+                  />
+                  {optionB?.value === answer && (
+                    <p className="absolute -bottom-5 mt-1 text-xs font-semibold tracking-wide text-green-600">
+                      Correct Answer
+                    </p>
+                  )}
+                  <div
+                    onClick={() => setAnswer("B")}
+                    className="flex w-[100px] cursor-pointer justify-end"
+                  >
+                    {optionB?.value === answer ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="32"
+                        height="32"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        className="lucide lucide-check-circle-2 text-green-500"
+                      >
+                        <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                        <path d="m9 12 2 2 4-4" />
+                      </svg>
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="32"
+                        height="32"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        className="lucide lucide-circle text-gray-300"
+                      >
+                        <circle cx="12" cy="12" r="10" />
+                      </svg>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className={`flex w-full flex-col gap-1 rounded-2xl`}>
+                <label
+                  htmlFor="answerc"
+                  className="block w-[60px] text-sm font-medium leading-6 text-tertiary"
+                >
+                  Choice C
+                </label>
+                <div className="relative flex w-full">
+                  <input
+                    id="answerc"
+                    type="text"
+                    name="answerc"
+                    placeholder="Choice C here"
+                    value={optionC.label}
+                    onChange={(e) =>
+                      setOptionC({
+                        ...optionC,
+                        label: e.target.value,
+                      })
+                    }
+                    className="question-input block w-full rounded-md bg-white/5 py-1.5 pl-2 text-tertiary shadow-sm sm:text-sm sm:leading-6"
+                  />
+                  {optionC?.value === answer && (
+                    <p className="absolute -bottom-5 mt-1 text-xs font-semibold tracking-wide text-green-600">
+                      Correct Answer
+                    </p>
+                  )}
+                  <div
+                    onClick={() => setAnswer("C")}
+                    className="flex w-[100px] cursor-pointer justify-end"
+                  >
+                    {optionC?.value === answer ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="32"
+                        height="32"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        className="lucide lucide-check-circle-2 text-green-500"
+                      >
+                        <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                        <path d="m9 12 2 2 4-4" />
+                      </svg>
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="32"
+                        height="32"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        className="lucide lucide-circle text-gray-300"
+                      >
+                        <circle cx="12" cy="12" r="10" />
+                      </svg>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className={`flex w-full flex-col gap-1 rounded-2xl`}>
+                <label
+                  htmlFor="answerd"
+                  className="block w-[60px] text-sm font-medium leading-6 text-tertiary"
+                >
+                  Choice D
+                </label>
+                <div className="relative flex w-full">
+                  <input
+                    id="answerd"
+                    type="text"
+                    name="answerd"
+                    placeholder="Choice D here"
+                    value={optionD.label}
+                    onChange={(e) =>
+                      setOptionD({
+                        ...optionD,
+                        label: e.target.value,
+                      })
+                    }
+                    className="question-input block w-full rounded-md bg-white/5 py-1.5 pl-2 text-tertiary shadow-sm sm:text-sm sm:leading-6"
+                  />
+                  {optionD?.value === answer && (
+                    <p className="absolute -bottom-5 mt-1 text-xs font-semibold tracking-wide text-green-600">
+                      Correct Answer
+                    </p>
+                  )}
+                  <div
+                    onClick={() => setAnswer("D")}
+                    className="flex w-[100px] cursor-pointer justify-end"
+                  >
+                    {optionD?.value === answer ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="32"
+                        height="32"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        className="lucide lucide-check-circle-2 text-green-500"
+                      >
+                        <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                        <path d="m9 12 2 2 4-4" />
+                      </svg>
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="32"
+                        height="32"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        className="lucide lucide-circle text-gray-300"
+                      >
+                        <circle cx="12" cy="12" r="10" />
+                      </svg>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4 flex w-full flex-col gap-4">
+            <label className="text-left text-sm font-bold text-tertiary">
+              Explanation
+            </label>
+            <textarea
+              name="desc"
+              id="desc"
+              value={explanation}
+              onChange={(e) => setExplanation(e.target.value)}
+              className="common-input program-create-form !h-[100px] w-full !max-w-[unset] text-sm"
+              placeholder="This is shown to the user after they answer the question (optional)"
+            />
+          </div>
+
+          <div className="mt-2 flex w-full items-center justify-between">
+            <button
+              onClick={() => close()}
+              className="flex items-center gap-2 rounded-md border-[1px] border-gray-700 px-8 py-2 text-sm font-medium text-gray-700"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                saveOrEditData({
+                  question,
+                  options: [optionA, optionB, optionC, optionD],
+                  answer,
+                  explanation,
+                });
+              }}
+              className="flex items-center gap-2 rounded-md bg-secondary px-8 py-2 text-sm font-medium text-white"
+            >
+              {editingData ? "Edit Question" : "Create Question"}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
