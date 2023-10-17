@@ -14,6 +14,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         where: {
           id,
         },
+        include: {
+          programQuiz: true,
+          ProgramSection: {
+            orderBy: {
+              createdAt: "asc"
+            }
+          }
+        }
       });
 
       let user = null;
@@ -70,7 +78,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return;
     }
     try {
-      const { name, content } = req.body as {
+      const { name } = req.body as {
         name: string;
         content: string;
       };
@@ -81,7 +89,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
         data: {
           name,
-          content,
         },
       });
 
