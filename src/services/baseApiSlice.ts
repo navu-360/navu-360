@@ -88,6 +88,22 @@ export const baseApiSlice = createApi({
       }),
       invalidatesTags: ["Dashboard"],
     }),
+    addProgramSection: builder.mutation({
+      query: (body) => ({
+        url: `programs/section`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Dashboard"],
+    }),
+    editProgramSection: builder.mutation({
+      query: (body) => ({
+        url: `programs/section`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["Dashboard"],
+    }),
     // fetch organization's program
     getOrganizationPrograms: builder.query({
       query: (orgId) => ({
