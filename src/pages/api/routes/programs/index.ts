@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import { getServerSession } from "next-auth";
 
-import { prisma } from "../../../../auth/db";
+import { prisma } from "auth/db";
 import { authOptions } from "auth/auth";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -19,19 +19,29 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "POST":
       try {
-        // name, content, organizationId
-        const { name, content, organizationId } = req.body as {
+        // name, content
+        const { name, content } = req.body as {
           name: string;
           content: string;
-          organizationId: string;
         };
+
+        const organization = await prisma.organization.findFirst({
+          where: {
+            userId: session?.user?.id as string,
+          },
+          select: {
+            id: true,
+          }
+        });
+
+        if (!organization) return res.status(404).json({ message: `Organization not found.` });
 
         const program = await prisma.onboardingProgram.create({
           data: {
             name,
             content,
             createdBy: session?.user?.id,
-            organizationId: organizationId,
+            organizationId: organization.id,
           },
         });
 
