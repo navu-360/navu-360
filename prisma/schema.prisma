@@ -99,6 +99,7 @@ model ProgramSection {
   type      String
   content   String?
   link      String?
+  published Boolean           @default(false)
   programId String
   Program   OnboardingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
   createdAt DateTime          @default(now())

@@ -20,10 +20,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     case "POST":
       try {
         // name, content
-        const { name, content } = req.body as {
+        const { name, categories, imageLink, description } = req.body as {
           name: string;
           content: string;
+          categories: string[];
+          imageLink: string;
+          description: string;
         };
+
+
+        if (!name || !categories || !imageLink || !description) return res.status(400).json({ message: `Missing fields.` });
 
         const organization = await prisma.organization.findFirst({
           where: {
@@ -39,9 +45,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const program = await prisma.onboardingProgram.create({
           data: {
             name,
-            content,
             createdBy: session?.user?.id,
             organizationId: organization.id,
+            categories,
+            image: imageLink,
+            description
           },
         });
 
