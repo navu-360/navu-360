@@ -229,9 +229,9 @@ export function OneProgramCard({
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               className="lucide lucide-send"
             >
               <line x1="22" x2="11" y1="2" y2="13"></line>

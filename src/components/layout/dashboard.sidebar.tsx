@@ -53,9 +53,9 @@ export default function AdminNav({
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 className="transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
               >
                 <rect x="3" y="3" width="7" height="9"></rect>
@@ -81,9 +81,9 @@ export default function AdminNav({
                   fill="none"
                   stroke="currentColor"
                   className=" transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
                   <path d="m16 6 4 14"></path>
                   <path d="M12 6v14"></path>
@@ -108,9 +108,9 @@ export default function AdminNav({
                   fill="none"
                   stroke="currentColor"
                   className="transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
                   <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
                   <circle cx="9" cy="7" r="4"></circle>
@@ -159,9 +159,9 @@ export default function AdminNav({
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 className="transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
               >
                 <circle cx="12" cy="12" r="10" />
@@ -182,9 +182,9 @@ export default function AdminNav({
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 className="transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
               >
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
