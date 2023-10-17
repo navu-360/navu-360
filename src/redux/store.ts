@@ -16,6 +16,7 @@ import {
 } from "redux-persist";
 
 import authReducer from "./auth/authSlice";
+import commonReducer from "./common/commonSlice";
 
 const persistConfig = {
   key: "root",
@@ -26,6 +27,7 @@ const persistConfig = {
 const reducers = combineReducers({
   [baseApiSlice.reducerPath]: baseApiSlice.reducer,
   auth: authReducer,
+  common: commonReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

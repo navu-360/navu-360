@@ -318,5 +318,7 @@ export const {
   useGetUserPayStackDetailsQuery,
   useAcceptInviteMutation,
   useChangePlanMutation,
-  useUpdateOrgMutation
+  useUpdateOrgMutation,
+  useAddProgramSectionMutation,
+  useEditProgramSectionMutation,
 } = baseApiSlice;

@@ -28,6 +28,9 @@ const MyEditor = dynamic(() => import("components/common/editor/editor"), {
 import type { OutputData } from "@editorjs/editorjs";
 import toaster from "utils/toaster";
 import Image from "next/image";
+import { useCreateProgramMutation } from "services/baseApiSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setDraftProgramId } from "redux/common/commonSlice";
 
 const animatedComponents = makeAnimated();
 
@@ -49,12 +52,90 @@ export default function CreateProgram() {
 
   // TODO
   /*
-  1. Create schemas. One parent table and tables for blocks, documents, links. Including status field: draft, published, archived
+  //1. Create schemas. One parent table and tables for blocks, documents, links. Including status field: draft, published, archived
   2. Integrate step 1. Create draft program, upload image
   3. Add beforeunload event listener to warn user if they have unsaved changes
   4. Create content types for step 2. Enable preview mode
 
   */
+
+  const [programDetails, setProgramDetails] = useState<{
+    name: string;
+    description: string;
+    selectedDepartments: MultiValue<unknown>;
+  }>();
+
+  const dispatch = useDispatch();
+
+  // @ts-ignore
+  const draftProgramId = useSelector((state) => state.common.draftProgramId);
+
+  const [saveDetails, { isLoading: creating }] = useCreateProgramMutation();
+  const saveStepOne = async () => {
+    // validate
+    if (draftProgramId?.length === 0) {
+      if (
+        !programDetails?.name &&
+        !programDetails?.description &&
+        programDetails?.selectedDepartments?.length === 0
+      ) {
+        toaster({
+          status: "error",
+          message: "Program name, description and categories are required",
+        });
+        return;
+      }
+      if (!programDetails?.name) {
+        toaster({
+          status: "error",
+          message: "Program name is required",
+        });
+        return;
+      }
+      if (!programDetails?.description) {
+        toaster({
+          status: "error",
+          message: "Program description is required",
+        });
+        return;
+      }
+      if (programDetails?.selectedDepartments?.length === 0) {
+        toaster({
+          status: "error",
+          message: "Program categories are required",
+        });
+        return;
+      }
+    }
+
+    const body = {
+      name: programDetails?.name,
+      description: programDetails?.description,
+      categories: programDetails?.selectedDepartments?.map(
+        // @ts-ignore
+        (val: unknown) => val?.value,
+      ),
+      imageLink:
+        "https://res.cloudinary.com/dpnbddror/image/upload/v1697528443/navu/student-class-looking-course_23-2148888810_ky7r0j.jpg",
+    };
+
+    await saveDetails(body)
+      .unwrap()
+      .then((payload) => {
+        dispatch(setDraftProgramId(payload?.data?.id));
+        toaster({
+          status: "success",
+          message: "Program draft saved!",
+        });
+        setActiveTab(activeTab + 1);
+      })
+      .catch((error) => {
+        toaster({
+          status: "error",
+          message: error?.data?.message,
+        });
+      });
+  };
 
   return (
     <>
@@ -63,7 +144,9 @@ export default function CreateProgram() {
         <div className="relative ml-[90px] mt-[40px] flex h-full flex-col items-start justify-start gap-8 rounded-md  p-4 md:ml-[300px] md:w-[calc(100%_-_400px)]">
           <Steps doneSteps={getDoneSteps()} activeStep={activeTab} />
           <div className="shadowAroundFeature relative h-full min-h-[80vh] w-full rounded-md bg-white p-4 pb-16">
-            {activeTab === 0 && <ProgramDetails />}
+            {activeTab === 0 && (
+              <ProgramDetails receiveData={setProgramDetails} />
+            )}
             {activeTab === 1 && <CreateProgramContent />}
             {activeTab === 2 && <ConfirmStep />}
 
@@ -90,11 +173,25 @@ export default function CreateProgram() {
                       console.log("submit");
                       return;
                     }
+                    if (activeTab === 0) {
+                      if (draftProgramId?.length === 0) {
+                        console.log("save step 1");
+                        saveStepOne();
+                      } else {
+                        console.log("update step 1");
+                      }
+                      return;
+                    }
                     setActiveTab(activeTab + 1);
                   }}
+                  disabled={creating}
                   className="rounded-md bg-secondary px-8 py-1.5 text-sm font-semibold text-white"
                 >
-                  {activeTab === 2 ? "Create Program" : "Save & Continue"}
+                  {activeTab === 2
+                    ? draftProgramId?.length > 0
+                      ? "Save & Continue"
+                      : "Create Program"
+                    : "Save & Continue"}
                 </button>
               </div>
             </div>
@@ -212,8 +309,16 @@ function Steps({
   );
 }
 
-function ProgramDetails() {
-  const [departments, setDepartments] = useState([
+function ProgramDetails({
+  receiveData,
+}: {
+  receiveData: (obj: {
+    name: string;
+    description: string;
+    selectedDepartments: MultiValue<unknown>;
+  }) => void;
+}) {
+  const departments = [
     {
       value: "sales",
       label: "Sales",
@@ -258,13 +363,20 @@ function ProgramDetails() {
       value: "other",
       label: "Other",
     },
-  ]);
+  ];
 
   const [selectedDepartments, setSelectedDepartments] = useState<
     MultiValue<unknown>
   >([]);
 
-  console.log(selectedDepartments, setDepartments);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+
+  // useEffect for sending data up on changes to: name, description, selectedDepartments
+  useEffect(() => {
+    receiveData({ name, description, selectedDepartments });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [name, description, selectedDepartments]);
 
   return (
     <form className="flex flex-col gap-8">
@@ -274,6 +386,10 @@ function ProgramDetails() {
           type="text"
           name="role"
           id="role"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          aria-required
+          minLength={3}
           placeholder="e.g Sales Training Program"
           className="common-input program-create-form text-sm"
           required
@@ -284,6 +400,10 @@ function ProgramDetails() {
         <textarea
           name="desc"
           id="desc"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          required
+          minLength={10}
           className="common-input program-create-form !h-[100px] text-sm"
           placeholder="e.g This program is for sales team to learn how to sell our products"
         />
@@ -294,6 +414,7 @@ function ProgramDetails() {
           closeMenuOnSelect={false}
           components={animatedComponents}
           isMulti
+          required
           options={departments}
           placeholder="Select categories..."
           onChange={(e) => setSelectedDepartments(e)}
