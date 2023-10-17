@@ -78,9 +78,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return;
     }
     try {
-      const { name } = req.body as {
+      const { name, description, imageLink, categories } = req.body as {
         name: string;
-        content: string;
+        description: string;
+        imageLink: string;
+        categories: string[];
       };
 
       const program = await prisma.onboardingProgram.update({
@@ -89,6 +91,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
         data: {
           name,
+          description,
+          image: imageLink,
+          categories
         },
       });
 
