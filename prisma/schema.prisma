@@ -78,7 +78,9 @@ model Organization {
 model OnboardingProgram {
   id                       String                     @id @default(uuid())
   name                     String
-  content                  String
+  description              String
+  categories               String[]
+  image                    String?
   creator                  User                       @relation(fields: [createdBy], references: [id], name: "createdBy", onDelete: Cascade)
   createdBy                String
   organization             Organization               @relation(fields: [organizationId], references: [id])
@@ -89,6 +91,18 @@ model OnboardingProgram {
   updatedAt                DateTime                   @updatedAt
   courseModuleId           String?
   programQuiz              programQuiz[]
+  ProgramSection           ProgramSection[]
+}
+
+model ProgramSection {
+  id        String            @id @default(cuid())
+  type      String
+  content   String?
+  link      String?
+  programId String
+  Program   OnboardingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
 }
 
 model OnboardingProgramTalents {
