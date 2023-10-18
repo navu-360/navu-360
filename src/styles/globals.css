@@ -647,23 +647,23 @@ button:disabled {
 
 /* To target all scrollbars */
 ::-webkit-scrollbar {
-    width: 12px;
+    width: 8px;
     height: 12px;
 }
 
 /* The track (background) */
 ::-webkit-scrollbar-track {
-    background: #9d2a57;
-    border-radius: 10px;
+    background: #f1f1f1;
+    border-radius: 0px;
 }
 
 /* The handle (scroll thumb) */
 ::-webkit-scrollbar-thumb {
-    background: #30475E;
+    background: #9d2a57;
     border-radius: 10px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #30475E;
+    background: #9d2a57;
 }
