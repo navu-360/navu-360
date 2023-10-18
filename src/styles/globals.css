@@ -318,9 +318,9 @@ span {
 
 .path {
     stroke: #28293E;
-    strokeWidth: 6;
-    strokeLinejoin: round;
-    strokeLinecap: round;
+    stroke-width: 6;
+    stroke-linejoin: round;
+    stroke-linecap: round;
     stroke-dasharray: 193.904983521;
     fill: none;
     animation:
@@ -330,9 +330,9 @@ span {
 
 .path-white {
     stroke: #fff;
-    strokeWidth: 6;
-    strokeLinejoin: round;
-    strokeLinecap: round;
+    stroke-width: 6;
+    stroke-linejoin: round;
+    stroke-linecap: round;
     stroke-dasharray: 193.904983521;
     fill: none;
     animation:
@@ -643,4 +643,27 @@ button:disabled {
     top: 50%;
     transform: translateX(0) translateY(-50%);
     border-left-color: var(--tooltip-background-color);
+}
+
+/* To target all scrollbars */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+/* The track (background) */
+::-webkit-scrollbar-track {
+    background: #9d2a57;
+    border-radius: 10px;
+}
+
+/* The handle (scroll thumb) */
+::-webkit-scrollbar-thumb {
+    background: #30475E;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #30475E;
 }
