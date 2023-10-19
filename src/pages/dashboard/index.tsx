@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setOrgId, setOrganizationData } from "redux/auth/authSlice";
+import { resetCommon, setDraftProgramId } from "redux/common/commonSlice";
 import { useGetOneOrganizationQuery } from "services/baseApiSlice";
 
 export default function Dashboard() {
@@ -48,6 +49,11 @@ export default function Dashboard() {
   const [countOfOnboarded, setCountOfOnboarded] = useState(0);
 
   const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    dispatch(setDraftProgramId(undefined));
+    dispatch(resetCommon());
+  }, [dispatch]);
 
   useEffect(() => {
     setIsReady(true);

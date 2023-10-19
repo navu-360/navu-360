@@ -104,18 +104,24 @@ export const baseApiSlice = createApi({
       }),
       invalidatesTags: ["Dashboard"],
     }),
+    deleteProgramSection: builder.mutation({
+      query: (body) => ({
+        url: `programs/section`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["Dashboard"],
+    }),
     // fetch organization's program
     getOrganizationPrograms: builder.query({
       query: (orgId) => ({
         url: `programs?orgId=${orgId}`,
       }),
-      keepUnusedDataFor: 60 * 10, // 10 minutes,
       providesTags: ["Programs"],
     }),
 
     getOneProgram: builder.query({
       query: (id) => `programs/${id}`,
-      keepUnusedDataFor: 60 * 10, // 10 minutes,
     }),
     editProgram: builder.mutation({
       query: (body) => ({
@@ -321,4 +327,5 @@ export const {
   useUpdateOrgMutation,
   useAddProgramSectionMutation,
   useEditProgramSectionMutation,
+  useDeleteProgramSectionMutation,
 } = baseApiSlice;

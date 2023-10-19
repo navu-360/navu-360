@@ -28,9 +28,21 @@ const MyEditor = dynamic(() => import("components/common/editor/editor"), {
 import type { OutputData } from "@editorjs/editorjs";
 import toaster from "utils/toaster";
 import Image from "next/image";
-import { useCreateProgramMutation } from "services/baseApiSlice";
+import {
+  useAddProgramSectionMutation,
+  useCreateProgramMutation,
+  useEditProgramMutation,
+  useEditProgramSectionMutation,
+  useGetOneProgramQuery,
+} from "services/baseApiSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { setDraftProgramId } from "redux/common/commonSlice";
+import {
+  setCreateSectionIds,
+  setDraftProgramId,
+} from "redux/common/commonSlice";
+import type { ProgramSection } from "@prisma/client";
+import { DeleteSection } from "components/programs/confirmDeleteSection";
+import { uploadOne } from "components/common/uploader";
 
 const animatedComponents = makeAnimated();
 
@@ -63,17 +75,24 @@ export default function CreateProgram() {
     name: string;
     description: string;
     selectedDepartments: MultiValue<unknown>;
+    uploadedImage: File | string | null;
   }>();
 
   const dispatch = useDispatch();
 
   // @ts-ignore
   const draftProgramId = useSelector((state) => state.common.draftProgramId);
+  const id = draftProgramId;
+  const { currentData: editingProgram, refetch } = useGetOneProgramQuery(id, {
+    skip: !draftProgramId,
+  });
 
   const [saveDetails, { isLoading: creating }] = useCreateProgramMutation();
+  const [editDetails, { isLoading: editing }] = useEditProgramMutation();
+  const [uploading, setUploading] = useState(false);
   const saveStepOne = async () => {
     // validate
-    if (draftProgramId?.length === 0) {
+    if (!draftProgramId) {
       if (
         !programDetails?.name &&
         !programDetails?.description &&
@@ -107,6 +126,9 @@ export default function CreateProgram() {
         return;
       }
     }
+    setUploading(true);
+    const res = await uploadOne(programDetails?.uploadedImage as File);
+    setUploading(false);
 
     const body = {
       name: programDetails?.name,
@@ -116,7 +138,7 @@ export default function CreateProgram() {
         (val: unknown) => val?.value,
       ),
       imageLink:
-        "https://res.cloudinary.com/dpnbddror/image/upload/v1697528443/navu/student-class-looking-course_23-2148888810_ky7r0j.jpg",
+        res?.file?.url ?? programDetails?.uploadedImage?.toString() ?? "",
     };
 
     await saveDetails(body)
@@ -127,6 +149,61 @@ export default function CreateProgram() {
           status: "success",
           message: "Program draft saved!",
         });
+        setActiveTab(activeTab + 1);
+      })
+      .catch((error) => {
+        toaster({
+          status: "error",
+          message: error?.data?.message,
+        });
+      });
+  };
+
+  // update step if any of the program details changed: name, description, categories, image
+  const updateStepOne = async () => {
+    // check if any of the program details changed
+    if (
+      programDetails?.name === editingProgram?.data?.name &&
+      programDetails?.description === editingProgram?.data?.description &&
+      programDetails?.selectedDepartments
+        // @ts-ignore
+        ?.map((val: MultiValue<unknown>) => val?.value)
+        .join(",") === editingProgram?.data?.categories.join(",") &&
+      programDetails?.uploadedImage === editingProgram?.data?.image
+    ) {
+      // no changes
+      setActiveTab(activeTab + 1);
+      return;
+    }
+
+    // if uploaded image is a File, upload it
+    let newLink = "";
+    if (programDetails?.uploadedImage instanceof File) {
+      setUploading(true);
+      const res = await uploadOne(programDetails?.uploadedImage as File);
+      setUploading(false);
+      newLink = res?.file?.url ?? "";
+    }
+
+    const body = {
+      name: programDetails?.name,
+      description: programDetails?.description,
+      categories: programDetails?.selectedDepartments?.map(
+        // @ts-ignore
+        (val: unknown) => val?.value,
+      ),
+      imageLink: newLink?.length > 0 ? newLink : editingProgram?.data?.image,
+      id: editingProgram?.data?.id,
+    };
+
+    await editDetails(body)
+      .unwrap()
+      .then(() => {
+        toaster({
+          status: "success",
+          message: "Program details updated!",
+        });
+        refetch();
         setActiveTab(activeTab + 1);
       })
       .catch((error) => {
@@ -164,9 +241,6 @@ export default function CreateProgram() {
                 {activeTab === 0 ? "Cancel" : "Back"}
               </button>
               <div className="flex gap-8">
-                <button className="rounded-md border-[1px] border-secondary px-8 py-1.5 text-sm font-medium text-secondary">
-                  Save Draft
-                </button>
                 <button
                   onClick={() => {
                     if (activeTab === 2) {
@@ -174,17 +248,18 @@ export default function CreateProgram() {
                       return;
                     }
                     if (activeTab === 0) {
-                      if (draftProgramId?.length === 0) {
+                      if (!draftProgramId) {
                         console.log("save step 1");
                         saveStepOne();
                       } else {
                         console.log("update step 1");
+                        updateStepOne();
                       }
                       return;
                     }
                     setActiveTab(activeTab + 1);
                   }}
-                  disabled={creating}
+                  disabled={creating || uploading || editing}
                   className="rounded-md bg-secondary px-8 py-1.5 text-sm font-semibold text-white"
                 >
                   {activeTab === 2
@@ -316,6 +391,7 @@ function ProgramDetails({
     name: string;
     description: string;
     selectedDepartments: MultiValue<unknown>;
+    uploadedImage: File | string | null;
   }) => void;
 }) {
   const departments = [
@@ -372,11 +448,44 @@ function ProgramDetails({
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
+  const [uploadedImage, setUploadedImage] = useState<File | string | null>(
+    null,
+  );
+
   // useEffect for sending data up on changes to: name, description, selectedDepartments
   useEffect(() => {
-    receiveData({ name, description, selectedDepartments });
+    receiveData({ name, description, selectedDepartments, uploadedImage });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [name, description, selectedDepartments]);
+  }, [name, description, selectedDepartments, uploadedImage]);
+
+  const getPreviewObjectUrl = (file: File) => {
+    return URL.createObjectURL(file);
+  };
+
+  // @ts-ignore
+  const draftProgramId = useSelector((state) => state.common.draftProgramId);
+  const id = draftProgramId;
+  const { currentData: editingProgram } = useGetOneProgramQuery(id, {
+    skip: !draftProgramId,
+  });
+
+  const firstLevelCapitalized = (str: string) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
+  useEffect(() => {
+    if (editingProgram) {
+      setName(editingProgram.data.name);
+      setDescription(editingProgram.data.description);
+      setSelectedDepartments(
+        editingProgram.data.categories.map((val: string) => ({
+          value: val,
+          label: firstLevelCapitalized(val),
+        })),
+      );
+      setUploadedImage(editingProgram.data.image);
+    }
+  }, [editingProgram]);
 
   return (
     <form className="flex flex-col gap-8">
@@ -417,41 +526,89 @@ function ProgramDetails({
           required
           options={departments}
           placeholder="Select categories..."
+          value={selectedDepartments}
           onChange={(e) => setSelectedDepartments(e)}
         />
       </div>
       <div className="flex max-w-[600px] flex-col gap-2">
         <label>Program Cover Image</label>
 
-        <div className="flex w-full items-center justify-center">
-          <label
-            htmlFor="dropzone-file"
-            className="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 "
+        <div className="relative flex h-[400px] w-full items-center justify-center">
+          {!uploadedImage ? (
+            <label
+              htmlFor="dropzone-file"
+              className="dark:hover:bg-bray-800 flex h-full w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 "
+            >
+              <div className="flex flex-col items-center justify-center pb-6 pt-5">
+                <svg
+                  className="mb-4 h-8 w-8 text-gray-500 "
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 16"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                  />
+                </svg>
+                <p className="mb-2 text-sm text-gray-500 ">
+                  <span className="font-semibold">Click to upload</span> or drag
+                  and drop
+                </p>
+                <p className="text-xs text-gray-500 ">SVG, PNG, JPG or GIF</p>
+              </div>
+              <input
+                id="dropzone-file"
+                onChange={(e) =>
+                  setUploadedImage(
+                    (e?.target?.files ? e?.target?.files[0] : null) ?? null,
+                  )
+                }
+                type="file"
+                required
+                accept="image/*"
+                className="hidden"
+              />
+            </label>
+          ) : (
+            <Image
+              src={
+                uploadedImage instanceof File
+                  ? getPreviewObjectUrl(uploadedImage as File)
+                  : (uploadedImage as string)
+              }
+              fill
+              className="object-cover"
+              alt="Uploaded Image"
+            />
+          )}
+          <div
+            onClick={() => {
+              setUploadedImage(null);
+            }}
+            title="Close editor"
+            className="absolute -right-14 top-0 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-gray-400 text-white"
           >
-            <div className="flex flex-col items-center justify-center pb-6 pt-5">
-              <svg
-                className="mb-4 h-8 w-8 text-gray-500 "
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 16"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                />
-              </svg>
-              <p className="mb-2 text-sm text-gray-500 ">
-                <span className="font-semibold">Click to upload</span> or drag
-                and drop
-              </p>
-              <p className="text-xs text-gray-500 ">SVG, PNG, JPG or GIF</p>
-            </div>
-            <input id="dropzone-file" type="file" className="hidden" />
-          </label>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              className="lucide lucide-x"
+            >
+              <path d="M18 6 6 18" />
+              <path d="m6 6 12 12" />
+            </svg>
+          </div>
         </div>
       </div>
     </form>
@@ -459,17 +616,14 @@ function ProgramDetails({
 }
 
 function CreateProgramContent() {
-  const [activeContentType, setActiveContentType] = useState<string[]>([
-    "block",
-  ]);
-  const [addedSectionsIds, setAddedSectionsIds] = useState<string[]>([]);
+  const [activeContentType, setActiveContentType] = useState<
+    string | undefined
+  >("");
 
   const [blockContent, setBlockContent] = useState<OutputData>();
   const [save, setSave] = useState(false);
 
-  console.log(setAddedSectionsIds, setSave);
-
-  const [uploadedDocument, setUploadedDocument] = useState<File>();
+  const [uploadedDocument, setUploadedDocument] = useState<File | string>();
   const [numPages, setNumPages] = useState<number>();
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     setNumPages(numPages);
@@ -480,39 +634,330 @@ function CreateProgramContent() {
 
   const [clientReady, setClientReady] = useState(false);
 
+  const [currentEditing, setCurrentEditing] = useState<ProgramSection>();
+
+  const [createSection, { isLoading: creatingSection }] =
+    useAddProgramSectionMutation();
+  const [editSection, { isLoading: editingSection }] =
+    useEditProgramSectionMutation();
+  // @ts-ignore
+  const draftProgramId = useSelector((state) => state.common.draftProgramId);
+  const createSectionIds = useSelector(
+    // @ts-ignore
+    (state) => state.common.createSectionIds,
+  );
+  const dispatch = useDispatch();
+
+  const createBlockSection = async (isCreate = false) => {
+    const body = {
+      type: "block",
+      content: JSON.stringify(blockContent),
+      programId: draftProgramId,
+      id: currentEditing?.id ?? undefined,
+    };
+
+    isCreate
+      ? await createSection(body)
+          .unwrap()
+          .then((payload) => {
+            setActiveContentType("");
+            dispatch(
+              setCreateSectionIds([
+                ...createSectionIds,
+                {
+                  type: body.type,
+                  id: payload?.data?.id,
+                  content: JSON.stringify(payload?.data?.content ?? []),
+                },
+              ]),
+            );
+            toaster({
+              status: "success",
+              message: "Section saved!",
+            });
+          })
+          .catch((error) => {
+            toaster({
+              status: "error",
+              message: error?.data?.message,
+            });
+          })
+      : await editSection(body)
+          .unwrap()
+          .then(() => {
+            toaster({
+              status: "success",
+              message: "Section updated!",
+            });
+          })
+          .catch((error) => {
+            toaster({
+              status: "error",
+              message: error?.data?.message,
+            });
+          });
+  };
+
   useEffect(() => {
     setClientReady(true);
   }, []);
+
+  const [uploading, setUploading] = useState(false);
+
+  const uploadPdfOrLink = async (isPdf = false) => {
+    isPdf && setUploading(true);
+    const res = isPdf ? await uploadOne(uploadedDocument as File) : false;
+    setUploading(false);
+
+    const body = {
+      type: isPdf ? "document" : "link",
+      programId: draftProgramId,
+      id: currentEditing?.id ?? undefined,
+      // @ts-ignore
+      link: isPdf ? res?.file?.url : docsLink,
+    };
+
+    await createSection(body)
+      .unwrap()
+      .then((payload) => {
+        setActiveContentType("");
+        setUploadedDocument(undefined);
+        dispatch(
+          setCreateSectionIds([
+            ...createSectionIds,
+            {
+              type: body.type,
+              id: payload?.data?.id,
+              link: payload?.data?.link,
+            },
+          ]),
+        );
+        toaster({
+          status: "success",
+          message: "Document saved!",
+        });
+      })
+      .catch((error) => {
+        toaster({
+          status: "error",
+          message: error?.data?.message,
+        });
+      });
+  };
+
+  const [showDeleteModal, setShowDeleteModal] = useState("");
+
+  const getActiveTypeSvg = (type: string) => {
+    switch (type) {
+      case "block":
+        return (
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-secondary/20 text-secondary shadow-sm">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-indent"
+            >
+              <polyline points="3 8 7 12 3 16" />
+              <line x1="21" x2="11" y1="12" y2="12" />
+              <line x1="21" x2="11" y1="6" y2="6" />
+              <line x1="21" x2="11" y1="18" y2="18" />
+            </svg>
+          </div>
+        );
+
+      case "document":
+        return (
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-secondary/20 shadow-sm">
+            <Image
+              src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
+              height={24}
+              width={24}
+              alt="Add a Document"
+            />
+          </div>
+        );
+      case "link":
+        return (
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-secondary/20 shadow-sm">
+            <Image
+              src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+              height={24}
+              width={24}
+              alt="Add a Link for Google Docs or Google Slides"
+            />
+          </div>
+        );
+      default:
+        return <div></div>;
+    }
+  };
 
   if (!clientReady) return null;
 
   return (
     <div className="relative w-full">
-      <div className="my-6 w-[95%] pt-16 text-gray-600">
+      <div className="relative my-6 w-[95%] pt-16 text-gray-600">
         <button className="absolute -top-6 right-4 rounded-md border-[1px] border-tertiary px-8 py-1.5 text-tertiary">
           Preview
         </button>
 
-        {activeContentType.includes("block") && (
-          <div className="relative w-full">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              onClick={() => {
+        <div className="no-scrollbar absolute bottom-0 left-0 top-16 h-full min-h-[60vh] w-1/5 overflow-y-auto rounded-3xl bg-gray-100 p-4 pt-4">
+          <h2 className="mb-2 text-center text-base font-bold">
+            Created Sections
+          </h2>
+
+          {createSectionIds?.length === 0 && (
+            <div className="absolute inset-x-0 top-1/2 flex w-full -translate-y-1/2 flex-col gap-2">
+              <p className="text-center text-sm font-semibold">
+                Created sections will appear here
+              </p>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="lucide lucide-layers-3 mx-auto"
+              >
+                <path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z" />
+                <path d="m6.08 9.5-3.5 1.6a1 1 0 0 0 0 1.81l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9a1 1 0 0 0 0-1.83l-3.5-1.59" />
+                <path d="m6.08 14.5-3.5 1.6a1 1 0 0 0 0 1.81l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9a1 1 0 0 0 0-1.83l-3.5-1.59" />
+              </svg>
+            </div>
+          )}
+
+          {createSectionIds?.map((section: ProgramSection, i: number) => (
+            <OneCreatedSection
+              key={section?.id}
+              type={section?.type}
+              total={createSectionIds?.length}
+              index={i}
+              svg={getActiveTypeSvg(section?.type)}
+              activeId={currentEditing?.id}
+              id={section?.id}
+              deleteSection={() => setShowDeleteModal(section?.id)}
+              openEditMode={() => {
                 setBlockContent(undefined);
-                setActiveContentType(
-                  activeContentType.filter((val) => val !== "block"),
-                );
+                setActiveContentType(undefined);
+
+                if (section?.type === "block") {
+                  setBlockContent(JSON.parse(section?.content as string));
+                }
+                if (section?.type === "document") {
+                  setUploadedDocument(section?.link as string);
+                }
+                if (section?.type === "link") {
+                  setDocsLink(section?.link as string);
+                }
+                setCurrentEditing(section);
+                setTimeout(() => {
+                  setActiveContentType(section?.type as string);
+                }, 1);
               }}
-              className="absolute -right-12 top-0 h-12 w-12 cursor-pointer"
+            />
+          ))}
+        </div>
+
+        {activeContentType === "block" && (
+          <div className="relative ml-auto w-[75%]">
+            {(currentEditing ||
+              (blockContent && blockContent?.blocks?.length > 0)) && (
+              <div
+                onClick={() => {
+                  if (editingSection || creatingSection) return;
+                  setSave(true);
+                  {
+                    if (currentEditing) {
+                      console.log("update block");
+                      createBlockSection();
+                    } else {
+                      console.log("create block");
+                      createBlockSection(true);
+                    }
+                  }
+                }}
+                className="absolute -right-14 top-0 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-green-400 text-white"
+              >
+                {!creatingSection && !editingSection ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="lucide lucide-save"
+                  >
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                    <polyline points="17 21 17 13 7 13 7 21" />
+                    <polyline points="7 3 7 8 15 8" />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="lucide lucide-loader animate-spin"
+                  >
+                    <line x1="12" x2="12" y1="2" y2="6" />
+                    <line x1="12" x2="12" y1="18" y2="22" />
+                    <line x1="4.93" x2="7.76" y1="4.93" y2="7.76" />
+                    <line x1="16.24" x2="19.07" y1="16.24" y2="19.07" />
+                    <line x1="2" x2="6" y1="12" y2="12" />
+                    <line x1="18" x2="22" y1="12" y2="12" />
+                    <line x1="4.93" x2="7.76" y1="19.07" y2="16.24" />
+                    <line x1="16.24" x2="19.07" y1="7.76" y2="4.93" />
+                  </svg>
+                )}
+              </div>
+            )}
+
+            <div
+              onClick={() => {
+                if (editingSection || creatingSection) return;
+                setBlockContent(undefined);
+                setActiveContentType("");
+              }}
+              title="Close editor"
+              className="absolute -right-14 top-16 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-gray-400 text-white"
             >
-              <path
-                fillRule="evenodd"
-                d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z"
-                clipRule="evenodd"
-              />
-            </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="lucide lucide-x"
+              >
+                <path d="M18 6 6 18" />
+                <path d="m6 6 12 12" />
+              </svg>
+            </div>
+
             <MyEditor
               getData={save}
               receiveData={(data: OutputData) => {
@@ -523,26 +968,92 @@ function CreateProgramContent() {
           </div>
         )}
 
-        {activeContentType.includes("document") && (
-          <div className="relative flex w-full flex-col">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
+        {activeContentType === "document" && (
+          <div className="relative ml-auto flex w-[75%] flex-col">
+            {uploadedDocument && (
+              <div
+                onClick={() => {
+                  if (editingSection || creatingSection || uploading) return;
+                  {
+                    if (currentEditing) {
+                      console.log("update document");
+                    } else {
+                      uploadPdfOrLink(true);
+                    }
+                  }
+                }}
+                className="absolute -right-14 top-0 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-green-400 text-white"
+              >
+                {!creatingSection && !editingSection && !uploading ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="lucide lucide-save"
+                  >
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                    <polyline points="17 21 17 13 7 13 7 21" />
+                    <polyline points="7 3 7 8 15 8" />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="lucide lucide-loader animate-spin"
+                  >
+                    <line x1="12" x2="12" y1="2" y2="6" />
+                    <line x1="12" x2="12" y1="18" y2="22" />
+                    <line x1="4.93" x2="7.76" y1="4.93" y2="7.76" />
+                    <line x1="16.24" x2="19.07" y1="16.24" y2="19.07" />
+                    <line x1="2" x2="6" y1="12" y2="12" />
+                    <line x1="18" x2="22" y1="12" y2="12" />
+                    <line x1="4.93" x2="7.76" y1="19.07" y2="16.24" />
+                    <line x1="16.24" x2="19.07" y1="7.76" y2="4.93" />
+                  </svg>
+                )}
+              </div>
+            )}
+
+            <div
               onClick={() => {
+                if (editingSection || creatingSection) return;
+                setBlockContent(undefined);
+                setActiveContentType("");
                 setUploadedDocument(undefined);
-                setActiveContentType(
-                  activeContentType.filter((val) => val !== "document"),
-                );
               }}
-              className="absolute -right-12 top-0 h-12 w-12 cursor-pointer"
+              title="Close section"
+              className="absolute -right-14 top-16 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-gray-400 text-white"
             >
-              <path
-                fillRule="evenodd"
-                d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z"
-                clipRule="evenodd"
-              />
-            </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="lucide lucide-x"
+              >
+                <path d="M18 6 6 18" />
+                <path d="m6 6 12 12" />
+              </svg>
+            </div>
+
             {uploadedDocument && (
               <Document
                 file={uploadedDocument}
@@ -602,27 +1113,91 @@ function CreateProgramContent() {
           </div>
         )}
 
-        {activeContentType.includes("link") && (
-          <div className="relative w-full">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
+        {activeContentType === "link" && (
+          <div className="relative ml-auto w-[75%]">
+            {showLinkPreview && (
+              <div
+                onClick={() => {
+                  if (editingSection || creatingSection) return;
+                  {
+                    if (currentEditing) {
+                      console.log("update link");
+                    } else {
+                      uploadPdfOrLink();
+                    }
+                  }
+                }}
+                className="absolute -right-14 top-0 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-green-400 text-white"
+              >
+                {!creatingSection && !editingSection ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="lucide lucide-save"
+                  >
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                    <polyline points="17 21 17 13 7 13 7 21" />
+                    <polyline points="7 3 7 8 15 8" />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="lucide lucide-loader animate-spin"
+                  >
+                    <line x1="12" x2="12" y1="2" y2="6" />
+                    <line x1="12" x2="12" y1="18" y2="22" />
+                    <line x1="4.93" x2="7.76" y1="4.93" y2="7.76" />
+                    <line x1="16.24" x2="19.07" y1="16.24" y2="19.07" />
+                    <line x1="2" x2="6" y1="12" y2="12" />
+                    <line x1="18" x2="22" y1="12" y2="12" />
+                    <line x1="4.93" x2="7.76" y1="19.07" y2="16.24" />
+                    <line x1="16.24" x2="19.07" y1="7.76" y2="4.93" />
+                  </svg>
+                )}
+              </div>
+            )}
+
+            <div
               onClick={() => {
+                if (editingSection || creatingSection) return;
                 setShowLinkPreview(false);
                 setDocsLink("");
-                setActiveContentType(
-                  activeContentType.filter((val) => val !== "link"),
-                );
+                setActiveContentType("");
               }}
-              className="absolute -right-12 top-0 h-12 w-12 cursor-pointer"
+              title="Close section"
+              className="absolute -right-14 top-16 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-gray-400 text-white"
             >
-              <path
-                fillRule="evenodd"
-                d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z"
-                clipRule="evenodd"
-              />
-            </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="lucide lucide-x"
+              >
+                <path d="M18 6 6 18" />
+                <path d="m6 6 12 12" />
+              </svg>
+            </div>
             {!showLinkPreview && (
               <form
                 className={`mx-auto flex h-[50px] w-max shrink-0 items-center rounded-md`}
@@ -663,17 +1238,119 @@ function CreateProgramContent() {
         )}
       </div>
 
-      {!(activeContentType.includes("document") && !uploadedDocument) &&
-        !(activeContentType.includes("link") && !showLinkPreview) && (
-          <InsertNewSection
-            isFirst={
-              addedSectionsIds.length === 0 && activeContentType.length === 0
+      {activeContentType === "" && (
+        <InsertNewSection
+          isFirst={createSectionIds.length === 0}
+          chooseType={(val: string) => {
+            setBlockContent(undefined);
+            setCurrentEditing(undefined);
+            setActiveContentType(val);
+          }}
+        />
+      )}
+      {showDeleteModal.length > 0 && (
+        <DeleteSection
+          setShowConfirmModal={() => setShowDeleteModal("")}
+          id={showDeleteModal}
+          refreshPrograms={() => {
+            dispatch(
+              setCreateSectionIds(
+                createSectionIds.filter(
+                  (section: { type: string; id: string; content: string }) =>
+                    section?.id !== showDeleteModal,
+                ),
+              ),
+            );
+            // if currentEditing is the one being deleted, clear it
+            if (currentEditing?.id === showDeleteModal) {
+              setCurrentEditing(undefined);
+              if (activeContentType === "block") {
+                setActiveContentType("");
+              }
             }
-            chooseType={(val: string) =>
-              setActiveContentType((prev) => [...prev, val])
-            }
-          />
-        )}
+            setShowDeleteModal("");
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
+function OneCreatedSection({
+  index,
+  openEditMode,
+  id,
+  activeId,
+  deleteSection,
+  svg,
+}: {
+  type: string;
+  total: number;
+  index: number;
+  openEditMode: () => void;
+  id: string;
+  activeId: string | undefined;
+  deleteSection: () => void;
+  svg: React.ReactNode;
+}) {
+  return (
+    <div
+      className={`relative mb-2 flex h-28 w-full cursor-pointer items-center justify-between gap-6 rounded-lg border-[2px] bg-gray-50 p-2 pl-4 pr-14 shadow-sm  ${
+        activeId === id ? "border-secondary" : "border-white"
+      }`}
+    >
+      {svg}
+      <div className="flex w-max flex-col justify-start gap-4">
+        <span
+          onClick={() => openEditMode()}
+          className="text-xl font-semibold"
+        >{`Section ${index + 1}`}</span>
+        <div className="flex gap-6">
+          <div
+            onClick={() => openEditMode()}
+            className="flex h-max w-max cursor-pointer items-center justify-center rounded-full text-tertiary"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              className="lucide lucide-pencil"
+            >
+              <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+              <path d="m15 5 4 4" />
+            </svg>
+          </div>
+          <div
+            onClick={() => {
+              deleteSection();
+            }}
+            className="flex h-max w-max cursor-pointer items-center justify-center rounded-full text-red-400"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              className="lucide lucide-trash"
+            >
+              <path d="M3 6h18" />
+              <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+              <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+            </svg>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -1333,7 +2010,7 @@ function InsertNewSection({
   chooseType: (val: string) => void;
 }) {
   return (
-    <div className="mx-auto flex w-[500px] flex-col gap-4 rounded-md p-4 shadow-md">
+    <div className="relative mx-auto flex w-[500px] flex-col gap-4 rounded-md p-4 pb-16 shadow-md">
       <h3 className="flex items-center gap-1 text-lg font-semibold text-blue-500">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -1450,6 +2127,13 @@ function InsertNewSection({
           </div>
         </Tooltip>
       </div>
+
+      {!isFirst && (
+        <p className="absolute bottom-3 w-full text-center text-sm font-medium italic text-gray-600">
+          When done adding sections, click on the &quot;Save & Continue&quot;
+          button
+        </p>
+      )}
     </div>
   );
 }

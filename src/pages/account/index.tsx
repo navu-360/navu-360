@@ -24,6 +24,7 @@ import { processDate } from "utils/date";
 import { getPlanIdFromName, getPlanNameFromAmount } from "pages/setup";
 import Pricing from "components/landing/pricing";
 import { thousandSeparator } from "utils/num-utils";
+import { setDraftProgramId } from "redux/common/commonSlice";
 
 const SecondaryNavigation = [
   { name: "Account" },
@@ -171,6 +172,10 @@ const AccountSettings: React.FC = () => {
         });
       });
   };
+
+  useEffect(() => {
+    dispatch(setDraftProgramId(undefined));
+  }, [dispatch]);
 
   return (
     <>

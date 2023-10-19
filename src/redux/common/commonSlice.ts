@@ -2,7 +2,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  draftProgramId: "",
+  draftProgramId: undefined,
+  createSectionIds: [],
 };
 
 export const commonSlice = createSlice({
@@ -13,10 +14,14 @@ export const commonSlice = createSlice({
     setDraftProgramId: (state, action) => {
       state.draftProgramId = action.payload;
     },
+    setCreateSectionIds: (state, action) => {
+      state.createSectionIds = action.payload;
+    },
   },
 });
 export const {
   resetCommon,
   setDraftProgramId,
+  setCreateSectionIds
 } = commonSlice.actions;
 export default commonSlice.reducer;

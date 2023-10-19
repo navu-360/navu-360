@@ -6,7 +6,7 @@ import Spinner from "components/common/spinner";
 import DashboardWrapper from "components/layout/dashboardWrapper";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   useGetOrganizationProgramsQuery,
   useGetProgramTalentsQuery,
@@ -17,6 +17,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { DeleteConfirmModal } from "components/dashboard/confirmDeleteProgram";
 import { useRouter } from "next/router";
 import SelectTemplate from "components/dashboard/selectTemplate";
+import { resetCommon, setDraftProgramId } from "redux/common/commonSlice";
 
 export default function Programs() {
   const orgId = useSelector(
@@ -47,6 +48,12 @@ export default function Programs() {
   }, [data]);
 
   const [showSelectTemplate, setShowSelectTemplate] = useState(false);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setDraftProgramId(undefined));
+    dispatch(resetCommon());
+  }, [dispatch]);
 
   if (!isReady) return null;
 
