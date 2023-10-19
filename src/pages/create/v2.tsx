@@ -30,10 +30,13 @@ import toaster from "utils/toaster";
 import Image from "next/image";
 import {
   useAddProgramSectionMutation,
+  useAddQuizQuestionMutation,
   useCreateProgramMutation,
   useEditProgramMutation,
   useEditProgramSectionMutation,
+  useEditQuizQuestionMutation,
   useGetOneProgramQuery,
+  useGetProgramQuestionsQuery,
 } from "services/baseApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -1412,9 +1415,13 @@ function ConfirmStep() {
 
 interface IQuizQuestion {
   question: string;
-  options: IOptions[];
+  choiceA: string;
+  choiceB: string;
+  choiceC: string;
+  choiceD: string;
   answer: string;
   explanation: string;
+  id: string;
 }
 
 interface IOptions {
@@ -1423,49 +1430,16 @@ interface IOptions {
 }
 
 function CreateQuiz() {
-  const [questions, setQuestions] = useState<IQuizQuestion[]>([
-    {
-      question: "What is the capital of India?",
-      options: [
-        {
-          value: "delhi",
-          label: "Delhi",
-        },
-        {
-          value: "mumbai",
-          label: "Mumbai",
-        },
-        {
-          value: "kolkata",
-          label: "Kolkata",
-        },
-        {
-          value: "chennai",
-          label: "Chennai",
-        },
-      ],
-      answer: "delhi",
-      explanation: "Delhi is the capital of India",
-    },
-  ]);
-
-  const saveCurrentQuestion = (obj: IQuizQuestion) => {
-    setQuestions((prev) => [...prev, obj]);
-  };
-
-  const saveEditedQuestion = (obj: IQuizQuestion, index: number) => {
-    setQuestions((prev) => {
-      const newQuestions = [...prev];
-      newQuestions[index] = obj;
-      return newQuestions;
-    });
-  };
-
-  const removeQuestionAtIndex = (index: number) => {
-    setQuestions((prev) => prev.filter((_, i) => i !== index));
-  };
+  // const [questions, setQuestions] = useState<IQuizQuestion[]>([]);
 
   const [showAddQuestion, setShowAddQuestion] = useState(false);
+
+  // @ts-ignore
+  const programId = useSelector((state) => state.common.draftProgramId);
+
+  const { currentData, refetch } = useGetProgramQuestionsQuery(programId, {
+    skip: !programId,
+  });
 
   return (
     <section className="flex w-full max-w-5xl flex-col gap-2 text-left">
@@ -1475,20 +1449,12 @@ function CreateQuiz() {
       </p>
 
       <div className="relative mt-4 flex w-full flex-col gap-6">
-        {questions.map((question, index) => (
+        {currentData?.data?.map((question: IQuizQuestion, index: number) => (
           <QuestionView
             {...question}
-            answer={
-              question.options.find(
-                (option) => option.value === question.answer,
-              )?.label ?? ""
-            }
-            answerKey={question.answer}
+            answer={question.answer}
             key={index}
-            saveEditedData={(obj: IQuizQuestion) => {
-              saveEditedQuestion(obj, index);
-            }}
-            deleteMe={() => removeQuestionAtIndex(index)}
+            refetch={refetch}
           />
         ))}
 
@@ -1496,18 +1462,12 @@ function CreateQuiz() {
           onClick={() => setShowAddQuestion(true)}
           className="w-max rounded-lg border-[1px] border-secondary px-12 py-1.5 text-sm font-semibold text-secondary"
         >
-          {questions.length > 0 ? "Add Question" : "Add First Question"}
+          {currentData?.data.length > 0 ? "Add Question" : "Add First Question"}
         </button>
       </div>
 
       {showAddQuestion && (
-        <CreateOrEditQuestionPopUp
-          saveOrEditData={(obj: IQuizQuestion) => {
-            saveCurrentQuestion(obj);
-            setShowAddQuestion(false);
-          }}
-          close={() => setShowAddQuestion(false)}
-        />
+        <CreateOrEditQuestionPopUp close={() => setShowAddQuestion(false)} />
       )}
     </section>
   );
@@ -1515,24 +1475,33 @@ function CreateQuiz() {
 
 function QuestionView({
   question,
-  options,
+  choiceA,
+  choiceB,
+  choiceC,
+  choiceD,
   explanation,
-  answerKey,
-  saveEditedData,
-  deleteMe,
+  answer,
+  id,
+  refetch,
 }: IQuizQuestion & {
-  answerKey: string;
-  saveEditedData: (obj: IQuizQuestion) => void;
-  deleteMe: () => void;
+  refetch: () => void;
 }) {
   const [showEditQuestion, setShowEditQuestion] = useState(false);
+
+  const [showDeleteModal, setShowDeleteModal] = useState("");
+
   return (
     <div className="shadowAroundFeature flex w-full flex-col gap-4 rounded-xl p-4">
       <div className="flex w-full items-center justify-between">
         <h3 className="text-lg font-semibold text-gray-700">{question}</h3>
       </div>
       <div className="flex flex-col gap-2">
-        {options.map((option) => (
+        {[
+          { value: "A", label: choiceA },
+          { value: "B", label: choiceB },
+          { value: "C", label: choiceC },
+          { value: "D", label: choiceD },
+        ].map((option) => (
           <div
             key={option.value}
             className="flex cursor-default items-center gap-2"
@@ -1540,7 +1509,7 @@ function QuestionView({
             <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-200">
               <div
                 className={`flex h-4 w-4 items-center justify-center rounded-full bg-secondary ${
-                  option.value === answerKey ? "bg-opacity-100" : "bg-opacity-0"
+                  option.value === answer ? "bg-opacity-100" : "bg-opacity-0"
                 }`}
               />
             </div>
@@ -1576,7 +1545,7 @@ function QuestionView({
           Edit
         </button>
         <button
-          onClick={() => deleteMe()}
+          onClick={() => setShowDeleteModal(id)}
           className="flex items-center gap-2 rounded-md border-[1px] border-red-700 px-8 py-1.5 text-sm font-medium text-red-700"
         >
           <svg
@@ -1600,17 +1569,27 @@ function QuestionView({
 
       {showEditQuestion && (
         <CreateOrEditQuestionPopUp
-          saveOrEditData={(obj: IQuizQuestion) => {
-            saveEditedData(obj);
-            setShowEditQuestion(false);
-          }}
           editingData={{
             question,
-            options,
-            answer: answerKey,
+            choiceA,
+            choiceB,
+            choiceC,
+            choiceD,
+            answer,
             explanation,
+            id,
           }}
           close={() => setShowEditQuestion(false)}
+        />
+      )}
+      {showDeleteModal.length > 0 && (
+        <DeleteSection
+          setShowConfirmModal={() => setShowDeleteModal("")}
+          id={showDeleteModal}
+          refreshPrograms={() => {
+            refetch();
+            setShowDeleteModal("");
+          }}
         />
       )}
     </div>
@@ -1619,13 +1598,56 @@ function QuestionView({
 
 function CreateOrEditQuestionPopUp({
   close,
-  saveOrEditData,
   editingData,
 }: {
   close: () => void;
-  saveOrEditData: (obj: IQuizQuestion) => void;
   editingData?: IQuizQuestion;
 }) {
+  // @ts-ignore
+  const programId = useSelector((state) => state.common.draftProgramId);
+
+  const [createQuestion, { isLoading: creating }] =
+    useAddQuizQuestionMutation();
+  const [editQuestion, { isLoading: editing }] = useEditQuizQuestionMutation();
+
+  const saveCurrentQuestion = async (obj: IQuizQuestion) => {
+    const body = { ...obj, programId };
+    await createQuestion(body)
+      .unwrap()
+      .then(() => {
+        toaster({
+          status: "success",
+          message: "Question added successfully",
+        });
+        close();
+      })
+      .catch((error) => {
+        toaster({
+          status: "error",
+          message: error?.data?.message,
+        });
+      });
+  };
+
+  const saveEditedQuestion = (obj: IQuizQuestion) => {
+    const body = { ...obj, programId };
+    editQuestion(body)
+      .unwrap()
+      .then(() => {
+        toaster({
+          status: "success",
+          message: "Question edited successfully",
+        });
+        close();
+      })
+      .catch((error) => {
+        toaster({
+          status: "error",
+          message: error?.data?.message,
+        });
+      });
+  };
+
   const [question, setQuestion] = useState("");
   const [optionA, setOptionA] = useState<IOptions>({
     value: "A",
@@ -1651,20 +1673,29 @@ function CreateOrEditQuestionPopUp({
   useEffect(() => {
     if (editingData) {
       setQuestion(editingData.question);
-      setOptionA(editingData.options[0] as IOptions);
-      setOptionB(editingData.options[1] as IOptions);
-      setOptionC(editingData.options[2] as IOptions);
-      setOptionD(editingData.options[3] as IOptions);
+      setOptionA({
+        label: "A",
+        value: editingData.choiceA,
+      });
+      setOptionB({
+        label: "B",
+        value: editingData.choiceB,
+      });
+      setOptionC({
+        label: "C",
+        value: editingData.choiceC,
+      });
+      setOptionD({
+        label: "D",
+        value: editingData.choiceD,
+      });
       setAnswer(editingData.answer);
       setExplanation(editingData.explanation);
     }
   }, [editingData]);
 
   return (
-    <div
-      onClick={(e) => (e.target === e.currentTarget ? close() : null)}
-      className="fixed inset-0 z-[130] flex h-full w-full items-center justify-center bg-black/50 backdrop:blur-md md:fixed"
-    >
+    <div className="fixed inset-0 z-[130] flex h-full w-full items-center justify-center bg-black/50 backdrop:blur-md md:fixed">
       <div className="no-scrollbar flex h-[700px] w-[800px] flex-col overflow-y-auto rounded-3xl bg-white p-8">
         <h3 className="text-center text-lg font-semibold text-tertiary">
           {editingData ? "Edit Question" : "Add Question"}
@@ -1983,19 +2014,36 @@ function CreateOrEditQuestionPopUp({
           <div className="mt-2 flex w-full items-center justify-between">
             <button
               onClick={() => close()}
+              disabled={creating || editing}
               className="flex items-center gap-2 rounded-md border-[1px] border-gray-700 px-8 py-2 text-sm font-medium text-gray-700"
             >
               Cancel
             </button>
             <button
+              disabled={creating || editing}
               onClick={(e) => {
                 e.preventDefault();
-                saveOrEditData({
-                  question,
-                  options: [optionA, optionB, optionC, optionD],
-                  answer,
-                  explanation,
-                });
+                editingData
+                  ? saveEditedQuestion({
+                      question,
+                      choiceA: optionA.value,
+                      choiceB: optionB.value,
+                      choiceC: optionC.value,
+                      choiceD: optionD.value,
+                      answer,
+                      explanation,
+                      id: editingData?.id as string,
+                    })
+                  : saveCurrentQuestion({
+                      question,
+                      choiceA: optionA.value,
+                      choiceB: optionB.value,
+                      choiceC: optionC.value,
+                      choiceD: optionD.value,
+                      answer,
+                      explanation,
+                      id: "",
+                    });
               }}
               className="flex items-center gap-2 rounded-md bg-secondary px-8 py-2 text-sm font-medium text-white"
             >

@@ -131,6 +131,7 @@ model QuizQuestion {
   choiceC   String
   choiceD   String
   answer    String
+  explanation String
   programId String
   Program   OnboardingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
   createdAt DateTime          @default(now())

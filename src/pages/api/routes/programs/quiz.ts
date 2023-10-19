@@ -20,7 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         case "POST":
             try {
                 // question, choiceA, choiceB, choiceC, choiceD, answer, programId
-                const { question, choiceA, choiceB, choiceC, choiceD, answer, programId } = req.body as {
+                const { question, choiceA, choiceB, choiceC, choiceD, answer, programId, explanation } = req.body as {
                     question: string;
                     choiceA: string;
                     choiceB: string;
@@ -28,6 +28,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     choiceD: string;
                     answer: string;
                     programId: string;
+                    explanation: string;
                 };
 
                 if (!question || !choiceA || !choiceB || !choiceC || !choiceD || !answer || !programId) return res.status(400).json({ message: `Missing fields.` });
@@ -40,7 +41,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                         choiceC,
                         choiceD,
                         answer,
-                        programId
+                        programId,
+                        explanation
                     }
                 });
 
@@ -115,6 +117,32 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 return res
                     .status(200)
                     .json({ message: `Quiz question deleted!` });
+            } catch (error) {
+                return res
+                    .status(500)
+                    // @ts-ignore
+                    .json({ message: error.message });
+            }
+        case "GET":
+            // get all quiz questions given programId
+            try {
+                const { programId } = req.query as {
+                    programId: string;
+                };
+
+                console.log(programId);
+
+                if (!programId) return res.status(400).json({ message: `Missing fields.` });
+
+                const quizQuestions = await prisma.quizQuestion.findMany({
+                    where: {
+                        programId
+                    }
+                });
+
+                return res
+                    .status(200)
+                    .json({ message: `Quiz questions retrieved!`, data: quizQuestions });
             } catch (error) {
                 return res
                     .status(500)

@@ -15,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           id,
         },
         include: {
-          programQuiz: true,
+          QuizQuestion: true,
           ProgramSection: {
             orderBy: {
               createdAt: "asc"

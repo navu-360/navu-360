@@ -136,6 +136,9 @@ export const baseApiSlice = createApi({
       }),
       invalidatesTags: ["Dashboard"],
     }),
+    getProgramQuestions: builder.query({
+      query: (programId) => `programs/quiz?programId=${programId}`,
+    }),
     // fetch organization's program
     getOrganizationPrograms: builder.query({
       query: (orgId) => ({
@@ -355,4 +358,5 @@ export const {
   useAddQuizQuestionMutation,
   useEditQuizQuestionMutation,
   useDeleteQuizQuestionMutation,
+  useGetProgramQuestionsQuery,
 } = baseApiSlice;
