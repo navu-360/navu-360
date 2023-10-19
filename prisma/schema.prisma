@@ -90,8 +90,8 @@ model OnboardingProgram {
   createdAt                DateTime                   @default(now())
   updatedAt                DateTime                   @updatedAt
   courseModuleId           String?
-  programQuiz              programQuiz[]
   ProgramSection           ProgramSection[]
+  QuizQuestion             QuizQuestion[]
 }
 
 model ProgramSection {
@@ -120,29 +120,23 @@ model OnboardingProgramTalents {
 
   @@unique([userId, programId])
   @@index([userId], name: "userId")
-  @@index([programId], name: "programId")
   @@index([organizationId], name: "organizationId")
 }
 
-model programQuiz {
-  id          String            @id @default(cuid())
-  programId   String
-  Program     OnboardingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
-  questionIds String[]
-  createdAt   DateTime          @default(now())
-  updatedAt   DateTime          @updatedAt
-}
-
 model QuizQuestion {
-  id        String   @id @default(cuid())
+  id        String            @id @default(cuid())
   question  String
   choiceA   String
   choiceB   String
   choiceC   String
   choiceD   String
   answer    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  programId String
+  Program   OnboardingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  @@index([programId], name: "programId")
 }
 
 model TalentProgramResults {

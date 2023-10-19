@@ -43,6 +43,7 @@ import {
 import type { ProgramSection } from "@prisma/client";
 import { DeleteSection } from "components/programs/confirmDeleteSection";
 import { uploadOne } from "components/common/uploader";
+import { useRouter } from "next/router";
 
 const animatedComponents = makeAnimated();
 
@@ -214,6 +215,11 @@ export default function CreateProgram() {
       });
   };
 
+  const createSectionIds = useSelector(
+    // @ts-ignore
+    (state) => state.common.createSectionIds,
+  );
+
   return (
     <>
       <Header title="Create a Training Program" />
@@ -256,6 +262,15 @@ export default function CreateProgram() {
                         updateStepOne();
                       }
                       return;
+                    }
+                    if (activeTab === 1) {
+                      if (createSectionIds?.length === 0) {
+                        toaster({
+                          status: "error",
+                          message: "Please add at least one section",
+                        });
+                        return;
+                      }
                     }
                     setActiveTab(activeTab + 1);
                   }}
@@ -1357,6 +1372,7 @@ function OneCreatedSection({
 
 function ConfirmStep() {
   const [showCreateQuiz, setShowCreateQuiz] = useState(false);
+  const router = useRouter();
   return (
     <section
       className={`relative flex h-full min-h-[70vh] w-full flex-col items-center gap-4 text-center ${
@@ -1374,7 +1390,7 @@ function ConfirmStep() {
           </p>
           <div className="mx-auto mt-2 flex w-max items-center gap-6">
             <button
-              onClick={() => console.log("go to programs")}
+              onClick={() => router.replace("/programs")}
               className="rounded-md border-[1px] border-gray-700 px-12 py-1.5 font-semibold text-gray-700"
             >
               No, I&apos;m done
