@@ -112,6 +112,30 @@ export const baseApiSlice = createApi({
       }),
       invalidatesTags: ["Dashboard"],
     }),
+    addQuizQuestion: builder.mutation({
+      query: (body) => ({
+        url: `programs/quiz`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Dashboard"],
+    }),
+    editQuizQuestion: builder.mutation({
+      query: (body) => ({
+        url: `programs/quiz`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["Dashboard"],
+    }),
+    deleteQuizQuestion: builder.mutation({
+      query: (body) => ({
+        url: `programs/quiz`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["Dashboard"],
+    }),
     // fetch organization's program
     getOrganizationPrograms: builder.query({
       query: (orgId) => ({
@@ -328,4 +352,7 @@ export const {
   useAddProgramSectionMutation,
   useEditProgramSectionMutation,
   useDeleteProgramSectionMutation,
+  useAddQuizQuestionMutation,
+  useEditQuizQuestionMutation,
+  useDeleteQuizQuestionMutation,
 } = baseApiSlice;
