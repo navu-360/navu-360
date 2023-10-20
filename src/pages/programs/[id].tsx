@@ -43,7 +43,7 @@ import { AnimatePresence } from "framer-motion";
 import { DeleteConfirmModal } from "components/dashboard/confirmDeleteProgram";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { GoogleDocumentViewer } from "pages/create/v2";
+import { GoogleDocumentViewer } from "pages/create/program";
 
 export interface IEnrollmentWithTalent extends OnboardingProgramTalents {
   User: User;
