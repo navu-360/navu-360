@@ -20,7 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             orderBy: {
               createdAt: "asc"
             }
-          }
+          },
         }
       });
 
@@ -38,7 +38,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       return res
         .status(200)
-        .json({ message: `Program fetched.`, data: { ...program, creator: user?.name } });
+        .json({ message: `Program fetched.`, data: { ...program, creator: { name: user?.name, id: user?.id } } });
     } catch (error) {
       return res
         .status(500)

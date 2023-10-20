@@ -1253,7 +1253,7 @@ function CreateProgramContent() {
                 </button>
               </form>
             )}
-            {showLinkPreview && <GoogleDocumentViewer />}
+            {showLinkPreview && <GoogleDocumentViewer link={docsLink as string} />}
           </div>
         )}
       </div>
@@ -2077,9 +2077,8 @@ function CreateOrEditQuestionPopUp({
   );
 }
 
-const GoogleDocumentViewer = () => {
-  const documentURL =
-    "https://docs.google.com/presentation/d/11-ZczAIqPsH8JoPspVZNSAv3e8ZYIiUOmNrwjxvW7Ow/edit?usp=sharing";
+export const GoogleDocumentViewer = ({ link }: { link: string }) => {
+  const documentURL = link;
   return (
     <div>
       <iframe src={documentURL} width="100%" height="600px" />

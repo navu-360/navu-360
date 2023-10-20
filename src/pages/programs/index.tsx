@@ -41,6 +41,8 @@ export default function Programs() {
 
   const [programsArray, setProgramsArray] = useState<any[]>(data?.data);
 
+  console.log(data?.data);
+
   useEffect(() => {
     if (data) {
       setProgramsArray(data?.data);
@@ -161,9 +163,13 @@ export function OneProgramCard({
   deleteProgram,
 }: {
   program: OnboardingProgram & {
-    createdBy: {
-      id: string;
+    creator: {
       name: string;
+      id: string;
+    };
+    _count: {
+      QuizQuestion: number;
+      ProgramSection: number;
     };
   };
   delay: number;
@@ -174,6 +180,8 @@ export function OneProgramCard({
   const { data: enrolledTalents } = useGetProgramTalentsQuery(programId);
 
   const router = useRouter();
+
+  console.log(program);
 
   return (
     <motion.div
@@ -200,27 +208,13 @@ export function OneProgramCard({
             }
           }
         }}
-        className="relative flex h-[300px] w-[300px] flex-col gap-4 rounded-lg bg-white text-tertiary shadow-md"
+        className="relative flex h-[350px] w-[350px] flex-col gap-4 rounded-lg bg-white text-tertiary shadow-md"
       >
         <div className="relative flex h-[60px] w-full items-center gap-2 rounded-t-lg bg-tertiary p-4 py-10 text-white">
           <h2 className="text-lg font-bold">{program.name}</h2>
         </div>
 
-        <div className="absolute bottom-16 right-4 flex items-center gap-2">
-          <p className="text-xs font-medium">Created By</p>
-          <div className="flex items-center gap-4">
-            <p className="text-[14px] font-semibold">
-              {program?.createdBy?.name}
-            </p>
-            <img
-              src={generateAvatar(program?.createdBy?.id)}
-              className="h-[50px] w-[50px] rounded-full bg-tertiary"
-              alt={program?.createdBy?.name}
-            />
-          </div>
-        </div>
-
-        <div className="absolute bottom-2 right-4 flex flex-row-reverse items-center justify-end gap-6">
+        <div className="absolute bottom-4 right-4 flex flex-row-reverse items-center justify-end gap-6">
           <div
             id="delete1"
             onClick={() => deleteProgram(program?.id)}
@@ -267,7 +261,52 @@ export function OneProgramCard({
           </div>
         </div>
 
-        <div className="-mt-2 flex items-center gap-2 px-4">
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-2 px-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              className="lucide lucide-book-open"
+            >
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+            </svg>
+            <span className="text-xs font-medium">
+              Total Chapters {program?._count?.ProgramSection || 0}
+            </span>
+          </div>
+          <div className="flex items-center gap-2 px-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              className="lucide lucide-list-checks"
+            >
+              <path d="m3 17 2 2 4-4" />
+              <path d="m3 7 2 2 4-4" />
+              <path d="M13 6h8" />
+              <path d="M13 12h8" />
+              <path d="M13 18h8" />
+            </svg>
+            <span className="text-xs font-medium">
+              Total Questions {program?._count?.QuizQuestion || 0}
+            </span>
+          </div>
+        </div>
+        <div className="-mt-2 flex items-center gap-2 px-4 text-xs">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -284,8 +323,7 @@ export function OneProgramCard({
           </svg>
           <p>{enrolledTalents?.data?.length || 0} talents enrolled</p>
         </div>
-
-        <div className="mt-4 flex items-center gap-2 px-4">
+        <div className="flex items-center gap-2 px-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -302,6 +340,19 @@ export function OneProgramCard({
           <span className="text-xs font-medium">
             Created on {processDate(program.createdAt)}
           </span>
+        </div>
+        <div className="flex flex-col items-start gap-2 px-4">
+          <p className="text-xs font-medium">Created By</p>
+          <div className="flex items-center gap-4">
+            <img
+              src={generateAvatar(program?.creator?.id)}
+              className="h-[30px] w-[30px] rounded-full bg-tertiary"
+              alt={program?.creator?.name}
+            />
+            <p className="text-[14px] font-semibold text-tertiary">
+              {program?.creator?.name}
+            </p>
+          </div>
         </div>
       </Link>
     </motion.div>

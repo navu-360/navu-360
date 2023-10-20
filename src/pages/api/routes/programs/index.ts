@@ -70,13 +70,33 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           where: {
             organizationId: orgId,
           },
-          select: {
-            id: true,
-            name: true,
-            organizationId: true,
-            createdAt: true,
-            updatedAt: true,
-            createdBy: true,
+          // select: {
+          //   id: true,
+          //   name: true,
+          //   organizationId: true,
+          //   createdAt: true,
+          //   updatedAt: true,
+          //   createdBy: true,
+          //   _count: {
+          //     select: {
+          //       QuizQuestion: true,
+          //       ProgramSection: true,
+          //     }
+          //   }
+          // },
+          include: {
+            _count: {
+              select: {
+                QuizQuestion: true,
+                ProgramSection: true,
+              }
+            },
+            creator: {
+              select: {
+                name: true,
+                id: true,
+              }
+            }
           },
           orderBy: {
             createdAt: "desc",
@@ -91,6 +111,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           .status(200)
           .json({ message: `Programs fetched.`, data: programs });
       } catch (error) {
+        console.log(error);
         return res
           .status(500)
           // @ts-ignore

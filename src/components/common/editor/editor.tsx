@@ -39,10 +39,12 @@ function MyEditor({
         placeholder: "Create your content here...",
         readOnly: isReadOnly,
         onChange: async () => {
-          // @ts-ignore
-          const data = await editorRef.current?.save();
-          setOutputData(data);
-          receiveData && receiveData(data);
+          if (!isReadOnly) {
+            // @ts-ignore
+            const data = await editorRef.current?.save();
+            setOutputData(data);
+            receiveData && receiveData(data);
+          }
         },
       });
 
