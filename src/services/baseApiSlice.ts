@@ -196,6 +196,13 @@ export const baseApiSlice = createApi({
       }),
       invalidatesTags: ["Dashboard"],
     }),
+    sendWelcomeEmail: builder.mutation({
+      query: () => ({
+        url: `email/welcome`,
+        method: "POST",
+      }),
+      invalidatesTags: ["Dashboard"],
+    }),
     acceptInvite: builder.mutation({
       query: (body) => ({
         url: `invite/accept`,
@@ -359,4 +366,5 @@ export const {
   useEditQuizQuestionMutation,
   useDeleteQuizQuestionMutation,
   useGetProgramQuestionsQuery,
+  useSendWelcomeEmailMutation,
 } = baseApiSlice;
