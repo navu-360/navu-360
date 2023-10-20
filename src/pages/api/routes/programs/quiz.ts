@@ -31,7 +31,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     explanation: string;
                 };
 
-                if (!question || !choiceA || !choiceB || !choiceC || !choiceD || !answer || !programId) return res.status(400).json({ message: `Missing fields.` });
+                const countOfTrueBooleans = (booleansArray: boolean[]) => {
+                    return booleansArray.filter((boolean) => boolean).length;
+                };
+
+                if (!question || countOfTrueBooleans([!choiceA, !choiceB, !choiceC, !choiceD]) < 2 || !answer || !programId) return res.status(400).json({ message: `Missing fields.` });
 
                 const createdQuiz = await prisma.quizQuestion.create({
                     data: {

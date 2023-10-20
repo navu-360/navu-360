@@ -100,11 +100,9 @@ export default function SelectTemplate({
             clipRule="evenodd"
           />
         </svg>
-        <h1 className="text-lg font-bold text-tertiary">
-          Create a Program
-        </h1>
+        <h1 className="text-lg font-bold text-tertiary">Create a Course</h1>
         <p className="text-base font-medium text-gray-600">
-          Select a template to continue or create a blank program
+          Select a template to continue or create a blank course
         </p>
         <div className="relative w-full bg-white pt-6 md:pt-12">
           <form className="right-8 top-1 md:absolute md:mt-2 md:w-max md:pl-8">
@@ -189,7 +187,7 @@ export default function SelectTemplate({
               href="/create/program"
               className="mt-4 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 md:mr-0"
             >
-              Create Blank Program
+              Create Blank Course
             </Link>
           </div>
         </div>

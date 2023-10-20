@@ -99,7 +99,7 @@ export default function Dashboard() {
               />
             </svg>
 
-            <span>Create Program</span>
+            <span>Create Course</span>
           </button>
           <div className="mt-16 flex w-full flex-wrap gap-4 lg:justify-between lg:gap-0 2xl:mt-8">
             <OneStat
@@ -126,7 +126,7 @@ export default function Dashboard() {
               num={countOfTalents}
             />
             <OneStat
-              text="Total Programs"
+              text="Total Courses"
               svg={
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

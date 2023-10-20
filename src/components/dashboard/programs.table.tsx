@@ -45,7 +45,7 @@ export default function Programs({
                   <div className="flex flex-wrap items-center">
                     <div className="relative w-full max-w-full flex-1 flex-grow px-2 ">
                       <h3 className="text-base font-semibold text-white">
-                        Recently created programs
+                        Recently created courses
                       </h3>
                     </div>
                   </div>
@@ -80,7 +80,7 @@ export default function Programs({
                   <div className="flex flex-wrap items-center">
                     <div className="relative w-full max-w-full flex-1 flex-grow px-2 ">
                       <h3 className="text-base font-semibold text-white">
-                        Recently created programs
+                        Recently created courses
                       </h3>
                     </div>
                   </div>
@@ -115,7 +115,7 @@ export default function Programs({
                     href={`/programs`}
                     className="mt-6 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl border border-white bg-tertiary px-8 py-2 text-center text-lg font-semibold text-white transition-all duration-300 ease-in hover:border-secondary hover:bg-secondary hover:text-white focus:outline-none focus:ring-4 md:mr-0"
                   >
-                    View All Programs
+                    View All Courses
                   </Link>
                 )}
               </div>

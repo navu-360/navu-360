@@ -41,8 +41,6 @@ export default function Programs() {
 
   const [programsArray, setProgramsArray] = useState<any[]>(data?.data);
 
-  console.log(data?.data);
-
   useEffect(() => {
     if (data) {
       setProgramsArray(data?.data);
@@ -97,7 +95,7 @@ export default function Programs() {
               />
             </svg>
 
-            <span>Create Program</span>
+            <span>Create Course</span>
           </button>
           {programsArray?.length === 0 && (
             <div className="flex min-h-[70vh] w-full items-center justify-center gap-4">
@@ -113,7 +111,7 @@ export default function Programs() {
                   clipRule="evenodd"
                 />
               </svg>
-              <p>You have no programs yet.</p>
+              <p>You have no courses yet.</p>
             </div>
           )}
           {programsArray?.length > 0 && (
@@ -180,8 +178,6 @@ export function OneProgramCard({
   const { data: enrolledTalents } = useGetProgramTalentsQuery(programId);
 
   const router = useRouter();
-
-  console.log(program);
 
   return (
     <motion.div

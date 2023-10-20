@@ -66,15 +66,6 @@ export default function CreateProgram() {
     }
   };
 
-  // TODO
-  /*
-  //1. Create schemas. One parent table and tables for blocks, documents, links. Including status field: draft, published, archived
-  2. Integrate step 1. Create draft program, upload image
-  3. Add beforeunload event listener to warn user if they have unsaved changes
-  4. Create content types for step 2. Enable preview mode
-
-  */
-
   const [programDetails, setProgramDetails] = useState<{
     name: string;
     description: string;
@@ -104,28 +95,21 @@ export default function CreateProgram() {
       ) {
         toaster({
           status: "error",
-          message: "Program name, description and categories are required",
+          message: "Course name, description and categories are required",
         });
         return;
       }
       if (!programDetails?.name) {
         toaster({
           status: "error",
-          message: "Program name is required",
+          message: "Course name is required",
         });
         return;
       }
       if (!programDetails?.description) {
         toaster({
           status: "error",
-          message: "Program description is required",
-        });
-        return;
-      }
-      if (programDetails?.selectedDepartments?.length === 0) {
-        toaster({
-          status: "error",
-          message: "Program categories are required",
+          message: "Course description is required",
         });
         return;
       }
@@ -151,7 +135,7 @@ export default function CreateProgram() {
         dispatch(setDraftProgramId(payload?.data?.id));
         toaster({
           status: "success",
-          message: "Program draft saved!",
+          message: "Course draft saved!",
         });
         setActiveTab(activeTab + 1);
       })
@@ -205,7 +189,7 @@ export default function CreateProgram() {
       .then(() => {
         toaster({
           status: "success",
-          message: "Program details updated!",
+          message: "Course details updated!",
         });
         refetch();
         setActiveTab(activeTab + 1);
@@ -227,7 +211,7 @@ export default function CreateProgram() {
 
   return (
     <>
-      <Header title="Create a Training Program" />
+      <Header title="Create a new Course" />
       <DashboardWrapper hideSearch>
         <div className="relative ml-[90px] mt-[40px] flex h-full flex-col items-start justify-start gap-8 rounded-md  p-4 md:ml-[300px] md:w-[calc(100%_-_400px)]">
           <Steps doneSteps={getDoneSteps()} activeStep={activeTab} />
@@ -284,8 +268,8 @@ export default function CreateProgram() {
                 >
                   {activeTab === 2
                     ? draftProgramId?.length > 0
-                      ? "View Program"
-                      : "Create Program"
+                      ? "View Course"
+                      : "Create Course"
                     : "Save & Continue"}
                 </button>
               </div>
@@ -336,7 +320,7 @@ function Steps({
               }`}
             />
           )}
-          Program <span className="hidden sm:ml-2 sm:inline-flex">Details</span>
+          Course <span className="hidden sm:ml-2 sm:inline-flex">Details</span>
         </span>
       </li>
       <li
@@ -370,7 +354,7 @@ function Steps({
               }`}
             />
           )}
-          Program{" "}
+          Course{" "}
           <span className="hidden sm:ml-2 sm:inline-flex">Materials</span>
         </span>
       </li>
@@ -398,7 +382,7 @@ function Steps({
             }`}
           />
         )}
-        Confirmation
+        Quiz
       </li>
     </ol>
   );
@@ -510,7 +494,7 @@ function ProgramDetails({
   return (
     <form className="flex flex-col gap-8">
       <div className="flex flex-col gap-2">
-        <label htmlFor="role">Program Name</label>
+        <label htmlFor="role">Course Name</label>
         <input
           type="text"
           name="role"
@@ -519,13 +503,13 @@ function ProgramDetails({
           onChange={(e) => setName(e.target.value)}
           aria-required
           minLength={3}
-          placeholder="e.g Sales Training Program"
+          placeholder="e.g Sales Training Course"
           className="common-input program-create-form text-sm"
           required
         />
       </div>
       <div className="flex flex-col gap-2">
-        <label htmlFor="role">Program Description</label>
+        <label htmlFor="role">Course Description</label>
         <textarea
           name="desc"
           id="desc"
@@ -534,11 +518,11 @@ function ProgramDetails({
           required
           minLength={10}
           className="common-input program-create-form !h-[100px] text-sm"
-          placeholder="e.g This program is for sales team to learn how to sell our products"
+          placeholder="e.g This Course is for sales team to learn how to sell our products"
         />
       </div>
       <div className="flex max-w-[600px] flex-col gap-2">
-        <label>Program Categories</label>
+        <label>Course Categories</label>
         <Select
           closeMenuOnSelect={false}
           components={animatedComponents}
@@ -551,7 +535,7 @@ function ProgramDetails({
         />
       </div>
       <div className="flex max-w-[600px] flex-col gap-2">
-        <label>Program Cover Image</label>
+        <label>Course Cover Image</label>
 
         <div className="relative flex h-[400px] w-full items-center justify-center">
           {!uploadedImage ? (
@@ -693,7 +677,7 @@ function CreateProgramContent() {
             );
             toaster({
               status: "success",
-              message: "Section saved!",
+              message: "Chapter saved!",
             });
           })
           .catch((error) => {
@@ -707,7 +691,7 @@ function CreateProgramContent() {
           .then(() => {
             toaster({
               status: "success",
-              message: "Section updated!",
+              message: "Chapter updated!",
             });
           })
           .catch((error) => {
@@ -824,19 +808,15 @@ function CreateProgramContent() {
   return (
     <div className="relative w-full">
       <div className="relative my-6 w-[95%] pt-16 text-gray-600">
-        <button className="absolute -top-6 right-4 rounded-md border-[1px] border-tertiary px-8 py-1.5 text-tertiary">
-          Preview
-        </button>
-
         <div className="no-scrollbar absolute bottom-0 left-0 top-16 h-full min-h-[60vh] w-1/5 overflow-y-auto rounded-3xl bg-gray-100 p-4 pt-4">
           <h2 className="mb-2 text-center text-base font-bold">
-            Created Sections
+            Created Chapters
           </h2>
 
           {createSectionIds?.length === 0 && (
             <div className="absolute inset-x-0 top-1/2 flex w-full -translate-y-1/2 flex-col gap-2">
               <p className="text-center text-sm font-semibold">
-                Created sections will appear here
+                Created chapters will appear here
               </p>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -1054,7 +1034,7 @@ function CreateProgramContent() {
                 setActiveContentType("");
                 setUploadedDocument(undefined);
               }}
-              title="Close section"
+              title="Close chapter"
               className="absolute -right-14 top-16 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-gray-400 text-white"
             >
               <svg
@@ -1112,9 +1092,7 @@ function CreateProgramContent() {
                       <span className="font-semibold">Click to upload</span> or
                       drag and drop
                     </p>
-                    <p className="text-xs text-gray-500 ">
-                      PDF or Microsoft Word (.docx)
-                    </p>
+                    <p className="text-xs text-gray-500 ">PDF</p>
                   </div>
                   <input
                     id="dropzone-file"
@@ -1199,7 +1177,7 @@ function CreateProgramContent() {
                 setDocsLink("");
                 setActiveContentType("");
               }}
-              title="Close section"
+              title="Close chapter"
               className="absolute -right-14 top-16 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-gray-400 text-white"
             >
               <svg
@@ -1253,7 +1231,9 @@ function CreateProgramContent() {
                 </button>
               </form>
             )}
-            {showLinkPreview && <GoogleDocumentViewer link={docsLink as string} />}
+            {showLinkPreview && (
+              <GoogleDocumentViewer link={docsLink as string} />
+            )}
           </div>
         )}
       </div>
@@ -1400,8 +1380,8 @@ function ConfirmStep() {
             Course Creation Complete!
           </h2>
           <p className="mx-auto max-w-xl text-sm font-medium text-gray-700">
-            Your program has been successfully created. It has not yet been
-            published. <br /> Do you want to add a quiz to your program?
+            Your course has been successfully created. <br /> Do you want to add
+            a quiz to your course?
           </p>
           <div className="mx-auto mt-2 flex w-max items-center gap-6">
             <button
@@ -1457,8 +1437,8 @@ function CreateQuiz() {
     <section className="flex w-full max-w-5xl flex-col gap-2 text-left">
       <h2 className="text-2xl font-semibold text-tertiary">Create Quiz</h2>
       <p className="max-w-xl text-sm font-medium text-gray-700">
-        You can add multiple questions to your quiz. When done adding questions,
-        click on the &quot;Save & Continue&quot; to finish.
+        You can add multiple questions to course quiz. When done adding
+        questions, click on the &quot;View Course&quot; to finish.
       </p>
 
       <div className="relative mt-4 flex w-full flex-col gap-6">
@@ -1519,27 +1499,33 @@ function QuestionView({
           { value: "B", label: choiceB },
           { value: "C", label: choiceC },
           { value: "D", label: choiceD },
-        ].map((option) => (
-          <div
-            key={option.value}
-            className="flex cursor-default items-center gap-2"
-          >
-            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-200">
-              <div
-                className={`flex h-4 w-4 items-center justify-center rounded-full bg-secondary ${
-                  option.value === answer ? "bg-opacity-100" : "bg-opacity-0"
-                }`}
-              />
+        ]
+          .filter((x) => x.label.length > 0)
+          .map((option) => (
+            <div
+              key={option.value}
+              className="flex cursor-default items-center gap-2"
+            >
+              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-200">
+                <div
+                  className={`flex h-4 w-4 items-center justify-center rounded-full bg-secondary ${
+                    option.value === answer ? "bg-opacity-100" : "bg-opacity-0"
+                  }`}
+                />
+              </div>
+              <p className="text-sm font-medium text-gray-700">
+                {option.label}
+              </p>
             </div>
-            <p className="text-sm font-medium text-gray-700">{option.label}</p>
-          </div>
-        ))}
+          ))}
       </div>
-      <div className="flex flex-col gap-2">
-        <p className="text-sm font-medium text-gray-700">
-          Explanation: <span className="font-semibold">{explanation}</span>
-        </p>
-      </div>
+      {explanation?.length > 0 && (
+        <div className="flex flex-col gap-2">
+          <p className="text-sm font-medium text-gray-700">
+            Explanation: <span className="font-semibold">{explanation}</span>
+          </p>
+        </div>
+      )}
       <div className="mt-2 flex w-full items-center justify-end gap-4">
         <button
           onClick={() => setShowEditQuestion(true)}
@@ -1632,6 +1618,37 @@ function CreateOrEditQuestionPopUp({
   const [editQuestion, { isLoading: editing }] = useEditQuizQuestionMutation();
 
   const saveCurrentQuestion = async (obj: IQuizQuestion) => {
+    // check if we have atleast question and 2 choices and an answer
+    if (!obj.question) {
+      toaster({
+        status: "error",
+        message: "Question is required",
+      });
+      return;
+    }
+    if (
+      countOfTrueBooleans([
+        obj.choiceA?.length > 0,
+        obj.choiceB?.length > 0,
+        obj.choiceC?.length > 0,
+        obj.choiceD?.length > 0,
+      ]) < 2
+    ) {
+      toaster({
+        status: "error",
+        message: "You must have atleast 2 choices",
+      });
+      return;
+    }
+
+    if (!obj.answer) {
+      toaster({
+        status: "error",
+        message: "Answer is required",
+      });
+      return;
+    }
+
     const body = { ...obj, programId, id: undefined };
     await createQuestion(body)
       .unwrap()
@@ -1648,6 +1665,10 @@ function CreateOrEditQuestionPopUp({
           message: error?.data?.message,
         });
       });
+  };
+
+  const countOfTrueBooleans = (booleansArray: boolean[]) => {
+    return booleansArray.filter((boolean) => boolean).length;
   };
 
   const saveEditedQuestion = (obj: IQuizQuestion) => {
@@ -1687,7 +1708,7 @@ function CreateOrEditQuestionPopUp({
     label: "",
   });
 
-  const [answer, setAnswer] = useState("A");
+  const [answer, setAnswer] = useState("");
 
   const [explanation, setExplanation] = useState("");
 
@@ -1695,20 +1716,20 @@ function CreateOrEditQuestionPopUp({
     if (editingData) {
       setQuestion(editingData.question);
       setOptionA({
-        label: "A",
-        value: editingData.choiceA,
+        label: editingData.choiceA,
+        value: "A",
       });
       setOptionB({
-        label: "B",
-        value: editingData.choiceB,
+        label: editingData.choiceB,
+        value: "B",
       });
       setOptionC({
-        label: "C",
-        value: editingData.choiceC,
+        label: editingData.choiceC,
+        value: "C",
       });
       setOptionD({
-        label: "D",
-        value: editingData.choiceD,
+        label: editingData.choiceD,
+        value: "D",
       });
       setAnswer(editingData.answer);
       setExplanation(editingData.explanation);
@@ -1749,272 +1770,320 @@ function CreateOrEditQuestionPopUp({
             </h4>
 
             <div className="flex w-full flex-col gap-8 pl-0">
-              <div
-                className={`relative flex w-full flex-col gap-1 rounded-2xl`}
-              >
-                <label
-                  htmlFor="answera"
-                  className="block w-[60px] text-sm font-medium leading-6 text-tertiary"
+              {(!editingData || editingData?.choiceA?.length > 0) && (
+                <div
+                  className={`relative flex w-full flex-col gap-1 rounded-2xl`}
                 >
-                  Choice A
-                </label>
-                <div className="relative flex w-full">
-                  <input
-                    id="answera"
-                    type="text"
-                    name="answera"
-                    placeholder="Choice A here"
-                    value={optionA.label}
-                    onChange={(e) =>
-                      setOptionA({
-                        ...optionA,
-                        label: e.target.value,
-                      })
-                    }
-                    className="question-input block w-full rounded-md bg-white/5 py-1.5 pl-2 text-tertiary shadow-sm sm:text-sm sm:leading-6"
-                  />
-                  {optionA?.value === answer && (
-                    <p className="absolute -bottom-5 mt-1 text-xs font-semibold tracking-wide text-green-600">
-                      Correct Answer
-                    </p>
-                  )}
-                  <div
-                    onClick={() => setAnswer("A")}
-                    className="flex w-[100px] cursor-pointer justify-end"
+                  <label
+                    htmlFor="answera"
+                    className="block w-[60px] text-sm font-medium leading-6 text-tertiary"
                   >
-                    {optionA?.value === answer ? (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="32"
-                        height="32"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="lucide lucide-check-circle-2 text-green-500"
-                      >
-                        <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
-                        <path d="m9 12 2 2 4-4" />
-                      </svg>
-                    ) : (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="32"
-                        height="32"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="lucide lucide-circle text-gray-300"
-                      >
-                        <circle cx="12" cy="12" r="10" />
-                      </svg>
+                    Choice A
+                  </label>
+                  <div className="relative flex w-full">
+                    <input
+                      id="answera"
+                      type="text"
+                      name="answera"
+                      placeholder="Choice A here"
+                      value={optionA.label}
+                      onChange={(e) =>
+                        setOptionA({
+                          ...optionA,
+                          label: e.target.value,
+                        })
+                      }
+                      className="question-input block w-full rounded-md bg-white/5 py-1.5 pl-2 text-tertiary shadow-sm sm:text-sm sm:leading-6"
+                    />
+                    {optionA?.value === answer && (
+                      <p className="absolute -bottom-5 mt-1 text-xs font-semibold tracking-wide text-green-600">
+                        Correct Answer
+                      </p>
                     )}
+                    <div
+                      onClick={() => {
+                        if (optionA?.label?.length === 0) {
+                          toaster({
+                            status: "error",
+                            message:
+                              "A choice must have a value to be the correct answer",
+                          });
+                          return;
+                        }
+                        setAnswer("A");
+                      }}
+                      className="flex w-[100px] cursor-pointer justify-end"
+                    >
+                      {optionA?.value === answer ? (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="32"
+                          height="32"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="lucide lucide-check-circle-2 text-green-500"
+                        >
+                          <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                          <path d="m9 12 2 2 4-4" />
+                        </svg>
+                      ) : (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="32"
+                          height="32"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="lucide lucide-circle text-gray-300"
+                        >
+                          <circle cx="12" cy="12" r="10" />
+                        </svg>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className={`flex w-full flex-col gap-1 rounded-2xl`}>
-                <label
-                  htmlFor="answerb"
-                  className="block w-[60px] text-sm font-medium leading-6 text-tertiary"
-                >
-                  Choice B
-                </label>
-                <div className="relative flex w-full">
-                  <input
-                    id="answerb"
-                    type="text"
-                    name="answerb"
-                    placeholder="Choice B here"
-                    value={optionB.label}
-                    onChange={(e) =>
-                      setOptionB({
-                        ...optionB,
-                        label: e.target.value,
-                      })
-                    }
-                    className="question-input block w-full rounded-md bg-white/5 py-1.5 pl-2 text-tertiary shadow-sm sm:text-sm sm:leading-6"
-                  />
-                  {optionB?.value === answer && (
-                    <p className="absolute -bottom-5 mt-1 text-xs font-semibold tracking-wide text-green-600">
-                      Correct Answer
-                    </p>
-                  )}
-                  <div
-                    onClick={() => setAnswer("B")}
-                    className="flex w-[100px] cursor-pointer justify-end"
+              )}
+              {(!editingData || editingData?.choiceB?.length > 0) && (
+                <div className={`flex w-full flex-col gap-1 rounded-2xl`}>
+                  <label
+                    htmlFor="answerb"
+                    className="block w-[60px] text-sm font-medium leading-6 text-tertiary"
                   >
-                    {optionB?.value === answer ? (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="32"
-                        height="32"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="lucide lucide-check-circle-2 text-green-500"
-                      >
-                        <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
-                        <path d="m9 12 2 2 4-4" />
-                      </svg>
-                    ) : (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="32"
-                        height="32"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="lucide lucide-circle text-gray-300"
-                      >
-                        <circle cx="12" cy="12" r="10" />
-                      </svg>
+                    Choice B
+                  </label>
+                  <div className="relative flex w-full">
+                    <input
+                      id="answerb"
+                      type="text"
+                      name="answerb"
+                      placeholder="Choice B here"
+                      value={optionB.label}
+                      onChange={(e) =>
+                        setOptionB({
+                          ...optionB,
+                          label: e.target.value,
+                        })
+                      }
+                      className="question-input block w-full rounded-md bg-white/5 py-1.5 pl-2 text-tertiary shadow-sm sm:text-sm sm:leading-6"
+                    />
+                    {optionB?.value === answer && (
+                      <p className="absolute -bottom-5 mt-1 text-xs font-semibold tracking-wide text-green-600">
+                        Correct Answer
+                      </p>
                     )}
+                    <div
+                      onClick={() => {
+                        if (optionB?.label?.length === 0) {
+                          toaster({
+                            status: "error",
+                            message:
+                              "A choice must have a value to be the correct answer",
+                          });
+                          return;
+                        }
+                        setAnswer("B");
+                      }}
+                      className="flex w-[100px] cursor-pointer justify-end"
+                    >
+                      {optionB?.value === answer ? (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="32"
+                          height="32"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="lucide lucide-check-circle-2 text-green-500"
+                        >
+                          <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                          <path d="m9 12 2 2 4-4" />
+                        </svg>
+                      ) : (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="32"
+                          height="32"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="lucide lucide-circle text-gray-300"
+                        >
+                          <circle cx="12" cy="12" r="10" />
+                        </svg>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className={`flex w-full flex-col gap-1 rounded-2xl`}>
-                <label
-                  htmlFor="answerc"
-                  className="block w-[60px] text-sm font-medium leading-6 text-tertiary"
-                >
-                  Choice C
-                </label>
-                <div className="relative flex w-full">
-                  <input
-                    id="answerc"
-                    type="text"
-                    name="answerc"
-                    placeholder="Choice C here"
-                    value={optionC.label}
-                    onChange={(e) =>
-                      setOptionC({
-                        ...optionC,
-                        label: e.target.value,
-                      })
-                    }
-                    className="question-input block w-full rounded-md bg-white/5 py-1.5 pl-2 text-tertiary shadow-sm sm:text-sm sm:leading-6"
-                  />
-                  {optionC?.value === answer && (
-                    <p className="absolute -bottom-5 mt-1 text-xs font-semibold tracking-wide text-green-600">
-                      Correct Answer
-                    </p>
-                  )}
-                  <div
-                    onClick={() => setAnswer("C")}
-                    className="flex w-[100px] cursor-pointer justify-end"
+              )}
+              {(!editingData || editingData?.choiceC?.length > 0) && (
+                <div className={`flex w-full flex-col gap-1 rounded-2xl`}>
+                  <label
+                    htmlFor="answerc"
+                    className="block w-[60px] text-sm font-medium leading-6 text-tertiary"
                   >
-                    {optionC?.value === answer ? (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="32"
-                        height="32"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="lucide lucide-check-circle-2 text-green-500"
-                      >
-                        <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
-                        <path d="m9 12 2 2 4-4" />
-                      </svg>
-                    ) : (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="32"
-                        height="32"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="lucide lucide-circle text-gray-300"
-                      >
-                        <circle cx="12" cy="12" r="10" />
-                      </svg>
+                    Choice C
+                  </label>
+                  <div className="relative flex w-full">
+                    <input
+                      id="answerc"
+                      type="text"
+                      name="answerc"
+                      placeholder="Choice C here"
+                      value={optionC.label}
+                      onChange={(e) =>
+                        setOptionC({
+                          ...optionC,
+                          label: e.target.value,
+                        })
+                      }
+                      className="question-input block w-full rounded-md bg-white/5 py-1.5 pl-2 text-tertiary shadow-sm sm:text-sm sm:leading-6"
+                    />
+                    {optionC?.value === answer && (
+                      <p className="absolute -bottom-5 mt-1 text-xs font-semibold tracking-wide text-green-600">
+                        Correct Answer
+                      </p>
                     )}
+                    <div
+                      onClick={() => {
+                        if (optionC?.label?.length === 0) {
+                          toaster({
+                            status: "error",
+                            message:
+                              "A choice must have a value to be the correct answer",
+                          });
+                          return;
+                        }
+                        setAnswer("C");
+                      }}
+                      className="flex w-[100px] cursor-pointer justify-end"
+                    >
+                      {optionC?.value === answer ? (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="32"
+                          height="32"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="lucide lucide-check-circle-2 text-green-500"
+                        >
+                          <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                          <path d="m9 12 2 2 4-4" />
+                        </svg>
+                      ) : (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="32"
+                          height="32"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="lucide lucide-circle text-gray-300"
+                        >
+                          <circle cx="12" cy="12" r="10" />
+                        </svg>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className={`flex w-full flex-col gap-1 rounded-2xl`}>
-                <label
-                  htmlFor="answerd"
-                  className="block w-[60px] text-sm font-medium leading-6 text-tertiary"
-                >
-                  Choice D
-                </label>
-                <div className="relative flex w-full">
-                  <input
-                    id="answerd"
-                    type="text"
-                    name="answerd"
-                    placeholder="Choice D here"
-                    value={optionD.label}
-                    onChange={(e) =>
-                      setOptionD({
-                        ...optionD,
-                        label: e.target.value,
-                      })
-                    }
-                    className="question-input block w-full rounded-md bg-white/5 py-1.5 pl-2 text-tertiary shadow-sm sm:text-sm sm:leading-6"
-                  />
-                  {optionD?.value === answer && (
-                    <p className="absolute -bottom-5 mt-1 text-xs font-semibold tracking-wide text-green-600">
-                      Correct Answer
-                    </p>
-                  )}
-                  <div
-                    onClick={() => setAnswer("D")}
-                    className="flex w-[100px] cursor-pointer justify-end"
+              )}
+              {(!editingData || editingData?.choiceD?.length > 0) && (
+                <div className={`flex w-full flex-col gap-1 rounded-2xl`}>
+                  <label
+                    htmlFor="answerd"
+                    className="block w-[60px] text-sm font-medium leading-6 text-tertiary"
                   >
-                    {optionD?.value === answer ? (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="32"
-                        height="32"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="lucide lucide-check-circle-2 text-green-500"
-                      >
-                        <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
-                        <path d="m9 12 2 2 4-4" />
-                      </svg>
-                    ) : (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="32"
-                        height="32"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="lucide lucide-circle text-gray-300"
-                      >
-                        <circle cx="12" cy="12" r="10" />
-                      </svg>
+                    Choice D
+                  </label>
+                  <div className="relative flex w-full">
+                    <input
+                      id="answerd"
+                      type="text"
+                      name="answerd"
+                      placeholder="Choice D here"
+                      value={optionD.label}
+                      onChange={(e) =>
+                        setOptionD({
+                          ...optionD,
+                          label: e.target.value,
+                        })
+                      }
+                      className="question-input block w-full rounded-md bg-white/5 py-1.5 pl-2 text-tertiary shadow-sm sm:text-sm sm:leading-6"
+                    />
+                    {optionD?.value === answer && (
+                      <p className="absolute -bottom-5 mt-1 text-xs font-semibold tracking-wide text-green-600">
+                        Correct Answer
+                      </p>
                     )}
+                    <div
+                      onClick={() => {
+                        if (optionD?.label?.length === 0) {
+                          toaster({
+                            status: "error",
+                            message:
+                              "A choice must have a value to be the correct answer",
+                          });
+                          return;
+                        }
+                        setAnswer("D");
+                      }}
+                      className="flex w-[100px] cursor-pointer justify-end"
+                    >
+                      {optionD?.value === answer ? (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="32"
+                          height="32"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="lucide lucide-check-circle-2 text-green-500"
+                        >
+                          <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                          <path d="m9 12 2 2 4-4" />
+                        </svg>
+                      ) : (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="32"
+                          height="32"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="lucide lucide-circle text-gray-300"
+                        >
+                          <circle cx="12" cy="12" r="10" />
+                        </svg>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
 
@@ -2057,10 +2126,10 @@ function CreateOrEditQuestionPopUp({
                     })
                   : saveCurrentQuestion({
                       question,
-                      choiceA: optionA.value,
-                      choiceB: optionB.value,
-                      choiceC: optionC.value,
-                      choiceD: optionD.value,
+                      choiceA: optionA.label,
+                      choiceB: optionB.label,
+                      choiceC: optionC.label,
+                      choiceD: optionD.label,
                       answer,
                       explanation,
                       id: "",
@@ -2111,7 +2180,7 @@ function InsertNewSection({
           <path d="M5 12h14" />
           <path d="M12 5v14" />
         </svg>{" "}
-        {isFirst ? "Add first section" : "Add another section?"}
+        {isFirst ? "Add first chapter" : "Add another chapter?"}
       </h3>
       <div className="flex w-full flex-col gap-2 font-medium text-gray-500">
         <Tooltip
@@ -2146,7 +2215,7 @@ function InsertNewSection({
               <div className="flex flex-col">
                 <h3 className="text-lg font-semibold">Add a Block Editor</h3>
                 <p className="text-sm font-medium text-gray-600">
-                  Craft detailed section with text formatting, tables, lists,
+                  Craft detailed chapter with text formatting, tables, lists,
                   checkboxes, images, and more.
                 </p>
               </div>
@@ -2172,7 +2241,7 @@ function InsertNewSection({
               <div className="flex flex-col">
                 <h3 className="text-lg font-semibold">Add a Document</h3>
                 <p className="text-sm font-medium text-gray-600">
-                  Add a PDF as a section into your program for detailed
+                  Add a PDF as a chapter into your course for detailed
                   instructions, guides, or additional reading.
                 </p>
               </div>
@@ -2214,7 +2283,7 @@ function InsertNewSection({
 
       {!isFirst && (
         <p className="absolute bottom-3 w-full text-center text-sm font-medium italic text-gray-600">
-          When done adding sections, click on the &quot;Save & Continue&quot;
+          When done adding chapters, click on the &quot;Save & Continue&quot;
           button
         </p>
       )}
