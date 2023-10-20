@@ -1,35 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
 import type { OnboardingProgram } from "@prisma/client";
 import Link from "next/link";
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
-import {
-  useGetOrganizationProgramsQuery,
-  useGetProgramTalentsQuery,
-} from "services/baseApiSlice";
+import React from "react";
+import { useGetProgramTalentsQuery } from "services/baseApiSlice";
 
 export default function Programs({
-  countOfPrograms,
-  setPrograms,
+  data,
+  isFetching,
 }: {
   showSelectTemplate: () => void;
-  countOfPrograms: (count: number) => void;
-  setPrograms: (programs: OnboardingProgram[]) => void;
+  data: OnboardingProgram[];
+  isFetching: boolean;
 }) {
-  const orgId = useSelector(
-    (state: { auth: { orgId: string } }) => state.auth.orgId,
-  );
-
-  // get programs created by this organization
-  const { data, isFetching } = useGetOrganizationProgramsQuery(orgId, {
-    skip: !orgId,
-  });
-
-  useEffect(() => {
-    countOfPrograms(data?.data?.length || 0);
-    setPrograms(data?.data);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data?.data?.length]);
+  if (data?.length === 0) return null;
 
   if (isFetching)
     return (
@@ -40,7 +23,7 @@ export default function Programs({
               className="table-shadow relative mb-6 flex h-max w-full min-w-0 flex-col break-words rounded bg-tertiary
   text-white shadow-lg"
             >
-              {data?.data?.length > 0 && (
+              {data?.length > 0 && (
                 <div className="mb-0 rounded-t border-0 px-2 py-3 pr-0">
                   <div className="flex flex-wrap items-center">
                     <div className="relative w-full max-w-full flex-1 flex-grow px-2 ">
@@ -52,7 +35,7 @@ export default function Programs({
                 </div>
               )}
               <div className="no-scrollbar mt-3 flex h-max flex-col items-center gap-4 overflow-y-auto pb-8">
-                {(isFetching || !orgId) && (
+                {isFetching && (
                   <div className="flex w-full flex-col items-center gap-4">
                     <div className="h-[100px] w-4/5 animate-pulse rounded bg-gray-400" />
                     <div className="h-[100px] w-4/5  animate-pulse rounded bg-gray-400" />
@@ -70,12 +53,12 @@ export default function Programs({
     <section className="w-full lg:w-[25%] lg:min-w-[300px]">
       <section className="bg-blueGray-50 relative">
         <div className="mb-12 w-full px-0">
-          {!isFetching && data?.data?.length > 0 && (
+          {!isFetching && data?.length > 0 && (
             <div
               className="table-shadow relative mb-6 flex h-max w-full min-w-0 flex-col break-words rounded bg-tertiary
   text-white shadow-lg"
             >
-              {data?.data?.length > 0 && (
+              {data?.length > 0 && (
                 <div className="mb-0 rounded-t border-0 px-2 py-3">
                   <div className="flex flex-wrap items-center">
                     <div className="relative w-full max-w-full flex-1 flex-grow px-2 ">
@@ -87,7 +70,7 @@ export default function Programs({
                 </div>
               )}
               <div className="no-scrollbar mt-3 flex h-max flex-col items-center gap-4 overflow-y-auto pb-8">
-                {(isFetching || !orgId) && (
+                {isFetching && (
                   <div className="flex w-full flex-col items-center gap-4">
                     <div className="h-[100px] w-4/5 animate-pulse rounded bg-gray-400" />
                     <div className="h-[100px] w-4/5  animate-pulse rounded bg-gray-400" />
@@ -97,20 +80,14 @@ export default function Programs({
 
                 {!isFetching && (
                   <div className="mx-auto flex w-[90%] flex-col gap-4">
-                    {data?.data
+                    {data
                       ?.slice(0, 3)
-                      .map(
-                        (program: {
-                          name: string;
-                          id: string;
-                          content: string;
-                        }) => (
-                          <TemplateCard key={program.id} template={program} />
-                        ),
-                      )}
+                      .map((program) => (
+                        <TemplateCard key={program.id} template={program} />
+                      ))}
                   </div>
                 )}
-                {!isFetching && data?.data?.length > 0 && (
+                {!isFetching && data?.length > 0 && (
                   <Link
                     href={`/programs`}
                     className="mt-6 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl border border-white bg-tertiary px-8 py-2 text-center text-lg font-semibold text-white transition-all duration-300 ease-in hover:border-secondary hover:bg-secondary hover:text-white focus:outline-none focus:ring-4 md:mr-0"

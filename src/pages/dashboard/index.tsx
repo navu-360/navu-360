@@ -1,5 +1,6 @@
-import type { OnboardingProgram, Organization, User } from "@prisma/client";
+import type { Organization, User } from "@prisma/client";
 import Header from "components/common/head";
+import { NoCourses } from "components/dashboard/guides";
 import Programs from "components/dashboard/programs.table";
 import SelectTemplate from "components/dashboard/selectTemplate";
 import AllTalents from "components/dashboard/talents.table";
@@ -10,7 +11,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setOrgId, setOrganizationData } from "redux/auth/authSlice";
 import { resetCommon, setDraftProgramId } from "redux/common/commonSlice";
-import { useGetOneOrganizationQuery } from "services/baseApiSlice";
+import {
+  useGetOneOrganizationQuery,
+  useGetOrganizationProgramsQuery,
+} from "services/baseApiSlice";
 
 export default function Dashboard() {
   const userProfile = useSelector(
@@ -68,9 +72,19 @@ export default function Dashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userProfile]);
 
-  const [onboardingPrograms, setOnboardingPrograms] = useState<
-    OnboardingProgram[]
-  >([]);
+  // get programs created by this organization
+  const { data: programs, isFetching } = useGetOrganizationProgramsQuery(
+    orgId,
+    {
+      skip: !orgId,
+    },
+  );
+
+  useEffect(() => {
+    if (programs) {
+      setCountOfPrograms(programs?.data?.length || 0);
+    }
+  }, [programs]);
 
   if (!isReady) return null;
 
@@ -82,25 +96,27 @@ export default function Dashboard() {
           <h1 className="w-full text-2xl font-bold">
             Hi, {userProfile?.name?.split(" ")[0] ?? ""}
           </h1>
-          <button
-            onClick={() => setShowSelectTemplate(true)}
-            className="fixed bottom-2 right-2 z-50 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white transition-all duration-150 ease-in hover:bg-[#fa3264] focus:outline-none focus:ring-4 md:absolute md:right-0 md:top-0 md:mr-0"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="h-6 w-6"
+          {programs?.data?.length > 0 && (
+            <button
+              onClick={() => setShowSelectTemplate(true)}
+              className="fixed bottom-2 right-2 z-50 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white transition-all duration-150 ease-in hover:bg-[#fa3264] focus:outline-none focus:ring-4 md:absolute md:right-0 md:top-0 md:mr-0"
             >
-              <path
-                fillRule="evenodd"
-                d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
-                clipRule="evenodd"
-              />
-            </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="h-6 w-6"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
+                  clipRule="evenodd"
+                />
+              </svg>
 
-            <span>Create Course</span>
-          </button>
+              <span>Create Course</span>
+            </button>
+          )}
           <div className="mt-16 flex w-full flex-wrap gap-4 lg:justify-between lg:gap-0 2xl:mt-8">
             <OneStat
               svg={
@@ -167,19 +183,24 @@ export default function Dashboard() {
               num={countOfOnboarded}
             />
           </div>
-          <section className="mt-8 flex w-full flex-col justify-between gap-2 lg:flex-row">
-            <AllTalents
-              sendTotalTalents={(num: number) => setCountOfTalents(num)}
-              setTotalOnboarded={(num: number) => setCountOfOnboarded(num)}
-              onboardingPrograms={onboardingPrograms}
-            />
+          <section className="mt-8 flex min-h-[65vh] w-full flex-col justify-between gap-2 lg:flex-row">
+            {(programs?.data?.length > 0 || (isFetching && !programs)) && (
+              <AllTalents
+                sendTotalTalents={(num: number) => setCountOfTalents(num)}
+                setTotalOnboarded={(num: number) => setCountOfOnboarded(num)}
+                onboardingPrograms={programs?.data}
+              />
+            )}
             <Programs
-              countOfPrograms={(num: number) => setCountOfPrograms(num)}
+              data={programs?.data}
+              isFetching={isFetching}
               showSelectTemplate={() => setShowSelectTemplate(true)}
-              setPrograms={(programs: OnboardingProgram[]) =>
-                setOnboardingPrograms(programs)
-              }
             />
+            {programs?.data?.length === 0 && !isFetching && (
+              <NoCourses
+                showSelectTemplate={() => setShowSelectTemplate(true)}
+              />
+            )}
           </section>
         </div>
         <AnimatePresence>
