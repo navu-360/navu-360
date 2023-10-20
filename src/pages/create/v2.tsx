@@ -223,6 +223,8 @@ export default function CreateProgram() {
     (state) => state.common.createSectionIds,
   );
 
+  const router = useRouter();
+
   return (
     <>
       <Header title="Create a Training Program" />
@@ -253,7 +255,7 @@ export default function CreateProgram() {
                 <button
                   onClick={() => {
                     if (activeTab === 2) {
-                      console.log("submit");
+                      router.replace(`/programs/${draftProgramId}`);
                       return;
                     }
                     if (activeTab === 0) {
@@ -282,7 +284,7 @@ export default function CreateProgram() {
                 >
                   {activeTab === 2
                     ? draftProgramId?.length > 0
-                      ? "Save & Continue"
+                      ? "View Program"
                       : "Create Program"
                     : "Save & Continue"}
                 </button>
@@ -1376,13 +1378,23 @@ function OneCreatedSection({
 function ConfirmStep() {
   const [showCreateQuiz, setShowCreateQuiz] = useState(false);
   const router = useRouter();
+
+  // @ts-ignore
+  const draftProgramId = useSelector((state) => state.common.draftProgramId);
+  const id = draftProgramId;
+  const { currentData: program } = useGetOneProgramQuery(id, {
+    skip: !draftProgramId,
+  });
+
   return (
     <section
       className={`relative flex h-full min-h-[70vh] w-full flex-col items-center gap-4 text-center ${
-        showCreateQuiz ? "justify-start" : "justify-center"
+        !showCreateQuiz && program?.data?.QuizQuestion?.length !== 0
+          ? "justify-center"
+          : "justify-start"
       }`}
     >
-      {!showCreateQuiz ? (
+      {!showCreateQuiz && program?.data?.QuizQuestion?.length !== 0 ? (
         <>
           <h2 className="text-2xl font-semibold text-tertiary">
             Course Creation Complete!
@@ -1393,7 +1405,7 @@ function ConfirmStep() {
           </p>
           <div className="mx-auto mt-2 flex w-max items-center gap-6">
             <button
-              onClick={() => router.replace("/programs")}
+              onClick={() => router.replace(`/programs/${draftProgramId}`)}
               className="rounded-md border-[1px] border-gray-700 px-12 py-1.5 font-semibold text-gray-700"
             >
               No, I&apos;m done
@@ -1445,7 +1457,8 @@ function CreateQuiz() {
     <section className="flex w-full max-w-5xl flex-col gap-2 text-left">
       <h2 className="text-2xl font-semibold text-tertiary">Create Quiz</h2>
       <p className="max-w-xl text-sm font-medium text-gray-700">
-        You can add multiple questions to your quiz.
+        You can add multiple questions to your quiz. When done adding questions,
+        click on the &quot;Save & Continue&quot; to finish.
       </p>
 
       <div className="relative mt-4 flex w-full flex-col gap-6">
@@ -1467,7 +1480,12 @@ function CreateQuiz() {
       </div>
 
       {showAddQuestion && (
-        <CreateOrEditQuestionPopUp close={() => setShowAddQuestion(false)} />
+        <CreateOrEditQuestionPopUp
+          close={() => {
+            refetch();
+            setShowAddQuestion(false);
+          }}
+        />
       )}
     </section>
   );
@@ -1522,7 +1540,7 @@ function QuestionView({
           Explanation: <span className="font-semibold">{explanation}</span>
         </p>
       </div>
-      <div className="mt-2 flex w-full items-center justify-between">
+      <div className="mt-2 flex w-full items-center justify-end gap-4">
         <button
           onClick={() => setShowEditQuestion(true)}
           className="flex items-center gap-2 rounded-md border-[1px] border-gray-700 px-8 py-1.5 text-sm font-medium text-gray-700"
@@ -1579,7 +1597,10 @@ function QuestionView({
             explanation,
             id,
           }}
-          close={() => setShowEditQuestion(false)}
+          close={() => {
+            refetch();
+            setShowEditQuestion(false);
+          }}
         />
       )}
       {showDeleteModal.length > 0 && (
@@ -1611,7 +1632,7 @@ function CreateOrEditQuestionPopUp({
   const [editQuestion, { isLoading: editing }] = useEditQuizQuestionMutation();
 
   const saveCurrentQuestion = async (obj: IQuizQuestion) => {
-    const body = { ...obj, programId };
+    const body = { ...obj, programId, id: undefined };
     await createQuestion(body)
       .unwrap()
       .then(() => {
