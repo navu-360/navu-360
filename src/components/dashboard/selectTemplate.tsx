@@ -47,7 +47,8 @@ export default function SelectTemplate({
 
   const [search, setSearch] = useState("");
 
-  const debouncedValue = useDebounce(search, 500);
+  // @ts-ignore
+  const debouncedValue:string = useDebounce(search, 500);
 
   const [results, setResults] = useState<ITemplate[]>([]);
 
