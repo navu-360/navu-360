@@ -22,14 +22,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return;
     }
 
-    const { adminName, talentEmails, organizationId } = req.body;
+    const { adminName, talentEmails } = req.body;
 
     // get organization name from organizationId
-    const organization = await prisma.organization.findUnique({
+    const organization = await prisma.organization.findFirst({
       where: {
-        id: organizationId,
+        userId: session?.user?.id as string,
       },
+      select: {
+        name: true,
+        id: true,
+      }
     });
+
 
     const organizationName = organization?.name;
 
@@ -49,7 +54,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const createInviteRecord = async (talentEmail: string) => {
       const body = {
         email: talentEmail,
-        orgId: organizationId,
+        orgId: organization?.id,
       };
 
       const invite = await prisma.invites.create({

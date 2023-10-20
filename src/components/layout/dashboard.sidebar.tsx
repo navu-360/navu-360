@@ -5,8 +5,8 @@ import React, { useEffect, useState } from "react";
 
 import { signOut } from "next-auth/react";
 import { useDispatch, useSelector } from "react-redux";
-import { setUserId, setUserProfile } from "redux/auth/authSlice";
 import type { User } from "@prisma/client";
+import { resetAuth } from "redux/auth/authSlice";
 
 export default function AdminNav({
   showInviteTalent,
@@ -225,11 +225,11 @@ function OneItem({
       onClick={(e) => {
         if (isLogout) {
           e.preventDefault();
+          dispatch(resetAuth(undefined));
           signOut({
             callbackUrl: "/",
+            redirect: true,
           });
-          dispatch(setUserId(""));
-          dispatch(setUserProfile(undefined));
         }
         if (action) {
           e.preventDefault();

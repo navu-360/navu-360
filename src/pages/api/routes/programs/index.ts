@@ -70,20 +70,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           where: {
             organizationId: orgId,
           },
-          // select: {
-          //   id: true,
-          //   name: true,
-          //   organizationId: true,
-          //   createdAt: true,
-          //   updatedAt: true,
-          //   createdBy: true,
-          //   _count: {
-          //     select: {
-          //       QuizQuestion: true,
-          //       ProgramSection: true,
-          //     }
-          //   }
-          // },
           include: {
             _count: {
               select: {
