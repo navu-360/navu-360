@@ -147,7 +147,7 @@ export default function AllTalents() {
                             showingTalents?.map((talent: any) => (
                               <tr
                                 key={talent?.id}
-                                className="border border-secondary/25"
+                                className="border border-secondary/25 hover:bg-secondary/10"
                               >
                                 <td className="relative flex flex-col gap-3 whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left text-xs md:flex-row md:items-center md:gap-0">
                                   <img

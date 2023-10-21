@@ -92,116 +92,130 @@ export default function Dashboard() {
     <>
       <Header title={`${organizationData?.name ?? ""} | Dashboard - Navu360`} />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[90px] mr-4 mt-[3rem] text-tertiary md:ml-[230px]">
-          <h1 className="w-full text-2xl font-bold">
+        <div className="relative ml-[90px] mr-4 mt-[3rem] flex justify-between text-tertiary md:ml-[230px]">
+          <h1 className="text-2xl font-bold">
             Hi, {userProfile?.name?.split(" ")[0] ?? ""}
           </h1>
           {programs?.data?.length > 0 && (
             <button
               onClick={() => setShowSelectTemplate(true)}
-              className="fixed bottom-2 right-2 z-50 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white transition-all duration-150 ease-in hover:bg-[#fa3264] focus:outline-none focus:ring-4 md:absolute md:right-0 md:top-0 md:mr-0"
+              className="z-50 flex h-max min-h-[45px] w-max min-w-[150px] shrink-0 items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white transition-all duration-150 ease-in hover:bg-secondary/90 focus:outline-none focus:ring-4"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
                 viewBox="0 0 24 24"
-                fill="currentColor"
-                className="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="lucide lucide-plus-circle"
               >
-                <path
-                  fillRule="evenodd"
-                  d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
-                  clipRule="evenodd"
-                />
+                <circle cx="12" cy="12" r="10" />
+                <path d="M8 12h8" />
+                <path d="M12 8v8" />
               </svg>
 
-              <span>Create Course</span>
+              <span className="w-max">Create Course</span>
             </button>
           )}
-          <div className="mt-16 flex w-full flex-wrap gap-4 lg:justify-between lg:gap-0 2xl:mt-8">
-            <OneStat
-              svg={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="52"
-                  height="52"
-                  className="h-6 w-6 md:h-12 md:w-12"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="9" cy="7" r="4"></circle>
-                  <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                </svg>
-              }
-              text="Total Talents"
-              num={countOfTalents}
-            />
-            <OneStat
-              text="Total Courses"
-              svg={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="52"
-                  height="52"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  className="h-6 w-6 md:h-12 md:w-12"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="m16 6 4 14"></path>
-                  <path d="M12 6v14"></path>
-                  <path d="M8 8v12"></path>
-                  <path d="M4 4v16"></path>
-                </svg>
-              }
-              num={countOfPrograms}
-            />
-            <OneStat
-              text="Total Onboarded"
-              svg={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="h-6 w-6 md:h-12 md:w-12"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              }
-              num={countOfOnboarded}
-            />
-          </div>
-          <section className="mt-8 flex min-h-[65vh] w-full flex-col justify-between gap-2 lg:flex-row">
-            {(programs?.data?.length > 0 || (isFetching && !programs)) && (
-              <AllTalents
-                sendTotalTalents={(num: number) => setCountOfTalents(num)}
-                setTotalOnboarded={(num: number) => setCountOfOnboarded(num)}
-                onboardingPrograms={programs?.data}
+        </div>
+
+        <div className="relative ml-[90px] mr-4 mt-[3rem] flex justify-between text-tertiary md:ml-[230px]">
+          <section className="flex w-[70%] flex-col">
+            <div className="mt-16 grid w-full grid-cols-3 gap-4 lg:justify-between lg:gap-4 2xl:mt-0">
+              <OneStat
+                svg={
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="52"
+                    height="52"
+                    className="h-6 w-6 md:h-12 md:w-12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                  </svg>
+                }
+                text={`Total Talents`}
+                num={countOfTalents}
               />
-            )}
-            <Programs
-              data={programs?.data}
-              isFetching={isFetching}
-              showSelectTemplate={() => setShowSelectTemplate(true)}
-            />
-            {programs?.data?.length === 0 && !isFetching && (
-              <NoCourses
-                showSelectTemplate={() => setShowSelectTemplate(true)}
+              <OneStat
+                text={`Total Courses`}
+                svg={
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="52"
+                    height="52"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    className="h-6 w-6 md:h-12 md:w-12"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="m16 6 4 14"></path>
+                    <path d="M12 6v14"></path>
+                    <path d="M8 8v12"></path>
+                    <path d="M4 4v16"></path>
+                  </svg>
+                }
+                num={countOfPrograms}
               />
-            )}
+              <OneStat
+                text={`Total Enrollments`}
+                svg={
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="h-6 w-6 md:h-12 md:w-12"
+                  >
+                    <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                    <path d="m9 12 2 2 4-4" />
+                  </svg>
+                }
+                num={countOfOnboarded}
+              />
+            </div>
+            <section className="mt-8 flex min-h-[65vh] w-full flex-col justify-between gap-2 lg:flex-row">
+              {(programs?.data?.length > 0 || (isFetching && !programs)) && (
+                <AllTalents
+                  sendTotalTalents={(num: number) => setCountOfTalents(num)}
+                  setTotalOnboarded={(num: number) => setCountOfOnboarded(num)}
+                  onboardingPrograms={programs?.data}
+                />
+              )}
+
+              {programs?.data?.length === 0 && !isFetching && (
+                <NoCourses
+                  showSelectTemplate={() => setShowSelectTemplate(true)}
+                />
+              )}
+            </section>
           </section>
+
+          <Programs
+            data={programs?.data}
+            isFetching={isFetching}
+            showSelectTemplate={() => setShowSelectTemplate(true)}
+          />
         </div>
         <AnimatePresence>
           {showSelectTemplate && (
@@ -223,11 +237,11 @@ function OneStat({
   num: number;
 }) {
   return (
-    <div className="stat-shadow flex w-full flex-row items-center gap-3 rounded-xl bg-tertiary p-2 text-white sm:w-max lg:w-[25%] lg:flex-col xl:min-w-[300px]">
+    <div className="stat-shadow flex w-full flex-row items-center gap-3 bg-dark p-2 text-white first:rounded-tl-3xl last:rounded-r-none sm:w-max lg:w-full lg:flex-col">
       <div className="">{svg}</div>
 
-      <div className="flex items-center gap-2 text-center text-base">
-        <span className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white p-2 text-base leading-normal text-secondary">
+      <div className="flex items-center gap-2 mb-4 text-center text-base">
+        <span className="flex h-[35px] w-[35px] items-center justify-center font-medium rounded-full bg-white p-2 text-base leading-normal text-secondary">
           {num}
         </span>
         <span>{text}</span>

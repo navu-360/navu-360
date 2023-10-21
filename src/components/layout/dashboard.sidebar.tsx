@@ -28,7 +28,7 @@ export default function AdminNav({
   if (!isReady) return null;
 
   return (
-    <nav className="fixed left-0 top-0 z-20 h-full w-[70px] bg-dark py-2.5 sm:px-4 md:w-[200px]">
+    <nav className="fixed left-0 top-0 z-50 h-full w-[70px] bg-dark py-2.5 sm:px-4 md:w-[200px]">
       <div className="mx-auto flex h-full flex-col items-center md:mx-0">
         <Link href="/dashboard" className="flex items-center md:pl-0">
           <img
@@ -141,7 +141,7 @@ export default function AdminNav({
                   />
                 </svg>
               }
-              text={"Invite talent"}
+              text={"Invite Talent"}
               isActive={false}
               to={"#"}
               action={() => showInviteTalent()}
@@ -150,6 +150,32 @@ export default function AdminNav({
         </div>
 
         <div className="mt-4 flex text-white md:absolute md:bottom-8 md:mx-auto md:w-4/5 md:flex-col md:gap-4">
+          <OneItem
+            svg={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="m4.93 4.93 4.24 4.24" />
+                <path d="m14.83 9.17 4.24-4.24" />
+                <path d="m14.83 14.83 4.24 4.24" />
+                <path d="m9.17 14.83-4.24 4.24" />
+                <circle cx="12" cy="12" r="4" />
+              </svg>
+            }
+            text={"Contact Us"}
+            isActive={router.pathname === "/support"}
+            to={"/account"}
+          />
           <OneItem
             svg={
               <svg
@@ -223,6 +249,11 @@ function OneItem({
     <Link
       href={to}
       onClick={(e) => {
+        if (text === "Contact Us") {
+          // open mailto to business@navu360.com
+          e.preventDefault();
+          window.location.href = "mailto:business@navu360.com";
+        }
         if (isLogout) {
           e.preventDefault();
           dispatch(resetAuth(undefined));

@@ -145,7 +145,7 @@ export default function AllTalents({
 
   if (isFetching || !orgId)
     return (
-      <section className="w-full rounded-md p-2 lg:w-[70%]">
+      <section className="w-full rounded-l p-2 lg:w-full">
         <section className="relative md:py-16">
           <TalentSwitch
             selectedOption={selectedType}
@@ -221,7 +221,7 @@ export default function AllTalents({
 
   return (
     <section
-      className={`h-max min-h-[60vh] w-full rounded-md p-2 lg:w-[70%] ${
+      className={`h-max min-h-[60vh] w-full rounded-l lg:w-full ${
         data?.data?.length === 0 && sentInvites?.data?.length === 0
           ? "flex justify-center"
           : ""
@@ -249,7 +249,7 @@ export default function AllTalents({
                 <div className="flex flex-wrap items-center">
                   <div className="relative w-full max-w-full flex-1 flex-grow px-4 ">
                     <h3 className="text-lg font-semibold text-tertiary">
-                      {selectedType} talents ({showingTalents?.length || 0})
+                      {selectedType} Talents ({showingTalents?.length || 0})
                     </h3>
                   </div>
                 </div>
@@ -310,7 +310,7 @@ export default function AllTalents({
                         selectedType !== "Invited" ? (
                           <tr
                             key={talent?.id}
-                            className="border border-secondary/25"
+                            className="border border-secondary/25 hover:bg-secondary/10"
                           >
                             <td className="relative flex flex-col gap-3 whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left text-xs md:flex-row md:items-center md:gap-0">
                               <img
@@ -363,7 +363,7 @@ export default function AllTalents({
                           </tr>
                         ) : (
                           <tr
-                            className="invite border border-secondary/25"
+                            className="invite border border-secondary/25 hover:bg-secondary/10"
                             key={talent?.id}
                           >
                             <th className="flex flex-col gap-2 whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 text-left text-xs lg:flex-row lg:items-center lg:gap-0 lg:px-6 lg:align-middle">
