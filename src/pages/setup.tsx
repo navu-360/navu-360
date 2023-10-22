@@ -51,6 +51,19 @@ export const getPlanNameFromAmount = (amount: number) => {
   }
 };
 
+export const getMaxTalentCountFromAmount = (amount: number) => {
+  switch (amount) {
+    case Number(process.env.NEXT_PUBLIC_PLAN_STARTER_PRICE!):
+      return 10;
+    case Number(process.env.NEXT_PUBLIC_PLAN_REGULAR_PRICE!):
+      return 30;
+    case Number(process.env.NEXT_PUBLIC_PLAN_PRO_PRICE!):
+      return 200;
+    default:
+      return 10;
+  }
+};
+
 export const getPlanIdFromName = (planName: string) => {
   switch (planName) {
     case "starter":

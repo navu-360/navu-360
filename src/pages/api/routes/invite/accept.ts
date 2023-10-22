@@ -1,9 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { NextApiRequest, NextApiResponse } from "next";
+
+import { readFileSync } from "fs";
+import { join } from "path";
+import sgMail from "@sendgrid/mail";
+import { env } from "env/server.mjs";
+
+sgMail.setApiKey(env.SENDGRID_API_KEY);
+
+import https from 'https';
 
 import { getServerSession } from "next-auth";
 
-import { prisma } from "../../../../auth/db";
+import { prisma } from "auth/db";
 import { authOptions } from "auth/auth";
+import { getMaxTalentCountFromAmount } from "pages/setup";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     /*
@@ -21,10 +32,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         case "POST":
             try {
                 const {
-                    image: toEdit,
                     inviteId
                 } = req.body as {
-                    image: string;
                     inviteId: string;
                 };
 
@@ -34,6 +43,118 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                         id: inviteId,
                     },
                 });
+
+                if (!invite) {
+                    res.status(404).json({ message: `Invite not found. Please double check your invite link` });
+                    return;
+                }
+
+                // we check if the inviting org are withing their allowed seats limit
+                // we first get the total talents at the moment: call endpoint /api/billing/usage
+                // get org for current user
+                const organization = await prisma.organization.findFirst({
+                    where: {
+                        id: invite.orgId as string,
+                    },
+                    select: {
+                        id: true,
+                        user: true,
+                        name: true,
+                    }
+                });
+                if (!organization) {
+                    res.status(400).json({ message: `Organization not found.` });
+                    return;
+                }
+                // get a count of users who talentOrgId is equal to the current user's org id
+                const allTalents = await prisma.user.findMany({
+                    where: {
+                        talentOrgId: organization.id,
+                        hasBeenOnboarded: true
+                    },
+                    select: {
+                        id: true,
+                    }
+                });
+                // we get the users current plan amount: call endpoint /api/billing/plan
+                const email = organization.user.email;
+
+                const options = {
+                    hostname: 'api.paystack.co',
+                    port: 443,
+                    path: `/customer/${email}`,
+                    method: 'GET',
+                    headers: {
+                        Authorization: 'Bearer ' + process.env.PAYSTACK_SECRET_KEY,
+                        'Content-Type': 'application/json'
+                    }
+                };
+
+                let currentPlanAmount = 0;
+
+                const paystackReq = https.request(options, (resp) => {
+                    let data = '';
+
+                    resp.on('data', (chunk) => {
+                        data += chunk;
+                    });
+
+                    resp.on('end', () => {
+                        const responseData = JSON.parse(data);
+
+                        if (responseData.status) {
+                            const transactionData = responseData.data;
+
+                            currentPlanAmount = transactionData?.subscriptions[transactionData?.subscriptions?.length - 1]?.amount ?? -1
+                        } else {
+                            throw new Error('We could not process your invite at the moment. Please try again later');
+                        }
+                    });
+                });
+                paystackReq.on('error', (error: any) => {
+                    res.status(500).json({ message: error.message });
+                });
+
+                paystackReq.end();
+                // we call method getMaxTalentCountFromAmount with the plan amount to get current plan max talent count
+                const maxAllowed = getMaxTalentCountFromAmount(currentPlanAmount);
+
+                if (allTalents.length >= maxAllowed) {
+                    await prisma.user.delete({
+                        where: {
+                            email: session.user.email,
+                        },
+                    }).catch((error) => {
+                        console.log("error deleting user", error);
+                    });
+
+                    const path = join(process.cwd(), "src/utils/emails/failedAccept.html");
+                    const stringTemplate = readFileSync(path, "utf8");
+
+                    const link = `${env.NEXTAUTH_URL}`;
+
+                    const msg = {
+                        to: organization?.user?.email,
+                        from: {
+                            email: env.EMAIL_FROM,
+                            name: `Navu360`,
+                        },
+                        replyTo: env.REPLY_TO,
+                        subject: `Could not add new talent to ${organization?.name} - Upgrade your plan`,
+                        // email template path src/utils/emails/inviteTalent.html
+                        html: stringTemplate
+                            .replace(/{{talentName}}/g, session?.user?.name)
+                            .replace(/{{adminName}}/g, organization?.user?.name as string)
+                            .replace(/{{link}}/g, link)
+                            .replace(/{{todayYear}}/g, new Date().getFullYear().toString()),
+                    };
+
+                    // @ts-ignore
+                    await sgMail.send(msg);
+
+                    res.status(400).json({ message: `We could not add you to ${organization?.name}. Your organization admin has been notified` });
+                    return;
+                }
 
                 // compare session user email with invite email
                 if (invite?.email !== session.user.email) {
@@ -50,10 +171,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     return;
                 }
 
-                if (!invite) {
-                    res.status(404).json({ message: `Invite not found.` });
-                    return;
-                }
 
                 // check if expired - 24hrs since invite was created
                 const now = new Date();
@@ -65,9 +182,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     return;
                 }
 
-
-                // validations
-                // 1. A user can only belong to one organization. Check if the user already belongs to an organization.
                 const user = await prisma.user.findUnique({
                     where: {
                         email: session.user.email,
@@ -78,7 +192,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     res
                         .status(400)
                         .json({
-                            message: `${user.name} already belongs to an organization.`,
+                            message: `${user.name} has already been invited`,
                         });
                     return;
                 }
@@ -88,7 +202,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                         email: session.user.email,
                     },
                     data: {
-                        image: toEdit,
                         position: "",
                         role: "talent",
                         hasBeenOnboarded: true,

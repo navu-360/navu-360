@@ -1,10 +1,15 @@
 import type { Organization, User } from "@prisma/client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useInviteTalentMutation } from "services/baseApiSlice";
+import {
+  useGetTalentCountQuery,
+  useGetUserPayStackDetailsQuery,
+  useInviteTalentMutation,
+} from "services/baseApiSlice";
 import toaster from "utils/toaster";
 
 import { motion } from "framer-motion";
+import { getMaxTalentCountFromAmount } from "pages/setup";
 
 export default function InviteTalentsModal({
   closeModal,
@@ -83,6 +88,23 @@ export default function InviteTalentsModal({
     return true;
   };
 
+  const { data } = useGetTalentCountQuery(undefined);
+  const { data: planDetails } = useGetUserPayStackDetailsQuery(undefined);
+
+  const [remaining, setRemaining] = useState<number>(0);
+  const [hasAlreadyReachedLimit, setHasAlreadyReachedLimit] = useState(false);
+
+  useEffect(() => {
+    if (planDetails?.data) {
+      const maxAllowed = getMaxTalentCountFromAmount(planDetails?.data);
+      const remaining = maxAllowed - data?.data;
+      setRemaining(remaining);
+      if (remaining === 0) {
+        setHasAlreadyReachedLimit(true);
+      }
+    }
+  }, [planDetails?.data, data?.data]);
+
   return (
     <div
       className={`fixed inset-0 z-[120] flex h-full w-full items-center justify-center  bg-black/50 backdrop-blur-sm`}
@@ -108,15 +130,27 @@ export default function InviteTalentsModal({
           />
         </svg>
 
-        <h1 className="text-xl font-bold text-tertiary">
-          Invite Talents to this {organizationData?.name}
-        </h1>
+        <h2 className="text-xl font-bold text-tertiary">
+          Invite Talents to {organizationData?.name}
+        </h2>
 
-        <p>
-          <span className="text-base font-medium text-gray-600">
-            Enter the email addresses of the talents you want to invite. They
-            will receive an email with a link to join.
+        <p className="my-4 w-[80%] text-base font-medium text-gray-600">
+          Enter the email addresses of the talents you want to invite. They will
+          receive an email with a link to join.
+        </p>
+        <p className="mb-4 flex w-[80%] flex-col font-semibold text-tertiary">
+          <span>Remaining talent seats: {remaining}</span>
+          <span className="mt-1 text-sm font-medium italic">
+            The count of remaining seats is updated once an invited talent
+            accepts invitation
           </span>
+          {hasAlreadyReachedLimit && (
+            <span className="mt-1 text-sm font-medium italic text-yellow-800">
+              You have reached the maximum number of talents allowed for your
+              plan. Upgrade your plan from the settings page to invite more
+              talents
+            </span>
+          )}
         </p>
 
         <div className="mt-4 flex items-center gap-4">

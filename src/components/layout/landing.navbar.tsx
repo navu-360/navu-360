@@ -6,6 +6,7 @@ import React, { useEffect } from "react";
 import { signIn, useSession } from "next-auth/react";
 
 import { Play } from "next/font/google";
+import { useSelector } from "react-redux";
 
 const font = Play({
   weight: ["700"],
@@ -17,11 +18,18 @@ export default function NavBar() {
   const router = useRouter();
   const { data: session } = useSession();
 
+  // @ts-ignore
+  const inviteId = useSelector((state: unknown) => state.common.inviteId);
+
   useEffect(() => {
     if (session) {
       // when an admin is joining for the first time
       if (router.pathname === "/" && !session?.user?.hasBeenOnboarded) {
-        router.push("/welcome/plan");
+        if (inviteId) {
+          router.push("/invite/" + inviteId);
+        } else {
+          router.push("/welcome/plan");
+        }
       } else if (
         router.pathname === "/setup" &&
         session?.user?.hasBeenOnboarded
@@ -43,7 +51,7 @@ export default function NavBar() {
       <div className="mx-auto flex flex-wrap items-center justify-between md:mx-0">
         <Link href="/" className="relative flex flex-col items-center pl-4">
           <img src="/logo.svg" className="mr-3 h-6 sm:h-9" alt="Navu360 Logo" />
-          <p className="mt-2 text-xs font-bold tracking-wide text-white -ml-2">
+          <p className="-ml-2 mt-2 text-xs font-bold tracking-wide text-white">
             Empower. Train. Excel.
           </p>
         </Link>

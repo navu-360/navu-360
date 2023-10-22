@@ -195,7 +195,7 @@ export default function AdminNav({
                 <path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662" />
               </svg>
             }
-            text={"Account"}
+            text={"Settings"}
             isActive={router.pathname === "/account"}
             to={"/account"}
           />

@@ -317,6 +317,11 @@ export const baseApiSlice = createApi({
         url: `billing/transcations?customerId=${customerId}`,
       }),
     }),
+    getTalentCount: builder.query({
+      query: () => ({
+        url: `billing/usage`,
+      }),
+    }),
     getUserPayStackDetails: builder.query({
       query: (email) => `billing/plan?email=${email}`,
     }),
@@ -367,4 +372,5 @@ export const {
   useDeleteQuizQuestionMutation,
   useGetProgramQuestionsQuery,
   useSendWelcomeEmailMutation,
+  useGetTalentCountQuery,
 } = baseApiSlice;
