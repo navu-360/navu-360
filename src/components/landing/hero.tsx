@@ -9,12 +9,13 @@ export default function Hero() {
       <section className="relative flex h-max min-h-[calc(100vh_-_65px)] w-full flex-col-reverse items-center justify-center gap-6 overflow-hidden bg-dark px-8 pb-8 text-white lg:flex-row lg:justify-start lg:pb-32 xl:gap-12 2xl:gap-32 2xl:px-32">
         <div className="flex cursor-default flex-col items-center gap-8 lg:min-w-max lg:max-w-[500px] lg:items-start 2xl:gap-16">
           <h1 className="text-center text-3xl font-bold lg:text-left lg:text-2xl xl:text-5xl 2xl:text-7xl">
-            Talent Training <br className="hidden lg:block" />& Onboarding
+            Streamline Talent Development <br /> with Navu360&apos;s LMS
           </h1>
           <p className="text-medium text-center text-base lg:text-left xl:text-lg 2xl:text-xl">
-            Unlock the full potential of your talent with navu360&apos;s
-            innovative platform, <br className="hidden lg:block" />{" "}
-            revolutionizing employee training and development
+            Create, manage, and scale custom training programs effortlessly.{" "}
+            <br />
+            Our LMS platform makes talent management and employee training a
+            breeze!
           </p>
           <Link
             href="/welcome/plan"
