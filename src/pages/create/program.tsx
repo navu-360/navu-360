@@ -499,6 +499,7 @@ function ProgramDetails({
           type="text"
           name="role"
           id="role"
+          maxLength={100}
           value={name}
           onChange={(e) => setName(e.target.value)}
           aria-required
@@ -517,6 +518,7 @@ function ProgramDetails({
           onChange={(e) => setDescription(e.target.value)}
           required
           minLength={10}
+          maxLength={200}
           className="common-input program-create-form !h-[100px] text-sm"
           placeholder="e.g This Course is for sales team to learn how to sell our products"
         />
@@ -1715,6 +1717,7 @@ function CreateOrEditQuestionPopUp({
                 type="text"
                 name="question"
                 placeholder="Type your question here"
+                maxLength={200}
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
                 className="question-input block w-full rounded-md bg-white/5 py-1.5 pl-2 text-tertiary shadow-sm sm:text-sm sm:leading-6"
@@ -1743,6 +1746,7 @@ function CreateOrEditQuestionPopUp({
                       id="answera"
                       type="text"
                       name="answera"
+                      maxLength={100}
                       placeholder="Choice A here"
                       value={optionA.label}
                       onChange={(e) =>
@@ -1821,6 +1825,7 @@ function CreateOrEditQuestionPopUp({
                       id="answerb"
                       type="text"
                       name="answerb"
+                      maxLength={100}
                       placeholder="Choice B here"
                       value={optionB.label}
                       onChange={(e) =>
@@ -1900,6 +1905,7 @@ function CreateOrEditQuestionPopUp({
                       type="text"
                       name="answerc"
                       placeholder="Choice C here"
+                      maxLength={100}
                       value={optionC.label}
                       onChange={(e) =>
                         setOptionC({
@@ -1979,6 +1985,7 @@ function CreateOrEditQuestionPopUp({
                       name="answerd"
                       placeholder="Choice D here"
                       value={optionD.label}
+                      maxLength={100}
                       onChange={(e) =>
                         setOptionD({
                           ...optionD,
@@ -2055,6 +2062,7 @@ function CreateOrEditQuestionPopUp({
               value={explanation}
               onChange={(e) => setExplanation(e.target.value)}
               className="common-input program-create-form !h-[100px] w-full !max-w-[unset] text-sm"
+              maxLength={200}
               placeholder="This is shown to the user after they answer the question (optional)"
             />
           </div>

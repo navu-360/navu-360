@@ -112,8 +112,6 @@ function TemplateCard({ template }: { template: OnboardingProgram }) {
     skip: !programId,
   });
 
-  console.log(template);
-
   return (
     <Link
       href={`/programs/${template.id}`}
@@ -138,7 +136,11 @@ function TemplateCard({ template }: { template: OnboardingProgram }) {
             <path d="M12 16v-4" />
             <path d="M12 8h.01" />
           </svg>
-          {template.description}
+          {template.description.length > 50 ? (
+            <span>{template.description.slice(0, 50)}...</span>
+          ) : (
+            <span>{template.description}</span>
+          )}
         </p>
         <div className="mt-2 flex items-center gap-4">
           <p className="flex items-center gap-2 text-sm font-medium">
