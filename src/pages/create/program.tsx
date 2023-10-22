@@ -767,7 +767,7 @@ function CreateProgramContent() {
       .then((payload) => {
         // update on createSectionIds
         const index = createSectionIds.findIndex(
-          (val: {id:string}) => val.id === currentEditing?.id,
+          (val: { id: string }) => val.id === currentEditing?.id,
         );
         const newArr = [...createSectionIds];
         newArr[index] = {
@@ -1320,15 +1320,19 @@ function ConfirmStep() {
     skip: !draftProgramId,
   });
 
+  useEffect(() => {
+    if (program?.data?.QuizQuestion?.length !== 0) {
+      setShowCreateQuiz(false);
+    }
+  }, [program?.data?.QuizQuestion]);
+
   return (
     <section
       className={`relative flex h-full min-h-[70vh] w-full flex-col items-center gap-4 text-center ${
-        !showCreateQuiz && program?.data?.QuizQuestion?.length !== 0
-          ? "justify-center"
-          : "justify-start"
+        !showCreateQuiz ? "justify-center" : "justify-start"
       }`}
     >
-      {!showCreateQuiz && program?.data?.QuizQuestion?.length !== 0 ? (
+      {!showCreateQuiz ? (
         <>
           <h2 className="text-2xl font-semibold text-tertiary">
             Course Creation Complete!
