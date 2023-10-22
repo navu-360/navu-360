@@ -160,8 +160,8 @@ export default function InviteTalent({
                 <button
                   type="button"
                   onClick={() => {
-                    signIn("google", {
-                      callbackUrl: `${baseUrl}/invite/${id}`,
+                    signIn("auth0", {
+                      callbackUrl: `https://${baseUrl}/invite/${id}`,
                       redirect: false,
                     }).catch((err) => {
                       console.log(err);

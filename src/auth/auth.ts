@@ -9,6 +9,8 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { env } from "../env/server.mjs";
 import { prisma } from "./db";
 
+import Auth0 from "next-auth/providers/auth0";
+
 /**
  * Module augmentation for `next-auth` types.
  * Allows us to add custom properties to the `session` object and keep type
@@ -73,6 +75,11 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET
+    }),
+    Auth0({
+      clientId: env.AUTH0_CLIENT_ID,
+      clientSecret: env.AUTH0_CLIENT_SECRET,
+      issuer: env.AUTH0_DOMAIN
     }),
   ],
   debug: process.env.NODE_ENV === "development",
