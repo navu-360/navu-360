@@ -25,7 +25,7 @@ export default function Hero() {
             Get Started Now
           </Link>
         </div>
-        <div className="max-w-1/2 relative z-10 mt-[50px] h-[20vw] min-h-[200px] w-[80vw] min-w-[300px] lg:h-[30vw] lg:min-w-[50vw]">
+        <div className="max-w-1/2 relative z-10 mt-[50px] lg:-ml-[100px] xl:-ml-[225px] h-[20vw] min-h-[200px] w-[80vw] min-w-[300px] lg:h-[30vw] lg:min-w-[50vw]">
           <Image
             src="https://res.cloudinary.com/dpnbddror/image/upload/v1677952140/7450159_2_uweuhi.png"
             alt="Simpify your workflow"
