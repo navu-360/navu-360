@@ -18,24 +18,24 @@ export default function FeaturesNavu() {
     {
       image:
         "https://res.cloudinary.com/dpnbddror/image/upload/v1695740221/navu/6131317852b1cc37a92ece7d_Challenges_to_workplace_diversity_mkyerw.jpg",
-      title: "Personalized Onboarding Plans",
-      description: `Tailor onboarding journeys for each new hire. Create custom onboarding plans that adapt to individual needs, ensuring a seamless transition into the company culture.`,
+      title: "Custom-Tailored Onboarding",
+      description: `Ensure every new hire feels uniquely welcomed. Our platform allows you to craft distinct onboarding experiences, tuned to individual preferences and roles.`,
       gradientClass: "featureThreeGradient",
       reverse: false,
     },
     {
       image:
         "https://res.cloudinary.com/dpnbddror/image/upload/v1695740268/navu/Interactive-Training-Tools_vqcbqb.jpg",
-      title: "Interactive Training Modules",
-      description: `Engage employees with interactive learning. Utilize multimedia-rich modules to make training enjoyable, incorporating videos, quizzes, and simulations for effective skill development.`,
+      title: "Engaging Multimedia Learning",
+      description: `Turn training sessions into captivating experiences. With Navu360, employees aren't just passive listeners; they're active participants.`,
       gradientClass: "featureThreeGradient",
       reverse: true,
     },
     {
       image:
         "https://res.cloudinary.com/dpnbddror/image/upload/v1695740316/navu/1679913952058_bdst6u.jpg",
-      title: "Employee Engagement Analytics",
-      description: `Measure and boost employee engagement. Leverage data analytics to gauge employee engagement levels, allowing you to make data-driven decisions to improve retention and productivity.`,
+      title: "Insightful Engagement Metrics",
+      description: `It's not just about training; it's about understanding its impact. With our advanced analytics, you can delve deep into how engaged your employees truly are.`,
       gradientClass: "featureThreeGradient",
       reverse: false,
     },
