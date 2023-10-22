@@ -25,8 +25,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     });
 
-    console.log("organization", organization)
-
     return res.status(200).json({ message: `Invite fetched.`, data: { ...invite, ...organization } });
   } catch (error) {
     return res
