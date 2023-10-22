@@ -20,9 +20,9 @@ export default function Hero() {
           </p>
           <Link
             href="/welcome/plan"
-            className="h-max w-max rounded-[2rem] bg-secondary px-24 py-3 text-center text-lg font-bold text-white transition-all duration-300 ease-in hover:bg-secondary hover:px-28 focus:outline-none focus:ring-4 focus:ring-blue-300"
+            className="h-max w-max rounded-[2rem] uppercase bg-secondary px-24 py-3 text-center text-lg font-bold text-white transition-all duration-300 ease-in hover:bg-secondary hover:px-28 focus:outline-none focus:ring-4 focus:ring-blue-300"
           >
-            Get started
+            Get Started Now
           </Link>
         </div>
         <div className="max-w-1/2 relative z-10 mt-[50px] h-[20vw] min-h-[200px] w-[80vw] min-w-[300px] lg:h-[30vw] lg:min-w-[50vw]">
