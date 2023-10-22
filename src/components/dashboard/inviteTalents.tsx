@@ -94,12 +94,9 @@ export default function InviteTalentsModal({
   const [remaining, setRemaining] = useState<number>(0);
   const [hasAlreadyReachedLimit, setHasAlreadyReachedLimit] = useState(false);
 
-  console.log(data?.data);
-  console.log(planDetails?.data);
-
   useEffect(() => {
     if (planDetails?.data) {
-      const maxAllowed = getMaxTalentCountFromAmount(3000);
+      const maxAllowed = getMaxTalentCountFromAmount(planDetails?.data);
       const remaining = maxAllowed - data?.data;
       setRemaining(remaining);
       if (remaining === 0) {
