@@ -1,4 +1,8 @@
 import type { GetServerSidePropsContext } from "next";
+import type {
+  User,
+  Awaitable
+} from "next-auth";
 import {
   getServerSession,
   type NextAuthOptions,
@@ -37,10 +41,10 @@ declare module "next-auth" {
     name: string;
     email: string;
     image: string;
-    role: string;
-    hasBeenOnboarded: boolean;
-    position: string;
-    customerId: string;
+    role?: string;
+    hasBeenOnboarded?: boolean;
+    position?: string;
+    customerId?: string;
   }
 }
 
@@ -80,8 +84,14 @@ export const authOptions: NextAuthOptions = {
       clientId: env.AUTH0_CLIENT_ID,
       clientSecret: env.AUTH0_CLIENT_SECRET,
       issuer: env.AUTH0_DOMAIN,
-      // @ts-ignore
-      // authorizationUrl: `https://${process.env.AUTH0_DOMAIN}/authorize?response_type=code&prompt=login`
+      profile(profile): Awaitable<User> {
+        return {
+          id: profile.sub as string,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture,
+        };
+      }
     }),
   ],
   debug: process.env.NODE_ENV === "development",
