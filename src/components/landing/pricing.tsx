@@ -35,7 +35,9 @@ export default function Pricing({
         if (session?.user) {
           router.push(`/setup?sub=${plan}`);
         } else {
-          signIn("auth0");
+          signIn("auth0", {
+            callbackUrl: `${window.location.origin}/setup?sub=${plan}`,
+          });
         }
       } else {
         router.push(`/welcome/plan`);
