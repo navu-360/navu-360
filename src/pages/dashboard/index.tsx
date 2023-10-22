@@ -30,11 +30,7 @@ export default function Dashboard() {
       state.auth.organizationData,
   );
 
-  // get organization created by this user then set the orgId in state
-  const userId = userProfile?.id;
-  const { currentData: data } = useGetOneOrganizationQuery(undefined, {
-    skip: !userId || !!orgId,
-  });
+  const { currentData: data } = useGetOneOrganizationQuery(undefined);
 
   const dispatch = useDispatch();
 
@@ -243,7 +239,7 @@ function OneStat({
 }) {
   return (
     <div
-      className={`stat-shadow flex w-full transition-all ease-in duration-300 flex-row items-center gap-3 bg-dark p-2 text-white first:rounded-tl-3xl sm:w-max lg:w-full lg:flex-col ${
+      className={`stat-shadow flex w-full flex-row items-center gap-3 bg-dark p-2 text-white transition-all duration-300 ease-in first:rounded-tl-3xl sm:w-max lg:w-full lg:flex-col ${
         roundLastCard ? "last:rounded-tr-3xl" : "last:rounded-r-none"
       }`}
     >
