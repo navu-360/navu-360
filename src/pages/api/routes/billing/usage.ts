@@ -28,6 +28,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const allTalents = await prisma.user.findMany({
         where: {
             talentOrgId: organization.id,
+            hasBeenOnboarded: true
         },
         select: {
             id: true,

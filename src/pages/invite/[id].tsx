@@ -13,10 +13,11 @@ import { useRouter } from "next/router";
 
 import { motion } from "framer-motion";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUserProfile } from "redux/auth/authSlice";
 import axios from "axios";
 import type { Organization, User, invites } from "@prisma/client";
+import { setInviteId } from "redux/common/commonSlice";
 
 export default function InviteTalent({
   data,
@@ -35,12 +36,22 @@ export default function InviteTalent({
 
   const { id } = router.query;
 
-  // const { data: organizationData, isFetching } = useGetOrganizationByIdQuery(
-  //   id,
-  //   {
-  //     skip: !id,
-  //   }
-  // );
+  // @ts-ignore
+  const inviteId = useSelector((state: unknown) => state.common.inviteId);
+
+  useEffect(() => {
+    if (inviteId && session) {
+      dispatch(setInviteId(undefined));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inviteId, session]);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setInviteId(id as string));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
   useEffect(() => {
     if (session?.user?.role === "talent" && session?.user?.hasBeenOnboarded) {
@@ -58,13 +69,8 @@ export default function InviteTalent({
 
   const [acceptInvite] = useAcceptInviteMutation();
 
-  const dispatch = useDispatch();
-
   const createHandler = async () => {
     const body = {
-      position: "",
-      role: "talent",
-      hasBeenOnboarded: true,
       inviteId: id,
     };
 
@@ -156,7 +162,15 @@ export default function InviteTalent({
                 </p>
               )}
             </div>
-            {session?.user ? null : (
+            {session?.user ? (
+              <button
+                type="button"
+                onClick={() => createHandler()}
+                className="mr-3 mt-4 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 md:mr-0"
+              >
+                Continue as {session?.user?.email}
+              </button>
+            ) : (
               <div className="mt-8 flex flex-col gap-6">
                 <button
                   type="button"
