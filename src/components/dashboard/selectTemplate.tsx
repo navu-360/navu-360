@@ -48,7 +48,7 @@ export default function SelectTemplate({
   const [search, setSearch] = useState("");
 
   // @ts-ignore
-  const debouncedValue:string = useDebounce(search, 500);
+  const debouncedValue: string = useDebounce(search, 500);
 
   const [results, setResults] = useState<ITemplate[]>([]);
 
@@ -105,7 +105,7 @@ export default function SelectTemplate({
           Select a template to continue or create a blank course
         </p>
         <div className="relative w-full bg-white pt-6 md:pt-12">
-          <form className="right-8 top-1 md:absolute md:mt-2 md:w-max md:pl-8">
+          <form className="right-8 top-1 hidden md:absolute md:mt-2 md:w-max md:pl-8">
             <input
               type="text"
               className="common-input md:max-w-[600px]"
@@ -123,7 +123,10 @@ export default function SelectTemplate({
                 : `Found ${results?.length} templates for: ${search}`}
             </p>
           )}
-          <div className="relative pt-4 md:p-4 md:px-8 md:pt-8">
+          <h2 className="my-28 w-full text-center font-semibold text-tertiary">
+            Templates coming soon...
+          </h2>
+          <div className="relative hidden pt-4 md:p-4 md:px-8 md:pt-8">
             {((search && results?.length > 3) ||
               (!search && templates?.length > 3)) && (
               <>
@@ -154,26 +157,6 @@ export default function SelectTemplate({
                   />
                 </svg>
               </>
-            )}
-
-            {results?.length === 0 ? (
-              <div
-                id="scroll-templates"
-                className="no-scrollbar flex gap-2 overflow-x-scroll py-4"
-              >
-                {templates.map((template) => (
-                  <TemplateCard key={template.id} template={template} />
-                ))}
-              </div>
-            ) : (
-              <div
-                id="scroll-templates"
-                className="no-scrollbar flex gap-2 overflow-x-scroll py-4"
-              >
-                {results.map((template) => (
-                  <TemplateCard key={template.id} template={template} />
-                ))}
-              </div>
             )}
           </div>
           <div className="mt-8 flex flex-col items-center justify-center md:mt-0">
@@ -245,7 +228,7 @@ function OneCategory({ category }: { category: string }) {
   return (
     <span
       className={`${bgSwitcher(
-        category
+        category,
       )} rounded-xl px-3 py-1 font-semibold text-white`}
     >
       {category}
