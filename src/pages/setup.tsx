@@ -34,7 +34,7 @@ const getAmountFromPlan = (planName: string) => {
     case "pro":
       return Number(process.env.NEXT_PUBLIC_PLAN_PRO_PRICE!);
     default:
-      return Number(process.env.NEXT_PUBLIC_PLAN_STARTER_PRICE!);
+      throw new Error("Invalid plan name");
   }
 };
 
@@ -47,7 +47,33 @@ export const getPlanNameFromAmount = (amount: number) => {
     case Number(process.env.NEXT_PUBLIC_PLAN_PRO_PRICE!):
       return "pro";
     default:
-      return "starter";
+      throw new Error("Invalid amount");
+  }
+};
+
+export const getMaxTalentCountFromAmount = (amount: number) => {
+  switch (amount) {
+    case Number(process.env.NEXT_PUBLIC_PLAN_STARTER_PRICE!):
+      return 10;
+    case Number(process.env.NEXT_PUBLIC_PLAN_REGULAR_PRICE!):
+      return 30;
+    case Number(process.env.NEXT_PUBLIC_PLAN_PRO_PRICE!):
+      return 200;
+    default:
+      throw new Error("Invalid amount");
+  }
+};
+
+export const getAdditionalSeatsPricing = (amount: number) => {
+  switch (amount) {
+    case Number(process.env.NEXT_PUBLIC_PLAN_STARTER_PRICE!):
+      return 300;
+    case Number(process.env.NEXT_PUBLIC_PLAN_REGULAR_PRICE!):
+      return 250;
+    case Number(process.env.NEXT_PUBLIC_PLAN_PRO_PRICE!):
+      return 100;
+    default:
+      throw new Error("Invalid amount");
   }
 };
 
@@ -60,7 +86,7 @@ export const getPlanIdFromName = (planName: string) => {
     case "pro":
       return process.env.NEXT_PUBLIC_PLAN_PRO;
     default:
-      return process.env.NEXT_PUBLIC_PLAN_STARTER;
+      throw new Error("Invalid plan name");
   }
 };
 
