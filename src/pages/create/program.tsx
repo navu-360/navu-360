@@ -749,6 +749,50 @@ function CreateProgramContent() {
       });
   };
 
+  const updatePdfOrLink = async (isPdf = false) => {
+    isPdf && setUploading(true);
+    const res = isPdf ? await uploadOne(uploadedDocument as File) : false;
+    setUploading(false);
+
+    const body = {
+      type: isPdf ? "document" : "link",
+      programId: draftProgramId,
+      id: currentEditing?.id ?? undefined,
+      // @ts-ignore
+      link: isPdf ? res?.file?.url : docsLink,
+    };
+
+    await editSection(body)
+      .unwrap()
+      .then((payload) => {
+        // update on createSectionIds
+        const index = createSectionIds.findIndex(
+          (val: {id:string}) => val.id === currentEditing?.id,
+        );
+        const newArr = [...createSectionIds];
+        newArr[index] = {
+          type: body.type,
+          id: payload?.data?.id,
+          link: payload?.data?.link,
+        };
+        dispatch(setCreateSectionIds(newArr));
+        setActiveContentType("");
+        setUploadedDocument(undefined);
+        setDocsLink(undefined);
+        setShowLinkPreview(false);
+        toaster({
+          status: "success",
+          message: "Document updated!",
+        });
+      })
+      .catch((error) => {
+        toaster({
+          status: "error",
+          message: error?.data?.message,
+        });
+      });
+  };
+
   const [showDeleteModal, setShowDeleteModal] = useState("");
 
   const getActiveTypeSvg = (type: string) => {
@@ -802,8 +846,6 @@ function CreateProgramContent() {
         return <div></div>;
     }
   };
-
-  console.log("blockContent", blockContent);
 
   if (!clientReady) return null;
 
@@ -861,6 +903,7 @@ function CreateProgramContent() {
                 }
                 if (section?.type === "link") {
                   setDocsLink(section?.link as string);
+                  setShowLinkPreview(false);
                 }
                 setCurrentEditing(section);
                 setTimeout(() => {
@@ -904,10 +947,13 @@ function CreateProgramContent() {
               >
                 {editingSection || creatingSection
                   ? "Saving..."
+                  : currentEditing
+                  ? "Save Changes"
                   : "Save Chapter"}
               </button>
               <button
                 disabled={!currentEditing}
+                onClick={() => setShowDeleteModal(currentEditing?.id as string)}
                 className="rounded-md bg-red-500 px-8 py-1.5 text-sm font-medium text-white"
               >
                 Delete Chapter
@@ -941,6 +987,29 @@ function CreateProgramContent() {
                 ))}
               </Document>
             )}
+            <div
+              onClick={() => {
+                setUploadedDocument(undefined);
+              }}
+              className="absolute -right-14 top-0 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-red-400 text-white"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="lucide lucide-trash"
+              >
+                <path d="M3 6h18" />
+                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+              </svg>
+            </div>
             {!uploadedDocument && (
               <div className="flex w-full items-center justify-center">
                 <label
@@ -994,7 +1063,7 @@ function CreateProgramContent() {
                 onClick={() => {
                   {
                     if (currentEditing) {
-                      console.log("update document");
+                      updatePdfOrLink(true);
                     } else {
                       uploadPdfOrLink(true);
                     }
@@ -1004,10 +1073,13 @@ function CreateProgramContent() {
               >
                 {editingSection || creatingSection || uploading
                   ? "Saving..."
+                  : currentEditing
+                  ? "Save Changes"
                   : "Save Chapter"}
               </button>
               <button
                 disabled={!currentEditing}
+                onClick={() => setShowDeleteModal(currentEditing?.id as string)}
                 className="rounded-md bg-red-500 px-8 py-1.5 text-sm font-medium text-white"
               >
                 Delete Chapter
@@ -1029,7 +1101,7 @@ function CreateProgramContent() {
         )}
 
         {activeContentType === "link" && (
-          <div className="relative ml-auto flex w-[75%] flex-col min-h-[500px] justify-center">
+          <div className="relative ml-auto flex min-h-[500px] w-[75%] flex-col justify-center">
             {!showLinkPreview && (
               <form
                 className={`mx-auto flex h-[50px] w-max shrink-0 items-center rounded-md`}
@@ -1076,7 +1148,7 @@ function CreateProgramContent() {
                   setSave(true);
                   {
                     if (currentEditing) {
-                      console.log("update link");
+                      updatePdfOrLink();
                     } else {
                       console.log("create block");
                       uploadPdfOrLink();
@@ -1087,10 +1159,13 @@ function CreateProgramContent() {
               >
                 {editingSection || creatingSection
                   ? "Saving..."
+                  : currentEditing
+                  ? "Save Changes"
                   : "Save Chapter"}
               </button>
               <button
                 disabled={!currentEditing}
+                onClick={() => setShowDeleteModal(currentEditing?.id as string)}
                 className="rounded-md bg-red-500 px-8 py-1.5 text-sm font-medium text-white"
               >
                 Delete Chapter
@@ -1172,7 +1247,13 @@ function OneCreatedSection({
         activeId === id ? "border-secondary" : "border-white"
       }`}
     >
-      {svg}
+      <div
+        className="flex h-full w-max items-center"
+        onClick={() => openEditMode()}
+      >
+        {svg}
+      </div>
+
       <div className="flex w-max flex-col justify-start gap-4">
         <span
           onClick={() => openEditMode()}

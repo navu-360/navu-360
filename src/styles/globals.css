@@ -667,3 +667,9 @@ button:disabled {
 ::-webkit-scrollbar-thumb:hover {
     background: #9d2a57;
 }
+
+.react-pdf__Page {
+    background-color: #cccccc !important;
+    padding: 10px;
+    border-radius: 8px;
+}
