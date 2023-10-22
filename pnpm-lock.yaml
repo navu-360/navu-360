@@ -56,6 +56,9 @@ dependencies:
   next-pwa:
     specifier: ^5.6.0
     version: 5.6.0(@babel/core@7.21.5)(next@13.5.5)(webpack@5.81.0)
+  nextjs-google-analytics:
+    specifier: ^2.3.3
+    version: 2.3.3(next@13.5.5)(react@18.2.0)
   nprogress:
     specifier: ^0.2.0
     version: 0.2.0
@@ -5280,6 +5283,18 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
+
+  /nextjs-google-analytics@2.3.3(next@13.5.5)(react@18.2.0):
+    resolution: {integrity: sha512-Y6sI6A7wt5dji8hYBnVkOh9LTyImSLFZXx3FpyQgVW7W4b4qEFHjH2u3fhDJsrRZeLlUGM8/RuHD/mhHc2Axfg==}
+    peerDependencies:
+      next: '>=11.0.0'
+      react: '>=17.0.0'
+    dependencies:
+      next: 13.5.5(@babel/core@7.21.5)(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: false
 
   /nice-select2@2.1.0(webpack@5.81.0):
     resolution: {integrity: sha512-tcxPbB/OLvS3c5DEWf9KguTFRAt1LmSwR6HCTM438LJzviLArHHKQgnYNhDoPyYxQ0W6CXMTD4ZTHTm2VeVung==}

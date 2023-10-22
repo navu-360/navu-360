@@ -49,9 +49,9 @@ export default function NavBar() {
   return (
     <nav className="fixed left-0 top-0 z-20 h-[80px] w-full bg-dark py-2.5 sm:px-4">
       <div className="mx-auto flex flex-wrap items-center justify-between md:mx-0">
-        <Link href="/" className="relative flex flex-col items-center pl-4">
+        <Link href="/" className="relative flex flex-col items-start pl-4">
           <img src="/logo.svg" className="mr-3 h-6 sm:h-9" alt="Navu360 Logo" />
-          <p className="-ml-2 mt-2 text-xs font-bold tracking-wide text-white">
+          <p className="mt-2 text-xs font-bold tracking-wide text-white">
             Empower. Train. Excel.
           </p>
         </Link>
