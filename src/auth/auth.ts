@@ -79,7 +79,9 @@ export const authOptions: NextAuthOptions = {
     Auth0({
       clientId: env.AUTH0_CLIENT_ID,
       clientSecret: env.AUTH0_CLIENT_SECRET,
-      issuer: env.AUTH0_DOMAIN
+      issuer: env.AUTH0_DOMAIN,
+      // @ts-ignore
+      // authorizationUrl: `https://${process.env.AUTH0_DOMAIN}/authorize?response_type=code&prompt=login`
     }),
   ],
   debug: process.env.NODE_ENV === "development",

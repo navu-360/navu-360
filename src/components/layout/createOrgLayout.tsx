@@ -58,7 +58,7 @@ export default function CreateOrganizationLayout({
           <img src="/logo.svg" className="mr-3 h-6 sm:h-9" alt="Navu360" />
         </Link>
       </div>
-      <div className="relative flex h-full w-full flex-col p-8 pt-16 md:w-2/3 md:pt-4">
+      <div className="relative flex h-auto w-full flex-col p-8 pt-16 md:w-2/3 md:pt-4">
         <div className="flex flex-col gap-1 text-tertiary">
           <h1 className="text-2xl font-bold">{title}</h1>
           <p className="text-base font-medium">{desc}</p>
@@ -70,7 +70,7 @@ export default function CreateOrganizationLayout({
         {children}
         {!fromStart && (
           <div
-            className={`flex w-full items-end justify-center px-8 lg:justify-end`}
+            className={`mt-8 flex w-full items-end justify-center px-8 pl-0 lg:justify-start`}
           >
             <button
               disabled={loading}

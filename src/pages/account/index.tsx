@@ -426,11 +426,11 @@ const AccountSettings: React.FC = () => {
 
                         // confirm
                         if (confirm("Are you sure you want to log out?")) {
-                          signOut({
-                            callbackUrl: "/",
-                          });
                           dispatch(setUserId(""));
                           dispatch(setUserProfile(undefined));
+                          signOut({
+                            callbackUrl: `http://localhost:3000/api/auth/logout`,
+                          });
                         }
                       }}
                       className="rounded-md bg-tertiary px-12 py-2 text-sm font-semibold text-white shadow-sm hover:bg-tertiary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"

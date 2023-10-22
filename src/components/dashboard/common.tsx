@@ -70,7 +70,10 @@ export function GoBack({ customText }: { customText?: string }) {
     <div
       onClick={() => {
         if (customText === "Cancel") {
-          signOut({ redirect: true, callbackUrl: "/" });
+          signOut({
+            redirect: true,
+            callbackUrl: `http://localhost:3000/api/auth/logout`,
+          });
         } else {
           router.back();
         }

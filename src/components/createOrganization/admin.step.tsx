@@ -44,7 +44,7 @@ export default function AdminCompanyDetails({
         noOfEmployees,
       }}
     >
-      <form className="mt-8 flex h-full w-full flex-col gap-6 md:w-max md:min-w-[400px]">
+      <form className="mt-8 flex h-auto w-full flex-col gap-6 md:w-max md:min-w-[400px]">
         <div className="flex flex-col gap-2">
           <label htmlFor="role">What is your role?</label>
           <input

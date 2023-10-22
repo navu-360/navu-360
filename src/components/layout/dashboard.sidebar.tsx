@@ -258,7 +258,7 @@ function OneItem({
           e.preventDefault();
           dispatch(resetAuth(undefined));
           signOut({
-            callbackUrl: "/",
+            callbackUrl: `http://localhost:3000/api/auth/logout`,
             redirect: true,
           });
         }
