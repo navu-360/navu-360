@@ -22,8 +22,10 @@ import { useRouter } from "next/router";
 
 const font = Nunito_Sans({
   subsets: ["cyrillic"],
-  weight: ["400", "600", "700", "800"],
+  weight: ["400", "500", "600", "700", "800"],
 });
+
+import { GoogleAnalytics } from "nextjs-google-analytics";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -70,6 +72,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
             }
           `}</style>
           <Component {...pageProps} />
+          <GoogleAnalytics />
           <Analytics />
         </Provider>
       </ErrorBoundary>
