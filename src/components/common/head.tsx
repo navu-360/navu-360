@@ -4,7 +4,7 @@ import React from "react";
 export default function Header({
   title = "Navu360 - Empower Your Talents, Drive Results",
   description = "Unleash Your Team's Full Potential with Navu360. Our LMS platform makes talent management and employee training a breeze. Get started now!",
-  image = "https://res.cloudinary.com/dpnbddror/image/upload/c_scale,w_400/v1697964657/navu/15_3_ssxint.png",
+  image = "https://res.cloudinary.com/dpnbddror/image/upload/c_scale,w_800/v1697964657/navu/15_3_ssxint.png",
 }) {
   return (
     <Head>
