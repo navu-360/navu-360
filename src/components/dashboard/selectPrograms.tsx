@@ -23,7 +23,7 @@ export function SelectPrograms({
   talentId: string;
 }) {
   const orgId = useSelector(
-    (state: { auth: { orgId: string } }) => state.auth.orgId
+    (state: { auth: { orgId: string } }) => state.auth.orgId,
   );
 
   const [showingItems, setShowingItems] = useState<OnboardingProgram[]>([]);
@@ -33,7 +33,7 @@ export function SelectPrograms({
     orgId,
     {
       skip: !orgId,
-    }
+    },
   );
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export function SelectPrograms({
 
   const organizationData = useSelector(
     (state: { auth: { organizationData: Organization } }) =>
-      state.auth.organizationData
+      state.auth.organizationData,
   );
 
   const [sendEmailAction, { isLoading }] = useSendEnrolledEmailMutation();
@@ -73,7 +73,7 @@ export function SelectPrograms({
             status: "error",
             message: error?.data?.message,
           });
-        }
+        },
       );
   };
 
@@ -94,7 +94,7 @@ export function SelectPrograms({
         // for every program, send email
         selectedProgramIds.forEach(async (programId) => {
           const programName = programs.find(
-            (program: OnboardingProgram) => program.id === programId
+            (program: OnboardingProgram) => program.id === programId,
           )?.name;
           if (programName) {
             await sendEmail(programName);
@@ -113,13 +113,14 @@ export function SelectPrograms({
             status: "error",
             message: error?.data?.message,
           });
-        }
+        },
       );
   };
 
   const [search, setSearch] = useState("");
 
-  const debouncedValue = useDebounce(search, 500);
+  // @ts-ignore
+  const debouncedValue: string = useDebounce(search, 500);
 
   const [results, setResults] = useState<OnboardingProgram[]>([]);
 
@@ -208,7 +209,7 @@ export function SelectPrograms({
                         ]);
                       } else {
                         setSelectedProgramIds(
-                          selectedProgramIds.filter((id) => id !== program.id)
+                          selectedProgramIds.filter((id) => id !== program.id),
                         );
                       }
                     }}

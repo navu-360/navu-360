@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import { getServerSession } from "next-auth";
 
-import { prisma } from "../../../../auth/db";
+import { prisma } from "auth/db";
 import { authOptions } from "auth/auth";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -19,19 +19,37 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "POST":
       try {
-        // name, content, organizationId
-        const { name, content, organizationId } = req.body as {
+        // name, content
+        const { name, categories, imageLink, description } = req.body as {
           name: string;
           content: string;
-          organizationId: string;
+          categories: string[];
+          imageLink: string;
+          description: string;
         };
+
+
+        if (!name || !categories || !imageLink || !description) return res.status(400).json({ message: `Missing fields.` });
+
+        const organization = await prisma.organization.findFirst({
+          where: {
+            userId: session?.user?.id as string,
+          },
+          select: {
+            id: true,
+          }
+        });
+
+        if (!organization) return res.status(404).json({ message: `Organization not found.` });
 
         const program = await prisma.onboardingProgram.create({
           data: {
             name,
-            content,
             createdBy: session?.user?.id,
-            organizationId: organizationId,
+            organizationId: organization.id,
+            categories,
+            image: imageLink,
+            description
           },
         });
 
@@ -52,13 +70,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           where: {
             organizationId: orgId,
           },
-          select: {
-            id: true,
-            name: true,
-            organizationId: true,
-            createdAt: true,
-            updatedAt: true,
-            createdBy: true,
+          include: {
+            _count: {
+              select: {
+                QuizQuestion: true,
+                ProgramSection: true,
+              }
+            },
+            creator: {
+              select: {
+                name: true,
+                id: true,
+              }
+            }
           },
           orderBy: {
             createdAt: "desc",
@@ -73,6 +97,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           .status(200)
           .json({ message: `Programs fetched.`, data: programs });
       } catch (error) {
+        console.log(error);
         return res
           .status(500)
           // @ts-ignore

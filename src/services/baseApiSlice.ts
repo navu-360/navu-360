@@ -88,18 +88,67 @@ export const baseApiSlice = createApi({
       }),
       invalidatesTags: ["Dashboard"],
     }),
+    addProgramSection: builder.mutation({
+      query: (body) => ({
+        url: `programs/section`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Dashboard"],
+    }),
+    editProgramSection: builder.mutation({
+      query: (body) => ({
+        url: `programs/section`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["Dashboard"],
+    }),
+    deleteProgramSection: builder.mutation({
+      query: (body) => ({
+        url: `programs/section`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["Dashboard"],
+    }),
+    addQuizQuestion: builder.mutation({
+      query: (body) => ({
+        url: `programs/quiz`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Dashboard"],
+    }),
+    editQuizQuestion: builder.mutation({
+      query: (body) => ({
+        url: `programs/quiz`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["Dashboard"],
+    }),
+    deleteQuizQuestion: builder.mutation({
+      query: (body) => ({
+        url: `programs/quiz`,
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["Dashboard"],
+    }),
+    getProgramQuestions: builder.query({
+      query: (programId) => `programs/quiz?programId=${programId}`,
+    }),
     // fetch organization's program
     getOrganizationPrograms: builder.query({
       query: (orgId) => ({
         url: `programs?orgId=${orgId}`,
       }),
-      keepUnusedDataFor: 60 * 10, // 10 minutes,
       providesTags: ["Programs"],
     }),
 
     getOneProgram: builder.query({
       query: (id) => `programs/${id}`,
-      keepUnusedDataFor: 60 * 10, // 10 minutes,
     }),
     editProgram: builder.mutation({
       query: (body) => ({
@@ -144,6 +193,13 @@ export const baseApiSlice = createApi({
         url: `email/inviteTalent`,
         method: "POST",
         body,
+      }),
+      invalidatesTags: ["Dashboard"],
+    }),
+    sendWelcomeEmail: builder.mutation({
+      query: () => ({
+        url: `email/welcome`,
+        method: "POST",
       }),
       invalidatesTags: ["Dashboard"],
     }),
@@ -302,5 +358,13 @@ export const {
   useGetUserPayStackDetailsQuery,
   useAcceptInviteMutation,
   useChangePlanMutation,
-  useUpdateOrgMutation
+  useUpdateOrgMutation,
+  useAddProgramSectionMutation,
+  useEditProgramSectionMutation,
+  useDeleteProgramSectionMutation,
+  useAddQuizQuestionMutation,
+  useEditQuizQuestionMutation,
+  useDeleteQuizQuestionMutation,
+  useGetProgramQuestionsQuery,
+  useSendWelcomeEmailMutation,
 } = baseApiSlice;

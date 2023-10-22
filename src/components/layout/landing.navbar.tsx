@@ -51,11 +51,12 @@ export default function NavBar() {
         <div className="flex items-center md:order-2">
           <button
             onClick={() => {
-              signIn("google", { callbackUrl: "/", redirect: false }).catch(
-                (err) => {
-                  console.log(err);
-                },
-              );
+              signIn("auth0", {
+                callbackUrl: `https://${window.location.origin}`,
+                redirect: false,
+              }).catch((err) => {
+                console.log(err);
+              });
             }}
             className="mr-8 h-max w-max rounded-xl border-[1px] border-white px-8 py-1 text-base font-medium tracking-tight text-white transition-all duration-300 ease-in hover:border-secondary hover:text-secondary"
           >

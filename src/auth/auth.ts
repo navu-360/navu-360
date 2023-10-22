@@ -1,4 +1,8 @@
 import type { GetServerSidePropsContext } from "next";
+import type {
+  User,
+  Awaitable
+} from "next-auth";
 import {
   getServerSession,
   type NextAuthOptions,
@@ -8,6 +12,8 @@ import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { env } from "../env/server.mjs";
 import { prisma } from "./db";
+
+import Auth0 from "next-auth/providers/auth0";
 
 /**
  * Module augmentation for `next-auth` types.
@@ -35,10 +41,10 @@ declare module "next-auth" {
     name: string;
     email: string;
     image: string;
-    role: string;
-    hasBeenOnboarded: boolean;
-    position: string;
-    customerId: string;
+    role?: string;
+    hasBeenOnboarded?: boolean;
+    position?: string;
+    customerId?: string;
   }
 }
 
@@ -73,6 +79,19 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET
+    }),
+    Auth0({
+      clientId: env.AUTH0_CLIENT_ID,
+      clientSecret: env.AUTH0_CLIENT_SECRET,
+      issuer: env.AUTH0_DOMAIN,
+      profile(profile): Awaitable<User> {
+        return {
+          id: profile.sub as string,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture,
+        };
+      }
     }),
   ],
   debug: process.env.NODE_ENV === "development",

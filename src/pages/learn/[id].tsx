@@ -91,9 +91,9 @@ export default function ViewTalent({
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     className="lucide lucide-circle"
                   >
                     <circle cx="12" cy="12" r="10"></circle>
@@ -106,9 +106,9 @@ export default function ViewTalent({
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="#00b300"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     className="lucide lucide-check-circle-2"
                   >
                     <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>

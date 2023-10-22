@@ -16,6 +16,7 @@ import { TalentSwitch } from "./common";
 import type {
   OnboardingProgram,
   OnboardingProgramTalents,
+  Organization,
   User,
   invites,
 } from "@prisma/client";
@@ -23,6 +24,8 @@ import { SelectPrograms } from "./selectPrograms";
 import { AnimatePresence } from "framer-motion";
 
 import { motion } from "framer-motion";
+import { NoInvitedTalents } from "./guides";
+import InviteTalentsModal from "./inviteTalents";
 
 export default function AllTalents({
   sendTotalTalents,
@@ -35,6 +38,10 @@ export default function AllTalents({
 }) {
   const orgId = useSelector(
     (state: { auth: { orgId: string } }) => state.auth.orgId,
+  );
+  const organizationData = useSelector(
+    (state: { auth: { organizationData: Organization } }) =>
+      state.auth.organizationData,
   );
 
   // get enrolled talents -  ENROLLED
@@ -119,13 +126,26 @@ export default function AllTalents({
       : setShowingTalents(talentsWithoutPrograms ?? []);
   }, [data?.data, selectedType, sentInvites?.data, talentsWithoutPrograms]);
 
+  useEffect(() => {
+    // check: if we have sent invites and no joined talents, set selectedType to Invited
+    if (sentInvites?.data?.length > 0 && data?.data?.length === 0) {
+      setSelectedType("Invited");
+    }
+    // check: if we have joined talents and no enrolled talents, set selectedType to Joined
+    if (data?.data?.length > 0 && talentsWithoutPrograms.length === 0) {
+      setSelectedType("Joined");
+    }
+  }, [sentInvites?.data, data?.data, talentsWithoutPrograms]);
+
   const [showTalentEnrolModal, setShowTalentEnrolModal] = useState<string[]>(
     [],
   );
 
+  const [showInviteModal, setShowInviteModal] = useState(false);
+
   if (isFetching || !orgId)
     return (
-      <section className="w-full rounded-md p-2 lg:w-[70%]">
+      <section className="w-full rounded-l p-2 lg:w-full">
         <section className="relative md:py-16">
           <TalentSwitch
             selectedOption={selectedType}
@@ -200,161 +220,176 @@ export default function AllTalents({
     );
 
   return (
-    <section className="h-max w-full rounded-md p-2 lg:w-[70%]">
-      <section className="relative w-full md:py-16">
-        <TalentSwitch
-          selectedOption={selectedType}
-          setSelectedOption={setSelectedType}
+    <section
+      className={`h-max min-h-[60vh] w-full rounded-l lg:w-full ${
+        data?.data?.length === 0 && sentInvites?.data?.length === 0
+          ? "flex justify-center"
+          : ""
+      }`}
+    >
+      {data?.data?.length === 0 && sentInvites?.data?.length === 0 && (
+        <NoInvitedTalents
+          coursesCount={onboardingPrograms.length}
+          orgName={organizationData?.name as string}
+          showInviteModal={() => setShowInviteModal(true)}
         />
-        <div className="mb-12 w-full">
-          <div
-            className="relative mb-6 flex w-full min-w-0 flex-col break-words rounded bg-white
+      )}
+      {!(data?.data?.length === 0 && sentInvites?.data?.length === 0) && (
+        <section className="relative w-full md:py-16">
+          <TalentSwitch
+            selectedOption={selectedType}
+            setSelectedOption={setSelectedType}
+          />
+          <div className="mb-12 w-full">
+            <div
+              className="relative mb-6 flex w-full min-w-0 flex-col break-words rounded bg-white
   text-tertiary shadow-lg"
-          >
-            <div className="mb-0 rounded-t border-0 px-4 py-3">
-              <div className="flex flex-wrap items-center">
-                <div className="relative w-full max-w-full flex-1 flex-grow px-4 ">
-                  <h3 className="text-lg font-semibold text-tertiary">
-                    {selectedType} talents ({showingTalents?.length || 0})
-                  </h3>
+            >
+              <div className="mb-0 rounded-t border-0 px-4 py-3">
+                <div className="flex flex-wrap items-center">
+                  <div className="relative w-full max-w-full flex-1 flex-grow px-4 ">
+                    <h3 className="text-lg font-semibold text-tertiary">
+                      {selectedType} Talents ({showingTalents?.length || 0})
+                    </h3>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="block w-full overflow-x-auto ">
-              <table className="w-full max-w-[100%] border-collapse items-center overflow-x-auto bg-transparent">
-                <thead>
-                  {selectedType !== "Invited" ? (
-                    <tr>
-                      <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                        Talent
-                      </th>
-                      <th className="role whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                        Role
-                      </th>
-                      <th className="date whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                        {selectedType === "Enrolled" ? "Enrolled" : "Joined"}
-                      </th>
-                      {selectedType === "Enrolled" && (
-                        <th className="progress whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                          Completion{" "}
+              <div className="block w-full overflow-x-auto ">
+                <table className="w-full max-w-[100%] border-collapse items-center overflow-x-auto bg-transparent">
+                  <thead>
+                    {selectedType !== "Invited" ? (
+                      <tr>
+                        <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                          Talent
                         </th>
-                      )}
-                      <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                        Action
-                      </th>
-                    </tr>
-                  ) : (
-                    <tr className="invite">
-                      <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                        Email
-                      </th>
-                      <th className="invite-date whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                        Invite Date
-                      </th>
-                    </tr>
-                  )}
-                </thead>
-
-                <tbody>
-                  {/* enrolled */}
-                  {showingTalents?.length === 0 && data && sentInvites && (
-                    <tr>
-                      <td
-                        align="center"
-                        colSpan={selectedType !== "Invited" ? 6 : 4}
-                        className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-lg font-bold"
-                      >
-                        No talents have{" "}
-                        {selectedType !== "Joined" ? "been" : ""}{" "}
-                        {selectedType.toLowerCase()} yet
-                      </td>
-                    </tr>
-                  )}
-                  {showingTalents?.length > 0 &&
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    showingTalents?.map((talent: any) =>
-                      selectedType !== "Invited" ? (
-                        <tr
-                          key={talent?.id}
-                          className="border border-secondary/25"
-                        >
-                          <td className="relative flex flex-col gap-3 whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left text-xs md:flex-row md:items-center md:gap-0">
-                            <img
-                              src={generateAvatar(
-                                talent?.User?.id ?? talent?.id,
-                              )}
-                              className="h-12 w-12 rounded-full border bg-white"
-                              alt={talent?.User?.name ?? talent?.name}
-                            />
-                            <span className="ml-3 font-bold capitalize">
-                              {talent?.User?.name ?? talent?.name}
-                            </span>
-                          </td>
-                          <td className="role whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
-                            {talent?.User?.position ?? talent?.position}
-                          </td>
-                          <td className="date whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
-                            {processDate(talent?.createdAt)}
-                          </td>
-                          {selectedType === "Enrolled" && (
-                            <CompletionStatus enrollment={talent} />
-                          )}
-                          <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-right align-middle text-xs">
-                            <div
-                              className="min-w-48 z-50 list-none rounded py-2 text-left text-base"
-                              id="table-dark-1-dropdown"
-                            >
-                              {selectedType === "Enrolled" ? (
-                                <Link
-                                  href={`/talents/${talent?.User?.id}`}
-                                  className="text-blueGray-700 mb-2 block w-max rounded-xl border-[1px] border-secondary/50 bg-white px-4 py-2 text-sm font-semibold text-secondary transition-all duration-150 ease-in hover:bg-secondary hover:text-white md:px-12"
-                                >
-                                  View
-                                </Link>
-                              ) : (
-                                <button
-                                  onClick={() =>
-                                    setShowTalentEnrolModal([
-                                      talent?.id,
-                                      talent?.name as string,
-                                    ])
-                                  }
-                                  className="text-blueGray-700 mb-2 block w-max rounded-xl border-[1px] border-secondary/50 bg-white px-4 py-2 text-sm font-semibold text-secondary transition-all duration-150 ease-in hover:bg-secondary hover:text-white md:px-12"
-                                >
-                                  Enroll Now
-                                </button>
-                              )}
-                            </div>
-                          </td>
-                        </tr>
-                      ) : (
-                        <tr
-                          className="invite border border-secondary/25"
-                          key={talent?.id}
-                        >
-                          <th className="flex flex-col gap-2 whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 text-left text-xs lg:flex-row lg:items-center lg:gap-0 lg:px-6 lg:align-middle">
-                            <img
-                              src={generateAvatar(talent?.id)}
-                              className="ml-4 h-12 w-12 rounded-full border bg-white lg:ml-0"
-                              alt={talent?.email as string}
-                            />
-                            <span className="ml-3 font-bold">
-                              {talent?.email}
-                            </span>
+                        <th className="role whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                          Role
+                        </th>
+                        <th className="date whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                          {selectedType === "Enrolled" ? "Enrolled" : "Joined"}
+                        </th>
+                        {selectedType === "Enrolled" && (
+                          <th className="progress whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                            Completion{" "}
                           </th>
-
-                          <td className="invite-date whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
-                            {processDate(talent?.createdAt)}
-                          </td>
-                        </tr>
-                      ),
+                        )}
+                        <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                          Action
+                        </th>
+                      </tr>
+                    ) : (
+                      <tr className="invite">
+                        <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                          Email
+                        </th>
+                        <th className="invite-date whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                          Invite Date
+                        </th>
+                      </tr>
                     )}
-                </tbody>
-              </table>
+                  </thead>
+
+                  <tbody>
+                    {/* enrolled */}
+                    {showingTalents?.length === 0 && data && sentInvites && (
+                      <tr>
+                        <td
+                          align="center"
+                          colSpan={selectedType !== "Invited" ? 6 : 4}
+                          className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-lg font-bold"
+                        >
+                          No talents have{" "}
+                          {selectedType !== "Joined" ? "been" : ""}{" "}
+                          {selectedType.toLowerCase()} yet
+                        </td>
+                      </tr>
+                    )}
+                    {showingTalents?.length > 0 &&
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      showingTalents?.map((talent: any) =>
+                        selectedType !== "Invited" ? (
+                          <tr
+                            key={talent?.id}
+                            className="border border-secondary/25 hover:bg-secondary/10"
+                          >
+                            <td className="relative flex flex-col gap-3 whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left text-xs md:flex-row md:items-center md:gap-0">
+                              <img
+                                src={generateAvatar(
+                                  talent?.User?.id ?? talent?.id,
+                                )}
+                                className="h-12 w-12 rounded-full border bg-white"
+                                alt={talent?.User?.name ?? talent?.name}
+                              />
+                              <span className="ml-3 font-bold capitalize">
+                                {talent?.User?.name ?? talent?.name}
+                              </span>
+                            </td>
+                            <td className="role whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
+                              {talent?.User?.position ?? talent?.position}
+                            </td>
+                            <td className="date whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
+                              {processDate(talent?.createdAt)}
+                            </td>
+                            {selectedType === "Enrolled" && (
+                              <CompletionStatus enrollment={talent} />
+                            )}
+                            <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-right align-middle text-xs">
+                              <div
+                                className="min-w-48 z-50 list-none rounded py-2 text-left text-base"
+                                id="table-dark-1-dropdown"
+                              >
+                                {selectedType === "Enrolled" ? (
+                                  <Link
+                                    href={`/talents/${talent?.User?.id}`}
+                                    className="text-blueGray-700 mb-2 block w-max rounded-xl border-[1px] border-secondary/50 bg-white px-4 py-2 text-sm font-semibold text-secondary transition-all duration-150 ease-in hover:bg-secondary hover:text-white md:px-12"
+                                  >
+                                    View
+                                  </Link>
+                                ) : (
+                                  <button
+                                    onClick={() =>
+                                      setShowTalentEnrolModal([
+                                        talent?.id,
+                                        talent?.name as string,
+                                      ])
+                                    }
+                                    className="text-blueGray-700 mb-2 block w-max rounded-xl border-[1px] border-secondary/50 bg-white px-4 py-2 text-sm font-semibold text-secondary transition-all duration-150 ease-in hover:bg-secondary hover:text-white md:px-12"
+                                  >
+                                    Enroll Now
+                                  </button>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        ) : (
+                          <tr
+                            className="invite border border-secondary/25 hover:bg-secondary/10"
+                            key={talent?.id}
+                          >
+                            <th className="flex flex-col gap-2 whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 text-left text-xs lg:flex-row lg:items-center lg:gap-0 lg:px-6 lg:align-middle">
+                              <img
+                                src={generateAvatar(talent?.id)}
+                                className="ml-4 h-12 w-12 rounded-full border bg-white lg:ml-0"
+                                alt={talent?.email as string}
+                              />
+                              <span className="ml-3 font-bold">
+                                {talent?.email}
+                              </span>
+                            </th>
+
+                            <td className="invite-date whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
+                              {processDate(talent?.createdAt)}
+                            </td>
+                          </tr>
+                        ),
+                      )}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
       <AnimatePresence>
         {showTalentEnrolModal?.length > 0 && (
           <SelectPrograms
@@ -367,6 +402,21 @@ export default function AllTalents({
             talentId={showTalentEnrolModal[0] as string}
             talentName={showTalentEnrolModal[1] as string}
             programs={onboardingPrograms}
+          />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showInviteModal && (
+          <InviteTalentsModal
+            closeModal={() => {
+              setShowInviteModal(false);
+            }}
+            invitedEmails={
+              sentInvites?.data
+                ? sentInvites?.data?.map((inv: invites) => inv?.email)
+                : []
+            }
           />
         )}
       </AnimatePresence>

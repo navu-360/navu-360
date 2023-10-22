@@ -5,8 +5,8 @@ import React, { useEffect, useState } from "react";
 
 import { signOut } from "next-auth/react";
 import { useDispatch, useSelector } from "react-redux";
-import { setUserId, setUserProfile } from "redux/auth/authSlice";
 import type { User } from "@prisma/client";
+import { resetAuth } from "redux/auth/authSlice";
 
 export default function AdminNav({
   showInviteTalent,
@@ -28,7 +28,7 @@ export default function AdminNav({
   if (!isReady) return null;
 
   return (
-    <nav className="fixed left-0 top-0 z-20 h-full w-[70px] bg-dark py-2.5 sm:px-4 md:w-[200px]">
+    <nav className="fixed left-0 top-0 z-50 h-full w-[70px] bg-dark py-2.5 sm:px-4 md:w-[200px]">
       <div className="mx-auto flex h-full flex-col items-center md:mx-0">
         <Link href="/dashboard" className="flex items-center md:pl-0">
           <img
@@ -53,9 +53,9 @@ export default function AdminNav({
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 className="transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
               >
                 <rect x="3" y="3" width="7" height="9"></rect>
@@ -81,9 +81,9 @@ export default function AdminNav({
                   fill="none"
                   stroke="currentColor"
                   className=" transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
                   <path d="m16 6 4 14"></path>
                   <path d="M12 6v14"></path>
@@ -91,7 +91,7 @@ export default function AdminNav({
                   <path d="M4 4v16"></path>
                 </svg>
               }
-              text={userProfile?.role === "admin" ? "Programs" : "My Programs"}
+              text={userProfile?.role === "admin" ? "Courses" : "My Courses"}
               isActive={router.pathname.includes("programs")}
               to={"/programs"}
             />
@@ -108,9 +108,9 @@ export default function AdminNav({
                   fill="none"
                   stroke="currentColor"
                   className="transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
                   <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
                   <circle cx="9" cy="7" r="4"></circle>
@@ -141,7 +141,7 @@ export default function AdminNav({
                   />
                 </svg>
               }
-              text={"Invite talent"}
+              text={"Invite Talent"}
               isActive={false}
               to={"#"}
               action={() => showInviteTalent()}
@@ -149,7 +149,7 @@ export default function AdminNav({
           )}
         </div>
 
-        <div className="mt-4 text-white md:absolute md:bottom-8 md:mx-auto md:w-4/5 flex md:flex-col md:gap-4">
+        <div className="mt-4 flex text-white md:absolute md:bottom-8 md:mx-auto md:w-4/5 md:flex-col md:gap-4">
           <OneItem
             svg={
               <svg
@@ -162,6 +162,32 @@ export default function AdminNav({
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
+                className="transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="m4.93 4.93 4.24 4.24" />
+                <path d="m14.83 9.17 4.24-4.24" />
+                <path d="m14.83 14.83 4.24 4.24" />
+                <path d="m9.17 14.83-4.24 4.24" />
+                <circle cx="12" cy="12" r="4" />
+              </svg>
+            }
+            text={"Contact Us"}
+            isActive={router.pathname === "/support"}
+            to={"/account"}
+          />
+          <OneItem
+            svg={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 className="transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
               >
                 <circle cx="12" cy="12" r="10" />
@@ -182,9 +208,9 @@ export default function AdminNav({
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 className="transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
               >
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
@@ -223,13 +249,18 @@ function OneItem({
     <Link
       href={to}
       onClick={(e) => {
+        if (text === "Contact Us") {
+          // open mailto to business@navu360.com
+          e.preventDefault();
+          window.location.href = "mailto:business@navu360.com";
+        }
         if (isLogout) {
           e.preventDefault();
+          dispatch(resetAuth(undefined));
           signOut({
-            callbackUrl: "/",
+            callbackUrl: `http://localhost:3000/api/auth/logout`,
+            redirect: true,
           });
-          dispatch(setUserId(""));
-          dispatch(setUserProfile(undefined));
         }
         if (action) {
           e.preventDefault();

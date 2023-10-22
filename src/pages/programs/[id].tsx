@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import type { OutputData } from "@editorjs/editorjs";
 import axios from "axios";
 import dynamic from "next/dynamic";
 const MyEditor = dynamic(() => import("components/common/editor/editor"), {
@@ -7,11 +6,16 @@ const MyEditor = dynamic(() => import("components/common/editor/editor"), {
 });
 import Header from "components/common/head";
 import DashboardWrapper from "components/layout/dashboardWrapper";
-import React, { useEffect, useState } from "react";
-import type { OnboardingProgram } from "types";
+import React, { useState } from "react";
 import { generateAvatar } from "utils/avatar";
 import { useGetProgramEnrollmentsQuery } from "services/baseApiSlice";
-import type { OnboardingProgramTalents, User } from "@prisma/client";
+import type {
+  OnboardingProgram,
+  OnboardingProgramTalents,
+  ProgramSection,
+  QuizQuestion,
+  User,
+} from "@prisma/client";
 import { SmallSpinner } from "components/common/spinner";
 
 import { motion } from "framer-motion";
@@ -19,10 +23,27 @@ import { processDate } from "utils/date";
 import Link from "next/link";
 import { GoBack } from "components/dashboard/common";
 
+import { Document, Page } from "react-pdf";
+import { pdfjs } from "react-pdf";
+import "react-pdf/dist/esm/Page/AnnotationLayer.css";
+import "react-pdf/dist/esm/Page/TextLayer.css";
+
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  "pdfjs-dist/build/pdf.worker.min.js",
+  import.meta.url,
+).toString();
+
+const options = {
+  cMapUrl: "/cmaps/",
+  standardFontDataUrl: "/standard_fonts/",
+};
+
 import { AnimatePresence } from "framer-motion";
 
 import { DeleteConfirmModal } from "components/dashboard/confirmDeleteProgram";
 import { useRouter } from "next/router";
+import Image from "next/image";
+import { GoogleDocumentViewer } from "pages/create/program";
 
 export interface IEnrollmentWithTalent extends OnboardingProgramTalents {
   User: User;
@@ -32,19 +53,15 @@ export default function Program({
   data,
 }: {
   data: OnboardingProgram & {
-    creator: string;
+    creator: {
+      name: string;
+      id: string;
+    };
+    QuizQuestion: QuizQuestion[];
+    ProgramSection: ProgramSection[];
   };
 }) {
-  const [content, setContent] = useState<OutputData | null>(null);
-
   const router = useRouter();
-
-  useEffect(() => {
-    if (data?.content) {
-      const receivedContent: OutputData = JSON.parse(data.content as string);
-      setContent(receivedContent);
-    }
-  }, [data]);
 
   const programId = data?.id;
 
@@ -58,46 +75,186 @@ export default function Program({
     boolean | string
   >(false);
 
+  console.log(data, "data");
+
+  const [numPages, setNumPages] = useState<number>();
+
+  function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
+    setNumPages(numPages);
+  }
+
+  const renderSectionType = (sectionContent: ProgramSection) => {
+    switch (sectionContent.type) {
+      case "block":
+        return (
+          <MyEditor
+            isReadOnly
+            getData={false}
+            initialData={JSON.parse(sectionContent?.content as string)}
+          />
+        );
+      case "document":
+        return (
+          <Document
+            file={sectionContent?.link as string}
+            onLoadSuccess={onDocumentLoadSuccess}
+            options={options}
+            onLoadError={(err) => console.log(err)}
+          >
+            {Array.from(new Array(numPages), (el, index) => (
+              <Page key={`page_${index + 1}`} pageNumber={index + 1} />
+            ))}
+          </Document>
+        );
+      case "link":
+        return <GoogleDocumentViewer link={sectionContent?.link as string} />;
+
+      default:
+        break;
+    }
+  };
+
   return (
     <>
       <Header title={`${data?.name} - Navu360`} />
       <DashboardWrapper hideSearch>
         <div className="relative ml-[90px] mt-[40px] flex h-full flex-col-reverse items-start justify-start gap-8 pt-16 md:ml-[250px] lg:flex-row">
           <GoBack />
-          <div className="flex w-[95%] flex-col gap-3 lg:w-[calc(100%_-_400px)]">
-            <h1 className="w-full text-left text-2xl font-bold text-tertiary">
+          <div className="flex w-[95%] flex-col gap-4 lg:w-[calc(100%_-_450px)]">
+            <div className="relative h-[400px] w-full rounded-xl">
+              <Image
+                src={data?.image as string}
+                alt={data.name}
+                fill
+                className="rounded-xl object-cover shadow"
+              />
+            </div>
+            <h1 className="w-full text-left text-4xl font-bold text-tertiary">
               {data?.name}
             </h1>
-            {content && <MyEditor isReadOnly initialData={content} />}
+            {/* created by */}
+            <div className="flex items-center gap-1">
+              <div className="flex items-center gap-4">
+                <img
+                  src={generateAvatar(data?.creator?.id)}
+                  className="h-[30px] w-[30px] rounded-full bg-tertiary"
+                  alt={data?.creator?.name}
+                />
+                <p className="text-[14px] font-semibold text-tertiary">
+                  {data?.creator?.name}
+                </p>
+              </div>
+            </div>
+            <div className="mt-4 flex flex-col gap-2">
+              <h3 className="text-lg font-semibold text-tertiary">
+                Description
+              </h3>
+              <p className="text-base font-medium text-gray-500">
+                {data?.description}
+              </p>
+            </div>
+            <div className="mt-4 flex flex-col gap-2">
+              <h3 className="text-lg font-semibold text-tertiary">Chapters</h3>
+              <div className="mb-8 flex flex-col gap-4">
+                {data?.ProgramSection?.map((section: ProgramSection) => (
+                  <div className="rounded-lg bg-gray-200 p-4" key={section?.id}>
+                    {renderSectionType(section)}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-          <div className="right-8 mr-0 flex w-[95%] flex-col overflow-y-auto text-tertiary lg:fixed lg:mt-12 lg:h-[80vh] lg:w-[350px]">
-            <div className="flex flex-col gap-4 rounded border-[1px] border-gray-400 p-4 text-tertiary">
-              {/* created by */}
-              <div className="flex items-center gap-2 px-4">
-                <p className="text-xs font-medium">Created By</p>
-                <div className="flex items-center gap-4">
-                  <p className="text-[14px] font-semibold">{data?.creator}</p>
+          <div className="right-8 mr-0 flex w-[95%] flex-col overflow-y-auto text-tertiary lg:fixed lg:mt-0 lg:h-[80vh] lg:w-[350px]">
+            <div className="flex flex-col gap-4 rounded-xl border-[1px] border-gray-400 p-4 text-tertiary">
+              <h2 className="pl-2 text-lg font-semibold text-tertiary">
+                Course Details
+              </h2>
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2 px-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="h-6 w-6"
+                  >
+                    <path d="M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM7.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM8.25 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM9.75 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM10.5 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM12.75 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM14.25 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 13.5a.75.75 0 100-1.5.75.75 0 000 1.5z" />
+                    <path
+                      fillRule="evenodd"
+                      d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zm13.5 9a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="text-xs font-medium">
+                    Created on {processDate(data.createdAt)}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 px-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="h-6 w-6"
+                  >
+                    <path d="M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM7.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM8.25 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM9.75 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM10.5 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM12.75 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM14.25 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 13.5a.75.75 0 100-1.5.75.75 0 000 1.5z" />
+                    <path
+                      fillRule="evenodd"
+                      d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zm13.5 9a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="text-xs font-medium">
+                    Last updated on {processDate(data.updatedAt)}
+                  </span>
                 </div>
               </div>
-              {/* created on */}
-              <div className="flex items-center gap-2 px-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="h-6 w-6"
-                >
-                  <path d="M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM7.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM8.25 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM9.75 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM10.5 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM12.75 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM14.25 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 13.5a.75.75 0 100-1.5.75.75 0 000 1.5z" />
-                  <path
-                    fillRule="evenodd"
-                    d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zm13.5 9a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <span className="text-xs font-medium">
-                  Created on {processDate(data.createdAt)}
-                </span>
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2 px-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="lucide lucide-book-open"
+                  >
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                  </svg>
+                  <span className="text-xs font-medium">
+                    Total Chapters {data?.ProgramSection?.length || 0}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 px-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="lucide lucide-list-checks"
+                  >
+                    <path d="m3 17 2 2 4-4" />
+                    <path d="m3 7 2 2 4-4" />
+                    <path d="M13 6h8" />
+                    <path d="M13 12h8" />
+                    <path d="M13 18h8" />
+                  </svg>
+                  <span className="text-xs font-medium">
+                    Total Questions {data?.QuizQuestion?.length || 0}
+                  </span>
+                </div>
               </div>
+
+              {/* created on */}
+
               {/* no of enrolled */}
               <div className="flex items-center gap-2 px-4">
                 <svg
@@ -170,7 +327,7 @@ export default function Program({
                 </div>
               )}
               {/* // enrolled talents */}
-              <div className="mt-2 flex flex-col gap-4 rounded border-[1px] border-gray-400 p-4 text-tertiary">
+              <div className="mt-2 flex flex-col gap-4 rounded-xl border-[1px] border-gray-400 p-4 text-tertiary">
                 {enrolledTalents?.data?.length === 0 && (
                   <p className="flex items-center gap-2 text-center">
                     <svg

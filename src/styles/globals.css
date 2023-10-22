@@ -528,6 +528,14 @@ button:disabled {
     box-shadow: rgba(157, 42, 87, 0.5) 0px 1px 2px 1px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
 }
 
+.question-input {
+    box-shadow: rgba(157, 42, 87, 0.5) 0px 0px 1px 1px, rgba(0, 0, 0, 0.06) 0px 1px 1px 0px;
+}
+
+.question-input:focus {
+    box-shadow: rgba(157, 42, 87, 0.5) 0px 0px 3px 1px, rgba(0, 0, 0, 0.06) 1px 1px 1px 0px;
+}
+
 .featureOneGradient {
     background: linear-gradient(85deg, rgba(18, 18, 18, 1) 0%, rgba(157, 42, 87, 1) 77%);
 }
@@ -635,4 +643,33 @@ button:disabled {
     top: 50%;
     transform: translateX(0) translateY(-50%);
     border-left-color: var(--tooltip-background-color);
+}
+
+/* To target all scrollbars */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 12px;
+}
+
+/* The track (background) */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 0px;
+}
+
+/* The handle (scroll thumb) */
+::-webkit-scrollbar-thumb {
+    background: #9d2a57;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #9d2a57;
+}
+
+.react-pdf__Page {
+    background-color: #E5E7EB !important;
+    padding: 10px;
+    border-radius: 8px;
 }

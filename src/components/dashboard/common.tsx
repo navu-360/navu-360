@@ -9,12 +9,12 @@ export function TalentSwitch({
   setSelectedOption: (option: string) => void;
 }) {
   return (
-    <div className="left-0 right-0 top-0 mb-4 flex w-full justify-center md:absolute md:mb-0">
+    <div className="left-0 right-0 top-0 mb-4 flex w-full justify-between md:absolute md:mb-0">
       <OneOption
         text="Enrolled"
         isSelected={selectedOption === "Enrolled"}
         selectOption={() => setSelectedOption("Enrolled")}
-        customStyles="rounded-l-md"
+        customStyles=""
       />
       <OneOption
         text="Joined"
@@ -25,7 +25,7 @@ export function TalentSwitch({
         text="Invited"
         isSelected={selectedOption === "Invited"}
         selectOption={() => setSelectedOption("Invited")}
-        customStyles="rounded-r-md"
+        customStyles=""
       />
     </div>
   );
@@ -45,11 +45,11 @@ function OneOption({
   return (
     <div
       onClick={() => selectOption()}
-      className={`flex h-[45px] w-1/3 cursor-pointer items-center justify-center bg-tertiary ${customStyles}`}
+      className={`flex h-[45px] w-1/3 cursor-pointer items-center justify-center bg-dark ${customStyles}`}
     >
       <div
         className={`flex h-[40px] w-[calc(100%_-_3px)] flex-col items-center justify-center transition-all duration-200 ease-in ${customStyles} ${
-          isSelected ? "bg-tertiary text-white" : `bg-white text-tertiary`
+          isSelected ? "bg-dark text-white" : `bg-white text-dark`
         }`}
       >
         <p className="text-[15px] font-semibold">{text}</p>
@@ -70,7 +70,10 @@ export function GoBack({ customText }: { customText?: string }) {
     <div
       onClick={() => {
         if (customText === "Cancel") {
-          signOut({ redirect: true, callbackUrl: "/" });
+          signOut({
+            redirect: true,
+            callbackUrl: `http://localhost:3000/api/auth/logout`,
+          });
         } else {
           router.back();
         }

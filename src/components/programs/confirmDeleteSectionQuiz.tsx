@@ -1,26 +1,29 @@
-import { useDeleteProgramMutation } from "services/baseApiSlice";
+import { useDeleteQuizQuestionMutation } from "services/baseApiSlice";
 import toaster from "utils/toaster";
 
 import { motion } from "framer-motion";
 
-export function DeleteConfirmModal({
+export function DeleteQuiz({
   id,
   setShowConfirmModal,
   refreshPrograms,
 }: {
   id: string;
-  setShowConfirmModal: () => void;
+  setShowConfirmModal: (val: boolean) => void;
   refreshPrograms: () => void;
 }) {
-  const [deleteProgram, { isLoading }] = useDeleteProgramMutation();
+  const [deleteQuiz, { isLoading }] = useDeleteQuizQuestionMutation();
 
   const deleteProductHandler = async () => {
-    await deleteProgram(id)
+    const body = {
+      id,
+    };
+    await deleteQuiz(body)
       .unwrap()
       .then(() => {
         toaster({
           status: "success",
-          message: "Program deleted successfully",
+          message: "Question deleted",
         });
         refreshPrograms();
       })
@@ -35,7 +38,7 @@ export function DeleteConfirmModal({
   return (
     <div
       onClick={(e) =>
-        e.target === e.currentTarget ? setShowConfirmModal() : null
+        e.target === e.currentTarget ? setShowConfirmModal(false) : null
       }
       className="fixed inset-0 z-[130] flex h-full w-full items-center justify-center bg-black/50 backdrop:blur-md md:fixed"
     >
@@ -48,18 +51,17 @@ export function DeleteConfirmModal({
       >
         <div className="flex h-full flex-col justify-between">
           <div className="flex flex-col gap-8">
-            <h1 className="text-center text-xl font-bold text-[#243669]">
-              Delete this program?
-            </h1>
+            <h2 className="text-center text-xl font-bold text-[#243669]">
+              Delete this question?
+            </h2>
             <p className="text-center text-sm font-medium text-[#243669]">
-              This program including all its enrolled students will be deleted
-              permanently.
+              This deletes the question permanently and cannot be undone.
             </p>
 
             <div className="flex justify-center gap-4">
               <button
                 disabled={isLoading}
-                onClick={() => setShowConfirmModal()}
+                onClick={() => setShowConfirmModal(false)}
                 className="flex h-[35px] w-[120px] items-center justify-center rounded-md border border-[#243669] text-sm font-semibold text-[#243669]"
               >
                 Cancel

@@ -9,6 +9,7 @@ import { setOrgId } from "redux/auth/authSlice";
 import {
   useCreateOrganizationMutation,
   useGetUserPayStackDetailsQuery,
+  useSendWelcomeEmailMutation,
   useUpdateUserMutation,
   useVerifyPaymentMutation,
 } from "services/baseApiSlice";
@@ -75,7 +76,9 @@ export default function Setup() {
     skip: !email,
   });
 
-  const [verify] = useVerifyPaymentMutation();
+  const [verify, { isLoading: verifying }] = useVerifyPaymentMutation();
+  const [sendWelcomeEmail, { isLoading: sendingEmail }] =
+    useSendWelcomeEmailMutation();
 
   const verifyAction = async (reference: string) => {
     const body = {
@@ -85,14 +88,24 @@ export default function Setup() {
     await verify(body)
       .unwrap()
       .then(() => {
-        toaster({
-          status: "success",
-          message:
-            "Organization created and successfully subscribed to " +
-            textToCapitalize((sub as string) ?? "Starter") +
-            " plan",
-        });
-        router.push("/dashboard");
+        sendWelcomeEmail(undefined)
+          .unwrap()
+          .then(() => {
+            toaster({
+              status: "success",
+              message:
+                "Organization created and successfully subscribed to " +
+                textToCapitalize((sub as string) ?? "Starter") +
+                " plan",
+            });
+            router.push("/dashboard");
+          })
+          .catch((error) => {
+            toast({
+              status: "error",
+              message: error?.data?.message,
+            });
+          });
       })
       .catch((error) => {
         toast({
@@ -210,7 +223,7 @@ export default function Setup() {
           goToNext={(role: string, companyDetails: CompanyDetails) =>
             updateUserDetails(role, companyDetails)
           }
-          loading={isLoading || CreatingOrg}
+          loading={isLoading || CreatingOrg || verifying || sendingEmail}
         />
       </LandingWrapper>
     </>

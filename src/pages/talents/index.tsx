@@ -2,7 +2,7 @@
 import Spinner from "components/common/spinner";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   useGetOrganizationEnrollmentsQuery,
   useGetTalentEnrollmentsQuery,
@@ -19,6 +19,7 @@ import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
 import { SelectPrograms } from "components/dashboard/selectPrograms";
 import Header from "components/common/head";
+import { resetCommon, setDraftProgramId } from "redux/common/commonSlice";
 
 export default function AllTalents() {
   const orgId = useSelector(
@@ -61,6 +62,12 @@ export default function AllTalents() {
   const [showTalentEnrolModal, setShowTalentEnrolModal] = useState<string[]>(
     [],
   );
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setDraftProgramId(undefined));
+    dispatch(resetCommon());
+  }, [dispatch]);
 
   return (
     <>
@@ -140,7 +147,7 @@ export default function AllTalents() {
                             showingTalents?.map((talent: any) => (
                               <tr
                                 key={talent?.id}
-                                className="border border-secondary/25"
+                                className="border border-secondary/25 hover:bg-secondary/10"
                               >
                                 <td className="relative flex flex-col gap-3 whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left text-xs md:flex-row md:items-center md:gap-0">
                                   <img

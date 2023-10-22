@@ -14,6 +14,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         where: {
           id,
         },
+        include: {
+          QuizQuestion: true,
+          ProgramSection: {
+            orderBy: {
+              createdAt: "asc"
+            }
+          },
+        }
       });
 
       let user = null;
@@ -30,7 +38,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       return res
         .status(200)
-        .json({ message: `Program fetched.`, data: { ...program, creator: user?.name } });
+        .json({ message: `Program fetched.`, data: { ...program, creator: { name: user?.name, id: user?.id } } });
     } catch (error) {
       return res
         .status(500)
@@ -70,9 +78,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return;
     }
     try {
-      const { name, content } = req.body as {
+      const { name, description, imageLink, categories } = req.body as {
         name: string;
-        content: string;
+        description: string;
+        imageLink: string;
+        categories: string[];
       };
 
       const program = await prisma.onboardingProgram.update({
@@ -81,7 +91,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
         data: {
           name,
-          content,
+          description,
+          image: imageLink,
+          categories
         },
       });
 

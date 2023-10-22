@@ -51,24 +51,23 @@ model User {
   hasBeenOnboarded          Boolean?                   @default(false)
   accounts                  Account[]
   sessions                  Session[]
-  organization              Organization?             
   onboardingProgs           OnboardingProgram[]
   createdAt                 DateTime                   @default(now())
   updatedAt                 DateTime                   @updatedAt
-  OnboardingProgramTalents  OnboardingProgramTalents[]
   CreatedOnboardingPrograms OnboardingProgram[]        @relation("createdBy")
+  Organization              Organization?
+  OnboardingProgramTalents  OnboardingProgramTalents[]
 
   @@index([email], name: "email")
 }
 
-// Define the Organization entity
 model Organization {
   id                       String                     @id @default(uuid())
   name                     String
   noOfEmployees            String
   industry                 String
   website                  String?
-  user                     User                       @relation(fields: [userId], references: [id])
+  user                     User                       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId                   String                     @unique
   onboardingProgs          OnboardingProgram[]
   onboardingProgramTalents OnboardingProgramTalents[]
@@ -76,20 +75,13 @@ model Organization {
   updatedAt                DateTime                   @updatedAt
 }
 
-model CourseModule {
-  id        String              @id @default(cuid())
-  name      String
-  programs  OnboardingProgram[]
-  createdAt DateTime            @default(now())
-  updatedAt DateTime            @updatedAt
-}
-
-// Define the OnboardingProgram entity
 model OnboardingProgram {
   id                       String                     @id @default(uuid())
   name                     String
-  content                  String
-  creator                  User                       @relation(fields: [createdBy], references: [id], name: "createdBy")
+  description              String
+  categories               String[]
+  image                    String?
+  creator                  User                       @relation(fields: [createdBy], references: [id], name: "createdBy", onDelete: Cascade)
   createdBy                String
   organization             Organization               @relation(fields: [organizationId], references: [id])
   organizationId           String
@@ -97,8 +89,21 @@ model OnboardingProgram {
   onboardingProgramTalents OnboardingProgramTalents[]
   createdAt                DateTime                   @default(now())
   updatedAt                DateTime                   @updatedAt
-  CourseModule             CourseModule?              @relation(fields: [courseModuleId], references: [id])
   courseModuleId           String?
+  ProgramSection           ProgramSection[]
+  QuizQuestion             QuizQuestion[]
+}
+
+model ProgramSection {
+  id        String            @id @default(cuid())
+  type      String
+  content   String?
+  link      String?
+  published Boolean           @default(false)
+  programId String
+  Program   OnboardingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
 }
 
 model OnboardingProgramTalents {
@@ -115,28 +120,24 @@ model OnboardingProgramTalents {
 
   @@unique([userId, programId])
   @@index([userId], name: "userId")
-  @@index([programId], name: "programId")
   @@index([organizationId], name: "organizationId")
 }
 
-model programQuiz {
-  id          String   @id @default(cuid())
-  programId   String
-  questionIds String[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
 model QuizQuestion {
-  id        String   @id @default(cuid())
+  id        String            @id @default(cuid())
   question  String
   choiceA   String
   choiceB   String
   choiceC   String
   choiceD   String
   answer    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  explanation String
+  programId String
+  Program   OnboardingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  @@index([programId], name: "programId")
 }
 
 model TalentProgramResults {

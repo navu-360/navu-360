@@ -1,4 +1,4 @@
-import type { User } from "@prisma/client";
+import type { Organization, User } from "@prisma/client";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useInviteTalentMutation } from "services/baseApiSlice";
@@ -24,13 +24,18 @@ export default function InviteTalentsModal({
   const [inviteTalents, { isLoading }] = useInviteTalentMutation();
 
   const userProfile = useSelector(
-    (state: { auth: { userProfile: User } }) => state.auth.userProfile
+    (state: { auth: { userProfile: User } }) => state.auth.userProfile,
   );
 
   const [error, setError] = useState(false);
 
   const orgId = useSelector(
-    (state: { auth: { orgId: string } }) => state.auth.orgId
+    (state: { auth: { orgId: string } }) => state.auth.orgId,
+  );
+
+  const organizationData = useSelector(
+    (state: { auth: { organizationData: Organization } }) =>
+      state.auth.organizationData,
   );
 
   const invietHandler = async () => {
@@ -80,7 +85,6 @@ export default function InviteTalentsModal({
 
   return (
     <div
-      onClick={(e) => (e.target === e.currentTarget ? closeModal() : null)}
       className={`fixed inset-0 z-[120] flex h-full w-full items-center justify-center  bg-black/50 backdrop-blur-sm`}
     >
       <motion.div
@@ -105,13 +109,13 @@ export default function InviteTalentsModal({
         </svg>
 
         <h1 className="text-xl font-bold text-tertiary">
-          Invite Talents to this organization
+          Invite Talents to this {organizationData?.name}
         </h1>
 
         <p>
           <span className="text-base font-medium text-gray-600">
             Enter the email addresses of the talents you want to invite. They
-            will receive an email with a link to join the organization.
+            will receive an email with a link to join.
           </span>
         </p>
 
@@ -120,6 +124,7 @@ export default function InviteTalentsModal({
             <div className="flex items-center gap-4 md:min-w-[400px]">
               <input
                 type="email"
+                autoComplete="email"
                 placeholder="Email address"
                 className="common-input rounded-md border border-gray-300 p-2"
                 value={emailOne}

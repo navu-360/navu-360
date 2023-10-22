@@ -35,8 +35,8 @@ export default function Pricing({
         if (session?.user) {
           router.push(`/setup?sub=${plan}`);
         } else {
-          signIn("google", {
-            callbackUrl: `/setup?sub=${plan}`,
+          signIn("auth0", {
+            callbackUrl: `${window.location.origin}/setup?sub=${plan}`,
           });
         }
       } else {
@@ -70,9 +70,9 @@ export default function Pricing({
       id="pricing"
       className="mx-auto my-16 w-full px-5 py-10 text-gray-600"
     >
-      <div className="mx-auto max-w-7xl lg:flex xl:flex-row flex-col">
+      <div className="mx-auto max-w-7xl flex-col lg:flex xl:flex-row">
         {!fromStart && (
-          <div className="xl:flex xl:w-1/4 lg:flex-col">
+          <div className="lg:flex-col xl:flex xl:w-1/4">
             <div className="w-full flex-grow text-center xl:pr-5 xl:text-left">
               <h2
                 className={`textGradientTitles mb-5 text-4xl font-bold ${font.className}`}
@@ -85,7 +85,9 @@ export default function Pricing({
             </div>
           </div>
         )}
-        <div className={`${fromStart ? "w-full" : "lg:w-full xl:w-3/4"} mr-auto`}>
+        <div
+          className={`${fromStart ? "w-full" : "lg:w-full xl:w-3/4"} mr-auto`}
+        >
           <div className="mx-auto max-w-6xl lg:flex">
             <motion.div
               initial={{ x: -30, scale: 1 }}
@@ -147,7 +149,7 @@ export default function Pricing({
                         clipRule="evenodd"
                       />
                     </svg>
-                    Max 3 templates
+                    Max 3 courses
                   </li>
                   <li className="flex items-center gap-2 leading-tight">
                     <svg
@@ -259,7 +261,7 @@ export default function Pricing({
                         clipRule="evenodd"
                       />
                     </svg>
-                    Max 10 templates
+                    Max 10 courses
                   </li>
                   <li className="flex items-center gap-2 leading-tight">
                     <svg
@@ -341,7 +343,7 @@ export default function Pricing({
                         clipRule="evenodd"
                       />
                     </svg>
-                    Unlimited talent seats
+                    Unlimited talent courses
                   </li>
                   <li className="flex items-center gap-2 leading-tight">
                     <svg

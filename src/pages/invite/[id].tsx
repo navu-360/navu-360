@@ -82,6 +82,7 @@ export default function InviteTalent({
         // check if status code is 401, then signout user
         if (error.status === 401) {
           signOut({
+            callbackUrl: `http://localhost:3000/api/auth/logout`,
             redirect: false,
           });
         }
@@ -160,8 +161,8 @@ export default function InviteTalent({
                 <button
                   type="button"
                   onClick={() => {
-                    signIn("google", {
-                      callbackUrl: `${baseUrl}/invite/${id}`,
+                    signIn("auth0", {
+                      callbackUrl: `https://${baseUrl}/invite/${id}`,
                       redirect: false,
                     }).catch((err) => {
                       console.log(err);

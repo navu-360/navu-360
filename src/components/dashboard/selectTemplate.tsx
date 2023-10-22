@@ -47,7 +47,8 @@ export default function SelectTemplate({
 
   const [search, setSearch] = useState("");
 
-  const debouncedValue = useDebounce(search, 500);
+  // @ts-ignore
+  const debouncedValue: string = useDebounce(search, 500);
 
   const [results, setResults] = useState<ITemplate[]>([]);
 
@@ -99,14 +100,12 @@ export default function SelectTemplate({
             clipRule="evenodd"
           />
         </svg>
-        <h1 className="text-lg font-bold text-tertiary">
-          Create a Program
-        </h1>
+        <h1 className="text-lg font-bold text-tertiary">Create a Course</h1>
         <p className="text-base font-medium text-gray-600">
-          Select a template to continue or create a blank program
+          Select a template to continue or create a blank course
         </p>
         <div className="relative w-full bg-white pt-6 md:pt-12">
-          <form className="right-8 top-1 md:absolute md:mt-2 md:w-max md:pl-8">
+          <form className="right-8 top-1 hidden md:absolute md:mt-2 md:w-max md:pl-8">
             <input
               type="text"
               className="common-input md:max-w-[600px]"
@@ -124,7 +123,10 @@ export default function SelectTemplate({
                 : `Found ${results?.length} templates for: ${search}`}
             </p>
           )}
-          <div className="relative pt-4 md:p-4 md:px-8 md:pt-8">
+          <h2 className="my-28 w-full text-center font-semibold text-tertiary">
+            Templates coming soon...
+          </h2>
+          <div className="relative hidden pt-4 md:p-4 md:px-8 md:pt-8">
             {((search && results?.length > 3) ||
               (!search && templates?.length > 3)) && (
               <>
@@ -156,26 +158,6 @@ export default function SelectTemplate({
                 </svg>
               </>
             )}
-
-            {results?.length === 0 ? (
-              <div
-                id="scroll-templates"
-                className="no-scrollbar flex gap-2 overflow-x-scroll py-4"
-              >
-                {templates.map((template) => (
-                  <TemplateCard key={template.id} template={template} />
-                ))}
-              </div>
-            ) : (
-              <div
-                id="scroll-templates"
-                className="no-scrollbar flex gap-2 overflow-x-scroll py-4"
-              >
-                {results.map((template) => (
-                  <TemplateCard key={template.id} template={template} />
-                ))}
-              </div>
-            )}
           </div>
           <div className="mt-8 flex flex-col items-center justify-center md:mt-0">
             <div className="relative mx-auto mt-4 flex h-[40px] w-[90%] items-center">
@@ -188,7 +170,7 @@ export default function SelectTemplate({
               href="/create/program"
               className="mt-4 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary focus:outline-none focus:ring-4 md:mr-0"
             >
-              Create Blank Program
+              Create Blank Course
             </Link>
           </div>
         </div>
@@ -246,7 +228,7 @@ function OneCategory({ category }: { category: string }) {
   return (
     <span
       className={`${bgSwitcher(
-        category
+        category,
       )} rounded-xl px-3 py-1 font-semibold text-white`}
     >
       {category}

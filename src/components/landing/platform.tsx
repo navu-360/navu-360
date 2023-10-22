@@ -26,9 +26,9 @@ export default function Features() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="transition-all duration-300 ease-in group-hover:text-secondary"
           >
             <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
@@ -47,9 +47,9 @@ export default function Features() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="transition-all duration-300 ease-in group-hover:text-secondary"
           >
             <path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z"></path>
@@ -81,9 +81,9 @@ export default function Features() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="transition-all duration-300 ease-in group-hover:text-secondary"
           >
             <path d="M15 4V2"></path>

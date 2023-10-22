@@ -23,6 +23,7 @@ function MyEditor({
   const [outputData, setOutputData] = React.useState<OutputData | null>(null);
 
   useEffect(() => {
+    if (initialData?.blocks?.length === 0) return;
     setOutputData(initialData);
   }, [initialData]);
 
@@ -38,9 +39,12 @@ function MyEditor({
         placeholder: "Create your content here...",
         readOnly: isReadOnly,
         onChange: async () => {
-          // @ts-ignore
-          const data = await editorRef.current?.save();
-          setOutputData(data);
+          if (!isReadOnly) {
+            // @ts-ignore
+            const data = await editorRef.current?.save();
+            setOutputData(data);
+            receiveData && receiveData(data);
+          }
         },
       });
 
@@ -50,7 +54,7 @@ function MyEditor({
         .then(
           () => {
             console.log("Editor.js is ready to work!");
-          }
+          },
           // @ts-ignore
         )
         .catch(() => {
