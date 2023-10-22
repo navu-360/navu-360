@@ -537,7 +537,7 @@ function ProgramDetails({
       <div className="flex max-w-[600px] flex-col gap-2">
         <label>Course Cover Image</label>
 
-        <div className="relative flex h-[400px] w-full items-center justify-center">
+        <div className="relative flex h-[300px] w-full items-center justify-center">
           {!uploadedImage ? (
             <label
               htmlFor="dropzone-file"
@@ -803,12 +803,14 @@ function CreateProgramContent() {
     }
   };
 
+  console.log("blockContent", blockContent);
+
   if (!clientReady) return null;
 
   return (
     <div className="relative w-full">
       <div className="relative my-6 w-[95%] pt-16 text-gray-600">
-        <div className="no-scrollbar absolute bottom-0 left-0 top-16 h-full min-h-[60vh] w-1/5 overflow-y-auto rounded-3xl bg-gray-100 p-4 pt-4">
+        <div className="no-scrollbar absolute bottom-0 left-0 top-16 h-full max-h-[70vh] min-h-[60vh] w-1/5 overflow-y-auto rounded-3xl bg-gray-100 p-4 pt-4">
           <h2 className="mb-2 text-center text-base font-bold">
             Created Chapters
           </h2>
@@ -870,12 +872,23 @@ function CreateProgramContent() {
         </div>
 
         {activeContentType === "block" && (
-          <div className="relative ml-auto w-[75%]">
-            {(currentEditing ||
-              (blockContent && blockContent?.blocks?.length > 0)) && (
-              <div
+          <div className="relative ml-auto flex w-[75%] flex-col">
+            <MyEditor
+              getData={save}
+              receiveData={(data: OutputData) => {
+                setBlockContent(data);
+              }}
+              initialData={blockContent ?? { blocks: [] }}
+            />
+            <div className="flex w-full justify-start gap-8">
+              <button
+                disabled={
+                  blockContent?.blocks?.length === 0 ||
+                  editingSection ||
+                  creatingSection ||
+                  !blockContent
+                }
                 onClick={() => {
-                  if (editingSection || creatingSection) return;
                   setSave(true);
                   {
                     if (currentEditing) {
@@ -887,173 +900,35 @@ function CreateProgramContent() {
                     }
                   }
                 }}
-                className="absolute -right-14 top-0 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-green-400 text-white"
+                className="h-max w-max rounded-md bg-green-500 px-8 py-1.5 text-sm font-semibold text-white"
               >
-                {!creatingSection && !editingSection ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    className="lucide lucide-save"
-                  >
-                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
-                    <polyline points="17 21 17 13 7 13 7 21" />
-                    <polyline points="7 3 7 8 15 8" />
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    className="lucide lucide-loader animate-spin"
-                  >
-                    <line x1="12" x2="12" y1="2" y2="6" />
-                    <line x1="12" x2="12" y1="18" y2="22" />
-                    <line x1="4.93" x2="7.76" y1="4.93" y2="7.76" />
-                    <line x1="16.24" x2="19.07" y1="16.24" y2="19.07" />
-                    <line x1="2" x2="6" y1="12" y2="12" />
-                    <line x1="18" x2="22" y1="12" y2="12" />
-                    <line x1="4.93" x2="7.76" y1="19.07" y2="16.24" />
-                    <line x1="16.24" x2="19.07" y1="7.76" y2="4.93" />
-                  </svg>
-                )}
-              </div>
-            )}
-
-            <div
-              onClick={() => {
-                if (editingSection || creatingSection) return;
-                setBlockContent(undefined);
-                setActiveContentType("");
-              }}
-              title="Close editor"
-              className="absolute -right-14 top-16 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-gray-400 text-white"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                className="lucide lucide-x"
+                {editingSection || creatingSection
+                  ? "Saving..."
+                  : "Save Chapter"}
+              </button>
+              <button
+                disabled={!currentEditing}
+                className="rounded-md bg-red-500 px-8 py-1.5 text-sm font-medium text-white"
               >
-                <path d="M18 6 6 18" />
-                <path d="m6 6 12 12" />
-              </svg>
+                Delete Chapter
+              </button>
+              <button
+                onClick={() => {
+                  if (editingSection || creatingSection) return;
+                  setBlockContent(undefined);
+                  setActiveContentType("");
+                }}
+                disabled={editingSection || creatingSection}
+                className="rounded-md border-[1px] border-gray-400 bg-transparent px-8 py-1.5 text-sm font-medium text-gray-500"
+              >
+                Close Chapter
+              </button>
             </div>
-
-            <MyEditor
-              getData={save}
-              receiveData={(data: OutputData) => {
-                setBlockContent(data);
-              }}
-              initialData={blockContent ?? { blocks: [] }}
-            />
           </div>
         )}
 
         {activeContentType === "document" && (
-          <div className="relative ml-auto flex w-[75%] flex-col">
-            {uploadedDocument && (
-              <div
-                onClick={() => {
-                  if (editingSection || creatingSection || uploading) return;
-                  {
-                    if (currentEditing) {
-                      console.log("update document");
-                    } else {
-                      uploadPdfOrLink(true);
-                    }
-                  }
-                }}
-                className="absolute -right-14 top-0 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-green-400 text-white"
-              >
-                {!creatingSection && !editingSection && !uploading ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    className="lucide lucide-save"
-                  >
-                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
-                    <polyline points="17 21 17 13 7 13 7 21" />
-                    <polyline points="7 3 7 8 15 8" />
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    className="lucide lucide-loader animate-spin"
-                  >
-                    <line x1="12" x2="12" y1="2" y2="6" />
-                    <line x1="12" x2="12" y1="18" y2="22" />
-                    <line x1="4.93" x2="7.76" y1="4.93" y2="7.76" />
-                    <line x1="16.24" x2="19.07" y1="16.24" y2="19.07" />
-                    <line x1="2" x2="6" y1="12" y2="12" />
-                    <line x1="18" x2="22" y1="12" y2="12" />
-                    <line x1="4.93" x2="7.76" y1="19.07" y2="16.24" />
-                    <line x1="16.24" x2="19.07" y1="7.76" y2="4.93" />
-                  </svg>
-                )}
-              </div>
-            )}
-
-            <div
-              onClick={() => {
-                if (editingSection || creatingSection) return;
-                setBlockContent(undefined);
-                setActiveContentType("");
-                setUploadedDocument(undefined);
-              }}
-              title="Close chapter"
-              className="absolute -right-14 top-16 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-gray-400 text-white"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                className="lucide lucide-x"
-              >
-                <path d="M18 6 6 18" />
-                <path d="m6 6 12 12" />
-              </svg>
-            </div>
-
+          <div className="relative ml-auto flex w-[75%] flex-col gap-8">
             {uploadedDocument && (
               <Document
                 file={uploadedDocument}
@@ -1108,94 +983,53 @@ function CreateProgramContent() {
                 </label>
               </div>
             )}
+            <div className="flex w-full justify-start gap-8">
+              <button
+                disabled={
+                  !uploadedDocument ||
+                  editingSection ||
+                  creatingSection ||
+                  uploading
+                }
+                onClick={() => {
+                  {
+                    if (currentEditing) {
+                      console.log("update document");
+                    } else {
+                      uploadPdfOrLink(true);
+                    }
+                  }
+                }}
+                className="h-max w-max rounded-md bg-green-500 px-8 py-1.5 text-sm font-semibold text-white"
+              >
+                {editingSection || creatingSection || uploading
+                  ? "Saving..."
+                  : "Save Chapter"}
+              </button>
+              <button
+                disabled={!currentEditing}
+                className="rounded-md bg-red-500 px-8 py-1.5 text-sm font-medium text-white"
+              >
+                Delete Chapter
+              </button>
+              <button
+                disabled={editingSection || creatingSection}
+                onClick={() => {
+                  if (editingSection || creatingSection) return;
+                  setBlockContent(undefined);
+                  setActiveContentType("");
+                  setUploadedDocument(undefined);
+                }}
+                className="rounded-md border-[1px] border-gray-400 bg-transparent px-8 py-1.5 text-sm font-medium text-gray-500"
+              >
+                Close Chapter
+              </button>
+            </div>
           </div>
         )}
 
         {activeContentType === "link" && (
-          <div className="relative ml-auto w-[75%]">
-            {showLinkPreview && (
-              <div
-                onClick={() => {
-                  if (editingSection || creatingSection) return;
-                  {
-                    if (currentEditing) {
-                      console.log("update link");
-                    } else {
-                      uploadPdfOrLink();
-                    }
-                  }
-                }}
-                className="absolute -right-14 top-0 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-green-400 text-white"
-              >
-                {!creatingSection && !editingSection ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    className="lucide lucide-save"
-                  >
-                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
-                    <polyline points="17 21 17 13 7 13 7 21" />
-                    <polyline points="7 3 7 8 15 8" />
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    className="lucide lucide-loader animate-spin"
-                  >
-                    <line x1="12" x2="12" y1="2" y2="6" />
-                    <line x1="12" x2="12" y1="18" y2="22" />
-                    <line x1="4.93" x2="7.76" y1="4.93" y2="7.76" />
-                    <line x1="16.24" x2="19.07" y1="16.24" y2="19.07" />
-                    <line x1="2" x2="6" y1="12" y2="12" />
-                    <line x1="18" x2="22" y1="12" y2="12" />
-                    <line x1="4.93" x2="7.76" y1="19.07" y2="16.24" />
-                    <line x1="16.24" x2="19.07" y1="7.76" y2="4.93" />
-                  </svg>
-                )}
-              </div>
-            )}
-
-            <div
-              onClick={() => {
-                if (editingSection || creatingSection) return;
-                setShowLinkPreview(false);
-                setDocsLink("");
-                setActiveContentType("");
-              }}
-              title="Close chapter"
-              className="absolute -right-14 top-16 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-gray-400 text-white"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                className="lucide lucide-x"
-              >
-                <path d="M18 6 6 18" />
-                <path d="m6 6 12 12" />
-              </svg>
-            </div>
+          <div className="relative ml-auto flex w-[75%] flex-col min-h-[500px] justify-center">
             {!showLinkPreview && (
               <form
                 className={`mx-auto flex h-[50px] w-max shrink-0 items-center rounded-md`}
@@ -1206,7 +1040,7 @@ function CreateProgramContent() {
                   value={docsLink}
                   onChange={(e) => setDocsLink(e.target.value)}
                   autoComplete="website"
-                  placeholder="Paste link here"
+                  placeholder="Paste a google document link here"
                   className="common-input block !h-full !w-[400px] items-center justify-start rounded-md !rounded-r-none bg-white/5 pl-2 text-tertiary shadow-sm ring-white/10 sm:text-sm sm:leading-6"
                 />
                 <button
@@ -1227,13 +1061,52 @@ function CreateProgramContent() {
                   }}
                   className="h-full rounded-r-md bg-dark px-8 text-base font-semibold text-white"
                 >
-                  Continue
+                  Preview
                 </button>
               </form>
             )}
             {showLinkPreview && (
               <GoogleDocumentViewer link={docsLink as string} />
             )}
+
+            <div className="mt-8 flex h-max w-full justify-center gap-8">
+              <button
+                disabled={!showLinkPreview || editingSection || creatingSection}
+                onClick={() => {
+                  setSave(true);
+                  {
+                    if (currentEditing) {
+                      console.log("update link");
+                    } else {
+                      console.log("create block");
+                      uploadPdfOrLink();
+                    }
+                  }
+                }}
+                className="h-max w-max rounded-md bg-green-500 px-8 py-1.5 text-sm font-semibold text-white"
+              >
+                {editingSection || creatingSection
+                  ? "Saving..."
+                  : "Save Chapter"}
+              </button>
+              <button
+                disabled={!currentEditing}
+                className="rounded-md bg-red-500 px-8 py-1.5 text-sm font-medium text-white"
+              >
+                Delete Chapter
+              </button>
+              <button
+                onClick={() => {
+                  setShowLinkPreview(false);
+                  setDocsLink("");
+                  setActiveContentType("");
+                }}
+                disabled={editingSection || creatingSection}
+                className="rounded-md border-[1px] border-gray-400 bg-transparent px-8 py-1.5 text-sm font-medium text-gray-500"
+              >
+                Close Chapter
+              </button>
+            </div>
           </div>
         )}
       </div>
