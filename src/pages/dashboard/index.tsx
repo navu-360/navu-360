@@ -148,6 +148,7 @@ export default function Dashboard() {
                 }
                 text={`Total Talents`}
                 num={countOfTalents}
+                roundLastCard={programs?.data?.length === 0}
               />
               <OneStat
                 text={`Total Courses`}
@@ -171,6 +172,7 @@ export default function Dashboard() {
                   </svg>
                 }
                 num={countOfPrograms}
+                roundLastCard={programs?.data?.length === 0}
               />
               <OneStat
                 text={`Total Enrollments`}
@@ -192,6 +194,7 @@ export default function Dashboard() {
                   </svg>
                 }
                 num={countOfOnboarded}
+                roundLastCard={programs?.data?.length === 0}
               />
             </div>
             <section className="mt-8 flex min-h-[65vh] w-full flex-col justify-between gap-2 lg:flex-row">
@@ -231,17 +234,23 @@ function OneStat({
   svg,
   text,
   num,
+  roundLastCard,
 }: {
   svg: React.ReactNode;
   text: string;
   num: number;
+  roundLastCard: boolean;
 }) {
   return (
-    <div className="stat-shadow flex w-full flex-row items-center gap-3 bg-dark p-2 text-white first:rounded-tl-3xl last:rounded-r-none sm:w-max lg:w-full lg:flex-col">
+    <div
+      className={`stat-shadow flex w-full transition-all ease-in duration-300 flex-row items-center gap-3 bg-dark p-2 text-white first:rounded-tl-3xl sm:w-max lg:w-full lg:flex-col ${
+        roundLastCard ? "last:rounded-tr-3xl" : "last:rounded-r-none"
+      }`}
+    >
       <div className="">{svg}</div>
 
-      <div className="flex items-center gap-2 mb-4 text-center text-base">
-        <span className="flex h-[35px] w-[35px] items-center justify-center font-medium rounded-full bg-white p-2 text-base leading-normal text-secondary">
+      <div className="mb-4 flex items-center gap-2 text-center text-base">
+        <span className="flex h-[35px] w-[35px] items-center justify-center rounded-full bg-white p-2 text-base font-medium leading-normal text-secondary">
           {num}
         </span>
         <span>{text}</span>

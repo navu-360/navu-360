@@ -1,13 +1,20 @@
 import Image from "next/image";
 import React from "react";
 
+import { motion } from "framer-motion";
+
 export function NoCourses({
   showSelectTemplate,
 }: {
   showSelectTemplate: () => void;
 }) {
   return (
-    <section className="m-auto flex max-w-4xl flex-col justify-center gap-6 rounded-3xl bg-gray-200 p-4 px-8 text-center">
+    <motion.section
+      initial={{ y: 30 }}
+      whileInView={{ y: 0 }}
+      transition={{ ease: "easeIn", duration: 0.3 }}
+      className="m-auto flex max-w-4xl flex-col justify-center gap-6 rounded-3xl bg-gray-200 p-4 px-8 text-center"
+    >
       <Image
         src={"/ebook.svg"}
         alt="Create a new Course"
@@ -28,7 +35,7 @@ export function NoCourses({
       >
         <span>Continue</span>
       </button>
-    </section>
+    </motion.section>
   );
 }
 
@@ -42,7 +49,12 @@ export function NoInvitedTalents({
   orgName: string;
 }) {
   return (
-    <section className="m-auto flex max-w-4xl flex-col h-max justify-center gap-6 rounded-3xl bg-gray-200 p-4 px-8 text-center">
+    <motion.section
+      initial={{ y: 30 }}
+      whileInView={{ y: 0 }}
+      transition={{ ease: "easeIn", duration: 0.3 }}
+      className="m-auto flex h-max max-w-4xl flex-col justify-center gap-6 rounded-3xl bg-gray-200 p-4 px-8 text-center"
+    >
       <Image
         src={"/employee.svg"}
         alt="Invite Talents"
@@ -62,6 +74,6 @@ export function NoInvitedTalents({
       >
         <span>Continue</span>
       </button>
-    </section>
+    </motion.section>
   );
 }
