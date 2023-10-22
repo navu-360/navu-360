@@ -2,9 +2,9 @@ import Head from "next/head";
 import React from "react";
 
 export default function Header({
-  title = "Navu360 - Transforming Talent Training and Onboarding",
-  description = "Unlock the full potential of your talent. Offering employee training, new hire onboarding and general training and development",
-  image = "https://res.cloudinary.com/dpnbddror/image/upload/v1682427741/navu/Group_1_1_s3dduo.png",
+  title = "Navu360 - Empower Your Talents, Drive Results",
+  description = "Unleash Your Team's Full Potential with Navu360. Our LMS platform makes talent management and employee training a breeze. Get started now!",
+  image = "https://res.cloudinary.com/dpnbddror/image/upload/c_scale,w_400/v1697964657/navu/15_3_ssxint.png",
 }) {
   return (
     <Head>
