@@ -1,3 +1,3 @@
 export const generateAvatar = (seed: string | number) => {
-  return `https://avatars.navu360.com/api/micah/${seed}.svg?mouth[]=laughing&mouth[]=smile&hair[]=mrClean&hair[]=fonze&earringsProbability=0&facialHairProbability=0&backgroundType=gradientLinear,solid&backgroundColor=b6e3f4,c0aede,d1d4f9`;
+  return `https://api.dicebear.com/7.x/initials/svg?seed=${seed}&radius=50&backgroundType=gradientLinear&fontFamily=Arial&fontSize=41&fontWeight=500`;
 };

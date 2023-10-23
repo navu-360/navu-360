@@ -136,8 +136,8 @@ export default function Program({
             <div className="flex items-center gap-1">
               <div className="flex items-center gap-4">
                 <img
-                  src={generateAvatar(data?.creator?.id)}
-                  className="h-[30px] w-[30px] rounded-full bg-tertiary"
+                  src={generateAvatar(data?.creator?.name)}
+                  className="h-[30px] w-[30px] rounded-full"
                   alt={data?.creator?.name}
                 />
                 <p className="text-[14px] font-semibold text-tertiary">
@@ -363,8 +363,8 @@ export default function Program({
                       className="relative flex w-full items-center gap-3 rounded-lg bg-tertiary/80 p-4 text-white"
                     >
                       <img
-                        src={generateAvatar(enrollment?.User?.id)}
-                        className="h-[50px] w-[50px] rounded-full bg-tertiary"
+                        src={generateAvatar(enrollment?.User?.name as string)}
+                        className="h-[50px] w-[50px] rounded-full"
                         alt={""}
                       />
                       <div>
