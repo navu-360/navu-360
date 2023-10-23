@@ -223,6 +223,8 @@ export default function CreateProgram() {
 
   const [showDeleteProgramModal, setShowDeleteProgramModal] = useState("");
 
+  const [noUnsavedChanges, setNoUnsavedChanges] = useState(true);
+
   return (
     <>
       <Header title="Create a new Course" />
@@ -233,7 +235,11 @@ export default function CreateProgram() {
             {activeTab === 0 && (
               <ProgramDetails receiveData={setProgramDetails} />
             )}
-            {activeTab === 1 && <CreateProgramContent />}
+            {activeTab === 1 && (
+              <CreateProgramContent
+                changesNotSaved={(val) => setNoUnsavedChanges(val)}
+              />
+            )}
             {activeTab === 2 && <ConfirmStep />}
 
             <div className="absolute inset-x-0 bottom-2 flex w-full justify-between px-4">
@@ -271,6 +277,13 @@ export default function CreateProgram() {
                         toaster({
                           status: "error",
                           message: "Please add at least one section",
+                        });
+                        return;
+                      }
+                      if (!noUnsavedChanges) {
+                        toaster({
+                          status: "error",
+                          message: "Please save the chapter before continuing",
                         });
                         return;
                       }
@@ -647,7 +660,11 @@ function ProgramDetails({
   );
 }
 
-function CreateProgramContent() {
+function CreateProgramContent({
+  changesNotSaved,
+}: {
+  changesNotSaved: (val: boolean) => void;
+}) {
   const [activeContentType, setActiveContentType] = useState<
     string | undefined
   >("");
@@ -875,12 +892,49 @@ function CreateProgramContent() {
     }
   };
 
+  useEffect(() => {
+    if (!currentEditing && activeContentType && activeContentType?.length > 0) {
+      // check if we have any unsaved content
+      // block: we check if blockContent is not empty
+      if (activeContentType === "block") {
+        if (blockContent && blockContent?.blocks?.length > 0) {
+          changesNotSaved(false);
+          return;
+        }
+      }
+      // document: we check if uploadedDocument is not empty and is of type File
+      if (activeContentType === "document") {
+        if (uploadedDocument && uploadedDocument instanceof File) {
+          changesNotSaved(false);
+          return;
+        }
+      }
+      // link: we check if docsLink is not empty
+      if (activeContentType === "link") {
+        if (docsLink && docsLink?.length > 0) {
+          changesNotSaved(false);
+          return;
+        }
+      }
+      changesNotSaved(true);
+    } else {
+      changesNotSaved(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    currentEditing,
+    activeContentType,
+    blockContent,
+    uploadedDocument,
+    docsLink,
+  ]);
+
   if (!clientReady) return null;
 
   return (
     <div className="relative w-full">
-      <div className="relative my-6 w-[95%] pt-16 text-gray-600">
-        <div className="no-scrollbar absolute bottom-0 left-0 top-16 h-full max-h-[70vh] min-h-[60vh] w-1/5 overflow-y-auto rounded-3xl bg-gray-100 p-4 pt-4">
+      <div className="relative my-6 flex w-[95%] pt-0 text-gray-600">
+        <div className="no-scrollbar relative h-[600px] min-w-[250px] overflow-y-auto rounded-xl bg-gray-100 p-4 pt-4">
           <h2 className="mb-2 text-center text-base font-bold">
             Created Chapters
           </h2>
@@ -943,7 +997,7 @@ function CreateProgramContent() {
         </div>
 
         {activeContentType === "block" && (
-          <div className="relative ml-auto flex w-[75%] flex-col">
+          <div className="relative ml-auto flex w-[calc(100%_-_270px)] flex-col">
             <MyEditor
               getData={save}
               receiveData={(data: OutputData) => {
@@ -1002,7 +1056,7 @@ function CreateProgramContent() {
         )}
 
         {activeContentType === "document" && (
-          <div className="relative ml-auto flex w-[75%] flex-col gap-8">
+          <div className="relative ml-auto flex w-[calc(100%_-_270px)] flex-col gap-8">
             {uploadedDocument && (
               <Document
                 file={uploadedDocument}
@@ -1129,7 +1183,7 @@ function CreateProgramContent() {
         )}
 
         {activeContentType === "link" && (
-          <div className="relative ml-auto flex min-h-[500px] w-[75%] flex-col justify-center">
+          <div className="relative ml-auto flex min-h-[500px] w-[calc(100%_-_270px)] flex-col justify-center">
             {!showLinkPreview && (
               <form
                 className={`mx-auto flex h-[50px] w-max shrink-0 items-center rounded-md`}
@@ -1212,18 +1266,19 @@ function CreateProgramContent() {
             </div>
           </div>
         )}
+
+        {activeContentType === "" && (
+          <InsertNewSection
+            isFirst={createSectionIds.length === 0}
+            chooseType={(val: string) => {
+              setBlockContent(undefined);
+              setCurrentEditing(undefined);
+              setActiveContentType(val);
+            }}
+          />
+        )}
       </div>
 
-      {activeContentType === "" && (
-        <InsertNewSection
-          isFirst={createSectionIds.length === 0}
-          chooseType={(val: string) => {
-            setBlockContent(undefined);
-            setCurrentEditing(undefined);
-            setActiveContentType(val);
-          }}
-        />
-      )}
       {showDeleteModal.length > 0 && (
         <DeleteSection
           setShowConfirmModal={() => setShowDeleteModal("")}
@@ -2155,7 +2210,7 @@ function InsertNewSection({
   chooseType: (val: string) => void;
 }) {
   return (
-    <div className="relative mx-auto flex w-[500px] flex-col gap-4 rounded-md p-4 pb-16 shadow-md">
+    <div className="relative mx-auto flex w-[500px] flex-col gap-4 self-center rounded-md p-4 pb-16 shadow-md">
       <h3 className="flex items-center gap-1 text-lg font-semibold text-blue-500">
         <svg
           xmlns="http://www.w3.org/2000/svg"
