@@ -10,6 +10,7 @@ export default class MyDocument extends Document {
           <meta name="theme-color" content="#cc66ff" />
           {/* og meta */}
           <meta property="og:url" content="https://navu360.com" />
+          <meta property="og:site_name" content="Navu360" />
           <meta property="og:type" content="website" />
           <meta name="twitter:card" content="summary_large_image" />
           <meta property="twitter:domain" content="https://navu360.com" />
