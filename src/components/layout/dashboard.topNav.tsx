@@ -103,10 +103,10 @@ function AdminCard() {
       onClick={() => router.push("/account")}
       className="right-4 top-2 flex cursor-pointer items-center gap-2 pt-0 transition-all duration-300 ease-in md:fixed"
     >
-      <div className="relative flex h-[50px] w-[50px] items-center justify-center rounded-full bg-tertiary">
+      <div className="relative flex h-[50px] w-[50px] items-center justify-center rounded-full">
         {userProfile?.id ? (
           <img
-            src={generateAvatar(userProfile?.id)}
+            src={generateAvatar(userProfile?.name as string)}
             className="h-[40px] w-[40px]"
             alt={userProfile?.name as string}
           />

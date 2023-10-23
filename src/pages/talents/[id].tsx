@@ -65,8 +65,8 @@ export default function Talent({ data }: { data: User }) {
               <div className="w-full">
                 <div className="flex flex-col gap-4 md:flex-row">
                   <img
-                    src={generateAvatar(data?.id)}
-                    className="mx-auto h-20 w-20 rounded-full border bg-white md:mx-0"
+                    src={generateAvatar(data?.name as string)}
+                    className="mx-auto h-20 w-20 rounded-full md:mx-0"
                     alt={data?.name as string}
                   />
                   <div className="flex flex-col gap-0 pb-8">

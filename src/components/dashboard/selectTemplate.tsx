@@ -85,7 +85,7 @@ export default function SelectTemplate({
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 20, opacity: 0 }}
         transition={{ duration: 0.3, ease: "easeIn" }}
-        className="relative flex h-full w-full flex-col rounded-lg bg-white p-4 pt-16 md:h-[600px] md:w-[1000px] md:p-8 md:pt-8"
+        className="relative flex h-full w-full flex-col rounded-lg bg-white p-4 pt-16 md:h-[90vh] md:max-h-[600px] md:w-[1000px] md:p-8 md:pt-8"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -124,7 +124,7 @@ export default function SelectTemplate({
             </p>
           )}
           <h2 className="my-28 w-full text-center font-semibold text-tertiary">
-            Templates coming soon...
+            Templates Coming Soon
           </h2>
           <div className="relative hidden pt-4 md:p-4 md:px-8 md:pt-8">
             {((search && results?.length > 3) ||

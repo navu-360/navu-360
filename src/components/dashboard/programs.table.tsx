@@ -18,10 +18,10 @@ export default function Programs({
   if (isFetching)
     return (
       <section className="w-full lg:w-[calc(30%_-_16px)] lg:min-w-[300px]">
-        <section className="bg-blueGray-50 relative py-16">
+        <section className="bg-blueGray-50 relative py-16 pt-0">
           <div className="mb-12 w-full px-2 pr-0">
             <div
-              className="table-shadow relative mb-6 flex h-max w-full min-w-0 flex-col break-words rounded-tr-3xl bg-tertiary
+              className="table-shadow relative mb-6 flex h-max w-full min-w-0 flex-col break-words rounded-tr-3xl bg-dark
   text-white shadow-lg"
             >
               {data?.length > 0 && (
@@ -136,8 +136,8 @@ function TemplateCard({ template }: { template: OnboardingProgram }) {
             <path d="M12 16v-4" />
             <path d="M12 8h.01" />
           </svg>
-          {template.description.length > 50 ? (
-            <span>{template.description.slice(0, 50)}...</span>
+          {template.description.length > 40 ? (
+            <span>{template.description.slice(0, 40)}...</span>
           ) : (
             <span>{template.description}</span>
           )}

@@ -152,9 +152,9 @@ export default function AllTalents() {
                                 <td className="relative flex flex-col gap-3 whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left text-xs md:flex-row md:items-center md:gap-0">
                                   <img
                                     src={generateAvatar(
-                                      talent?.User?.id ?? talent?.id,
+                                      talent?.User?.name ?? talent?.name,
                                     )}
-                                    className="h-12 w-12 rounded-full border bg-white"
+                                    className="h-12 w-12 rounded-full"
                                     alt={talent?.User?.name ?? talent?.name}
                                   />
                                   <span className="ml-3 font-bold capitalize">

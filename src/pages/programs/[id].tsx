@@ -118,10 +118,10 @@ export default function Program({
     <>
       <Header title={`${data?.name} - Navu360`} />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[90px] mt-[40px] flex h-full flex-col-reverse items-start justify-start gap-8 pt-16 md:ml-[250px] lg:flex-row">
+        <div className="relative ml-[90px] mt-[0px] flex h-full flex-col-reverse items-start justify-start gap-8 pt-12 md:ml-[250px] lg:flex-row">
           <GoBack />
           <div className="flex w-[95%] flex-col gap-4 lg:w-[calc(100%_-_450px)]">
-            <div className="relative h-[400px] w-full rounded-xl">
+            <div className="relative h-[300px] w-full rounded-xl">
               <Image
                 src={data?.image as string}
                 alt={data.name}
@@ -136,8 +136,8 @@ export default function Program({
             <div className="flex items-center gap-1">
               <div className="flex items-center gap-4">
                 <img
-                  src={generateAvatar(data?.creator?.id)}
-                  className="h-[30px] w-[30px] rounded-full bg-tertiary"
+                  src={generateAvatar(data?.creator?.name)}
+                  className="h-[30px] w-[30px] rounded-full"
                   alt={data?.creator?.name}
                 />
                 <p className="text-[14px] font-semibold text-tertiary">
@@ -164,7 +164,7 @@ export default function Program({
               </div>
             </div>
           </div>
-          <div className="right-8 mr-0 flex w-[95%] flex-col overflow-y-auto text-tertiary lg:fixed lg:mt-0 lg:h-[80vh] lg:w-[350px]">
+          <div className="right-8 mr-0 flex w-[95%] flex-col overflow-y-auto text-tertiary lg:fixed lg:mt-0 top-28 lg:h-[80vh] lg:w-[350px]">
             <div className="flex flex-col gap-4 rounded-xl border-[1px] border-gray-400 p-4 text-tertiary">
               <h2 className="pl-2 text-lg font-semibold text-tertiary">
                 Course Details
@@ -363,8 +363,8 @@ export default function Program({
                       className="relative flex w-full items-center gap-3 rounded-lg bg-tertiary/80 p-4 text-white"
                     >
                       <img
-                        src={generateAvatar(enrollment?.User?.id)}
-                        className="h-[50px] w-[50px] rounded-full bg-tertiary"
+                        src={generateAvatar(enrollment?.User?.name as string)}
+                        className="h-[50px] w-[50px] rounded-full"
                         alt={""}
                       />
                       <div>

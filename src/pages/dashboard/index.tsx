@@ -86,16 +86,19 @@ export default function Dashboard() {
 
   return (
     <>
-      <Header title={`${organizationData?.name ?? ""} | Dashboard - Navu360`} />
+      <Header title={`${organizationData?.name ?? ""} | Dashboard`} />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[90px] mr-4 mt-[3rem] flex justify-between text-tertiary md:ml-[230px]">
+        <div className="relative ml-[90px] mr-4 mt-[2rem] flex justify-between text-tertiary md:ml-[230px]">
           <h1 className="text-2xl font-bold">
             Hi, {userProfile?.name?.split(" ")[0] ?? ""}
           </h1>
-          {programs?.data?.length > 0 && (
+          {
             <button
+              disabled={isFetching}
               onClick={() => setShowSelectTemplate(true)}
-              className="z-50 flex h-max min-h-[45px] w-max min-w-[150px] shrink-0 items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white transition-all duration-150 ease-in hover:bg-secondary/90 focus:outline-none focus:ring-4"
+              className={`z-50 flex h-max min-h-[45px] w-max min-w-[150px] shrink-0 items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white transition-all duration-150 ease-in hover:bg-secondary/90 focus:outline-none focus:ring-4 ${
+                programs?.data?.length > 0 || isFetching ? "" : "hidden"
+              }`}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -116,12 +119,12 @@ export default function Dashboard() {
 
               <span className="w-max">Create Course</span>
             </button>
-          )}
+          }
         </div>
 
         <div className="relative ml-[90px] mr-4 mt-[3rem] flex justify-between text-tertiary md:ml-[230px]">
           <section className="flex w-[70%] flex-col">
-            <div className="mt-16 grid w-full grid-cols-3 gap-4 lg:justify-between lg:gap-4 2xl:mt-0">
+            <div className="mt-0 grid w-full grid-cols-3 gap-4 lg:justify-between lg:gap-4 2xl:mt-0">
               <OneStat
                 svg={
                   <svg

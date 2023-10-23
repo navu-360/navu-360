@@ -341,8 +341,8 @@ export function OneProgramCard({
           <p className="text-xs font-medium">Created By</p>
           <div className="flex items-center gap-4">
             <img
-              src={generateAvatar(program?.creator?.id)}
-              className="h-[30px] w-[30px] rounded-full bg-tertiary"
+              src={generateAvatar(program?.creator?.name)}
+              className="h-[30px] w-[30px] rounded-full"
               alt={program?.creator?.name}
             />
             <p className="text-[14px] font-semibold text-tertiary">

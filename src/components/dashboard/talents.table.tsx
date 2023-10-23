@@ -315,9 +315,9 @@ export default function AllTalents({
                             <td className="relative flex flex-col gap-3 whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left text-xs md:flex-row md:items-center md:gap-0">
                               <img
                                 src={generateAvatar(
-                                  talent?.User?.id ?? talent?.id,
+                                  talent?.User?.name ?? talent?.name,
                                 )}
-                                className="h-12 w-12 rounded-full border bg-white"
+                                className="h-12 w-12 rounded-full"
                                 alt={talent?.User?.name ?? talent?.name}
                               />
                               <span className="ml-3 font-bold capitalize">
@@ -368,8 +368,8 @@ export default function AllTalents({
                           >
                             <th className="flex flex-col gap-2 whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 text-left text-xs lg:flex-row lg:items-center lg:gap-0 lg:px-6 lg:align-middle">
                               <img
-                                src={generateAvatar(talent?.id)}
-                                className="ml-4 h-12 w-12 rounded-full border bg-white lg:ml-0"
+                                src={generateAvatar(talent?.email as string)}
+                                className="ml-4 h-12 w-12 rounded-full lg:ml-0"
                                 alt={talent?.email as string}
                               />
                               <span className="ml-3 font-bold">
