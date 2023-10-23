@@ -89,7 +89,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           },
           cacheStrategy: {
             ttl: 30,
-            swr: 60,
+            swr: 10,
           },
         });
 
