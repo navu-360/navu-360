@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useDispatch, useSelector } from "react-redux";
 import type { User } from "@prisma/client";
 import { resetAuth } from "redux/auth/authSlice";
@@ -24,6 +24,8 @@ export default function AdminNav({
   const userProfile = useSelector(
     (state: { auth: { userProfile: User } }) => state.auth.userProfile,
   );
+
+  const { data: session } = useSession();
 
   if (!isReady) return null;
 
@@ -123,7 +125,7 @@ export default function AdminNav({
               to={"/talents"}
             />
           )}
-          {userProfile?.role === "admin" && (
+          {userProfile?.role === "admin" && session?.user?.customerId && (
             <OneItem
               svg={
                 <svg
