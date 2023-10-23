@@ -20,7 +20,7 @@ export function DeleteConfirmModal({
       .then(() => {
         toaster({
           status: "success",
-          message: "Program deleted successfully",
+          message: "Course deleted successfully",
         });
         refreshPrograms();
       })
@@ -48,11 +48,11 @@ export function DeleteConfirmModal({
       >
         <div className="flex h-full flex-col justify-between">
           <div className="flex flex-col gap-8">
-            <h1 className="text-center text-xl font-bold text-[#243669]">
-              Delete this program?
-            </h1>
+            <h2 className="text-center text-xl font-bold text-[#243669]">
+              Delete this course?
+            </h2>
             <p className="text-center text-sm font-medium text-[#243669]">
-              This program including all its enrolled students will be deleted
+              This course including all its chapters will be deleted
               permanently.
             </p>
 

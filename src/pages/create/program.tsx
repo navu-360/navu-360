@@ -47,6 +47,8 @@ import type { ProgramSection } from "@prisma/client";
 import { DeleteSection } from "components/programs/confirmDeleteSection";
 import { uploadOne } from "components/common/uploader";
 import { useRouter } from "next/router";
+import { AnimatePresence } from "framer-motion";
+import { DeleteConfirmModal } from "components/dashboard/confirmDeleteProgram";
 
 const animatedComponents = makeAnimated();
 
@@ -207,7 +209,19 @@ export default function CreateProgram() {
     (state) => state.common.createSectionIds,
   );
 
+  const deleteIfCreated = async () => {
+    if (draftProgramId) {
+      // delete then go back
+      setShowDeleteProgramModal(draftProgramId);
+    } else {
+      // go back
+      router.back();
+    }
+  };
+
   const router = useRouter();
+
+  const [showDeleteProgramModal, setShowDeleteProgramModal] = useState("");
 
   return (
     <>
@@ -226,7 +240,7 @@ export default function CreateProgram() {
               <button
                 onClick={() => {
                   if (activeTab === 0) {
-                    console.log("cancel");
+                    deleteIfCreated();
                     return;
                   }
                   setActiveTab(activeTab - 1);
@@ -276,6 +290,18 @@ export default function CreateProgram() {
             </div>
           </div>
         </div>
+
+        <AnimatePresence>
+          {showDeleteProgramModal?.length > 0 && (
+            <DeleteConfirmModal
+              id={showDeleteProgramModal as string}
+              setShowConfirmModal={() => setShowDeleteProgramModal("")}
+              refreshPrograms={() => {
+                router.back();
+              }}
+            />
+          )}
+        </AnimatePresence>
       </DashboardWrapper>
     </>
   );
