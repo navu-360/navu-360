@@ -99,7 +99,7 @@ export default function AllTalents({
       data?.data?.filter(
         (talent: OnboardingProgramTalents) =>
           talent.enrollmentStatus === "completed",
-      ).length || 0,
+      )?.length || 0,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.data]);
@@ -132,7 +132,7 @@ export default function AllTalents({
       setSelectedType("Invited");
     }
     // check: if we have joined talents and no enrolled talents, set selectedType to Joined
-    if (data?.data?.length > 0 && talentsWithoutPrograms.length === 0) {
+    if (data?.data?.length > 0 && talentsWithoutPrograms?.length === 0) {
       setSelectedType("Joined");
     }
   }, [sentInvites?.data, data?.data, talentsWithoutPrograms]);
@@ -229,7 +229,7 @@ export default function AllTalents({
     >
       {data?.data?.length === 0 && sentInvites?.data?.length === 0 && (
         <NoInvitedTalents
-          coursesCount={onboardingPrograms.length}
+          coursesCount={onboardingPrograms?.length ?? 0}
           orgName={organizationData?.name as string}
           showInviteModal={() => setShowInviteModal(true)}
         />
