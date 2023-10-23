@@ -16,6 +16,7 @@ const font = Play({
 
 export default function NavBar() {
   const router = useRouter();
+  const { home } = router.query;
   const { data: session } = useSession();
 
   // @ts-ignore
@@ -35,7 +36,11 @@ export default function NavBar() {
         session?.user?.hasBeenOnboarded
       ) {
         router.push("/");
-      } else if (router.pathname === "/" && session?.user?.hasBeenOnboarded) {
+      } else if (
+        router.pathname === "/" &&
+        session?.user?.hasBeenOnboarded &&
+        !home
+      ) {
         if (session?.user?.role === "admin") {
           router.push("/dashboard");
         } else {
@@ -44,13 +49,13 @@ export default function NavBar() {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session]);
+  }, [session, home]);
 
   return (
     <nav className="fixed left-0 top-0 z-20 h-[80px] w-full bg-dark py-2.5 sm:px-4">
       <div className="mx-auto flex flex-wrap items-center justify-between md:mx-0">
         <Link href="/" className="relative flex flex-col items-start pl-4">
-          <img src="/logo.svg" className="mr-3 h-6 sm:h-9" alt="Navu360 Logo" />
+          <img src="/logo.svg" className="mr-3 h-6 sm:h-9" alt="Navu360" />
           <p className="mt-2 text-xs font-bold tracking-wide text-white">
             Empower. Train. Excel.
           </p>
@@ -60,24 +65,26 @@ export default function NavBar() {
           <OneLink to="#pricing" text="Pricing" />
         </div>
         <div className="flex items-center md:order-2">
-          <button
-            onClick={() => {
-              signIn("auth0", {
-                callbackUrl: `https://${window.location.origin}`,
-                redirect: false,
-              }).catch((err) => {
-                console.log(err);
-              });
-            }}
-            className="mr-8 h-max w-max rounded-xl border-[1px] border-white px-8 py-1 text-base font-medium tracking-tight text-white transition-all duration-300 ease-in hover:border-secondary hover:text-secondary"
-          >
-            Login
-          </button>
+          {!session && (
+            <button
+              onClick={() => {
+                signIn("auth0", {
+                  callbackUrl: `https://${window.location.origin}`,
+                  redirect: false,
+                }).catch((err) => {
+                  console.log(err);
+                });
+              }}
+              className="mr-8 h-max w-max rounded-xl border-[1px] border-white px-8 py-1 text-base font-medium tracking-tight text-white transition-all duration-300 ease-in hover:border-secondary hover:text-secondary"
+            >
+              Login
+            </button>
+          )}
           <Link
-            href="/welcome/plan"
+            href={session ? "/dashboard" : "/welcome/plan"}
             className="hidden h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white transition-all duration-300 ease-in hover:bg-secondary hover:bg-secondary/90 focus:outline-none focus:ring-1 md:mr-0 md:flex"
           >
-            Get started
+            {session ? "Dashboard" : "Get started"}
           </Link>
         </div>
       </div>
