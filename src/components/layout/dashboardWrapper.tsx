@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 import type { invites } from "@prisma/client";
 
 import { AnimatePresence } from "framer-motion";
+import { useSession } from "next-auth/react";
+import { GetPlan } from "components/dashboard/guides";
 
 export default function DashboardWrapper({
   children,
@@ -20,8 +22,10 @@ export default function DashboardWrapper({
   const [showModal, setShowModal] = useState(false);
 
   const orgId = useSelector(
-    (state: { auth: { orgId: string } }) => state.auth.orgId
+    (state: { auth: { orgId: string } }) => state.auth.orgId,
   );
+
+  const { data: session } = useSession();
 
   const id = orgId;
 
@@ -37,7 +41,7 @@ export default function DashboardWrapper({
     >
       {!hideNav && <AdminNav showInviteTalent={() => setShowModal(true)} />}
       <TopNavAdmin hideSearch={hideSearch} />
-      {children}
+      {session?.user?.customerId ? children : <GetPlan />}
       <AnimatePresence>
         {showModal && (
           <InviteTalentsModal

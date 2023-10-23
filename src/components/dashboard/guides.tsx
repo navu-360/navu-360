@@ -2,6 +2,7 @@ import Image from "next/image";
 import React from "react";
 
 import { motion } from "framer-motion";
+import Pricing from "components/landing/pricing";
 
 export function NoCourses({
   showSelectTemplate,
@@ -74,6 +75,29 @@ export function NoInvitedTalents({
       >
         <span>Continue</span>
       </button>
+    </motion.section>
+  );
+}
+
+export function GetPlan() {
+  return (
+    <motion.section
+      initial={{ y: 30 }}
+      whileInView={{ y: 0 }}
+      transition={{ ease: "easeIn", duration: 0.3 }}
+      className="m-auto flex h-max flex-col justify-center gap-0 rounded-3xl bg-gray-200 p-4 px-8 text-center"
+    >
+      <Image
+        src={"/subscription.svg"}
+        alt="Select a Plan to Continue"
+        height={120}
+        width={120}
+        className="mx-auto"
+      />
+      <h2 className="text-2xl font-bold text-tertiary">
+        Select a Plan to Continue
+      </h2>
+      <Pricing fromStart />
     </motion.section>
   );
 }
