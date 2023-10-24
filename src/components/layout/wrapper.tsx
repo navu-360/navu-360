@@ -48,6 +48,14 @@ export default function LandingWrapper({
                 </Link>
               </li>
               <li>
+                <Link
+                  href="/privacy"
+                  className="mr-4 hover:underline md:mr-6 "
+                >
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
                 <a
                   href="mailto:business@navu360.com"
                   target="_blank"
