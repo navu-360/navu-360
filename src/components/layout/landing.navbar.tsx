@@ -60,7 +60,7 @@ export default function NavBar() {
   // listen for scroll events then hide the dropdown
   useEffect(() => {
     const handleScroll = () => {
-      if (showSolutionsDropdown) {
+      if (showSolutionsDropdown && window.innerWidth > 768) {
         setShowSolutionsDropdown(false);
       }
     };
@@ -195,13 +195,13 @@ function MegaDropdown({ close }: { close: () => void }) {
         duration: 0.2,
         ease: "easeInOut",
       }}
-      className="fixed left-32 top-28 z-50 rounded-md border-y border-gray-200 bg-white shadow-lg"
+      className="fixed xl:left-32 left-2 md:top-28 top-16 z-50 rounded-md border-y border-gray-200 bg-white shadow-lg"
       ref={ref}
     >
-      <div className="mx-auto max-w-screen-xl px-4 py-5 text-gray-900 sm:grid-cols-2 md:grid-cols-3 md:px-6">
+      <div className="mx-auto max-w-screen-xl px-4 py-5 text-gray-900 md:px-6">
         <ul
           aria-labelledby="mega-menu-full-dropdown-button"
-          className="grid w-full grid-cols-3"
+          className="grid w-full xl:grid-cols-3 md:grid-cols-2 grid-cols-1 overflow-y-auto md:overflow-y-hidden"
         >
           {features.map((feature, index) => (
             <OneItemMegaMenu key={index} {...feature} index={index} />
@@ -228,12 +228,12 @@ function OneItemMegaMenu({
       transition={{ ease: "easeIn", duration: 0.3, delay: index * 0.1 }}
     >
       <div className="flex cursor-pointer flex-col rounded-lg p-3 hover:bg-gray-50 ">
-        <div className="flex items-center gap-3 text-gray-800">
+        <div className="flex group items-center gap-3 text-gray-800">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="currentColor"
-            className="h-8 w-8 shrink-0 text-secondary"
+            className="h-8 w-8 shrink-0 text-secondary group-hover:-rotate-[5deg] group-hover:scale-105 transition-all ease-in duration-300"
           >
             <path
               fillRule="evenodd"
@@ -243,7 +243,7 @@ function OneItemMegaMenu({
           </svg>
 
           <div className="fllex flex-col gap-2">
-            <span className="font-semibold">{title}</span>
+            <span className={`font-semibold ${font.className}`}>{title}</span>
             <p className="text-sm text-gray-500 ">{description}</p>
           </div>
         </div>
