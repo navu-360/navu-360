@@ -39,7 +39,7 @@ export default function CreateOrganizationLayout({
   const { data: session } = useSession();
   const router = useRouter();
   return (
-    <section className="no-scrollbar flex h-[100vh] w-screen overflow-y-hidden overflow-x-hidden">
+    <section className="no-scrollbar flex h-[100vh] w-screen overflow-x-hidden overflow-y-hidden">
       <div className="relative hidden h-full w-[50%] bg-dark md:block">
         <div className="spotlight absolute left-0 right-0 top-0 z-10 mx-auto h-full w-[30vw]">
           <div className="">
@@ -51,7 +51,7 @@ export default function CreateOrganizationLayout({
           <h1 className="text-center text-3xl font-bold text-white md:text-xl xl:text-4xl">
             Step into the Future, {session?.user?.name.split(" ")[0]}!
           </h1>
-          <div className="bg-gradient-to-r from-white to-white to-50% bg-clip-text font-extrabold text-transparent [text-wrap:balance] text-xl">
+          <div className="bg-gradient-to-r from-white to-white to-50% bg-clip-text text-xl font-extrabold text-transparent [text-wrap:balance]">
             Built for the modern workplace, built for{" "}
             <span className="inline-flex h-[calc(theme(fontSize.xl)*theme(lineHeight.tight))] flex-col overflow-hidden text-secondary md:h-[calc(theme(fontSize.xl)*theme(lineHeight.tight))]">
               <ul className="animate-text-slide-5 block text-left leading-tight [&_li]:block">
@@ -74,7 +74,9 @@ export default function CreateOrganizationLayout({
             ) {
               if (session) {
                 e.preventDefault();
-                signOut();
+                signOut({
+                  callbackUrl: "/",
+                });
               } else {
               }
             }
