@@ -5,6 +5,14 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 
+import { Play } from "next/font/google";
+
+const font = Play({
+  weight: ["700"],
+  display: "swap",
+  subsets: ["cyrillic"],
+});
+
 export default function CreateOrganizationLayout({
   children,
   title,
@@ -48,8 +56,11 @@ export default function CreateOrganizationLayout({
           </div>
         </div>
         <div className="absolute inset-x-0 top-1/2 z-20 mx-auto flex w-[100%] -translate-y-1/2 flex-col gap-6 text-center">
-          <h1 className="text-center text-3xl font-bold text-white md:text-xl xl:text-4xl">
-            Step into the Future, {session?.user?.name.split(" ")[0]}!
+          <h1
+            className={`text-center text-3xl font-bold text-white md:text-xl xl:text-4xl ${font.className}`}
+          >
+            Step into the Future
+            {session ? ", " + session?.user?.name.split(" ")[0] + "!" : ""}
           </h1>
           <div className="bg-gradient-to-r from-white to-white to-50% bg-clip-text text-xl font-extrabold text-transparent [text-wrap:balance]">
             Built for the modern workplace, built for{" "}
@@ -65,6 +76,12 @@ export default function CreateOrganizationLayout({
             </span>
           </div>
         </div>
+        <span className="absolute bottom-2 right-4 font-medium tracking-wider text-white">
+          Need help?{" "}
+          <a href="mailto:business@navu360.com" className="underline">
+            Contact us
+          </a>
+        </span>
         <Link
           href="/"
           onClick={(e) => {
