@@ -60,7 +60,7 @@ export default function NavBar() {
   // listen for scroll events then hide the dropdown
   useEffect(() => {
     const handleScroll = () => {
-      if (showSolutionsDropdown) {
+      if (showSolutionsDropdown && window.innerWidth > 768) {
         setShowSolutionsDropdown(false);
       }
     };
@@ -195,13 +195,13 @@ function MegaDropdown({ close }: { close: () => void }) {
         duration: 0.2,
         ease: "easeInOut",
       }}
-      className="fixed left-32 top-28 z-50 rounded-md border-y border-gray-200 bg-white shadow-lg"
+      className="fixed xl:left-32 left-2 md:top-28 top-16 z-50 rounded-md border-y border-gray-200 bg-white shadow-lg"
       ref={ref}
     >
-      <div className="mx-auto max-w-screen-xl px-4 py-5 text-gray-900 sm:grid-cols-2 md:grid-cols-3 md:px-6">
+      <div className="mx-auto max-w-screen-xl px-4 py-5 text-gray-900 md:px-6">
         <ul
           aria-labelledby="mega-menu-full-dropdown-button"
-          className="grid w-full grid-cols-3"
+          className="grid w-full xl:grid-cols-3 md:grid-cols-2 grid-cols-1 overflow-y-auto md:overflow-y-hidden"
         >
           {features.map((feature, index) => (
             <OneItemMegaMenu key={index} {...feature} index={index} />
