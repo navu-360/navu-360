@@ -228,12 +228,12 @@ function OneItemMegaMenu({
       transition={{ ease: "easeIn", duration: 0.3, delay: index * 0.1 }}
     >
       <div className="flex cursor-pointer flex-col rounded-lg p-3 hover:bg-gray-50 ">
-        <div className="flex items-center gap-3 text-gray-800">
+        <div className="flex group items-center gap-3 text-gray-800">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="currentColor"
-            className="h-8 w-8 shrink-0 text-secondary"
+            className="h-8 w-8 shrink-0 text-secondary group-hover:-rotate-[5deg] group-hover:scale-105 transition-all ease-in duration-300"
           >
             <path
               fillRule="evenodd"
@@ -243,7 +243,7 @@ function OneItemMegaMenu({
           </svg>
 
           <div className="fllex flex-col gap-2">
-            <span className="font-semibold">{title}</span>
+            <span className={`font-semibold ${font.className}`}>{title}</span>
             <p className="text-sm text-gray-500 ">{description}</p>
           </div>
         </div>
