@@ -195,13 +195,13 @@ function MegaDropdown({ close }: { close: () => void }) {
         duration: 0.2,
         ease: "easeInOut",
       }}
-      className="fixed xl:left-32 left-2 md:top-28 top-16 z-50 rounded-md border-y border-gray-200 bg-white shadow-lg"
+      className="fixed left-2 top-16 z-50 rounded-md border-y border-gray-200 bg-white shadow-lg md:top-28 xl:left-32"
       ref={ref}
     >
       <div className="mx-auto max-w-screen-xl px-4 py-5 text-gray-900 md:px-6">
         <ul
           aria-labelledby="mega-menu-full-dropdown-button"
-          className="grid w-full xl:grid-cols-3 md:grid-cols-2 grid-cols-1 overflow-y-auto md:overflow-y-hidden"
+          className="grid w-full grid-cols-1 overflow-y-auto md:grid-cols-2 md:overflow-y-hidden xl:grid-cols-3"
         >
           {features.map((feature, index) => (
             <OneItemMegaMenu key={index} {...feature} index={index} />
@@ -228,12 +228,12 @@ function OneItemMegaMenu({
       transition={{ ease: "easeIn", duration: 0.3, delay: index * 0.1 }}
     >
       <div className="flex cursor-pointer flex-col rounded-lg p-3 hover:bg-gray-50 ">
-        <div className="flex group items-center gap-3 text-gray-800">
+        <div className="group flex items-center gap-3 text-gray-800">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="currentColor"
-            className="h-8 w-8 shrink-0 text-secondary group-hover:-rotate-[5deg] group-hover:scale-105 transition-all ease-in duration-300"
+            className="h-8 w-8 shrink-0 text-secondary transition-all duration-300 ease-in group-hover:-rotate-[5deg] group-hover:scale-105"
           >
             <path
               fillRule="evenodd"
