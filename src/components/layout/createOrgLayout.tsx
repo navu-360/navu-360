@@ -77,7 +77,7 @@ export default function CreateOrganizationLayout({
               onClick={() => {
                 goToNext(role, companyDetails!);
               }}
-              className="rounded-md bg-secondary px-12 py-2 w-full text-base font-semibold text-white"
+              className="w-max rounded-md bg-secondary px-12 py-2 text-base font-semibold text-white"
             >
               {loading ? "Loading..." : "Continue"}
             </button>
