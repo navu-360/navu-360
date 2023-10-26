@@ -23,7 +23,6 @@ export const uploadOne = async (file: File) => {
     };
     return uploadedMedia;
   } catch (error) {
-    console.log(error);
     return {
       success: 0,
       file: {
