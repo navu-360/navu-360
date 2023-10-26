@@ -19,6 +19,9 @@ body {
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     background-color: #fff;
+    --webkit-font-smoothing: antialiased;
+    --moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 }
 
 * {
