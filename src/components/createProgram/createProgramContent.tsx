@@ -172,7 +172,8 @@ export function CreateProgramContent({
   };
   const uploadVideo = async () => {
     setUploading(true);
-    const res = await uploadOne(uploadedDocument as File);
+    const res = await uploadOne(uploadedVideo as File);
+    console.log(res);
     setUploading(false);
 
     const body = {
@@ -213,8 +214,14 @@ export function CreateProgramContent({
 
   const updatePdfOrLink = async (isPdf = false) => {
     isPdf && setUploading(true);
-    const res = isPdf ? await uploadOne(uploadedDocument as File) : false;
+    const res = isPdf
+      ? uploadedDocument instanceof File
+        ? await uploadOne(uploadedDocument as File)
+        : false
+      : false;
     setUploading(false);
+
+    if (isPdf && !res) return;
 
     const body = {
       type: isPdf ? "document" : "link",
@@ -256,8 +263,13 @@ export function CreateProgramContent({
   };
   const updateVideo = async () => {
     setUploading(true);
-    const res = await uploadOne(uploadedDocument as File);
+    const res =
+      uploadedVideo instanceof File
+        ? await uploadOne(uploadedVideo as File)
+        : false;
     setUploading(false);
+
+    if (!res) return;
 
     const body = {
       type: "video",

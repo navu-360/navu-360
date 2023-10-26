@@ -75,8 +75,6 @@ export default function Program({
     boolean | string
   >(false);
 
-  console.log(data, "data");
-
   const [numPages, setNumPages] = useState<number>();
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
@@ -105,6 +103,20 @@ export default function Program({
               <Page key={`page_${index + 1}`} pageNumber={index + 1} />
             ))}
           </Document>
+        );
+      case "video":
+        return (
+          <video
+            onContextMenu={(e) => e.preventDefault()}
+            muted
+            autoPlay
+            controls
+            loop
+            className={`h-[400px] w-full rounded-lg bg-neutral-300 object-contain`}
+          >
+            Your browser does not support the video tag.
+            <source src={sectionContent?.link as string} type="video/mp4" />
+          </video>
         );
       case "link":
         return <GoogleDocumentViewer link={sectionContent?.link as string} />;

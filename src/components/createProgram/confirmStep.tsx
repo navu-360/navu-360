@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useGetOneProgramQuery } from "services/baseApiSlice";
 import { CreateQuiz } from "./createQuiz";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 export function ConfirmStep() {
   const [showCreateQuiz, setShowCreateQuiz] = useState(false);
@@ -20,6 +21,8 @@ export function ConfirmStep() {
     }
   }, [program?.data?.QuizQuestion]);
 
+  const { edit } = router.query;
+
   return (
     <section
       className={`relative flex h-full min-h-[70vh] w-full flex-col items-center gap-4 text-center ${
@@ -29,11 +32,11 @@ export function ConfirmStep() {
       {!showCreateQuiz ? (
         <>
           <h2 className="text-2xl font-semibold text-tertiary">
-            Course Creation Complete!
+            {edit ? "Edit Complete!" : "Course Creation Complete!"}
           </h2>
           <p className="mx-auto max-w-xl text-sm font-medium text-gray-700">
-            Your course has been successfully created. <br /> Do you want to add
-            a quiz to your course?
+            Your course has been successfully {edit ? "edited" : "created"}.{" "}
+            <br /> Do you want to add a quiz to your course?
           </p>
           <div className="mx-auto mt-2 flex w-max items-center gap-6">
             <button

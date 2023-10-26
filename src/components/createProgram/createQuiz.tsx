@@ -3,6 +3,7 @@ import { QuestionView } from "./questionView";
 import type { IQuizQuestion } from "./createOrEditQuestionPopUp";
 import { CreateOrEditQuestionPopUp } from "./createOrEditQuestionPopUp";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 export function CreateQuiz() {
   const [showAddQuestion, setShowAddQuestion] = useState(false);

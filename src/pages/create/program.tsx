@@ -1,6 +1,6 @@
 import Header from "components/common/head";
 import DashboardWrapper from "components/layout/dashboardWrapper";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import type { MultiValue } from "react-select";
 
@@ -11,7 +11,10 @@ import {
   useGetOneProgramQuery,
 } from "services/baseApiSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { setDraftProgramId } from "redux/common/commonSlice";
+import {
+  setCreateSectionIds,
+  setDraftProgramId,
+} from "redux/common/commonSlice";
 
 import { uploadOne } from "components/common/uploader";
 import { useRouter } from "next/router";
@@ -180,7 +183,7 @@ export default function CreateProgram() {
   );
 
   const deleteIfCreated = async () => {
-    if (draftProgramId) {
+    if (draftProgramId && !edit) {
       // delete then go back
       setShowDeleteProgramModal(draftProgramId);
     } else {
@@ -190,6 +193,22 @@ export default function CreateProgram() {
   };
 
   const router = useRouter();
+
+  const { edit } = router.query;
+
+  useEffect(() => {
+    if (edit) {
+      dispatch(setDraftProgramId(edit as string));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [edit]);
+
+  useEffect(() => {
+    if (edit && editingProgram?.data?.ProgramSection) {
+      dispatch(setCreateSectionIds(editingProgram?.data?.ProgramSection));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editingProgram?.data?.ProgramSection, edit]);
 
   const [showDeleteProgramModal, setShowDeleteProgramModal] = useState("");
 

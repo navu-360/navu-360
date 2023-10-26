@@ -207,7 +207,7 @@ export function OneProgramCard({
         className="relative flex h-[350px] w-[350px] flex-col gap-4 rounded-lg bg-white text-tertiary shadow-md"
       >
         <div className="relative flex h-[60px] w-full items-center gap-2 rounded-t-lg bg-tertiary p-4 py-10 text-white">
-          <h2 className="text-lg font-bold">{program.name}</h2>
+          <h2 className="text-lg font-bold capitalize">{program.name}</h2>
         </div>
 
         <div className="absolute bottom-4 right-4 flex flex-row-reverse items-center justify-end gap-6">
