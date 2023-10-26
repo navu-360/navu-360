@@ -41,7 +41,9 @@ export default function DashboardWrapper({
     >
       {!hideNav && <AdminNav showInviteTalent={() => setShowModal(true)} />}
       <TopNavAdmin hideSearch={hideSearch} />
-      {status === "loading" ? null : session?.user?.customerId ? (
+      {status === "loading" ? (
+        children
+      ) : session?.user?.customerId ? (
         children
       ) : (
         <GetPlan />

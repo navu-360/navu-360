@@ -115,6 +115,7 @@ export function CreateProgramContent({
               status: "success",
               message: "Chapter updated!",
             });
+            setActiveContentType("");
           })
           .catch((error) => {
             toaster({
@@ -436,7 +437,7 @@ export function CreateProgramContent({
       <div className="relative my-6 flex w-[95%] pt-0 text-gray-600">
         <div className="no-scrollbar relative h-[600px] min-w-[270px] overflow-y-auto rounded-xl bg-gray-100 p-4 pt-4">
           <h2 className="mb-2 text-center text-base font-bold">
-            Created Chapters
+            Course Chapters
           </h2>
 
           {createSectionIds?.length === 0 && (
@@ -500,7 +501,7 @@ export function CreateProgramContent({
         </div>
 
         {activeContentType === "block" && (
-          <div className="relative ml-auto flex min-h-[50vh] w-[calc(100%_-_300px)] flex-col">
+          <div className="relative ml-auto flex min-h-[50vh] w-[calc(100%_-_330px)] flex-col">
             <MyEditor
               getData={save}
               receiveData={(data: OutputData) => {
@@ -559,7 +560,7 @@ export function CreateProgramContent({
         )}
 
         {activeContentType === "document" && (
-          <div className="relative ml-auto flex min-h-[50vh] w-[calc(100%_-_300px)] flex-col gap-8">
+          <div className="relative ml-auto flex min-h-[50vh] w-[calc(100%_-_330px)] flex-col gap-8">
             {uploadedDocument && (
               <Document
                 file={uploadedDocument}
@@ -685,7 +686,7 @@ export function CreateProgramContent({
           </div>
         )}
         {activeContentType === "video" && (
-          <div className="relative ml-auto flex min-h-[50vh] w-[calc(100%_-_300px)] flex-col gap-8">
+          <div className="relative ml-auto flex min-h-[50vh] w-[calc(100%_-_330px)] flex-col gap-8">
             {uploadedVideo && (
               <video
                 onContextMenu={(e) => e.preventDefault()}
@@ -821,7 +822,7 @@ export function CreateProgramContent({
         )}
 
         {activeContentType === "link" && (
-          <div className="relative ml-auto flex min-h-[50vh] w-[calc(100%_-_300px)] flex-col justify-center">
+          <div className="relative ml-auto flex min-h-[50vh] w-[calc(100%_-_330px)] flex-col justify-center">
             {!showLinkPreview && (
               <form
                 className={`mx-auto flex h-[50px] w-max shrink-0 items-center rounded-md`}
@@ -935,6 +936,15 @@ export function CreateProgramContent({
               setCurrentEditing(undefined);
               if (activeContentType === "block") {
                 setActiveContentType("");
+              }
+              if (activeContentType === "document") {
+                setUploadedDocument(undefined);
+              }
+              if (activeContentType === "video") {
+                setUploadedVideo(undefined);
+              }
+              if (activeContentType === "link") {
+                setDocsLink(undefined);
               }
             }
             setShowDeleteModal("");
