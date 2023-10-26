@@ -997,7 +997,7 @@ function CreateProgramContent({
         </div>
 
         {activeContentType === "block" && (
-          <div className="relative ml-auto flex w-[calc(100%_-_270px)] flex-col">
+          <div className="relative ml-auto flex min-h-[50vh] w-[calc(100%_-_270px)] flex-col">
             <MyEditor
               getData={save}
               receiveData={(data: OutputData) => {
@@ -1056,7 +1056,7 @@ function CreateProgramContent({
         )}
 
         {activeContentType === "document" && (
-          <div className="relative ml-auto flex w-[calc(100%_-_270px)] flex-col gap-8">
+          <div className="relative ml-auto flex min-h-[50vh] w-[calc(100%_-_270px)] flex-col gap-8">
             {uploadedDocument && (
               <Document
                 file={uploadedDocument}
@@ -1183,7 +1183,7 @@ function CreateProgramContent({
         )}
 
         {activeContentType === "link" && (
-          <div className="relative ml-auto flex min-h-[500px] w-[calc(100%_-_270px)] flex-col justify-center">
+          <div className="relative ml-auto flex min-h-[50vh] w-[calc(100%_-_270px)] flex-col justify-center">
             {!showLinkPreview && (
               <form
                 className={`mx-auto flex h-[50px] w-max shrink-0 items-center rounded-md`}
