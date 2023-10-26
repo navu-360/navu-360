@@ -142,7 +142,7 @@ export default function Program({
                 className="rounded-xl object-cover shadow"
               />
             </div>
-            <h1 className="w-full text-left text-4xl font-bold text-tertiary">
+            <h1 className="w-full text-left text-4xl font-bold capitalize text-tertiary">
               {data?.name}
             </h1>
             {/* created by */}

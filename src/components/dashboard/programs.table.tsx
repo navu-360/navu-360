@@ -118,7 +118,7 @@ function TemplateCard({ template }: { template: OnboardingProgram }) {
       className={`group relative flex w-full cursor-pointer items-center justify-between rounded-md course-card-gradient p-6 py-4 pb-4 text-white`}
     >
       <div className="flex flex-col break-all">
-        <h3 className="text-base font-bold tracking-normal">{template.name}</h3>
+        <h3 className="text-base font-bold tracking-normal capitalize">{template.name}</h3>
         <p className="mt-3 flex w-full items-center gap-2 truncate text-sm font-medium">
           <svg
             xmlns="http://www.w3.org/2000/svg"
