@@ -43,7 +43,8 @@ import { AnimatePresence } from "framer-motion";
 import { DeleteConfirmModal } from "components/dashboard/confirmDeleteProgram";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { GoogleDocumentViewer } from "pages/create/program";
+import { GoogleDocumentViewer } from "components/createProgram/googleDocumentViewer";
+import { QuestionView } from "components/createProgram/questionView";
 
 export interface IEnrollmentWithTalent extends OnboardingProgramTalents {
   User: User;
@@ -75,8 +76,6 @@ export default function Program({
     boolean | string
   >(false);
 
-  console.log(data, "data");
-
   const [numPages, setNumPages] = useState<number>();
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
@@ -105,6 +104,20 @@ export default function Program({
               <Page key={`page_${index + 1}`} pageNumber={index + 1} />
             ))}
           </Document>
+        );
+      case "video":
+        return (
+          <video
+            onContextMenu={(e) => e.preventDefault()}
+            muted
+            autoPlay
+            controls
+            loop
+            className={`h-[400px] w-full rounded-lg bg-neutral-300 object-contain`}
+          >
+            Your browser does not support the video tag.
+            <source src={sectionContent?.link as string} type="video/mp4" />
+          </video>
         );
       case "link":
         return <GoogleDocumentViewer link={sectionContent?.link as string} />;
@@ -163,8 +176,25 @@ export default function Program({
                 ))}
               </div>
             </div>
+            {data?.QuizQuestion?.length > 0 && (
+              <div className="mt-4 flex flex-col gap-2">
+                <h3 className="text-lg font-semibold text-tertiary">
+                  Questions
+                </h3>
+                <div className="mb-8 flex flex-col gap-4">
+                  {data?.QuizQuestion?.map((question) => (
+                    <QuestionView
+                      {...question}
+                      refetch={() => console.log("")}
+                      key={question?.id}
+                      fromView
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
-          <div className="right-8 mr-0 flex w-[95%] flex-col overflow-y-auto text-tertiary lg:fixed lg:mt-0 top-28 lg:h-[80vh] lg:w-[350px]">
+          <div className="right-8 top-28 mr-0 flex w-[95%] flex-col overflow-y-auto text-tertiary lg:fixed lg:mt-0 lg:h-[80vh] lg:w-[350px]">
             <div className="flex flex-col gap-4 rounded-xl border-[1px] border-gray-400 p-4 text-tertiary">
               <h2 className="pl-2 text-lg font-semibold text-tertiary">
                 Course Details

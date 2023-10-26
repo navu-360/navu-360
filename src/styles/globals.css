@@ -372,6 +372,20 @@ span {
     max-width: unset;
 }
 
+.codex-editor h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+}
+
+.codex-editor h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.codex-editor h3 {
+    font-size: 1rem;
+    font-weight: 600;
+}
 
 .container-spinner {
     position: relative;
@@ -715,4 +729,9 @@ strong {
 .policy a {
     color: #9d2a57;
     text-decoration: underline;
+}
+
+.course-card-gradient {
+    background: rgb(32, 33, 50);
+    background: linear-gradient(39deg, rgba(32, 33, 50, 1) 0%, rgba(24, 25, 37, 1) 100%);
 }

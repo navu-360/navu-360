@@ -25,7 +25,7 @@ export default function DashboardWrapper({
     (state: { auth: { orgId: string } }) => state.auth.orgId,
   );
 
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const id = orgId;
 
@@ -41,7 +41,11 @@ export default function DashboardWrapper({
     >
       {!hideNav && <AdminNav showInviteTalent={() => setShowModal(true)} />}
       <TopNavAdmin hideSearch={hideSearch} />
-      {session?.user?.customerId ? children : <GetPlan />}
+      {status === "loading" ? null : session?.user?.customerId ? (
+        children
+      ) : (
+        <GetPlan />
+      )}
       <AnimatePresence>
         {showModal && (
           <InviteTalentsModal
