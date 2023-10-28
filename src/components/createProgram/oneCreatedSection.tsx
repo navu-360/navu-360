@@ -29,8 +29,8 @@ export function OneCreatedSection({
         {svg}
       </div>
 
-      <div className="flex w-max flex-col justify-start gap-4">
-        <span onClick={() => openEditMode()} className="text-xl font-semibold">
+      <div className="flex w-full flex-col justify-start gap-4">
+        <span onClick={() => openEditMode()} className="text-base w-4/5 truncate font-semibold">
           {name}
         </span>
         <div className="flex gap-6">

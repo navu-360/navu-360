@@ -9,12 +9,16 @@ export default function ChapterCard({
   updated,
   view,
   delay,
+  fromSelect,
+  hasBeenSelected,
 }: {
   name: string;
   created: Date;
   updated: Date;
   view: () => void;
   delay: number;
+  fromSelect?: boolean;
+  hasBeenSelected?: boolean;
 }) {
   return (
     <motion.div
@@ -22,9 +26,38 @@ export default function ChapterCard({
       whileInView={{ y: 0 }}
       transition={{ duration: 0.3, ease: "easeInOut", delay }}
       onClick={() => view()}
-      className="shadowAroundFeature cursor-pointer group flex h-[190px] w-[400px] flex-col justify-between gap-4 rounded-xl bg-white p-4"
+      className={`shadowAroundFeature group relative flex h-[225px] cursor-pointer flex-col justify-between gap-4 rounded-xl border-[1px] bg-white p-4 ${
+        fromSelect && "!shadow-none"
+      } ${
+        fromSelect
+          ? hasBeenSelected
+            ? "w-full border-secondary"
+            : "w-full border-white"
+          : "w-[400px]"
+      }`}
     >
-      <h3 className="text-lg font-semibold text-tertiary">{name}</h3>
+      {fromSelect && (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="28"
+          height="28"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          className={`lucide lucide-check-circle-2 absolute right-2 top-2 z-50  ${
+            hasBeenSelected ? "text-secondary" : "text-gray-100"
+          }`}
+        >
+          <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+          <path d="m9 12 2 2 4-4" />
+        </svg>
+      )}
+      <h3 className="relative z-40 w-[90%] break-words text-lg font-semibold text-tertiary">
+        {name}
+      </h3>
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-3 text-sm font-medium text-gray-600">
           <p className="flex items-center gap-2">
@@ -71,32 +104,36 @@ export default function ChapterCard({
             Last updated {processDate(updated)}
           </p>
         </div>
-        <div className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-secondary/10 text-secondary shadow-md transition-all duration-300 ease-in">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="h-6 w-6"
-          >
-            <path
-              fillRule="evenodd"
-              d="M3.75 12a.75.75 0 01.75-.75h13.19l-5.47-5.47a.75.75 0 011.06-1.06l6.75 6.75a.75.75 0 010 1.06l-6.75 6.75a.75.75 0 11-1.06-1.06l5.47-5.47H4.5a.75.75 0 01-.75-.75z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </div>
+        {!fromSelect && (
+          <div className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-secondary/10 text-secondary shadow-md transition-all duration-300 ease-in">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="h-6 w-6"
+            >
+              <path
+                fillRule="evenodd"
+                d="M3.75 12a.75.75 0 01.75-.75h13.19l-5.47-5.47a.75.75 0 011.06-1.06l6.75 6.75a.75.75 0 010 1.06l-6.75 6.75a.75.75 0 11-1.06-1.06l5.47-5.47H4.5a.75.75 0 01-.75-.75z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+        )}
       </div>
     </motion.div>
   );
 }
 
-export function ShimmerChapter() {
+export function ShimmerChapter({ fromSelect }: { fromSelect?: boolean }) {
   return (
     <motion.div
       initial={{ y: 10 }}
       whileInView={{ y: 0 }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
-      className="shadowAroundFeature group flex h-[190px] w-[400px] flex-col justify-between gap-4 rounded-xl bg-white p-4"
+      className={`shadowAroundFeature group flex h-[190px] w-full flex-col justify-between gap-4 rounded-xl bg-white p-4 ${
+        fromSelect && "!shadow-none"
+      }`}
     >
       <div className="flex flex-col gap-2">
         <div className="h-6 w-full animate-pulse bg-gray-300"></div>

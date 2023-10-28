@@ -12,6 +12,7 @@ import CreateBlockChapter from "./createBlock";
 import CreateDocumentChapter from "./createDocument";
 import CreateVideoChapter from "./createVideo";
 import CreateLinkChapter from "./createLink";
+import SelectFromLibrary from "components/library/selectFromLibrary";
 
 export const getActiveTypeSvg = (type: string) => {
   switch (type) {
@@ -122,6 +123,8 @@ export function CreateProgramContent({
     File | string | undefined
   >();
 
+  const [showLibrary, setShowLibrary] = useState(false);
+
   useEffect(() => {
     if (!currentEditing && activeContentType && activeContentType?.length > 0) {
       // check if we have any unsaved content
@@ -172,7 +175,7 @@ export function CreateProgramContent({
   return (
     <div className="relative w-full">
       <div className="relative my-6 flex w-[95%] pt-0 text-gray-600">
-        <div className="no-scrollbar relative h-[600px] min-w-[270px] overflow-y-auto rounded-xl bg-gray-100 p-4 pt-4">
+        <div className="no-scrollbar relative h-[600px] min-w-[270px] max-w-[300px] overflow-y-auto rounded-xl bg-gray-100 p-4 pt-4">
           <h2 className="mb-2 text-center text-base font-bold">
             Course Chapters
           </h2>
@@ -285,6 +288,26 @@ export function CreateProgramContent({
               setCurrentEditing(undefined);
               setActiveContentType(val);
             }}
+            showLibrary={() => setShowLibrary(true)}
+          />
+        )}
+
+        {showLibrary && (
+          <SelectFromLibrary
+            sendSelected={(val: ProgramSection[]) => {
+              const notExistingInCreateSectionIds = val.filter(
+                (section) =>
+                  !createSectionIds?.some(
+                    (createSection: ProgramSection) =>
+                      createSection?.id === section?.id,
+                  ),
+              );
+              dispatch(
+                setCreateSectionIds([...notExistingInCreateSectionIds, ...val]),
+              );
+              setShowLibrary(false);
+            }}
+            close={() => setShowLibrary(false)}
           />
         )}
       </div>

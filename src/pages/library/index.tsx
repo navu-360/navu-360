@@ -135,68 +135,72 @@ export default function MyLibrary() {
           <div className="absolute left-0 top-0 flex w-max flex-col gap-0 text-left">
             <h1 className="text-xl font-bold text-tertiary">My Library</h1>
           </div>
-          <button
-            onClick={() => setShowDropdown(true)}
-            className="absolute right-12 top-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary/90 focus:outline-none focus:ring-4 md:mr-0"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="h-6 w-6"
+          {data?.data?.length > 0 && (
+            <button
+              onClick={() => setShowDropdown(true)}
+              className="absolute right-12 top-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary/90 focus:outline-none focus:ring-4 md:mr-0"
             >
-              <path
-                fillRule="evenodd"
-                d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
-                clipRule="evenodd"
-              />
-            </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="h-6 w-6"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
+                  clipRule="evenodd"
+                />
+              </svg>
 
-            <span>Create Chapter</span>
-          </button>
+              <span>Create Chapter</span>
+            </button>
+          )}
           {data?.data?.length === 0 && (
             <NoLibraryItems
               orgName={organizationData?.name}
               createChapter={() => setShowDropdown(true)}
             />
           )}
-          <div className="no-scrollbar w-full overflow-auto border-b border-gray-300">
-            <ul className="no-scrollbar -mb-px flex w-max flex-wrap items-end overflow-x-auto text-center text-sm font-semibold text-gray-400">
-              {createChapterOptions.map((tab, i) => (
-                <li
-                  className={`mr-2 rounded-md pt-2 ${
-                    tab.type === activeTab ? "bg-gray-200" : "bg-transparent"
-                  }`}
-                  onClick={() => {
-                    setActiveTab(tab.type);
-                  }}
-                  key={i}
-                >
-                  <button
-                    className={`group inline-flex shrink-0 items-center justify-center gap-4 rounded-t-lg !border-b-[5px] p-4 py-0 pb-1 pr-8  ${
-                      tab.type === activeTab
-                        ? "border-secondary text-secondary"
-                        : "border-transparent  text-gray-600"
+          {data?.data?.length > 0 && (
+            <div className="no-scrollbar w-full overflow-auto border-b border-gray-300">
+              <ul className="no-scrollbar -mb-px flex w-max flex-wrap items-end overflow-x-auto text-center text-sm font-semibold text-gray-400">
+                {createChapterOptions.map((tab, i) => (
+                  <li
+                    className={`mr-2 rounded-md pt-2 ${
+                      tab.type === activeTab ? "bg-gray-200" : "bg-transparent"
                     }`}
+                    onClick={() => {
+                      setActiveTab(tab.type);
+                    }}
+                    key={i}
                   >
-                    {tab.icon}
-                    {tab.displayName}
-                    <span
-                      className={`text-white-50 ml-1 flex h-5 w-5 items-center justify-center rounded-full text-xs font-semibold ${
+                    <button
+                      className={`group inline-flex shrink-0 items-center justify-center gap-4 rounded-t-lg !border-b-[5px] p-4 py-0 pb-1 pr-8  ${
                         tab.type === activeTab
-                          ? "bg-secondary text-white"
-                          : "bg-gray-200 text-gray-700"
+                          ? "border-secondary text-secondary"
+                          : "border-transparent  text-gray-600"
                       }`}
                     >
-                      {getChaptersForType(tab.type)?.length}
-                    </span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
+                      {tab.icon}
+                      {tab.displayName}
+                      <span
+                        className={`text-white-50 ml-1 flex h-5 w-5 items-center justify-center rounded-full text-xs font-semibold ${
+                          tab.type === activeTab
+                            ? "bg-secondary text-white"
+                            : "bg-gray-200 text-gray-700"
+                        }`}
+                      >
+                        {getChaptersForType(tab.type)?.length}
+                      </span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
-          {data && (
+          {data?.data?.length > 0 && (
             <div className="w-full">
               {getChaptersForType(activeTab)?.length === 0 && (
                 <div className="mx-auto mt-32 flex w-[500px] flex-col gap-4">

@@ -68,14 +68,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         case "PATCH":
             // edit a program section given id and new content
             try {
-                const { id, content, link, name } = req.body as {
+                const { id, content, link, name, programId } = req.body as {
                     id: string;
                     content?: string;
                     link?: string;
                     name?: string;
+                    programId?: string;
                 };
 
-                if (!id || !(content || link)) return res.status(400).json({ message: `Missing fields.` });
+                if (!id) return res.status(400).json({ message: `Missing fields.` });
 
                 const programSection = await prisma.programSection.update({
                     where: {
@@ -84,7 +85,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     data: {
                         content,
                         link,
-                        name
+                        name,
+                        programId
                     }
                 });
 
