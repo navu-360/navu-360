@@ -8,11 +8,14 @@ import { getActiveTypeSvg } from "components/createProgram/createProgramContent"
 import CreateVideoChapter from "components/createProgram/createVideo";
 import { NoLibraryItems } from "components/dashboard/guides";
 import DashboardWrapper from "components/layout/dashboardWrapper";
-import ChapterCard from "components/library/chapterCardView";
+import ChapterCard, {
+  ShimmerChapter,
+} from "components/library/chapterCardView";
 import { LibraryDropDown } from "components/library/dropdown";
 import { DeleteSection } from "components/programs/confirmDeleteSection";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { resetCommon, setDraftProgramId } from "redux/common/commonSlice";
 import { useGetLibraryChaptersQuery } from "services/baseApiSlice";
 
 export type Chapter = "block" | "document" | "video" | "link";
@@ -23,7 +26,13 @@ export default function MyLibrary() {
       state.auth.organizationData,
   );
 
-  const { data } = useGetLibraryChaptersQuery(undefined);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setDraftProgramId(undefined));
+    dispatch(resetCommon());
+  }, [dispatch]);
+
+  const { currentData: data, refetch } = useGetLibraryChaptersQuery(undefined);
 
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -110,8 +119,6 @@ export default function MyLibrary() {
   >();
 
   const [blockContent, setBlockContent] = useState<OutputData>();
-
-  console.log("blockContent -", blockContent);
 
   useEffect(() => {
     setClientReady(true);
@@ -242,6 +249,15 @@ export default function MyLibrary() {
               )}
             </div>
           )}
+
+          {!data && (
+            <div className="grid w-full grid-cols-4 gap-4">
+              <ShimmerChapter />
+              <ShimmerChapter />
+              <ShimmerChapter />
+              <ShimmerChapter />
+            </div>
+          )}
         </div>
 
         {showDropdown && (
@@ -273,6 +289,7 @@ export default function MyLibrary() {
                 }
               }
               setShowDeleteModal("");
+              refetch();
             }}
           />
         )}
@@ -290,6 +307,7 @@ export default function MyLibrary() {
                 close={() => {
                   setShowCreateBlock(false);
                   setBlockContent(undefined);
+                  refetch();
                 }}
               />
             </div>
@@ -309,6 +327,7 @@ export default function MyLibrary() {
                   setShowCreateDocument(false);
                   setUploadedDocument(undefined);
                   setBlockContent(undefined);
+                  refetch();
                 }}
               />
             </div>
@@ -328,6 +347,7 @@ export default function MyLibrary() {
                   setShowCreateVideo(false);
                   setUploadedVideo(undefined);
                   setBlockContent(undefined);
+                  refetch();
                 }}
               />
             </div>
@@ -349,6 +369,7 @@ export default function MyLibrary() {
                   setShowCreateLink(false);
                   setDocsLink(undefined);
                   setBlockContent(undefined);
+                  refetch();
                 }}
               />
             </div>

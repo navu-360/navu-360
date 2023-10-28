@@ -82,3 +82,22 @@ export default function ChapterCard({
     </div>
   );
 }
+
+export function ShimmerChapter() {
+  return (
+    <div className="shadowAroundFeature group flex h-[190px] w-[400px] flex-col justify-between gap-4 rounded-xl bg-white p-4">
+      <div className="flex flex-col gap-2">
+        <div className="h-6 w-full animate-pulse bg-gray-300"></div>
+        <div className="h-6 w-full animate-pulse bg-gray-300"></div>
+      </div>
+
+      <div className="flex w-full items-center justify-between">
+        <div className="flex w-4/5 flex-col gap-3 text-sm font-medium text-gray-600">
+          <div className="h-6 w-full animate-pulse bg-gray-300"></div>
+          <div className="h-6 w-full animate-pulse bg-gray-300"></div>
+        </div>
+        <div className="flex h-[40px] w-[40px] shrink-0 animate-pulse  items-center justify-center rounded-full bg-gray-300 shadow-md transition-all duration-300 ease-in"></div>
+      </div>
+    </div>
+  );
+}

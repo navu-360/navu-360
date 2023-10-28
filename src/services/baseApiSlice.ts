@@ -86,7 +86,6 @@ export const baseApiSlice = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Dashboard"],
     }),
     addProgramSection: builder.mutation({
       query: (body) => ({
@@ -94,7 +93,6 @@ export const baseApiSlice = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Dashboard"],
     }),
     editProgramSection: builder.mutation({
       query: (body) => ({
@@ -102,7 +100,6 @@ export const baseApiSlice = createApi({
         method: "PATCH",
         body,
       }),
-      invalidatesTags: ["Dashboard"],
     }),
     deleteProgramSection: builder.mutation({
       query: (body) => ({
@@ -110,7 +107,6 @@ export const baseApiSlice = createApi({
         method: "DELETE",
         body,
       }),
-      invalidatesTags: ["Dashboard"],
     }),
     getLibraryChapters: builder.query({
       query: () => ({
@@ -124,7 +120,6 @@ export const baseApiSlice = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Dashboard"],
     }),
     editQuizQuestion: builder.mutation({
       query: (body) => ({
@@ -132,7 +127,6 @@ export const baseApiSlice = createApi({
         method: "PATCH",
         body,
       }),
-      invalidatesTags: ["Dashboard"],
     }),
     deleteQuizQuestion: builder.mutation({
       query: (body) => ({
@@ -140,7 +134,6 @@ export const baseApiSlice = createApi({
         method: "DELETE",
         body,
       }),
-      invalidatesTags: ["Dashboard"],
     }),
     getProgramQuestions: builder.query({
       query: (programId) => `programs/quiz?programId=${programId}`,
@@ -150,7 +143,6 @@ export const baseApiSlice = createApi({
       query: (orgId) => ({
         url: `programs?orgId=${orgId}`,
       }),
-      providesTags: ["Programs"],
     }),
 
     getOneProgram: builder.query({
@@ -162,14 +154,12 @@ export const baseApiSlice = createApi({
         method: "PATCH",
         body,
       }),
-      invalidatesTags: ["Dashboard", "Programs"],
     }),
     deleteProgram: builder.mutation({
       query: (id) => ({
         url: `programs/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Dashboard", "Programs"],
     }),
 
     // templates
