@@ -16,12 +16,16 @@ export default function CreateVideoChapter({
   setActiveContentType,
   video,
   setVideo,
+  fromLibrary,
+  close,
 }: {
   currentEditing?: ProgramSection;
   setShowDeleteModal: (val: string) => void;
   setActiveContentType: (val: string) => void;
   video?: File | string;
   setVideo: (val: File | string | undefined) => void;
+  fromLibrary?: boolean;
+  close?: () => void;
 }) {
   const [uploadedVideo, setUploadedVideo] = useState<File | string>();
 
@@ -68,16 +72,18 @@ export default function CreateVideoChapter({
         setActiveContentType("");
         setUploadedVideo(undefined);
         setVideo(undefined);
-        dispatch(
-          setCreateSectionIds([
-            ...createSectionIds,
-            {
-              type: body.type,
-              id: payload?.data?.id,
-              link: payload?.data?.link,
-            },
-          ]),
-        );
+        !fromLibrary &&
+          dispatch(
+            setCreateSectionIds([
+              ...createSectionIds,
+              {
+                type: body.type,
+                id: payload?.data?.id,
+                link: payload?.data?.link,
+              },
+            ]),
+          );
+        close && close();
         toaster({
           status: "success",
           message: "Video uploaded and saved!",
@@ -112,20 +118,24 @@ export default function CreateVideoChapter({
     await editSection(body)
       .unwrap()
       .then((payload) => {
-        // update on createSectionIds
-        const index = createSectionIds.findIndex(
-          (val: { id: string }) => val.id === currentEditing?.id,
-        );
-        const newArr = [...createSectionIds];
-        newArr[index] = {
-          type: body.type,
-          id: payload?.data?.id,
-          link: payload?.data?.link,
-        };
-        dispatch(setCreateSectionIds(newArr));
+        if (!fromLibrary) {
+          // update on createSectionIds
+          const index = createSectionIds.findIndex(
+            (val: { id: string }) => val.id === currentEditing?.id,
+          );
+          const newArr = [...createSectionIds];
+          newArr[index] = {
+            type: body.type,
+            id: payload?.data?.id,
+            link: payload?.data?.link,
+          };
+          dispatch(setCreateSectionIds(newArr));
+        }
+
         setActiveContentType("");
         setUploadedVideo(undefined);
         setVideo(undefined);
+        close && close();
         toaster({
           status: "success",
           message: "Video updated!",
@@ -140,7 +150,13 @@ export default function CreateVideoChapter({
   };
 
   return (
-    <div className="relative ml-auto flex min-h-[50vh] w-[calc(100%_-_330px)] flex-col gap-8">
+    <div
+      className={`relative flex flex-col ${
+        fromLibrary
+          ? "mx-auto ml-0 mr-16 h-full w-auto items-start justify-start gap-8"
+          : "ml-auto min-h-[50vh] w-[calc(100%_-_330px)]"
+      }`}
+    >
       {uploadedVideo && (
         <video
           onContextMenu={(e) => e.preventDefault()}
@@ -260,12 +276,13 @@ export default function CreateVideoChapter({
           Delete Chapter
         </button>
         <button
-          disabled={editingSection || creatingSection}
+          disabled={editingSection || creatingSection || uploading}
           onClick={() => {
             if (editingSection || creatingSection) return;
             setActiveContentType("");
             setUploadedVideo(undefined);
             setVideo(undefined);
+            close && close();
           }}
           className="rounded-md border-[1px] border-gray-400 bg-transparent px-8 py-1.5 text-sm font-medium text-gray-500"
         >

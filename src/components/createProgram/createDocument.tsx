@@ -31,12 +31,16 @@ export default function CreateDocumentChapter({
   setActiveContentType,
   uploadedDoc,
   setDoc,
+  fromLibrary,
+  close,
 }: {
   currentEditing?: ProgramSection;
   setShowDeleteModal: (val: string) => void;
   setActiveContentType: (val: string) => void;
   uploadedDoc?: File | string;
   setDoc: (val: File | string | undefined) => void;
+  fromLibrary?: boolean;
+  close?: () => void;
 }) {
   const [uploadedDocument, setUploadedDocument] = useState<File | string>();
 
@@ -84,7 +88,7 @@ export default function CreateDocumentChapter({
         setActiveContentType("");
         setUploadedDocument(undefined);
         setDoc(undefined);
-        dispatch(
+        !fromLibrary && dispatch(
           setCreateSectionIds([
             ...createSectionIds,
             {
@@ -98,6 +102,7 @@ export default function CreateDocumentChapter({
           status: "success",
           message: "Document saved!",
         });
+        close && close();
       })
       .catch((error) => {
         toaster({
@@ -129,20 +134,23 @@ export default function CreateDocumentChapter({
     await editSection(body)
       .unwrap()
       .then((payload) => {
-        // update on createSectionIds
-        const index = createSectionIds.findIndex(
-          (val: { id: string }) => val.id === currentEditing?.id,
-        );
-        const newArr = [...createSectionIds];
-        newArr[index] = {
-          type: body.type,
-          id: payload?.data?.id,
-          link: payload?.data?.link,
-        };
-        dispatch(setCreateSectionIds(newArr));
+        if (!fromLibrary) {
+          // update on createSectionIds
+          const index = createSectionIds.findIndex(
+            (val: { id: string }) => val.id === currentEditing?.id,
+          );
+          const newArr = [...createSectionIds];
+          newArr[index] = {
+            type: body.type,
+            id: payload?.data?.id,
+            link: payload?.data?.link,
+          };
+          dispatch(setCreateSectionIds(newArr));
+        }
         setActiveContentType("");
         setUploadedDocument(undefined);
         setDoc(undefined);
+        close && close();
         toaster({
           status: "success",
           message: "Document updated!",
@@ -157,7 +165,13 @@ export default function CreateDocumentChapter({
   };
 
   return (
-    <div className="relative ml-auto flex min-h-[50vh] w-[calc(100%_-_330px)] flex-col gap-8">
+    <div
+      className={`relative flex flex-col ${
+        fromLibrary
+          ? "mx-auto ml-0 mr-16 h-full w-auto items-start justify-start gap-8"
+          : "ml-auto min-h-[50vh] w-[calc(100%_-_330px)]"
+      }`}
+    >
       {uploadedDocument && (
         <Document
           file={uploadedDocument}
@@ -229,7 +243,10 @@ export default function CreateDocumentChapter({
               accept=".pdf"
               onChange={(e) => {
                 e?.target?.files
-                  ? [setUploadedDocument(e?.target?.files[0]), setDoc(e?.target?.files[0])]
+                  ? [
+                      setUploadedDocument(e?.target?.files[0]),
+                      setDoc(e?.target?.files[0]),
+                    ]
                   : null;
               }}
             />
@@ -266,12 +283,13 @@ export default function CreateDocumentChapter({
           Delete Chapter
         </button>
         <button
-          disabled={editingSection || creatingSection}
+          disabled={editingSection || creatingSection || uploading}
           onClick={() => {
             if (editingSection || creatingSection) return;
             setActiveContentType("");
             setUploadedDocument(undefined);
             setDoc(undefined);
+            close && close();
           }}
           className="rounded-md border-[1px] border-gray-400 bg-transparent px-8 py-1.5 text-sm font-medium text-gray-500"
         >

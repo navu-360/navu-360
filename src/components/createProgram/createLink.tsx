@@ -18,6 +18,8 @@ export default function CreateLinkChapter({
   setLink,
   showPreview,
   setShowPreview,
+  fromLibrary,
+  close,
 }: {
   currentEditing?: ProgramSection;
   setShowDeleteModal: (val: string) => void;
@@ -26,6 +28,8 @@ export default function CreateLinkChapter({
   setLink: (val: string | undefined) => void;
   showPreview: boolean;
   setShowPreview: (val: boolean) => void;
+  fromLibrary?: boolean;
+  close?: () => void;
 }) {
   const [docsLink, setDocsLink] = useState<string>();
 
@@ -65,16 +69,18 @@ export default function CreateLinkChapter({
       .unwrap()
       .then((payload) => {
         setActiveContentType("");
-        dispatch(
-          setCreateSectionIds([
-            ...createSectionIds,
-            {
-              type: body.type,
-              id: payload?.data?.id,
-              link: payload?.data?.link,
-            },
-          ]),
-        );
+        !fromLibrary &&
+          dispatch(
+            setCreateSectionIds([
+              ...createSectionIds,
+              {
+                type: body.type,
+                id: payload?.data?.id,
+                link: payload?.data?.link,
+              },
+            ]),
+          );
+        close && close();
         toaster({
           status: "success",
           message: "Document saved!",
@@ -99,17 +105,20 @@ export default function CreateLinkChapter({
     await editSection(body)
       .unwrap()
       .then((payload) => {
-        // update on createSectionIds
-        const index = createSectionIds.findIndex(
-          (val: { id: string }) => val.id === currentEditing?.id,
-        );
-        const newArr = [...createSectionIds];
-        newArr[index] = {
-          type: body.type,
-          id: payload?.data?.id,
-          link: payload?.data?.link,
-        };
-        dispatch(setCreateSectionIds(newArr));
+        if (!fromLibrary) {
+          // update on createSectionIds
+          const index = createSectionIds.findIndex(
+            (val: { id: string }) => val.id === currentEditing?.id,
+          );
+          const newArr = [...createSectionIds];
+          newArr[index] = {
+            type: body.type,
+            id: payload?.data?.id,
+            link: payload?.data?.link,
+          };
+          dispatch(setCreateSectionIds(newArr));
+        }
+
         setActiveContentType("");
         setDocsLink(undefined);
         setLink(undefined);
@@ -119,6 +128,7 @@ export default function CreateLinkChapter({
           status: "success",
           message: "Document updated!",
         });
+        close && close();
       })
       .catch((error) => {
         toaster({
@@ -129,7 +139,13 @@ export default function CreateLinkChapter({
   };
 
   return (
-    <div className="relative ml-auto flex min-h-[50vh] w-[calc(100%_-_330px)] flex-col justify-center">
+    <div
+      className={`relative flex  flex-col ${
+        fromLibrary
+          ? "h-full w-full items-center justify-center"
+          : "ml-auto min-h-[50vh] w-[calc(100%_-_330px)]"
+      }`}
+    >
       {!showLinkPreview && (
         <form
           className={`mx-auto flex h-[50px] w-max shrink-0 items-center rounded-md`}
@@ -204,6 +220,7 @@ export default function CreateLinkChapter({
             setDocsLink("");
             setLink("");
             setActiveContentType("");
+            close && close();
           }}
           disabled={editingSection || creatingSection}
           className="rounded-md border-[1px] border-gray-400 bg-transparent px-8 py-1.5 text-sm font-medium text-gray-500"

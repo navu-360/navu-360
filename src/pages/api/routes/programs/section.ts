@@ -39,7 +39,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 if (!organization) return res.status(404).json({ message: `Organization not found.` });
 
 
-                if (!type || !programId || !(content || link)) return res.status(400).json({ message: `Missing fields.` });
+                if (!type || !(content || link)) return res.status(400).json({ message: `Missing fields.` });
 
                 // create ProgramSection
                 const programSection = await prisma.programSection.create({

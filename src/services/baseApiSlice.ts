@@ -112,6 +112,12 @@ export const baseApiSlice = createApi({
       }),
       invalidatesTags: ["Dashboard"],
     }),
+    getLibraryChapters: builder.query({
+      query: () => ({
+        url: `programs/section`,
+        method: "GET",
+      }),
+    }),
     addQuizQuestion: builder.mutation({
       query: (body) => ({
         url: `programs/quiz`,
@@ -373,4 +379,5 @@ export const {
   useGetProgramQuestionsQuery,
   useSendWelcomeEmailMutation,
   useGetTalentCountQuery,
+  useGetLibraryChaptersQuery
 } = baseApiSlice;

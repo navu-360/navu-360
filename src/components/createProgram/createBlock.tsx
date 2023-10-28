@@ -21,12 +21,16 @@ export default function CreateBlockChapter({
   setActiveContentType,
   content,
   setContent,
+  fromLibrary,
+  close
 }: {
   currentEditing?: ProgramSection;
   setShowDeleteModal: (val: string) => void;
   setActiveContentType: (val: string) => void;
   content?: OutputData | undefined;
   setContent: (val: OutputData | undefined) => void;
+  fromLibrary?: boolean;
+  close?: () => void;
 }) {
   const [blockContent, setBlockContent] = useState<OutputData>();
 
@@ -63,7 +67,7 @@ export default function CreateBlockChapter({
           .unwrap()
           .then((payload) => {
             setActiveContentType("");
-            dispatch(
+            !fromLibrary && dispatch(
               setCreateSectionIds([
                 ...createSectionIds,
                 {
@@ -77,6 +81,7 @@ export default function CreateBlockChapter({
               status: "success",
               message: "Chapter saved!",
             });
+            close && close();
           })
           .catch((error) => {
             toaster({
@@ -92,6 +97,7 @@ export default function CreateBlockChapter({
               message: "Chapter updated!",
             });
             setActiveContentType("");
+            close && close();
           })
           .catch((error) => {
             toaster({
@@ -102,7 +108,13 @@ export default function CreateBlockChapter({
   };
 
   return (
-    <div className="relative ml-auto flex min-h-[50vh] w-[calc(100%_-_330px)] flex-col">
+    <div
+      className={`relative flex  flex-col ${
+        fromLibrary
+          ? "h-full w-full"
+          : "ml-auto min-h-[50vh] w-[calc(100%_-_330px)]"
+      }`}
+    >
       <MyEditor
         getData={save}
         receiveData={(data: OutputData) => {
@@ -150,6 +162,7 @@ export default function CreateBlockChapter({
             setBlockContent(undefined);
             setContent(undefined);
             setActiveContentType("");
+            close && close();
           }}
           disabled={editingSection || creatingSection}
           className="rounded-md border-[1px] border-gray-400 bg-transparent px-8 py-1.5 text-sm font-medium text-gray-500"
