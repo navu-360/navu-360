@@ -73,6 +73,7 @@ model Organization {
   onboardingProgramTalents OnboardingProgramTalents[]
   createdAt                DateTime                   @default(now())
   updatedAt                DateTime                   @updatedAt
+  ProgramSection           ProgramSection[]
 }
 
 model OnboardingProgram {
@@ -95,15 +96,17 @@ model OnboardingProgram {
 }
 
 model ProgramSection {
-  id        String            @id @default(cuid())
-  type      String
-  content   String?
-  link      String?
-  published Boolean           @default(false)
-  programId String
-  Program   OnboardingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
-  createdAt DateTime          @default(now())
-  updatedAt DateTime          @updatedAt
+  id           String             @id @default(cuid())
+  type         String
+  content      String?
+  link         String?
+  published    Boolean            @default(false)
+  programId    String?
+  Program      OnboardingProgram? @relation(fields: [programId], references: [id], onDelete: Cascade)
+  orgId        String
+  Organization Organization       @relation(fields: [orgId], references: [id])
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
 }
 
 model OnboardingProgramTalents {
@@ -124,18 +127,18 @@ model OnboardingProgramTalents {
 }
 
 model QuizQuestion {
-  id        String            @id @default(cuid())
-  question  String
-  choiceA   String
-  choiceB   String
-  choiceC   String
-  choiceD   String
-  answer    String
+  id          String            @id @default(cuid())
+  question    String
+  choiceA     String
+  choiceB     String
+  choiceC     String
+  choiceD     String
+  answer      String
   explanation String
-  programId String
-  Program   OnboardingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
-  createdAt DateTime          @default(now())
-  updatedAt DateTime          @updatedAt
+  programId   String
+  Program     OnboardingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
 
   @@index([programId], name: "programId")
 }

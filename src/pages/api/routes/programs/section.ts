@@ -24,8 +24,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     type: string;
                     content?: string;
                     link?: string;
-                    programId: string;
+                    programId?: string;
                 };
+
+                const organization = await prisma.organization.findFirst({
+                    where: {
+                        userId: session?.user?.id as string,
+                    },
+                    select: {
+                        id: true,
+                    }
+                });
+
+                if (!organization) return res.status(404).json({ message: `Organization not found.` });
 
 
                 if (!type || !programId || !(content || link)) return res.status(400).json({ message: `Missing fields.` });
@@ -36,7 +47,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                         type,
                         content,
                         link,
-                        programId
+                        programId,
+                        orgId: organization.id
                     },
                 });
 
@@ -106,7 +118,33 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     // @ts-ignore
                     .json({ message: error.message });
             }
+        case "GET":
+            // get the organization sections which do not have a programId - library sections, get using field orgId
 
+            const organization = await prisma.organization.findFirst({
+                where: {
+                    userId: session?.user?.id as string,
+                },
+                select: {
+                    id: true,
+                }
+            });
+
+            if (!organization) return res.status(404).json({ message: `Organization not found.` });
+
+            const sections = await prisma.programSection.findMany({
+                where: {
+                    orgId: organization.id,
+                    programId: null
+                },
+                orderBy: {
+                    createdAt: "desc"
+                }
+            });
+
+            return res
+                .status(200)
+                .json({ message: `Sections fetched.`, data: sections });
         default:
             return res
                 .status(405)
