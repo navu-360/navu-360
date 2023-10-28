@@ -131,7 +131,7 @@ export default function MyLibrary() {
     <>
       <Header title={`Library - Navu360`} />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[80px] mt-[3rem] flex h-full flex-col items-center justify-center gap-8 pb-16 pt-[5rem] pr-4 md:ml-[250px] 2xl:ml-[250px]">
+        <div className="relative ml-[80px] mt-[3rem] flex h-full flex-col items-center justify-center gap-8 pb-16 pr-4 pt-[5rem] md:ml-[250px] 2xl:ml-[250px]">
           <div className="absolute left-0 top-0 flex w-max flex-col gap-0 text-left">
             <h1 className="text-xl font-bold text-tertiary">My Library</h1>
           </div>
@@ -284,6 +284,25 @@ export default function MyLibrary() {
             id={showDeleteModal}
             refreshPrograms={() => {
               // if currentEditing is the one being deleted, clear it
+              if (currentEditing?.id === showDeleteModal) {
+                setCurrentEditing(undefined);
+                if (activeContentType === "block") {
+                  setActiveContentType("");
+                }
+                if (activeContentType === "document") {
+                  setUploadedDocument(undefined);
+                }
+                if (activeContentType === "video") {
+                  setUploadedVideo(undefined);
+                }
+                if (activeContentType === "link") {
+                  setDocsLink(undefined);
+                }
+              }
+              setShowDeleteModal("");
+              refetch();
+            }}
+            addedToLib={() => {
               if (currentEditing?.id === showDeleteModal) {
                 setCurrentEditing(undefined);
                 if (activeContentType === "block") {

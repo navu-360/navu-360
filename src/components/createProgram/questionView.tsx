@@ -135,6 +135,10 @@ export function QuestionView({
             refetch();
             setShowDeleteModal("");
           }}
+          addedToLib={() => {
+            refetch();
+            setShowDeleteModal("");
+          }}
         />
       )}
     </div>
