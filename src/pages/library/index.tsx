@@ -8,6 +8,7 @@ import { getActiveTypeSvg } from "components/createProgram/createProgramContent"
 import CreateVideoChapter from "components/createProgram/createVideo";
 import { NoLibraryItems } from "components/dashboard/guides";
 import DashboardWrapper from "components/layout/dashboardWrapper";
+import BlockCard from "components/library/blockView";
 import { LibraryDropDown } from "components/library/dropdown";
 import { DeleteSection } from "components/programs/confirmDeleteSection";
 import React, { useEffect, useState } from "react";
@@ -142,7 +143,7 @@ export default function MyLibrary() {
 
             <span>Create Chapter</span>
           </button>
-          {data?.data?.length !== 0 && (
+          {data?.data?.length === 0 && (
             <NoLibraryItems
               orgName={organizationData?.name}
               createChapter={() => setShowDropdown(true)}
@@ -176,7 +177,7 @@ export default function MyLibrary() {
                           : "bg-gray-200 text-gray-700"
                       }`}
                     >
-                      0
+                      {getChaptersForType(tab.type)?.length}
                     </span>
                   </button>
                 </li>
@@ -184,34 +185,56 @@ export default function MyLibrary() {
             </ul>
           </div>
 
-          <div className="w-full">
-            {getChaptersForType(activeTab).length === 0 && (
-              <div className="mx-auto mt-32 flex w-[500px] flex-col gap-4">
-                <p className="text-center font-medium text-gray-600">
-                  You have no{" "}
-                  <span className="font-semibold capitalize">{activeTab}</span>{" "}
-                  chapters. Click the button above to create your first{" "}
-                  <span className="font-semibold capitalize">{activeTab}</span>{" "}
-                  chapter.
-                </p>
-              </div>
-            )}
-            {activeTab === "block" &&
-              getChaptersForType("block").length > 0 && (
-                <div className="grid w-full grid-cols-4 gap-4"></div>
+          {data && (
+            <div className="w-full">
+              {getChaptersForType(activeTab)?.length === 0 && (
+                <div className="mx-auto mt-32 flex w-[500px] flex-col gap-4">
+                  <p className="text-center font-medium text-gray-600">
+                    You have no{" "}
+                    <span className="font-semibold capitalize">
+                      {activeTab}
+                    </span>{" "}
+                    chapters. Click the button above to create your first{" "}
+                    <span className="font-semibold capitalize">
+                      {activeTab}
+                    </span>{" "}
+                    chapter.
+                  </p>
+                </div>
               )}
-            {activeTab === "document" &&
-              getChaptersForType("document").length > 0 && (
-                <div className="grid w-full grid-cols-4 gap-4"></div>
-              )}
-            {activeTab === "video" &&
-              getChaptersForType("video").length > 0 && (
-                <div className="grid w-full grid-cols-4 gap-4"></div>
-              )}
-            {activeTab === "link" && getChaptersForType("link").length > 0 && (
-              <div className="grid w-full grid-cols-4 gap-4"></div>
-            )}
-          </div>
+              {activeTab === "block" &&
+                getChaptersForType("block").length > 0 && (
+                  <div className="grid w-full grid-cols-4 gap-4">
+                    {getChaptersForType("block").map(
+                      (block: ProgramSection) => (
+                        <BlockCard
+                          key={block.id}
+                          content={block.content as string}
+                          created={block.createdAt}
+                          updated={block.updatedAt}
+                          view={() => {
+                            setCurrentEditing(block);
+                            setShowCreateBlock(true);
+                          }}
+                        />
+                      ),
+                    )}
+                  </div>
+                )}
+              {activeTab === "document" &&
+                getChaptersForType("document").length > 0 && (
+                  <div className="grid w-full grid-cols-4 gap-4"></div>
+                )}
+              {activeTab === "video" &&
+                getChaptersForType("video").length > 0 && (
+                  <div className="grid w-full grid-cols-4 gap-4"></div>
+                )}
+              {activeTab === "link" &&
+                getChaptersForType("link").length > 0 && (
+                  <div className="grid w-full grid-cols-4 gap-4"></div>
+                )}
+            </div>
+          )}
         </div>
 
         {showDropdown && (
