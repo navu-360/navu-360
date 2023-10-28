@@ -55,6 +55,8 @@ export default function Programs() {
     dispatch(resetCommon());
   }, [dispatch]);
 
+  const router = useRouter();
+
   if (!isReady) return null;
 
   if (isFetching && !data)
@@ -82,7 +84,7 @@ export default function Programs() {
             <h1 className="text-xl font-bold text-tertiary">Courses</h1>
           </div>
           <button
-            onClick={() => setShowSelectTemplate(true)}
+            onClick={() => router.push("/create/program")}
             className="absolute right-12 top-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-[#fa3264] focus:outline-none focus:ring-4 md:mr-0"
           >
             <svg

@@ -95,7 +95,7 @@ export default function Dashboard() {
           {
             <button
               disabled={isFetching}
-              onClick={() => setShowSelectTemplate(true)}
+              onClick={() => router.push("/create/program")}
               className={`z-50 flex h-max min-h-[45px] w-max min-w-[150px] shrink-0 items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white transition-all duration-150 ease-in hover:bg-secondary/90 focus:outline-none focus:ring-4 ${
                 programs?.data?.length > 0 || isFetching ? "" : "hidden"
               }`}
