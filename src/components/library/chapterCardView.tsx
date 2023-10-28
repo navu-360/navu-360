@@ -1,19 +1,26 @@
 import React from "react";
 import { processDate } from "utils/date";
 
+import { motion } from "framer-motion";
+
 export default function ChapterCard({
   name,
   created,
   updated,
   view,
+  delay,
 }: {
   name: string;
   created: Date;
   updated: Date;
   view: () => void;
+  delay: number;
 }) {
   return (
-    <div
+    <motion.div
+      initial={{ y: 10 }}
+      whileInView={{ y: 0 }}
+      transition={{ duration: 0.3, ease: "easeInOut", delay }}
       onClick={() => view()}
       className="shadowAroundFeature group flex h-[190px] w-[400px] flex-col justify-between gap-4 rounded-xl bg-white p-4"
     >
@@ -79,13 +86,18 @@ export default function ChapterCard({
           </svg>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
 export function ShimmerChapter() {
   return (
-    <div className="shadowAroundFeature group flex h-[190px] w-[400px] flex-col justify-between gap-4 rounded-xl bg-white p-4">
+    <motion.div
+      initial={{ y: 10 }}
+      whileInView={{ y: 0 }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
+      className="shadowAroundFeature group flex h-[190px] w-[400px] flex-col justify-between gap-4 rounded-xl bg-white p-4"
+    >
       <div className="flex flex-col gap-2">
         <div className="h-6 w-full animate-pulse bg-gray-300"></div>
         <div className="h-6 w-full animate-pulse bg-gray-300"></div>
@@ -98,6 +110,6 @@ export function ShimmerChapter() {
         </div>
         <div className="flex h-[40px] w-[40px] shrink-0 animate-pulse  items-center justify-center rounded-full bg-gray-300 shadow-md transition-all duration-300 ease-in"></div>
       </div>
-    </div>
+    </motion.div>
   );
 }

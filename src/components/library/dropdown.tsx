@@ -1,3 +1,7 @@
+import React from "react";
+
+import { motion } from "framer-motion";
+
 export function LibraryDropDown({
   data,
   close,
@@ -15,7 +19,13 @@ export function LibraryDropDown({
       onClick={(e) => (e.currentTarget === e.target ? close() : null)}
       className="fixed inset-0 z-[200] flex h-screen w-screen items-center justify-center bg-black/50 pr-4 pt-[9.5rem] backdrop-blur-sm lg:pr-4 lg:pt-[9rem]"
     >
-      <div className="flex h-max w-[550px] flex-col gap-0 rounded-lg bg-white p-2 shadow">
+      <motion.div
+        initial={{ y: 30, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        exit={{ y: 30, opacity: 0 }}
+        className="flex h-max w-[550px] flex-col gap-0 rounded-lg bg-white p-2 shadow"
+      >
         <h2 className="py-4 text-center text-xl font-bold text-tertiary">
           Choose Type of Chapter to Create
         </h2>
@@ -34,7 +44,7 @@ export function LibraryDropDown({
             </div>
           </div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 }

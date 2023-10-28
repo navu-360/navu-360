@@ -13,6 +13,7 @@ import ChapterCard, {
 } from "components/library/chapterCardView";
 import { LibraryDropDown } from "components/library/dropdown";
 import { DeleteSection } from "components/programs/confirmDeleteSection";
+import { AnimatePresence } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { resetCommon, setDraftProgramId } from "redux/common/commonSlice";
@@ -215,9 +216,10 @@ export default function MyLibrary() {
               {getChaptersForType(activeTab).length > 0 && (
                 <div className="grid w-full grid-cols-4 gap-4">
                   {getChaptersForType(activeTab).map(
-                    (block: ProgramSection) => (
+                    (block: ProgramSection, index: number) => (
                       <ChapterCard
                         key={block.id}
+                        delay={index * 0.1}
                         name={block.name as string}
                         created={block.createdAt}
                         updated={block.updatedAt}
@@ -263,12 +265,14 @@ export default function MyLibrary() {
           )}
         </div>
 
-        {showDropdown && (
-          <LibraryDropDown
-            data={createChapterOptions}
-            close={() => setShowDropdown(false)}
-          />
-        )}
+        <AnimatePresence>
+          {showDropdown && (
+            <LibraryDropDown
+              data={createChapterOptions}
+              close={() => setShowDropdown(false)}
+            />
+          )}
+        </AnimatePresence>
 
         {showDeleteModal.length > 0 && (
           <DeleteSection
