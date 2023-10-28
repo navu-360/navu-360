@@ -334,6 +334,25 @@ export function CreateProgramContent({
             }
             setShowDeleteModal("");
           }}
+          addedToLib={() => {
+            // if currentEditing is the one being deleted, clear it
+            if (currentEditing?.id === showDeleteModal) {
+              setCurrentEditing(undefined);
+              if (activeContentType === "block") {
+                setActiveContentType("");
+              }
+              if (activeContentType === "document") {
+                setUploadedDocument(undefined);
+              }
+              if (activeContentType === "video") {
+                setUploadedVideo(undefined);
+              }
+              if (activeContentType === "link") {
+                setDocsLink(undefined);
+              }
+            }
+            setShowDeleteModal("");
+          }}
         />
       )}
     </div>
