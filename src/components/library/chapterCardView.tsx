@@ -22,7 +22,7 @@ export default function ChapterCard({
       whileInView={{ y: 0 }}
       transition={{ duration: 0.3, ease: "easeInOut", delay }}
       onClick={() => view()}
-      className="shadowAroundFeature group flex h-[190px] w-[400px] flex-col justify-between gap-4 rounded-xl bg-white p-4"
+      className="shadowAroundFeature cursor-pointer group flex h-[190px] w-[400px] flex-col justify-between gap-4 rounded-xl bg-white p-4"
     >
       <h3 className="text-lg font-semibold text-tertiary">{name}</h3>
       <div className="flex items-center justify-between">
