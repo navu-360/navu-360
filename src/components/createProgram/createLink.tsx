@@ -63,6 +63,7 @@ export default function CreateLinkChapter({
       programId: draftProgramId,
       id: currentEditing?.id ?? undefined,
       link: docsLink,
+      name: docsLink?.split(".com")[1],
     };
 
     await createSection(body)

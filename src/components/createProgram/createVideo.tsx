@@ -55,15 +55,14 @@ export default function CreateVideoChapter({
   const uploadVideo = async () => {
     setUploading(true);
     const res = await uploadOne(uploadedVideo as File);
-    console.log(res);
     setUploading(false);
 
     const body = {
       type: "video",
       programId: draftProgramId,
       id: currentEditing?.id ?? undefined,
-      // @ts-ignore
       link: res?.file?.url,
+      name: uploadedVideo instanceof File ? uploadedVideo?.name : undefined,
     };
 
     await createSection(body)

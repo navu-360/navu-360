@@ -69,17 +69,17 @@ export default function CreateDocumentChapter({
 
   const [uploading, setUploading] = useState(false);
 
-  const uploadPdfOrLink = async (isPdf = false) => {
-    isPdf && setUploading(true);
-    const res = isPdf ? await uploadOne(uploadedDocument as File) : false;
+  const uploadPdfOrLink = async () => {
+    setUploading(true);
+    const res = await uploadOne(uploadedDocument as File);
     setUploading(false);
 
     const body = {
-      type: isPdf ? "document" : "link",
+      type: "document",
       programId: draftProgramId,
       id: currentEditing?.id ?? undefined,
-      // @ts-ignore
-      link: isPdf ? res?.file?.url : docsLink,
+      link: res?.file?.url,
+      name: uploadedDocument instanceof File ? uploadedDocument?.name : undefined,
     };
 
     await createSection(body)
@@ -88,16 +88,17 @@ export default function CreateDocumentChapter({
         setActiveContentType("");
         setUploadedDocument(undefined);
         setDoc(undefined);
-        !fromLibrary && dispatch(
-          setCreateSectionIds([
-            ...createSectionIds,
-            {
-              type: body.type,
-              id: payload?.data?.id,
-              link: payload?.data?.link,
-            },
-          ]),
-        );
+        !fromLibrary &&
+          dispatch(
+            setCreateSectionIds([
+              ...createSectionIds,
+              {
+                type: body.type,
+                id: payload?.data?.id,
+                link: payload?.data?.link,
+              },
+            ]),
+          );
         toaster({
           status: "success",
           message: "Document saved!",
@@ -261,9 +262,9 @@ export default function CreateDocumentChapter({
           onClick={() => {
             {
               if (currentEditing) {
-                updatePdfOrLink(true);
+                updatePdfOrLink();
               } else {
-                uploadPdfOrLink(true);
+                uploadPdfOrLink();
               }
             }
           }}

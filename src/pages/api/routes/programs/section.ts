@@ -20,11 +20,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         case "POST":
             try {
                 // type, content, link, programId
-                const { type, content, link, programId } = req.body as {
+                const { type, content, link, programId, name } = req.body as {
                     type: string;
                     content?: string;
                     link?: string;
                     programId?: string;
+                    name: string;
                 };
 
                 const organization = await prisma.organization.findFirst({
@@ -39,7 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 if (!organization) return res.status(404).json({ message: `Organization not found.` });
 
 
-                if (!type || !(content || link)) return res.status(400).json({ message: `Missing fields.` });
+                if (!type || !(content || link) || !name) return res.status(400).json({ message: `Missing fields.` });
 
                 // create ProgramSection
                 const programSection = await prisma.programSection.create({
@@ -48,6 +49,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                         content,
                         link,
                         programId,
+                        name,
                         orgId: organization.id
                     },
                 });
@@ -66,10 +68,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         case "PATCH":
             // edit a program section given id and new content
             try {
-                const { id, content, link } = req.body as {
+                const { id, content, link, name } = req.body as {
                     id: string;
                     content?: string;
                     link?: string;
+                    name?: string;
                 };
 
                 if (!id || !(content || link)) return res.status(400).json({ message: `Missing fields.` });
@@ -80,7 +83,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     },
                     data: {
                         content,
-                        link
+                        link,
+                        name
                     }
                 });
 

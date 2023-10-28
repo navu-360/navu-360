@@ -1,31 +1,23 @@
-import type { OutputData } from "@editorjs/editorjs";
 import React from "react";
 import { processDate } from "utils/date";
 
-export default function BlockCard({
-  content,
+export default function ChapterCard({
+  name,
   created,
   updated,
   view,
 }: {
-  content: string;
+  name: string;
   created: Date;
   updated: Date;
   view: () => void;
 }) {
-  const getFirst30Characters = (block: string) => {
-    const toOutput = JSON.parse(block) as OutputData;
-    const text = toOutput.blocks.map((block) => block.data.text).join(" ");
-    return text.slice(0, 30);
-  };
   return (
     <div
       onClick={() => view()}
-      className="shadowAroundFeature group flex w-[400px] flex-col gap-4 rounded-xl bg-white p-4"
+      className="shadowAroundFeature group flex h-[190px] w-[400px] flex-col justify-between gap-4 rounded-xl bg-white p-4"
     >
-      <h3 className="text-lg font-semibold text-tertiary">
-        {getFirst30Characters(content)}...
-      </h3>
+      <h3 className="text-lg font-semibold text-tertiary">{name}</h3>
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-3 text-sm font-medium text-gray-600">
           <p className="flex items-center gap-2">

@@ -22,7 +22,7 @@ export default function CreateBlockChapter({
   content,
   setContent,
   fromLibrary,
-  close
+  close,
 }: {
   currentEditing?: ProgramSection;
   setShowDeleteModal: (val: string) => void;
@@ -54,12 +54,19 @@ export default function CreateBlockChapter({
 
   const dispatch = useDispatch();
 
+  const getFirst100Characters = (block: string) => {
+    const toOutput = JSON.parse(block) as OutputData;
+    const text = toOutput.blocks.map((block) => block.data.text).join(" ");
+    return text.slice(0, 100);
+  };
+
   const createBlockSection = async (isCreate = false) => {
     const body = {
       type: "block",
       content: JSON.stringify(blockContent),
       programId: draftProgramId,
       id: currentEditing?.id ?? undefined,
+      name: getFirst100Characters(JSON.stringify(blockContent)),
     };
 
     isCreate
@@ -67,16 +74,17 @@ export default function CreateBlockChapter({
           .unwrap()
           .then((payload) => {
             setActiveContentType("");
-            !fromLibrary && dispatch(
-              setCreateSectionIds([
-                ...createSectionIds,
-                {
-                  type: body.type,
-                  id: payload?.data?.id,
-                  content: JSON.stringify(payload?.data?.content ?? []),
-                },
-              ]),
-            );
+            !fromLibrary &&
+              dispatch(
+                setCreateSectionIds([
+                  ...createSectionIds,
+                  {
+                    type: body.type,
+                    id: payload?.data?.id,
+                    content: JSON.stringify(payload?.data?.content ?? []),
+                  },
+                ]),
+              );
             toaster({
               status: "success",
               message: "Chapter saved!",

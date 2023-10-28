@@ -8,7 +8,7 @@ import { getActiveTypeSvg } from "components/createProgram/createProgramContent"
 import CreateVideoChapter from "components/createProgram/createVideo";
 import { NoLibraryItems } from "components/dashboard/guides";
 import DashboardWrapper from "components/layout/dashboardWrapper";
-import BlockCard from "components/library/blockView";
+import ChapterCard from "components/library/chapterCardView";
 import { LibraryDropDown } from "components/library/dropdown";
 import { DeleteSection } from "components/programs/confirmDeleteSection";
 import React, { useEffect, useState } from "react";
@@ -202,37 +202,24 @@ export default function MyLibrary() {
                   </p>
                 </div>
               )}
-              {activeTab === "block" &&
-                getChaptersForType("block").length > 0 && (
-                  <div className="grid w-full grid-cols-4 gap-4">
-                    {getChaptersForType("block").map(
-                      (block: ProgramSection) => (
-                        <BlockCard
-                          key={block.id}
-                          content={block.content as string}
-                          created={block.createdAt}
-                          updated={block.updatedAt}
-                          view={() => {
-                            setCurrentEditing(block);
-                            setShowCreateBlock(true);
-                          }}
-                        />
-                      ),
-                    )}
-                  </div>
-                )}
-              {activeTab === "document" &&
-                getChaptersForType("document").length > 0 && (
-                  <div className="grid w-full grid-cols-4 gap-4"></div>
-                )}
-              {activeTab === "video" &&
-                getChaptersForType("video").length > 0 && (
-                  <div className="grid w-full grid-cols-4 gap-4"></div>
-                )}
-              {activeTab === "link" &&
-                getChaptersForType("link").length > 0 && (
-                  <div className="grid w-full grid-cols-4 gap-4"></div>
-                )}
+              {getChaptersForType(activeTab).length > 0 && (
+                <div className="grid w-full grid-cols-4 gap-4">
+                  {getChaptersForType(activeTab).map(
+                    (block: ProgramSection) => (
+                      <ChapterCard
+                        key={block.id}
+                        name={block.name as string}
+                        created={block.createdAt}
+                        updated={block.updatedAt}
+                        view={() => {
+                          setCurrentEditing(block);
+                          setShowCreateBlock(true);
+                        }}
+                      />
+                    ),
+                  )}
+                </div>
+              )}
             </div>
           )}
         </div>
