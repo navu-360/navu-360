@@ -130,7 +130,10 @@ export default function MyLibrary() {
     <>
       <Header title={`Library - Navu360`} />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[80px] mt-[3rem] flex h-full flex-col items-center justify-center gap-8 pb-16 pt-20 md:ml-[250px] 2xl:ml-[250px]">
+        <div className="relative ml-[80px] mt-[3rem] flex h-full flex-col items-center justify-center gap-8 pb-16 pt-[5rem] md:ml-[250px] 2xl:ml-[250px]">
+          <div className="absolute left-0 top-0 flex w-max flex-col gap-0 text-left">
+            <h1 className="text-xl font-bold text-tertiary">My Library</h1>
+          </div>
           <button
             onClick={() => setShowDropdown(true)}
             className="absolute right-12 top-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-[#fa3264] focus:outline-none focus:ring-4 md:mr-0"

@@ -73,8 +73,13 @@ export default function AllTalents() {
     <>
       <Header title={`Enrolled Talents - Navu360`} />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[90px] mt-[40px] flex h-full items-start justify-start gap-8 pt-4 md:ml-[250px]">
-          <div className="h-max w-full rounded-md p-2 lg:w-[90%]">
+        <div className="relative ml-[90px] mt-[40px] flex h-full items-start justify-start gap-8 pt-20 md:ml-[250px]">
+          <div className="absolute left-0 top-0 flex w-max flex-col gap-0 text-left">
+            <h1 className="text-xl font-bold text-tertiary">
+              All Enrolled Talents
+            </h1>
+          </div>
+          <div className="h-max w-full rounded-md lg:w-[90%]">
             <div className="relative w-full md:py-16 md:pt-0">
               <div className="mb-12 w-full">
                 <div
