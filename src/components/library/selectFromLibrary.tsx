@@ -73,14 +73,20 @@ export default function SelectFromLibrary({
   ];
 
   const getChaptersForType = (type: Chapter): ProgramSection[] => {
-    return data?.data?.filter(
+    const removedAlreadyExisting = data?.data?.filter(
+      (chapter: ProgramSection) => {
+        const exists = createSectionIds?.find(
+          (section: ProgramSection) => section.id === chapter.id,
+        );
+        return !exists;
+      },
+    );
+    return removedAlreadyExisting?.filter(
       (chapter: ProgramSection) => chapter.type === type,
     );
   };
 
   const [selectedChapters, setSelectedChapters] = useState<ProgramSection[]>();
-
-  console.log(selectedChapters);
 
   const draftProgramId = useSelector(
     (state: any) => state.common.draftProgramId,
@@ -95,8 +101,6 @@ export default function SelectFromLibrary({
       programId: draftProgramId,
     };
 
-    console.log(body);
-
     editSection(body)
       .unwrap()
       .then((payload) => {
@@ -109,6 +113,10 @@ export default function SelectFromLibrary({
         });
       });
   };
+
+  const createSectionIds = useSelector(
+    (state: any) => state.common.createSectionIds,
+  );
 
   const editChapters = async (selectedChapters: ProgramSection[]) => {
     try {

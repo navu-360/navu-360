@@ -295,16 +295,7 @@ export function CreateProgramContent({
         {showLibrary && (
           <SelectFromLibrary
             sendSelected={(val: ProgramSection[]) => {
-              const notExistingInCreateSectionIds = val.filter(
-                (section) =>
-                  !createSectionIds?.some(
-                    (createSection: ProgramSection) =>
-                      createSection?.id === section?.id,
-                  ),
-              );
-              dispatch(
-                setCreateSectionIds([...notExistingInCreateSectionIds, ...val]),
-              );
+              dispatch(setCreateSectionIds([...val, ...createSectionIds]));
               setShowLibrary(false);
             }}
             close={() => setShowLibrary(false)}

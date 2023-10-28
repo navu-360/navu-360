@@ -33,7 +33,7 @@ export default function ChapterCard({
           ? hasBeenSelected
             ? "w-full border-secondary"
             : "w-full border-white"
-          : "w-[400px]"
+          : "w-full"
       }`}
     >
       {fromSelect && (

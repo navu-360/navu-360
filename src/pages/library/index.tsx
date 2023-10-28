@@ -131,7 +131,7 @@ export default function MyLibrary() {
     <>
       <Header title={`Library - Navu360`} />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[80px] mt-[3rem] flex h-full flex-col items-center justify-center gap-8 pb-16 pt-[5rem] md:ml-[250px] 2xl:ml-[250px]">
+        <div className="relative ml-[80px] mt-[3rem] flex h-full flex-col items-center justify-center gap-8 pb-16 pt-[5rem] pr-4 md:ml-[250px] 2xl:ml-[250px]">
           <div className="absolute left-0 top-0 flex w-max flex-col gap-0 text-left">
             <h1 className="text-xl font-bold text-tertiary">My Library</h1>
           </div>
@@ -218,7 +218,7 @@ export default function MyLibrary() {
                 </div>
               )}
               {getChaptersForType(activeTab).length > 0 && (
-                <div className="grid w-full grid-cols-4 gap-4">
+                <div className="grid w-full grid-cols-3 gap-4">
                   {getChaptersForType(activeTab).map(
                     (block: ProgramSection, index: number) => (
                       <ChapterCard
@@ -260,7 +260,7 @@ export default function MyLibrary() {
           )}
 
           {!data && (
-            <div className="grid w-full grid-cols-4 gap-4">
+            <div className="grid w-full grid-cols-3 gap-4">
               <ShimmerChapter />
               <ShimmerChapter />
               <ShimmerChapter />
