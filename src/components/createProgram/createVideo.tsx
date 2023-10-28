@@ -51,6 +51,8 @@ export default function CreateVideoChapter({
 
   const dispatch = useDispatch();
 
+  const [name, setName] = useState(currentEditing?.name ?? "");
+
   const [uploading, setUploading] = useState(false);
   const uploadVideo = async () => {
     setUploading(true);
@@ -62,7 +64,12 @@ export default function CreateVideoChapter({
       programId: draftProgramId,
       id: currentEditing?.id ?? undefined,
       link: res?.file?.url,
-      name: uploadedVideo instanceof File ? uploadedVideo?.name : undefined,
+      name:
+        name?.length === 0
+          ? uploadedVideo instanceof File
+            ? uploadedVideo?.name
+            : name
+          : name,
     };
 
     await createSection(body)
@@ -79,6 +86,7 @@ export default function CreateVideoChapter({
                 type: body.type,
                 id: payload?.data?.id,
                 link: payload?.data?.link,
+                name: payload?.data?.name,
               },
             ]),
           );
@@ -104,14 +112,12 @@ export default function CreateVideoChapter({
         : false;
     setUploading(false);
 
-    if (!res) return;
-
     const body = {
       type: "video",
       programId: draftProgramId,
       id: currentEditing?.id ?? undefined,
-      // @ts-ignore
-      link: res?.file?.url,
+      link: res ? res?.file?.url : uploadedVideo,
+      name,
     };
 
     await editSection(body)
@@ -153,7 +159,7 @@ export default function CreateVideoChapter({
       className={`relative flex flex-col ${
         fromLibrary
           ? "mx-auto ml-0 mr-16 h-full w-auto items-start justify-start gap-8"
-          : "ml-auto min-h-[50vh] w-[calc(100%_-_330px)]"
+          : "ml-auto min-h-[50vh] w-[calc(100%_-_330px)] gap-8"
       }`}
     >
       {uploadedVideo && (
@@ -245,7 +251,19 @@ export default function CreateVideoChapter({
           </label>
         </div>
       )}
-      <div className="flex w-full justify-start gap-8">
+      <div className="flex w-full flex-col gap-2">
+        <label htmlFor="name">Chapter Name</label>
+        <input
+          type="text"
+          name="name"
+          id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Enter chapter name"
+          className="common-input"
+        />
+      </div>
+      <div className="flex w-full justify-start gap-8 pb-8">
         <button
           disabled={
             !uploadedVideo || editingSection || creatingSection || uploading

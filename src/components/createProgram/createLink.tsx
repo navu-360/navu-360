@@ -57,13 +57,15 @@ export default function CreateLinkChapter({
 
   const dispatch = useDispatch();
 
+  const [name, setName] = useState(currentEditing?.name ?? "");
+
   const uploadPdfOrLink = async () => {
     const body = {
       type: "link",
       programId: draftProgramId,
       id: currentEditing?.id ?? undefined,
       link: docsLink,
-      name: docsLink?.split(".com")[1],
+      name: name?.length === 0 ? docsLink?.split(".com")[1] : name,
     };
 
     await createSection(body)
@@ -78,6 +80,7 @@ export default function CreateLinkChapter({
                 type: body.type,
                 id: payload?.data?.id,
                 link: payload?.data?.link,
+                name: payload?.data?.name,
               },
             ]),
           );
@@ -101,6 +104,7 @@ export default function CreateLinkChapter({
       programId: draftProgramId,
       id: currentEditing?.id ?? undefined,
       link: docsLink,
+      name,
     };
 
     await editSection(body)
@@ -143,7 +147,7 @@ export default function CreateLinkChapter({
     <div
       className={`relative flex  flex-col ${
         fromLibrary
-          ? "h-full w-full items-center justify-center"
+          ? "h-full w-full items-center justify-start"
           : "ml-auto min-h-[50vh] w-[calc(100%_-_330px)]"
       }`}
     >
@@ -187,48 +191,65 @@ export default function CreateLinkChapter({
       )}
       {showLinkPreview && <GoogleDocumentViewer link={docsLink as string} />}
 
-      <div className="mt-8 flex h-max w-full justify-center gap-8">
-        <button
-          disabled={!showLinkPreview || editingSection || creatingSection}
-          onClick={() => {
-            {
-              if (currentEditing) {
-                updatePdfOrLink();
-              } else {
-                uploadPdfOrLink();
+      {showLinkPreview && (
+        <div className="flex w-full flex-col gap-2">
+          <label htmlFor="name">Chapter Name</label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Enter chapter name"
+            className="common-input"
+          />
+        </div>
+      )}
+
+      {showLinkPreview && (
+        <div className="mt-8 flex h-max w-full justify-center gap-8 pb-8">
+          <button
+            disabled={editingSection || creatingSection || !docsLink}
+            onClick={() => {
+              {
+                if (currentEditing) {
+                  updatePdfOrLink();
+                } else {
+                  uploadPdfOrLink();
+                }
               }
-            }
-          }}
-          className="h-max w-max rounded-md bg-green-500 px-8 py-1.5 text-sm font-semibold text-white"
-        >
-          {editingSection || creatingSection
-            ? "Saving..."
-            : currentEditing
-            ? "Save Changes"
-            : "Save Chapter"}
-        </button>
-        <button
-          disabled={!currentEditing}
-          onClick={() => setShowDeleteModal(currentEditing?.id as string)}
-          className="rounded-md bg-red-500 px-8 py-1.5 text-sm font-medium text-white"
-        >
-          Delete Chapter
-        </button>
-        <button
-          onClick={() => {
-            setShowLinkPreview(false);
-            setShowPreview(false);
-            setDocsLink("");
-            setLink("");
-            setActiveContentType("");
-            close && close();
-          }}
-          disabled={editingSection || creatingSection}
-          className="rounded-md border-[1px] border-gray-400 bg-transparent px-8 py-1.5 text-sm font-medium text-gray-500"
-        >
-          Close Chapter
-        </button>
-      </div>
+            }}
+            className="h-max w-max rounded-md bg-green-500 px-8 py-1.5 text-sm font-semibold text-white"
+          >
+            {editingSection || creatingSection
+              ? "Saving..."
+              : currentEditing
+              ? "Save Changes"
+              : "Save Chapter"}
+          </button>
+          <button
+            disabled={!currentEditing}
+            onClick={() => setShowDeleteModal(currentEditing?.id as string)}
+            className="rounded-md bg-red-500 px-8 py-1.5 text-sm font-medium text-white"
+          >
+            Delete Chapter
+          </button>
+          <button
+            onClick={() => {
+              setShowLinkPreview(false);
+              setShowPreview(false);
+              setDocsLink("");
+              setLink("");
+              setActiveContentType("");
+              close && close();
+            }}
+            disabled={editingSection || creatingSection}
+            className="rounded-md border-[1px] border-gray-400 bg-transparent px-8 py-1.5 text-sm font-medium text-gray-500"
+          >
+            Close Chapter
+          </button>
+        </div>
+      )}
     </div>
   );
 }

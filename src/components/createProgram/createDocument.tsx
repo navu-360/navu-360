@@ -69,6 +69,8 @@ export default function CreateDocumentChapter({
 
   const [uploading, setUploading] = useState(false);
 
+  const [name, setName] = useState(currentEditing?.name ?? "");
+
   const uploadPdfOrLink = async () => {
     setUploading(true);
     const res = await uploadOne(uploadedDocument as File);
@@ -79,7 +81,12 @@ export default function CreateDocumentChapter({
       programId: draftProgramId,
       id: currentEditing?.id ?? undefined,
       link: res?.file?.url,
-      name: uploadedDocument instanceof File ? uploadedDocument?.name : undefined,
+      name:
+        name?.length === 0
+          ? uploadedDocument instanceof File
+            ? uploadedDocument?.name
+            : name
+          : name,
     };
 
     await createSection(body)
@@ -96,6 +103,7 @@ export default function CreateDocumentChapter({
                 type: body.type,
                 id: payload?.data?.id,
                 link: payload?.data?.link,
+                name: payload?.data?.name,
               },
             ]),
           );
@@ -113,23 +121,21 @@ export default function CreateDocumentChapter({
       });
   };
 
-  const updatePdfOrLink = async (isPdf = false) => {
-    isPdf && setUploading(true);
-    const res = isPdf
-      ? uploadedDocument instanceof File
+  const updatePdfOrLink = async () => {
+    setUploading(true);
+    const res =
+      uploadedDocument instanceof File
         ? await uploadOne(uploadedDocument as File)
-        : false
-      : false;
+        : false;
+
     setUploading(false);
 
-    if (isPdf && !res) return;
-
     const body = {
-      type: isPdf ? "document" : "link",
+      type: "document",
       programId: draftProgramId,
       id: currentEditing?.id ?? undefined,
-      // @ts-ignore
-      link: isPdf ? res?.file?.url : docsLink,
+      link: res ? res?.file?.url : uploadedDocument,
+      name,
     };
 
     await editSection(body)
@@ -254,7 +260,19 @@ export default function CreateDocumentChapter({
           </label>
         </div>
       )}
-      <div className="flex w-full justify-start gap-8">
+      <div className="flex w-full flex-col gap-2">
+        <label htmlFor="name">Chapter Name</label>
+        <input
+          type="text"
+          name="name"
+          id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Enter chapter name"
+          className="common-input"
+        />
+      </div>
+      <div className="flex w-full justify-start gap-8 pb-8">
         <button
           disabled={
             !uploadedDocument || editingSection || creatingSection || uploading

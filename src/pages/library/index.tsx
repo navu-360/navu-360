@@ -27,8 +27,6 @@ export default function MyLibrary() {
 
   const [showDropdown, setShowDropdown] = useState(false);
 
-  console.log(data?.data);
-
   const [showCreateBlock, setShowCreateBlock] = useState(false);
   const [showCreateDocument, setShowCreateDocument] = useState(false);
   const [showCreateVideo, setShowCreateVideo] = useState(false);
@@ -112,6 +110,8 @@ export default function MyLibrary() {
   >();
 
   const [blockContent, setBlockContent] = useState<OutputData>();
+
+  console.log("blockContent -", blockContent);
 
   useEffect(() => {
     setClientReady(true);
@@ -212,8 +212,28 @@ export default function MyLibrary() {
                         created={block.createdAt}
                         updated={block.updatedAt}
                         view={() => {
+                          setActiveContentType(undefined);
                           setCurrentEditing(block);
-                          setShowCreateBlock(true);
+
+                          if (block?.type === "block") {
+                            setBlockContent(
+                              JSON.parse(block?.content as string),
+                            );
+                            setShowCreateBlock(true);
+                          }
+                          if (block?.type === "document") {
+                            setUploadedDocument(block?.link as string);
+                            setShowCreateDocument(true);
+                          }
+                          if (block?.type === "video") {
+                            setUploadedVideo(block?.link as string);
+                            setShowCreateVideo(true);
+                          }
+                          if (block?.type === "link") {
+                            setDocsLink(block?.link as string);
+                            setShowLinkPreview(true);
+                            setShowCreateLink(true);
+                          }
                         }}
                       />
                     ),
@@ -259,7 +279,7 @@ export default function MyLibrary() {
 
         {showCreateBlock && (
           <div className="fixed inset-0 z-[200] flex h-screen w-screen items-center justify-center bg-black/50 backdrop-blur-sm">
-            <div className="relative h-[90vh] max-h-[700px] w-[80vw] max-w-[1200px] rounded-lg bg-white p-4">
+            <div className="relative h-[90vh] max-h-[700px] w-[80vw] max-w-[1200px] overflow-y-auto rounded-lg bg-white p-4 pb-8">
               <CreateBlockChapter
                 currentEditing={currentEditing}
                 setShowDeleteModal={setShowDeleteModal}
@@ -267,14 +287,17 @@ export default function MyLibrary() {
                 content={blockContent}
                 setContent={setBlockContent}
                 fromLibrary
-                close={() => setShowCreateBlock(false)}
+                close={() => {
+                  setShowCreateBlock(false);
+                  setBlockContent(undefined);
+                }}
               />
             </div>
           </div>
         )}
         {showCreateDocument && (
           <div className="fixed inset-0 z-[200] flex h-screen w-screen items-center justify-center bg-black/50 backdrop-blur-sm">
-            <div className="relative h-[90vh] max-h-[700px] w-[80vw] max-w-[1200px] rounded-lg bg-white p-4">
+            <div className="relative h-[90vh] max-h-[700px] w-[80vw] max-w-[1200px] overflow-y-auto rounded-lg bg-white p-4">
               <CreateDocumentChapter
                 currentEditing={currentEditing}
                 setShowDeleteModal={setShowDeleteModal}
@@ -282,14 +305,18 @@ export default function MyLibrary() {
                 uploadedDoc={uploadedDocument}
                 setDoc={setUploadedDocument}
                 fromLibrary
-                close={() => setShowCreateDocument(false)}
+                close={() => {
+                  setShowCreateDocument(false);
+                  setUploadedDocument(undefined);
+                  setBlockContent(undefined);
+                }}
               />
             </div>
           </div>
         )}
         {showCreateVideo && (
           <div className="fixed inset-0 z-[200] flex h-screen w-screen items-center justify-center bg-black/50 backdrop-blur-sm">
-            <div className="relative h-[90vh] max-h-[700px] w-[80vw] max-w-[1200px] rounded-lg bg-white p-4">
+            <div className="relative h-[90vh] max-h-[700px] w-[80vw] max-w-[1200px] overflow-y-auto rounded-lg bg-white p-4">
               <CreateVideoChapter
                 currentEditing={currentEditing}
                 setShowDeleteModal={setShowDeleteModal}
@@ -297,14 +324,18 @@ export default function MyLibrary() {
                 video={uploadedVideo}
                 setVideo={setUploadedVideo}
                 fromLibrary
-                close={() => setShowCreateVideo(false)}
+                close={() => {
+                  setShowCreateVideo(false);
+                  setUploadedVideo(undefined);
+                  setBlockContent(undefined);
+                }}
               />
             </div>
           </div>
         )}
         {showCreateLink && (
           <div className="fixed inset-0 z-[200] flex h-screen w-screen items-center justify-center bg-black/50 backdrop-blur-sm">
-            <div className="relative h-[90vh] max-h-[700px] w-[80vw] max-w-[1200px] rounded-lg bg-white p-4">
+            <div className="relative h-[90vh] max-h-[700px] w-[80vw] max-w-[1200px] overflow-y-auto rounded-lg bg-white p-4">
               <CreateLinkChapter
                 currentEditing={currentEditing}
                 setShowDeleteModal={setShowDeleteModal}
@@ -314,7 +345,11 @@ export default function MyLibrary() {
                 showPreview={showLinkPreview}
                 setShowPreview={setShowLinkPreview}
                 fromLibrary
-                close={() => setShowCreateLink(false)}
+                close={() => {
+                  setShowCreateLink(false);
+                  setDocsLink(undefined);
+                  setBlockContent(undefined);
+                }}
               />
             </div>
           </div>

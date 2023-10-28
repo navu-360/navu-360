@@ -205,6 +205,7 @@ export function CreateProgramContent({
             <OneCreatedSection
               key={section?.id}
               type={section?.type}
+              name={section?.name as string}
               total={createSectionIds?.length}
               index={i}
               svg={getActiveTypeSvg(section?.type)}

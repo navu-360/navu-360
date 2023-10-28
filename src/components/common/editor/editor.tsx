@@ -22,6 +22,8 @@ function MyEditor({
 
   const [outputData, setOutputData] = React.useState<OutputData | null>(null);
 
+  console.log("outputData -", outputData);
+
   useEffect(() => {
     if (initialData?.blocks?.length === 0) return;
     setOutputData(initialData);

@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCreateSectionIds } from "redux/common/commonSlice";
 import toaster from "utils/toaster";
 import type { ProgramSection } from "@prisma/client";
+
 const MyEditor = dynamic(() => import("components/common/editor/editor"), {
   ssr: false,
 });
@@ -60,13 +61,18 @@ export default function CreateBlockChapter({
     return text.slice(0, 100);
   };
 
+  const [name, setName] = useState(currentEditing?.name ?? "");
+
   const createBlockSection = async (isCreate = false) => {
     const body = {
       type: "block",
       content: JSON.stringify(blockContent),
       programId: draftProgramId,
       id: currentEditing?.id ?? undefined,
-      name: getFirst100Characters(JSON.stringify(blockContent)),
+      name:
+        name?.length === 0
+          ? getFirst100Characters(JSON.stringify(blockContent))
+          : name,
     };
 
     isCreate
@@ -82,6 +88,7 @@ export default function CreateBlockChapter({
                     type: body.type,
                     id: payload?.data?.id,
                     content: JSON.stringify(payload?.data?.content ?? []),
+                    name: payload?.data?.name,
                   },
                 ]),
               );
@@ -119,19 +126,30 @@ export default function CreateBlockChapter({
     <div
       className={`relative flex  flex-col ${
         fromLibrary
-          ? "h-full w-full"
-          : "ml-auto min-h-[50vh] w-[calc(100%_-_330px)]"
+          ? "h-full w-full gap-8 pb-8"
+          : "ml-auto min-h-[50vh] w-[calc(100%_-_330px)] gap-8"
       }`}
     >
-      <MyEditor
-        getData={save}
-        receiveData={(data: OutputData) => {
-          setBlockContent(data);
-          setContent(data);
-        }}
-        initialData={blockContent ?? { blocks: [] }}
+      <Editor
+        save={save}
+        setBlockContent={setBlockContent}
+        setContent={setContent}
+        blockContent={blockContent}
       />
-      <div className="flex w-full justify-start gap-8">
+      <div className="flex w-full flex-col gap-2">
+        <label htmlFor="name">Chapter Name</label>
+        <input
+          type="text"
+          name="name"
+          id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Enter chapter name"
+          className="common-input"
+        />
+      </div>
+
+      <div className="flex w-full justify-start gap-8 pb-8">
         <button
           disabled={
             blockContent?.blocks?.length === 0 ||
@@ -179,5 +197,28 @@ export default function CreateBlockChapter({
         </button>
       </div>
     </div>
+  );
+}
+
+function Editor({
+  save,
+  setBlockContent,
+  setContent,
+  blockContent,
+}: {
+  save: boolean;
+  setBlockContent: (val: OutputData) => void;
+  setContent: (val: OutputData) => void;
+  blockContent: OutputData | undefined;
+}) {
+  return (
+    <MyEditor
+      getData={save}
+      receiveData={(data: OutputData) => {
+        setBlockContent(data);
+        setContent(data);
+      }}
+      initialData={blockContent ?? { blocks: [] }}
+    />
   );
 }
