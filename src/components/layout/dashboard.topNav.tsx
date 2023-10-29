@@ -1,11 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
-import type { User } from "@prisma/client";
+import type { OnboardingProgram, ProgramSection, User } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserProfile } from "redux/auth/authSlice";
+import {
+  setResultsChapters,
+  setResultsCourses,
+  setResultsTalents,
+  setSearchQuery,
+} from "redux/common/commonSlice";
 import { generateAvatar } from "utils/avatar";
+import useDebounce from "utils/useDebounce";
 
 export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
   const { data: session } = useSession();
@@ -35,6 +43,58 @@ export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
+  const searchQuery = useSelector((state: any) => state.common.searchQuery);
+
+  // @ts-ignore
+  const debouncedValue: string = useDebounce(searchQuery, 500);
+
+  const allEnrolledTalents = useSelector(
+    (state: any) => state.common.allEnrolledTalents,
+  );
+  const allCourses = useSelector((state: any) => state.common.allCourses);
+  const allLibraryChapters = useSelector(
+    (state: any) => state.common.allLibraryChapters,
+  );
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (debouncedValue?.length > 0) {
+      // to search: allEnrolledTalents, allCourses, allLibraryChapters
+      // allEnrolledTalents - we check field name
+      if (allEnrolledTalents?.length > 0) {
+        const filtered = allEnrolledTalents.filter(
+          (talent: User) =>
+            talent?.name?.toLowerCase().includes(debouncedValue?.toLowerCase()),
+        );
+        dispatch(setResultsTalents(filtered));
+      }
+      // allCourses - we check field name
+      if (allCourses?.length > 0) {
+        const filtered = allCourses.filter(
+          (course: OnboardingProgram) =>
+            course?.name?.toLowerCase().includes(debouncedValue?.toLowerCase()),
+        );
+        dispatch(setResultsCourses(filtered));
+      }
+      // allLibraryChapters - we check field name
+      if (allLibraryChapters?.length > 0) {
+        const filtered = allLibraryChapters.filter(
+          (chapter: ProgramSection) =>
+            chapter?.name
+              ?.toLowerCase()
+              .includes(debouncedValue?.toLowerCase()),
+        );
+        dispatch(setResultsChapters(filtered));
+      }
+    }
+  }, [
+    debouncedValue,
+    allEnrolledTalents,
+    allCourses,
+    allLibraryChapters,
+    dispatch,
+  ]);
+
   return (
     <header className="fixed left-[80px] top-0 z-[100] flex h-[75px] w-full items-center bg-white py-2 md:left-[200px]">
       {!hideSearch && (
@@ -47,7 +107,10 @@ export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
             name="search"
             id="search"
             required
-            minLength={3}
+            value={searchQuery}
+            onChange={(e) => {
+              dispatch(setSearchQuery(e.target.value));
+            }}
             className="h-full w-4/5 rounded-md bg-white text-base font-medium tracking-tight focus:outline-none"
             placeholder="Search for courses, chapters or people ..."
           />

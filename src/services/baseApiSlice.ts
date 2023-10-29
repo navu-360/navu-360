@@ -50,7 +50,6 @@ export const baseApiSlice = createApi({
 
     getAllTalents: builder.query({
       query: () => `users/orgTalents`,
-      // keepUnusedDataFor: 60 * 10, // 10 minutes,
     }),
 
     // Organization endpoints

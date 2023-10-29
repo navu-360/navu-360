@@ -17,6 +17,7 @@ import { DeleteConfirmModal } from "components/dashboard/confirmDeleteProgram";
 import { useRouter } from "next/router";
 import SelectTemplate from "components/dashboard/selectTemplate";
 import { resetCommon, setDraftProgramId } from "redux/common/commonSlice";
+import SearchResults from "components/common/searchResults";
 
 export default function Programs() {
   const orgId = useSelector(
@@ -56,75 +57,81 @@ export default function Programs() {
 
   const router = useRouter();
 
+  const searchQuery = useSelector((state: any) => state.common.searchQuery);
+
   if (!isReady) return null;
 
   return (
     <>
       <Header title={`All Training Programs - Navu360`} />
       <DashboardWrapper>
-        <div className="relative ml-[80px] mt-[3rem] flex h-full flex-col items-center justify-center gap-8 pb-16 pt-20 md:ml-[250px] 2xl:ml-[250px]">
-          <div className="absolute left-0 top-0 flex w-max flex-col gap-0 text-left">
-            <h1 className="text-xl font-bold text-tertiary">Courses</h1>
-          </div>
-          <button
-            onClick={() => router.push("/create/program")}
-            className="absolute right-12 top-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary/90 focus:outline-none focus:ring-4 md:mr-0"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="h-6 w-6"
+        {searchQuery?.length > 0 ? (
+          <SearchResults />
+        ) : (
+          <div className="relative ml-[80px] mt-[3rem] flex h-full flex-col items-center justify-center gap-8 pb-16 pt-20 md:ml-[250px] 2xl:ml-[250px]">
+            <div className="absolute left-0 top-0 flex w-max flex-col gap-0 text-left">
+              <h1 className="text-xl font-bold text-tertiary">Courses</h1>
+            </div>
+            <button
+              onClick={() => router.push("/create/program")}
+              className="absolute right-12 top-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary/90 focus:outline-none focus:ring-4 md:mr-0"
             >
-              <path
-                fillRule="evenodd"
-                d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
-                clipRule="evenodd"
-              />
-            </svg>
-
-            <span>Create Course</span>
-          </button>
-          {programsArray?.length === 0 && (
-            <div className="flex min-h-[70vh] w-full items-center justify-center gap-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
-                fill="#9d2a57"
-                className="h-8 w-8"
+                fill="currentColor"
+                className="h-6 w-6"
               >
                 <path
                   fillRule="evenodd"
-                  d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z"
+                  d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
                   clipRule="evenodd"
                 />
               </svg>
-              <p>You have no courses yet.</p>
-            </div>
-          )}
-          {programsArray?.length > 0 && (
-            <div className="flex w-full flex-wrap justify-center gap-8 md:justify-start">
-              {programsArray?.map((program, i) => (
-                <OneProgramCard
-                  key={program.id}
-                  program={program}
-                  delay={i * 0.05}
-                  deleteProgram={(id) => setShowDeleteProgramModal(id)}
-                />
-              ))}
-            </div>
-          )}
-          {!data && (
-            <div className="flex w-full flex-wrap justify-center gap-8 md:justify-start">
-              <ProgramShimmer />
-              <ProgramShimmer />
-              <ProgramShimmer />
-              <ProgramShimmer />
-              <ProgramShimmer />
-              <ProgramShimmer />
-            </div>
-          )}
-        </div>
+
+              <span>Create Course</span>
+            </button>
+            {programsArray?.length === 0 && (
+              <div className="flex min-h-[70vh] w-full items-center justify-center gap-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="#9d2a57"
+                  className="h-8 w-8"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <p>You have no courses yet.</p>
+              </div>
+            )}
+            {programsArray?.length > 0 && (
+              <div className="flex w-full flex-wrap justify-center gap-8 md:justify-start">
+                {programsArray?.map((program, i) => (
+                  <OneProgramCard
+                    key={program.id}
+                    program={program}
+                    delay={i * 0.05}
+                    deleteProgram={(id) => setShowDeleteProgramModal(id)}
+                  />
+                ))}
+              </div>
+            )}
+            {!data && (
+              <div className="flex w-full flex-wrap justify-center gap-8 md:justify-start">
+                <ProgramShimmer />
+                <ProgramShimmer />
+                <ProgramShimmer />
+                <ProgramShimmer />
+                <ProgramShimmer />
+                <ProgramShimmer />
+              </div>
+            )}
+          </div>
+        )}
         <AnimatePresence>
           {showDeleteProgramModal && (
             <DeleteConfirmModal

@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { OutputData } from "@editorjs/editorjs";
 import type { Organization, ProgramSection } from "@prisma/client";
 import Header from "components/common/head";
+import SearchResults from "components/common/searchResults";
 import CreateBlockChapter from "components/createProgram/createBlock";
 import CreateDocumentChapter from "components/createProgram/createDocument";
 import CreateLinkChapter from "components/createProgram/createLink";
@@ -14,6 +16,7 @@ import ChapterCard, {
 import { LibraryDropDown } from "components/library/dropdown";
 import { DeleteSection } from "components/programs/confirmDeleteSection";
 import { AnimatePresence } from "framer-motion";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { resetCommon, setDraftProgramId } from "redux/common/commonSlice";
@@ -125,149 +128,202 @@ export default function MyLibrary() {
     setClientReady(true);
   }, []);
 
+  const searchQuery = useSelector((state: any) => state.common.searchQuery);
+
+  const router = useRouter();
+  const { id } = router.query;
+
+  useEffect(() => {
+    // we search for a chapter using id then based on the type, we set the currentEditing
+    if (id && data?.data) {
+      const foundChapter = data?.data?.find(
+        (chapter: ProgramSection) => chapter.id === id,
+      );
+      if (foundChapter) {
+        setCurrentEditing(foundChapter);
+        if (foundChapter?.type === "block") {
+          setBlockContent(JSON.parse(foundChapter?.content as string));
+          setActiveContentType("block");
+          setShowCreateBlock(true);
+        }
+        if (foundChapter?.type === "document") {
+          setUploadedDocument(foundChapter?.link as string);
+          setActiveContentType("document");
+          setShowCreateDocument(true);
+        }
+        if (foundChapter?.type === "video") {
+          setUploadedVideo(foundChapter?.link as string);
+          setActiveContentType("video");
+          setShowCreateVideo(true);
+        }
+        if (foundChapter?.type === "link") {
+          setDocsLink(foundChapter?.link as string);
+          setActiveContentType("link");
+          setShowLinkPreview(true);
+        }
+      }
+    }
+  }, [id, data?.data]);
+
+  const removeQueryParams = () => {
+    router.replace(
+      {
+        pathname: router.pathname,
+      },
+      undefined,
+      { shallow: true },
+    );
+  };
+
   if (!clientReady) return null;
 
   return (
     <>
       <Header title={`Library - Navu360`} />
       <DashboardWrapper>
-        <div className="relative ml-[80px] mt-[3rem] flex h-full flex-col items-center justify-center gap-8 pb-16 pr-4 pt-[5rem] md:ml-[250px] 2xl:ml-[250px]">
-          <div className="absolute left-0 top-0 flex w-max flex-col gap-0 text-left">
-            <h1 className="text-xl font-bold text-tertiary">My Library</h1>
-          </div>
-          {data?.data?.length > 0 && (
-            <button
-              onClick={() => setShowDropdown(true)}
-              className="absolute right-12 top-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary/90 focus:outline-none focus:ring-4 md:mr-0"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="h-6 w-6"
+        {searchQuery?.length > 0 ? (
+          <SearchResults />
+        ) : (
+          <div className="relative ml-[80px] mt-[3rem] flex h-full flex-col items-center justify-center gap-8 pb-16 pr-4 pt-[5rem] md:ml-[250px] 2xl:ml-[250px]">
+            <div className="absolute left-0 top-0 flex w-max flex-col gap-0 text-left">
+              <h1 className="text-xl font-bold text-tertiary">My Library</h1>
+            </div>
+            {data?.data?.length > 0 && (
+              <button
+                onClick={() => setShowDropdown(true)}
+                className="absolute right-12 top-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary/90 focus:outline-none focus:ring-4 md:mr-0"
               >
-                <path
-                  fillRule="evenodd"
-                  d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
-                  clipRule="evenodd"
-                />
-              </svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="h-6 w-6"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
+                    clipRule="evenodd"
+                  />
+                </svg>
 
-              <span>Create Chapter</span>
-            </button>
-          )}
-          {data?.data?.length === 0 && (
-            <NoLibraryItems
-              orgName={organizationData?.name}
-              createChapter={() => setShowDropdown(true)}
-            />
-          )}
-          {data?.data?.length > 0 && (
-            <div className="no-scrollbar w-full overflow-auto border-b border-gray-300">
-              <ul className="no-scrollbar -mb-px flex w-max flex-wrap items-end overflow-x-auto text-center text-sm font-semibold text-gray-400">
-                {createChapterOptions.map((tab, i) => (
-                  <li
-                    className={`mr-2 rounded-md pt-2 ${
-                      tab.type === activeTab ? "bg-gray-200" : "bg-transparent"
-                    }`}
-                    onClick={() => {
-                      setActiveTab(tab.type);
-                    }}
-                    key={i}
-                  >
-                    <button
-                      className={`group inline-flex shrink-0 items-center justify-center gap-4 rounded-t-lg !border-b-[5px] p-4 py-0 pb-1 pr-8  ${
+                <span>Create Chapter</span>
+              </button>
+            )}
+            {data?.data?.length === 0 && (
+              <NoLibraryItems
+                orgName={organizationData?.name}
+                createChapter={() => setShowDropdown(true)}
+              />
+            )}
+            {data?.data?.length > 0 && (
+              <div className="no-scrollbar w-full overflow-auto border-b border-gray-300">
+                <ul className="no-scrollbar -mb-px flex w-max flex-wrap items-end overflow-x-auto text-center text-sm font-semibold text-gray-400">
+                  {createChapterOptions.map((tab, i) => (
+                    <li
+                      className={`mr-2 rounded-md pt-2 ${
                         tab.type === activeTab
-                          ? "border-secondary text-secondary"
-                          : "border-transparent  text-gray-600"
+                          ? "bg-gray-200"
+                          : "bg-transparent"
                       }`}
+                      onClick={() => {
+                        setActiveTab(tab.type);
+                      }}
+                      key={i}
                     >
-                      {tab.icon}
-                      {tab.displayName}
-                      <span
-                        className={`text-white-50 ml-1 flex h-5 w-5 items-center justify-center rounded-full text-xs font-semibold ${
+                      <button
+                        className={`group inline-flex shrink-0 items-center justify-center gap-4 rounded-t-lg !border-b-[5px] p-4 py-0 pb-1 pr-8  ${
                           tab.type === activeTab
-                            ? "bg-secondary text-white"
-                            : "bg-gray-200 text-gray-700"
+                            ? "border-secondary text-secondary"
+                            : "border-transparent  text-gray-600"
                         }`}
                       >
-                        {getChaptersForType(tab.type)?.length}
-                      </span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+                        {tab.icon}
+                        {tab.displayName}
+                        <span
+                          className={`text-white-50 ml-1 flex h-5 w-5 items-center justify-center rounded-full text-xs font-semibold ${
+                            tab.type === activeTab
+                              ? "bg-secondary text-white"
+                              : "bg-gray-200 text-gray-700"
+                          }`}
+                        >
+                          {getChaptersForType(tab.type)?.length}
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
-          {data?.data?.length > 0 && (
-            <div className="w-full">
-              {getChaptersForType(activeTab)?.length === 0 && (
-                <div className="mx-auto mt-32 flex w-[500px] flex-col gap-4">
-                  <p className="text-center font-medium text-gray-600">
-                    You have no{" "}
-                    <span className="font-semibold capitalize">
-                      {activeTab}
-                    </span>{" "}
-                    chapters. Click the button above to create your first{" "}
-                    <span className="font-semibold capitalize">
-                      {activeTab}
-                    </span>{" "}
-                    chapter.
-                  </p>
-                </div>
-              )}
-              {getChaptersForType(activeTab).length > 0 && (
-                <div className="grid w-full grid-cols-3 gap-4">
-                  {getChaptersForType(activeTab).map(
-                    (block: ProgramSection, index: number) => (
-                      <ChapterCard
-                        key={block.id}
-                        delay={index * 0.1}
-                        name={block.name as string}
-                        created={block.createdAt}
-                        updated={block.updatedAt}
-                        view={() => {
-                          setActiveContentType(undefined);
-                          setCurrentEditing(block);
+            {data?.data?.length > 0 && (
+              <div className="w-full">
+                {getChaptersForType(activeTab)?.length === 0 && (
+                  <div className="mx-auto mt-32 flex w-[500px] flex-col gap-4">
+                    <p className="text-center font-medium text-gray-600">
+                      You have no{" "}
+                      <span className="font-semibold capitalize">
+                        {activeTab}
+                      </span>{" "}
+                      chapters. Click the button above to create your first{" "}
+                      <span className="font-semibold capitalize">
+                        {activeTab}
+                      </span>{" "}
+                      chapter.
+                    </p>
+                  </div>
+                )}
+                {getChaptersForType(activeTab).length > 0 && (
+                  <div className="grid w-full grid-cols-3 gap-4">
+                    {getChaptersForType(activeTab).map(
+                      (block: ProgramSection, index: number) => (
+                        <ChapterCard
+                          key={block.id}
+                          delay={index * 0.1}
+                          name={block.name as string}
+                          created={block.createdAt}
+                          updated={block.updatedAt}
+                          view={() => {
+                            setActiveContentType(undefined);
+                            setCurrentEditing(block);
 
-                          if (block?.type === "block") {
-                            setBlockContent(
-                              JSON.parse(block?.content as string),
-                            );
-                            setShowCreateBlock(true);
-                          }
-                          if (block?.type === "document") {
-                            setUploadedDocument(block?.link as string);
-                            setShowCreateDocument(true);
-                          }
-                          if (block?.type === "video") {
-                            setUploadedVideo(block?.link as string);
-                            setShowCreateVideo(true);
-                          }
-                          if (block?.type === "link") {
-                            setDocsLink(block?.link as string);
-                            setShowLinkPreview(true);
-                            setShowCreateLink(true);
-                          }
-                        }}
-                      />
-                    ),
-                  )}
-                </div>
-              )}
-            </div>
-          )}
+                            if (block?.type === "block") {
+                              setBlockContent(
+                                JSON.parse(block?.content as string),
+                              );
+                              setShowCreateBlock(true);
+                            }
+                            if (block?.type === "document") {
+                              setUploadedDocument(block?.link as string);
+                              setShowCreateDocument(true);
+                            }
+                            if (block?.type === "video") {
+                              setUploadedVideo(block?.link as string);
+                              setShowCreateVideo(true);
+                            }
+                            if (block?.type === "link") {
+                              setDocsLink(block?.link as string);
+                              setShowLinkPreview(true);
+                              setShowCreateLink(true);
+                            }
+                          }}
+                        />
+                      ),
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
 
-          {!data && (
-            <div className="grid w-full grid-cols-3 gap-4">
-              <ShimmerChapter />
-              <ShimmerChapter />
-              <ShimmerChapter />
-              <ShimmerChapter />
-            </div>
-          )}
-        </div>
+            {!data && (
+              <div className="grid w-full grid-cols-3 gap-4">
+                <ShimmerChapter />
+                <ShimmerChapter />
+                <ShimmerChapter />
+                <ShimmerChapter />
+              </div>
+            )}
+          </div>
+        )}
 
         <AnimatePresence>
           {showDropdown && (
@@ -301,6 +357,9 @@ export default function MyLibrary() {
               }
               setShowDeleteModal("");
               refetch();
+              if (id) {
+                removeQueryParams();
+              }
             }}
             addedToLib={() => {
               if (currentEditing?.id === showDeleteModal) {
@@ -320,6 +379,9 @@ export default function MyLibrary() {
               }
               setShowDeleteModal("");
               refetch();
+              if (id) {
+                removeQueryParams();
+              }
             }}
           />
         )}
@@ -338,6 +400,9 @@ export default function MyLibrary() {
                   setShowCreateBlock(false);
                   setBlockContent(undefined);
                   refetch();
+                  if (id) {
+                    removeQueryParams();
+                  }
                 }}
               />
             </div>
@@ -358,6 +423,9 @@ export default function MyLibrary() {
                   setUploadedDocument(undefined);
                   setBlockContent(undefined);
                   refetch();
+                  if (id) {
+                    removeQueryParams();
+                  }
                 }}
               />
             </div>
@@ -378,6 +446,9 @@ export default function MyLibrary() {
                   setUploadedVideo(undefined);
                   setBlockContent(undefined);
                   refetch();
+                  if (id) {
+                    removeQueryParams();
+                  }
                 }}
               />
             </div>
@@ -400,6 +471,9 @@ export default function MyLibrary() {
                   setDocsLink(undefined);
                   setBlockContent(undefined);
                   refetch();
+                  if (id) {
+                    removeQueryParams();
+                  }
                 }}
               />
             </div>

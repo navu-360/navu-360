@@ -7,6 +7,16 @@ import { signOut, useSession } from "next-auth/react";
 import { useDispatch, useSelector } from "react-redux";
 import type { User } from "@prisma/client";
 import { resetAuth } from "redux/auth/authSlice";
+import {
+  useGetAllTalentsQuery,
+  useGetLibraryChaptersQuery,
+  useGetOrganizationProgramsQuery,
+} from "services/baseApiSlice";
+import {
+  setAllCourses,
+  setAllEnrolledTalents,
+  setAllLibraryChapters,
+} from "redux/common/commonSlice";
 
 export default function AdminNav({
   showInviteTalent,
@@ -25,7 +35,35 @@ export default function AdminNav({
     (state: { auth: { userProfile: User } }) => state.auth.userProfile,
   );
 
+  const orgId = useSelector(
+    (state: { auth: { orgId: string } }) => state.auth.orgId,
+  );
+
   const { data: session } = useSession();
+
+  // get all talents
+  const { data: allUsers } = useGetAllTalentsQuery(undefined);
+  // get courses
+  const { data: courses } = useGetOrganizationProgramsQuery(orgId, {
+    skip: !orgId,
+  });
+  // get chapters for Library
+  const { currentData: chapters } = useGetLibraryChaptersQuery(undefined);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (allUsers?.data?.length > 0) {
+      dispatch(setAllEnrolledTalents(allUsers?.data));
+    }
+    if (courses?.data?.length > 0) {
+      dispatch(setAllCourses(courses?.data));
+    }
+    if (chapters?.data?.length > 0) {
+      dispatch(setAllLibraryChapters(chapters?.data));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allUsers, courses, chapters, router.pathname]);
 
   if (!isReady) return null;
 
