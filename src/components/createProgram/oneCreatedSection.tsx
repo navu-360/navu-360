@@ -30,7 +30,7 @@ export function OneCreatedSection({
       </div>
 
       <div className="flex w-full flex-col justify-start gap-4">
-        <span onClick={() => openEditMode()} className="text-base w-4/5 truncate font-semibold">
+        <span onClick={() => openEditMode()} className="text-base w-full truncate font-semibold">
           {name}
         </span>
         <div className="flex gap-6">

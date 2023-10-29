@@ -19,7 +19,7 @@ export function CreateQuiz() {
     <section className="flex w-full max-w-5xl flex-col gap-2 text-left">
       <h2 className="text-2xl font-semibold text-tertiary">Create Quiz</h2>
       <p className="max-w-xl text-sm font-medium text-gray-700">
-        You can add multiple questions to course quiz. When done adding
+        You can add multiple questions to the course quiz. When done adding
         questions, click on the &quot;View Course&quot; to finish.
       </p>
 
