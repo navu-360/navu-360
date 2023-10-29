@@ -200,19 +200,20 @@ export default function CreateProgram() {
     if (edit) {
       dispatch(setDraftProgramId(edit as string));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [edit]);
 
   useEffect(() => {
     if (edit && editingProgram?.data?.ProgramSection) {
       dispatch(setCreateSectionIds(editingProgram?.data?.ProgramSection));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editingProgram?.data?.ProgramSection, edit]);
 
   const [showDeleteProgramModal, setShowDeleteProgramModal] = useState("");
 
   const [noUnsavedChanges, setNoUnsavedChanges] = useState(true);
+  console.log(noUnsavedChanges);
 
   return (
     <>
@@ -253,26 +254,24 @@ export default function CreateProgram() {
                     }
                     if (activeTab === 0) {
                       if (!draftProgramId) {
-                        console.log("save step 1");
                         saveStepOne();
                       } else {
-                        console.log("update step 1");
                         updateStepOne();
                       }
                       return;
                     }
                     if (activeTab === 1) {
-                      if (createSectionIds?.length === 0) {
-                        toaster({
-                          status: "error",
-                          message: "Please add at least one section",
-                        });
-                        return;
-                      }
                       if (!noUnsavedChanges) {
                         toaster({
                           status: "error",
                           message: "Please save the chapter before continuing",
+                        });
+                        return;
+                      }
+                      if (createSectionIds?.length === 0) {
+                        toaster({
+                          status: "error",
+                          message: "Please add at least one section",
                         });
                         return;
                       }
