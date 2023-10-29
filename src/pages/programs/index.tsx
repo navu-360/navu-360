@@ -2,7 +2,6 @@
 /* eslint-disable @next/next/no-img-element */
 import type { OnboardingProgram } from "@prisma/client";
 import Header from "components/common/head";
-import Spinner from "components/common/spinner";
 import DashboardWrapper from "components/layout/dashboardWrapper";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
@@ -24,7 +23,7 @@ export default function Programs() {
     (state: { auth: { orgId: string } }) => state.auth.orgId,
   );
   // get organization programs
-  const { data, isFetching, refetch } = useGetOrganizationProgramsQuery(orgId, {
+  const { data, refetch } = useGetOrganizationProgramsQuery(orgId, {
     skip: !orgId,
     refetchOnMountOrArgChange: true,
   });
@@ -59,22 +58,6 @@ export default function Programs() {
 
   if (!isReady) return null;
 
-  if (isFetching && !data)
-    return (
-      <>
-        <Header title="All Training Programs - Loading ..." />
-        <DashboardWrapper hideSearch>
-          <div className="relative ml-[80px] mt-[20px] flex h-full flex-col items-center justify-center gap-8 md:ml-[300px]">
-            <div className="flex w-full flex-wrap gap-8">
-              <div className="flex min-h-[70vh] w-full items-center justify-center">
-                <Spinner />
-              </div>
-            </div>
-          </div>
-        </DashboardWrapper>
-      </>
-    );
-
   return (
     <>
       <Header title={`All Training Programs - Navu360`} />
@@ -85,7 +68,7 @@ export default function Programs() {
           </div>
           <button
             onClick={() => router.push("/create/program")}
-            className="absolute right-12 top-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-[#fa3264] focus:outline-none focus:ring-4 md:mr-0"
+            className="absolute right-12 top-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary/90 focus:outline-none focus:ring-4 md:mr-0"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -129,6 +112,16 @@ export default function Programs() {
                   deleteProgram={(id) => setShowDeleteProgramModal(id)}
                 />
               ))}
+            </div>
+          )}
+          {!data && (
+            <div className="flex w-full flex-wrap justify-center gap-8 md:justify-start">
+              <ProgramShimmer />
+              <ProgramShimmer />
+              <ProgramShimmer />
+              <ProgramShimmer />
+              <ProgramShimmer />
+              <ProgramShimmer />
             </div>
           )}
         </div>
@@ -356,6 +349,64 @@ export function OneProgramCard({
           </div>
         </div>
       </Link>
+    </motion.div>
+  );
+}
+
+function ProgramShimmer() {
+  return (
+    <motion.div
+      initial={{ y: 10 }}
+      transition={{ duration: 0.3, ease: "easeIn" }}
+      whileInView={{ y: 0 }}
+      className="stat-shadow"
+    >
+      <div className="relative flex h-[350px] w-[350px] flex-col gap-4 rounded-lg bg-white text-tertiary shadow-md">
+        <div className="relative flex h-[60px] w-full animate-pulse items-center gap-2 rounded-t-lg bg-gray-300 p-4 py-10"></div>
+
+        <div className="absolute bottom-4 right-4 flex flex-row-reverse items-center justify-end gap-6">
+          <div
+            id="delete1"
+            className="flex h-[35px] w-[35px] animate-pulse items-center justify-center rounded-full bg-gray-300 hover:bg-secondary/20"
+          ></div>
+
+          <div className="flex h-[35px] w-[35px] animate-pulse items-center justify-center rounded-full bg-gray-300 hover:bg-secondary/20"></div>
+        </div>
+
+        <div className="flex w-full flex-col gap-2">
+          <div className="flex w-full items-center gap-2 px-4">
+            <div
+              id="delete1"
+              className="flex h-[35px] w-[35px] animate-pulse items-center justify-center rounded-full bg-gray-300 hover:bg-secondary/20"
+            ></div>
+            <div className="h-7 w-4/5 animate-pulse bg-gray-300 text-xs font-medium"></div>
+          </div>
+          <div className="flex w-full items-center gap-2 px-4">
+            <div
+              id="delete1"
+              className="flex h-[35px] w-[35px] animate-pulse items-center justify-center rounded-full bg-gray-300 hover:bg-secondary/20"
+            ></div>
+            <div className="h-7 w-4/5 animate-pulse bg-gray-300 text-xs font-medium"></div>
+          </div>
+          <div className="flex w-full items-center gap-2 px-4">
+            <div
+              id="delete1"
+              className="flex h-[35px] w-[35px] animate-pulse items-center justify-center rounded-full bg-gray-300 hover:bg-secondary/20"
+            ></div>
+            <div className="h-7 w-4/5 animate-pulse bg-gray-300 text-xs font-medium"></div>
+          </div>
+        </div>
+        <div className="flex flex-col items-start gap-2 px-4">
+          <div className="h-6 w-1/2 animate-pulse bg-gray-300 text-xs font-medium"></div>
+          <div className="flex w-full items-center gap-4">
+            <div
+              id="delete1"
+              className="flex h-[50px] w-[50px] animate-pulse items-center justify-center rounded-full bg-gray-300 hover:bg-secondary/20"
+            ></div>
+            <div className="h-6 w-1/3 animate-pulse bg-gray-300 text-xs font-medium"></div>
+          </div>
+        </div>
+      </div>
     </motion.div>
   );
 }
