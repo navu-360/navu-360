@@ -61,7 +61,7 @@ export default function Programs() {
   return (
     <>
       <Header title={`All Training Programs - Navu360`} />
-      <DashboardWrapper hideSearch>
+      <DashboardWrapper>
         <div className="relative ml-[80px] mt-[3rem] flex h-full flex-col items-center justify-center gap-8 pb-16 pt-20 md:ml-[250px] 2xl:ml-[250px]">
           <div className="absolute left-0 top-0 flex w-max flex-col gap-0 text-left">
             <h1 className="text-xl font-bold text-tertiary">Courses</h1>

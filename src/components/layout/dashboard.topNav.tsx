@@ -34,37 +34,23 @@ export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
+
   return (
-    <header className="fixed left-[80px] top-0 z-[100] flex h-[75px] w-full bg-white py-2 md:left-[200px]">
+    <header className="fixed left-[80px] top-0 z-[100] flex h-[75px] w-full items-center bg-white py-2 md:left-[200px]">
       {!hideSearch && (
-        <form className="relative ml-4 h-full w-[50%] rounded-md bg-blue-700/10 px-4 py-2 pr-16 2xl:w-[70%]">
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          className="relative ml-[15%] mr-auto h-[40px] w-[50%] rounded-md border-[1px] border-gray-300 px-4 py-1 2xl:w-[50%]"
+        >
           <input
             type="text"
             name="search"
             id="search"
             required
             minLength={3}
-            className="mr-4 h-full w-full rounded-md bg-white px-8 text-base font-medium tracking-tight focus:outline-none"
-            placeholder="Search for programs or people ..."
+            className="h-full w-4/5 rounded-md bg-white text-base font-medium tracking-tight focus:outline-none"
+            placeholder="Search for courses, chapters or people ..."
           />
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={3}
-            stroke="#30475E"
-            className="absolute right-4 top-1/2 h-8 w-8 -translate-y-1/2 cursor-pointer"
-            role="submit"
-            onClick={(e) => {
-              e.preventDefault();
-            }}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-            />
-          </svg>
         </form>
       )}
       <AdminCard />

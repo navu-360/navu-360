@@ -87,7 +87,7 @@ export default function Dashboard() {
   return (
     <>
       <Header title={`${organizationData?.name ?? ""} | Dashboard`} />
-      <DashboardWrapper hideSearch>
+      <DashboardWrapper>
         <div className="relative ml-[90px] mr-4 mt-[2rem] flex justify-between text-tertiary md:ml-[230px]">
           <h1 className="text-2xl font-bold">
             Hi, {userProfile?.name?.split(" ")[0] ?? ""}
