@@ -30,8 +30,10 @@ export default function DashboardWrapper({
   const id = orgId;
 
   const { data: sentInvites } = useGetSentInvitesQuery(id, {
-    skip: !id,
+    skip: !id || session?.user?.role === "talent",
   });
+
+  console.log("session?.user?.role", session?.user);
 
   return (
     <main

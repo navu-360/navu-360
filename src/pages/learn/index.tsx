@@ -1,8 +1,13 @@
-import type { OnboardingProgramTalents, User } from "@prisma/client";
+import type {
+  OnboardingProgram,
+  OnboardingProgramTalents,
+  ProgramSection,
+  User,
+} from "@prisma/client";
 import Header from "components/common/head";
-import Spinner from "components/common/spinner";
-import MyEnrolledPrograms from "components/dashboard/myPrograms";
 import DashboardWrapper from "components/layout/dashboardWrapper";
+import Image from "next/image";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setOrgId, setOrganizationData } from "redux/auth/authSlice";
@@ -13,11 +18,11 @@ import {
 
 export default function LearnCenter() {
   const userProfile = useSelector(
-    (state: { auth: { userProfile: User } }) => state.auth.userProfile
+    (state: { auth: { userProfile: User } }) => state.auth.userProfile,
   );
 
   const orgId = useSelector(
-    (state: { auth: { orgId: string } }) => state.auth.orgId
+    (state: { auth: { orgId: string } }) => state.auth.orgId,
   );
 
   const id = orgId;
@@ -44,9 +49,11 @@ export default function LearnCenter() {
 
   // get all enrolled programs
   const talentId = userProfile?.id;
-  const { data, isFetching } = useGetTalentEnrollmentsQuery(talentId, {
+  const { data } = useGetTalentEnrollmentsQuery(talentId, {
     skip: !talentId,
   });
+
+  const [activeTab, setActiveTab] = useState("all");
 
   if (!isReady) return null;
 
@@ -55,95 +62,170 @@ export default function LearnCenter() {
       <Header
         title={`${organizationData?.organization?.name ?? ""} Learn Center`}
       />
-      <DashboardWrapper hideSearch>
-        <div className="relative ml-[90px] mt-[1rem] pt-8 text-tertiary md:ml-[250px]">
-          <h1 className="w-full text-2xl font-bold capitalize">
-            Hi, {userProfile?.name?.split(" ")[0] ?? ""}
-          </h1>
-          <div className="mt-8 flex w-[95%] flex-wrap gap-4 lg:justify-start lg:gap-5 2xl:mt-8">
-            <OneStat
-              svg={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="52"
-                  height="52"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="9" cy="7" r="4"></circle>
-                  <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                </svg>
-              }
-              text="Total Enrolled Programs"
-              num={data?.data?.length ?? 0}
-            />
-            <OneStat
-              text="Completed Programs"
-              svg={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="52"
-                  height="52"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="m16 6 4 14"></path>
-                  <path d="M12 6v14"></path>
-                  <path d="M8 8v12"></path>
-                  <path d="M4 4v16"></path>
-                </svg>
-              }
-              num={
-                data?.data?.filter(
-                  (item: OnboardingProgramTalents) =>
-                    item?.enrollmentStatus === "completed"
-                ).length ?? 0
-              }
-            />
+      <DashboardWrapper>
+        <div className="relative ml-[90px] mt-[1rem] pr-4 pt-8 text-tertiary md:ml-[250px]">
+          <h1 className="w-full text-2xl font-bold capitalize">My Courses</h1>
+          <div className="mt-8 flex items-center gap-4">
+            <div className="flex w-max flex-col items-center justify-center gap-1">
+              <button
+                onClick={() => setActiveTab("all")}
+                className={`text-base tracking-wider ${
+                  activeTab === "all"
+                    ? "font-bold text-tertiary"
+                    : "font-semibold text-gray-400"
+                }`}
+              >
+                All
+              </button>
+            </div>
+            <div className="flex w-max flex-col items-center justify-center gap-1">
+              <button
+                onClick={() => setActiveTab("active")}
+                className={`text-base tracking-wider ${
+                  activeTab === "active"
+                    ? "font-bold text-tertiary"
+                    : "font-semibold text-gray-400"
+                }`}
+              >
+                Active
+              </button>
+            </div>
+            <div className="flex w-max flex-col items-center justify-center gap-1">
+              <button
+                onClick={() => setActiveTab("completed")}
+                className={`text-base tracking-wider ${
+                  activeTab === "completed"
+                    ? "font-bold text-tertiary"
+                    : "font-semibold text-gray-400"
+                }`}
+              >
+                Completed
+              </button>
+            </div>
           </div>
-          <section className="mr-4 mt-8 flex w-full max-w-full gap-2 pb-8">
-            {isFetching || !data?.data ? (
-              <div className="relative mt-[20px] flex h-full w-full flex-col items-center justify-center gap-8 md:min-h-[400px] md:w-[50%]">
-                <Spinner />
-              </div>
-            ) : (
-              <MyEnrolledPrograms data={data?.data} />
+          <div className="mt-4 grid w-full grid-cols-5 gap-4">
+            {data?.data?.map(
+              (
+                program: OnboardingProgramTalents & {
+                  OnboardingProgram: OnboardingProgram & {
+                    ProgramSection: ProgramSection[];
+                  };
+                },
+              ) => (
+                <OneCourse
+                  image={program.OnboardingProgram.image as string}
+                  key={program.OnboardingProgram.id}
+                  title={program.OnboardingProgram.name}
+                  numofChapters={
+                    program.OnboardingProgram.ProgramSection?.length ?? 0
+                  }
+                  completedChapters={0}
+                  id={program.id}
+                />
+              ),
             )}
-          </section>
+            {!data && (
+              <>
+                <CourseShimmer />
+                <CourseShimmer />
+                <CourseShimmer />
+                <CourseShimmer />
+                <CourseShimmer />
+              </>
+            )}
+          </div>
         </div>
       </DashboardWrapper>
     </>
   );
 }
 
-function OneStat({
-  svg,
-  text,
-  num,
+function OneCourse({
+  image,
+  title,
+  numofChapters,
+  completedChapters,
+  id,
 }: {
-  svg: React.ReactNode;
-  text: string;
-  num: number;
+  image: string;
+  title: string;
+  numofChapters: number;
+  completedChapters: number;
+  id: string;
 }) {
   return (
-    <div className="stat-shadow flex w-full flex-row items-center gap-3  rounded-xl bg-tertiary p-2 text-white sm:w-max lg:w-[25%] lg:flex-col xl:min-w-[300px]">
-      <div className="">{svg}</div>
+    <Link
+      href={`/learn/${id}`}
+      className="question-input group relative h-[300px] w-full justify-between rounded-xl bg-white"
+    >
+      <div className="relative h-[60%] w-full">
+        <Image
+          className="h-full w-full rounded-t-xl object-cover"
+          src={image}
+          fill
+          alt="Course"
+        />
+      </div>
 
-      <div className="flex items-center gap-2 text-center text-base">
-        <span className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-secondary/50 p-2 text-base leading-normal">
-          {num}
-        </span>
-        <span>{text}</span>
+      {/* <div className="overlay-course" /> */}
+      <div className="flex h-[40%] flex-col justify-between gap-4 px-4 py-4 text-tertiary">
+        <h2 className="w-[80%] text-base font-bold text-tertiary">
+          {title?.length > 40 ? title?.slice(0, 40) + "..." : title}
+        </h2>
+        <div className="flex flex-col gap-1">
+          <span className="text-sm font-semibold">
+            {completedChapters}/{numofChapters}
+          </span>
+          <div className="flex w-full gap-2">
+            {[...Array(numofChapters)].map((_, i) => (
+              <div
+                key={i}
+                className={`h-2 w-[25%] rounded-3xl ${
+                  i < completedChapters ? "bg-secondary" : "bg-secondary/10"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="absolute bottom-8 right-4 flex h-[30px] w-[30px] items-center justify-center rounded-full bg-secondary text-white shadow-md transition-all duration-300 ease-in">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="h-5 w-5"
+        >
+          <path
+            fillRule="evenodd"
+            d="M3.75 12a.75.75 0 01.75-.75h13.19l-5.47-5.47a.75.75 0 011.06-1.06l6.75 6.75a.75.75 0 010 1.06l-6.75 6.75a.75.75 0 11-1.06-1.06l5.47-5.47H4.5a.75.75 0 01-.75-.75z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </div>
+    </Link>
+  );
+}
+
+function CourseShimmer() {
+  return (
+    <div className="group relative h-[300px] w-full justify-between rounded-xl bg-white shadow">
+      <div className="relative h-[60%] w-full">
+        <div className="h-full w-full animate-pulse rounded-t-xl bg-gray-400 object-cover" />
+      </div>
+      <div className="flex h-[40%] flex-col justify-between gap-4 px-4 py-4 text-tertiary">
+        <div className="h-6 w-[80%] animate-pulse bg-gray-400 text-base font-bold text-tertiary" />
+        <div className="flex flex-col gap-1">
+          <div className="h-3 animate-pulse bg-gray-400 text-sm font-semibold" />
+          <div className="flex w-full gap-2">
+            {[...Array(5)].map((_, i) => (
+              <div
+                key={i}
+                className={`h-2 w-[25%] animate-pulse rounded-3xl bg-gray-400`}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

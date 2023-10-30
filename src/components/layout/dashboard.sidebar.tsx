@@ -42,13 +42,17 @@ export default function AdminNav({
   const { data: session } = useSession();
 
   // get all talents
-  const { data: allUsers } = useGetAllTalentsQuery(undefined);
+  const { data: allUsers } = useGetAllTalentsQuery(undefined, {
+    skip: session?.user?.role === "talent",
+  });
   // get courses
   const { data: courses } = useGetOrganizationProgramsQuery(orgId, {
-    skip: !orgId,
+    skip: !orgId || session?.user?.role === "talent",
   });
   // get chapters for Library
-  const { currentData: chapters } = useGetLibraryChaptersQuery(undefined);
+  const { currentData: chapters } = useGetLibraryChaptersQuery(undefined, {
+    skip: session?.user?.role === "talent",
+  });
 
   const dispatch = useDispatch();
 

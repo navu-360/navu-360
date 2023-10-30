@@ -16,7 +16,7 @@ import { generateAvatar } from "utils/avatar";
 import useDebounce from "utils/useDebounce";
 
 export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const router = useRouter();
 
@@ -39,6 +39,9 @@ export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
           router.push("/learn");
         }
       }
+    }
+    if (status === "unauthenticated") {
+      router.push("/");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
@@ -112,7 +115,11 @@ export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
               dispatch(setSearchQuery(e.target.value));
             }}
             className="h-full w-4/5 rounded-md bg-white text-base font-medium tracking-tight focus:outline-none"
-            placeholder="Search for courses, chapters or people ..."
+            placeholder={`${
+              session?.user?.role === "talent"
+                ? "Search for courses..."
+                : "Search for courses, chapters or people ..."
+            }`}
           />
         </form>
       )}

@@ -36,7 +36,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         userId: talentId,
       },
       include: {
-        OnboardingProgram: true,
+        OnboardingProgram: {
+          include: {
+            ProgramSection: true
+          }
+        },
       },
       orderBy: {
         enrollmentStatus: "desc",
