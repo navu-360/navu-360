@@ -14,7 +14,7 @@ import { processDate } from "utils/date";
 import DashboardWrapper from "components/layout/dashboardWrapper";
 
 import { useGetSentInvitesQuery } from "services/baseApiSlice";
-import type { OnboardingProgramTalents } from "@prisma/client";
+import type { OnboardingProgramTalents, User } from "@prisma/client";
 import { AnimatePresence } from "framer-motion";
 
 import { motion } from "framer-motion";
@@ -54,12 +54,31 @@ export default function AllTalents() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFetching]);
 
-  const [showingTalents, setShowingTalents] = useState([]);
+  const [showingTalents, setShowingTalents] = useState<User[]>([]);
 
   // set correct data to table on switch
   useEffect(() => {
-    setShowingTalents(data?.data ?? []);
+    if (data?.data) {
+      setShowingTalents(getEnrolledTalentsFromEnrollments());
+    }
   }, [data?.data]);
+
+  const getEnrolledTalentsFromEnrollments = () => {
+    // from data?.data, we get all data?.data[0]?.user where it an object for user, has field id. From all enrollments, get the users then remove duplicates
+    const enrolledTalents = data?.data?.map(
+      (
+        enrollment: OnboardingProgramTalents & {
+          User: User;
+        },
+      ) => enrollment?.User,
+    );
+    const uniqueEnrolledTalents = Array.from(
+      new Set(enrolledTalents?.map((a: User) => a?.id)),
+    ).map((id) => {
+      return enrolledTalents?.find((a: User) => a?.id === id);
+    });
+    return uniqueEnrolledTalents;
+  };
 
   const [showTalentEnrolModal, setShowTalentEnrolModal] = useState<string[]>(
     [],
@@ -163,18 +182,16 @@ export default function AllTalents() {
                                 >
                                   <td className="relative flex flex-col gap-3 whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left text-xs md:flex-row md:items-center md:gap-0">
                                     <img
-                                      src={generateAvatar(
-                                        talent?.User?.name ?? talent?.name,
-                                      )}
+                                      src={generateAvatar(talent?.name)}
                                       className="h-12 w-12 rounded-full"
-                                      alt={talent?.User?.name ?? talent?.name}
+                                      alt={talent?.name}
                                     />
                                     <span className="ml-3 font-bold capitalize">
-                                      {talent?.User?.name ?? talent?.name}
+                                      {talent?.name}
                                     </span>
                                   </td>
                                   <td className="role whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
-                                    {talent?.User?.position ?? talent?.position}
+                                    {talent?.position}
                                   </td>
                                   <td className="date whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
                                     {processDate(talent?.createdAt)}
@@ -187,7 +204,7 @@ export default function AllTalents() {
                                       id="table-dark-1-dropdown"
                                     >
                                       <Link
-                                        href={`/talents/${talent?.User?.id}`}
+                                        href={`/talents/${talent?.id}`}
                                         className="text-blueGray-700 mb-2 block w-max rounded-xl border-[1px] border-secondary/50 bg-white px-4 py-2 text-sm font-semibold text-secondary transition-all duration-150 ease-in hover:bg-secondary hover:text-white md:px-12"
                                       >
                                         View

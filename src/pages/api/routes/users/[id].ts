@@ -1,10 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { prisma } from "../../../../auth/db";
-
-
-import { getServerSession } from "next-auth";
-import { authOptions } from 'auth/auth';
+import { prisma } from "auth/db";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   /*
@@ -12,11 +8,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
        */
   switch (req.method) {
     case "GET":
-      const session = await getServerSession(req, res, authOptions);
-      if (!session) {
-        res.status(401).json({ message: `Unauthorized.` });
-        return;
-      }
       try {
         const id = req.query.id as string;
         const user = await prisma.user.findFirst({

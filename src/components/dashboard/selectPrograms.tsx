@@ -90,10 +90,9 @@ export function SelectPrograms({
           status: "success",
           message: "Talent enrolled successfully",
         });
-        console.log("selectedProgramIds", selectedProgramIds);
         // for every program, send email
         selectedProgramIds.forEach(async (programId) => {
-          const programName = programs?.find(
+          const programName = programs?.data?.find(
             (program: OnboardingProgram) => program.id === programId,
           )?.name;
 

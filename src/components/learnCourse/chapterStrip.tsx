@@ -10,7 +10,7 @@ export default function ChapterStrip({
   done?: boolean;
 }) {
   return (
-    <div className="flex w-[400px] items-center justify-around rounded-lg bg-gray-200 p-2 py-3 font-medium text-tertiary">
+    <div className="flex w-full items-center justify-around rounded-lg bg-gray-200 p-2 py-3 font-medium text-tertiary">
       <span className="w-max font-semibold">{index}</span>
       <p className="w-[75%] text-sm">{title}</p>
       {done ? (

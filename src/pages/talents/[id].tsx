@@ -284,6 +284,7 @@ export const getStaticPaths = async () => {
 
     return { paths, fallback: "blocking" };
   } catch (error) {
+    console.log(error);
     return { paths: [], fallback: "blocking" };
   }
 };
@@ -316,6 +317,7 @@ export const getStaticProps = async ({
       },
     };
   } catch (error) {
+    console.log(error);
     // navigate to 404 page
     return {
       notFound: true,

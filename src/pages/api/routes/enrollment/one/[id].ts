@@ -16,6 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           include: {
             ProgramSection: true,
             QuizQuestion: true,
+            creator: true,
           }
         },
       },
