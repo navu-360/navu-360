@@ -323,6 +323,20 @@ export const baseApiSlice = createApi({
     changePlan: builder.mutation({
       query: (planSub) => `billing/change?planSub=${planSub}`,
     }),
+    recordQuizAnswer: builder.mutation({
+      query: (body) => ({
+        url: `learn/quiz-record-answer`,
+        method: "POST",
+        body,
+      }),
+    }),
+    computeScoreForQuiz: builder.mutation({
+      query: (body) => ({
+        url: `learn/compute-score`,
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
