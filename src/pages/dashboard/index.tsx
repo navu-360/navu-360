@@ -75,6 +75,7 @@ export default function Dashboard() {
     orgId,
     {
       skip: !orgId,
+      refetchOnMountOrArgChange: true,
     },
   );
 

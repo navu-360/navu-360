@@ -17,17 +17,7 @@ const baseQuery = fetchBaseQuery({
 
 export const baseApiSlice = createApi({
   baseQuery,
-  tagTypes: ["User", "Dashboard", "Programs", "ProgramView", "TalentView"],
   endpoints: (builder) => ({
-    joinWaitlist: builder.mutation({
-      query: (email) => ({
-        url: `waitlist`,
-        method: "POST",
-        body: {
-          email,
-        },
-      }),
-    }),
     // USER AUTH ENDPOINTS
     // update user
     updateUser: builder.mutation({
@@ -63,7 +53,6 @@ export const baseApiSlice = createApi({
     }),
     getOneOrganization: builder.query({
       query: () => `organization/me`,
-      // keepUnusedDataFor: 60 * 60 * 1, // 1 hour,
     }),
     updateOrg: builder.mutation({
       query: (body) => ({
@@ -189,14 +178,12 @@ export const baseApiSlice = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Dashboard"],
     }),
     sendWelcomeEmail: builder.mutation({
       query: () => ({
         url: `email/welcome`,
         method: "POST",
       }),
-      invalidatesTags: ["Dashboard"],
     }),
     acceptInvite: builder.mutation({
       query: (body) => ({
@@ -209,7 +196,6 @@ export const baseApiSlice = createApi({
     getSentInvites: builder.query({
       query: (id) => `invite?orgId=${id}`,
       keepUnusedDataFor: 60 * 10, // 10 minutes,
-      providesTags: ["Dashboard"],
     }),
     // get all talents for a program
     getProgramTalents: builder.query({
@@ -225,7 +211,6 @@ export const baseApiSlice = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Dashboard"],
     }),
     // get all enrollments for a talent
     getTalentEnrollments: builder.query({
@@ -234,7 +219,6 @@ export const baseApiSlice = createApi({
         method: "GET",
       }),
       keepUnusedDataFor: 60 * 5, // 5 minutes,
-      providesTags: ["Dashboard"],
     }),
 
     // get all enrollments for organization
@@ -244,7 +228,6 @@ export const baseApiSlice = createApi({
         method: "GET",
       }),
       keepUnusedDataFor: 60 * 10, // 10 minutes,
-      providesTags: ["Dashboard"],
     }),
 
     // get all enrollments for a program
@@ -254,17 +237,6 @@ export const baseApiSlice = createApi({
         method: "GET",
       }),
       keepUnusedDataFor: 60 * 10, // 10 minutes,
-      providesTags: ["ProgramView"],
-    }),
-
-    // mark enrollment as completed
-    markEnrollmentCompleted: builder.mutation({
-      query: (body) => ({
-        url: `enrollment/mark-complete`,
-        method: "POST",
-        body,
-      }),
-      invalidatesTags: ["ProgramView", "Dashboard"],
     }),
 
     // unregister a talent from a program
@@ -274,7 +246,6 @@ export const baseApiSlice = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["ProgramView", "Dashboard"],
     }),
 
     removeUserFromOrganization: builder.mutation({
@@ -282,7 +253,6 @@ export const baseApiSlice = createApi({
         url: `organization/remove-user/${id}`,
         method: "POST",
       }),
-      invalidatesTags: ["Dashboard"],
     }),
 
     sendEnrolledEmail: builder.mutation({
@@ -371,7 +341,6 @@ export const baseApiSlice = createApi({
 });
 
 export const {
-  useJoinWaitlistMutation,
   useUpdateUserMutation,
   useUploadImageMutation,
   useCreateOrganizationMutation,
@@ -393,7 +362,6 @@ export const {
   useGetTalentEnrollmentsQuery,
   useGetOrganizationEnrollmentsQuery,
   useGetProgramEnrollmentsQuery,
-  useMarkEnrollmentCompletedMutation,
   useUnregisterTalentMutation,
   useRemoveUserFromOrganizationMutation,
   useSendEnrolledEmailMutation,
