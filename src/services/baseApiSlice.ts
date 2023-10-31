@@ -337,6 +337,20 @@ export const baseApiSlice = createApi({
         body,
       }),
     }),
+    recordCourseEvent: builder.mutation({
+      query: (body) => ({
+        url: `learn/record-event`,
+        method: "POST",
+        body,
+      }),
+    }),
+    getEnrollmentStatus: builder.query({
+      query: (body) => ({
+        url: `learn/enrollment-status`,
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -382,5 +396,7 @@ export const {
   useGetProgramQuestionsQuery,
   useSendWelcomeEmailMutation,
   useGetTalentCountQuery,
-  useGetLibraryChaptersQuery
+  useGetLibraryChaptersQuery,
+  useRecordQuizAnswerMutation,
+  useComputeScoreForQuizMutation,
 } = baseApiSlice;

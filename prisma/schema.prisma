@@ -101,20 +101,18 @@ model OnboardingProgram {
 }
 
 model ProgramSection {
-  id                String             @id @default(cuid())
-  type              String
-  content           String?
-  link              String?
-  name              String?
-  published         Boolean            @default(false)
-  programId         String?
-  Program           OnboardingProgram? @relation(fields: [programId], references: [id], onDelete: Cascade)
-  orgId             String
-  Organization      Organization       @relation(fields: [orgId], references: [id])
-  enrollmentEventId String?
-  enrollmentEvent   EventEnrollment?   @relation(fields: [enrollmentEventId], references: [id], onDelete: Cascade)
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
+  id           String             @id @default(cuid())
+  type         String
+  content      String?
+  link         String?
+  name         String?
+  published    Boolean            @default(false)
+  programId    String?
+  Program      OnboardingProgram? @relation(fields: [programId], references: [id], onDelete: Cascade)
+  orgId        String
+  Organization Organization       @relation(fields: [orgId], references: [id])
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
 }
 
 model OnboardingProgramTalents {
@@ -188,9 +186,11 @@ model EventEnrollment {
   courseCompleted Boolean           @default(false)
   quizCompleted   Boolean           @default(false)
   scoreComputed   Boolean           @default(false)
-  viewedChapters  ProgramSection[]
+  viewedChapters  String[]
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
+
+  @@unique([userId, programId])
 }
 
 model waitlist {
