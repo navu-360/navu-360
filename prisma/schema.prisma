@@ -112,7 +112,8 @@ model ProgramSection {
 
 model OnboardingProgramTalents {
   id                String            @id @default(uuid())
-  enrollmentStatus  String            @default("pending") // pending, enrolled, completed
+  enrollmentStatus  String            @default("pending")
+  currentActiveStep    String               @default("intro") // intro, chapter {index}, quiz, complete
   userId            String
   User              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   programId         String
@@ -148,7 +149,7 @@ model TalentProgramResults {
   id          String   @id @default(cuid())
   userId      String
   programId   String
-  quizAnswers String[]
+  score       Int // 0 - 100
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -158,8 +159,7 @@ model TalentQuizAnswers {
   userId     String
   programId  String
   questionId String
-  answer     String
-  isCorrect  Boolean
+  talentAnswer     String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }
