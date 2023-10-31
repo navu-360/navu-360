@@ -22,6 +22,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     });
 
+    if (!enrollment) {
+      return res
+        .status(404)
+        .json({ message: `Enrollment with ID ${id} not found!` });
+    }
+
+    const quizQuestions = enrollment.OnboardingProgram.QuizQuestion.map((question) => {
+      const { answer, ...rest } = question;
+      console.log(!!answer);
+      return rest;
+    });
+
+    // @ts-ignore
+    enrollment.OnboardingProgram.QuizQuestion = quizQuestions;
+
     return res
       .status(200)
       .json({ message: `Enrollment found!`, data: enrollment });
