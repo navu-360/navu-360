@@ -2,12 +2,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ProgramSection, User } from "@prisma/client";
 import { DeleteConfirmModal } from "components/dashboard/confirmDeleteProgram";
+import { CompletionStatus } from "components/dashboard/talents.table";
 import ChapterCard from "components/library/chapterCardView";
 import { AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { OneProgramCard } from "pages/programs";
-import { CompletionStatus } from "pages/talents";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSearchQuery } from "redux/common/commonSlice";
