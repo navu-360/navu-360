@@ -63,7 +63,6 @@ export const baseApiSlice = createApi({
     }),
     getOrganizationById: builder.query({
       query: (id) => `organization/id/${id}`,
-      keepUnusedDataFor: 60 * 60 * 1, // 1 hour,
     }),
 
     // Programs
@@ -154,7 +153,6 @@ export const baseApiSlice = createApi({
     // fetch all templates
     fetchTemplates: builder.query({
       query: () => `templates`,
-      keepUnusedDataFor: 60 * 60 * 1, // 1 hour,
     }),
     // create template
     createTemplate: builder.mutation({
@@ -167,7 +165,6 @@ export const baseApiSlice = createApi({
     // get one template
     getOneTemplate: builder.query({
       query: (id) => `templates/${id}`,
-      keepUnusedDataFor: 60 * 60 * 1, // 1 hour,
     }),
 
     // emails
@@ -195,12 +192,10 @@ export const baseApiSlice = createApi({
     // get sent invites for a program
     getSentInvites: builder.query({
       query: (id) => `invite?orgId=${id}`,
-      keepUnusedDataFor: 60 * 10, // 10 minutes,
     }),
     // get all talents for a program
     getProgramTalents: builder.query({
       query: (programId) => `users/talents/${programId}`,
-      keepUnusedDataFor: 60 * 10, // 10 minutes
     }),
 
     // enrollment actions
@@ -218,7 +213,6 @@ export const baseApiSlice = createApi({
         url: `enrollment/get-my-enrollments?talentId=${talentId}`,
         method: "GET",
       }),
-      keepUnusedDataFor: 60 * 5, // 5 minutes,
     }),
 
     // get all enrollments for organization
@@ -227,7 +221,6 @@ export const baseApiSlice = createApi({
         url: `enrollment/get-org-enrollments?organizationId=${organizationId}`,
         method: "GET",
       }),
-      keepUnusedDataFor: 60 * 10, // 10 minutes,
     }),
 
     // get all enrollments for a program
@@ -236,7 +229,6 @@ export const baseApiSlice = createApi({
         url: `enrollment/get-program-enrollments?programId=${programId}`,
         method: "GET",
       }),
-      keepUnusedDataFor: 60 * 10, // 10 minutes,
     }),
 
     // unregister a talent from a program

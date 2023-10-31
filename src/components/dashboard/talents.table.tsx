@@ -446,10 +446,12 @@ export default function AllTalents({
 
 export function CompletionStatus({
   enrollment,
+  fromTalentView,
 }: {
   enrollment: {
     userId: string;
   };
+  fromTalentView?: boolean;
 }) {
   const body = {
     userId: enrollment?.userId,
@@ -515,11 +517,15 @@ export function CompletionStatus({
   };
 
   return (
-    <td className="progress whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs">
+    <td
+      className={`progress whitespace-nowrap border-l-0 border-r-0 border-t-0 align-middle text-xs ${
+        fromTalentView ? "px-0" : "p-4 px-6"
+      }`}
+    >
       {isFetching || !enrollmentStatus ? (
         <div className="h-[30px] w-4/5 animate-pulse rounded bg-gray-400" />
       ) : (
-        <div className="flex items-center">
+        <div className={`flex w-full items-center ${fromTalentView ? "flex-row-reverse" : "flex-row"}`}>
           <span className="mr-2 w-[50px] text-right font-semibold">
             {checkCompletionStatus().toFixed(0)}%
           </span>
