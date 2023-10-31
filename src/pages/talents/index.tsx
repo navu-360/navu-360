@@ -4,10 +4,7 @@ import Spinner from "components/common/spinner";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  useGetOrganizationEnrollmentsQuery,
-  useGetTalentEnrollmentsQuery,
-} from "services/baseApiSlice";
+import { useGetOrganizationEnrollmentsQuery } from "services/baseApiSlice";
 import { generateAvatar } from "utils/avatar";
 import { processDate } from "utils/date";
 
@@ -17,11 +14,11 @@ import { useGetSentInvitesQuery } from "services/baseApiSlice";
 import type { OnboardingProgramTalents, User } from "@prisma/client";
 import { AnimatePresence } from "framer-motion";
 
-import { motion } from "framer-motion";
 import { SelectPrograms } from "components/dashboard/selectPrograms";
 import Header from "components/common/head";
 import { resetCommon, setDraftProgramId } from "redux/common/commonSlice";
 import SearchResults from "components/common/searchResults";
+import { CompletionStatus } from "components/dashboard/talents.table";
 
 export default function AllTalents() {
   const orgId = useSelector(
@@ -99,12 +96,7 @@ export default function AllTalents() {
         {searchQuery?.length > 0 ? (
           <SearchResults />
         ) : (
-          <div className="relative ml-[90px] mt-[40px] flex h-full items-start justify-start gap-8 pt-20 md:ml-[250px]">
-            <div className="absolute left-0 top-0 flex w-max flex-col gap-0 text-left">
-              <h1 className="text-xl font-bold text-tertiary">
-                All Enrolled Talents
-              </h1>
-            </div>
+          <div className="relative ml-[90px] mt-[40px] flex h-full items-start justify-start gap-8 pt-0 md:ml-[250px]">
             <div className="h-max w-full rounded-md lg:w-[90%]">
               <div className="relative w-full md:py-16 md:pt-0">
                 <div className="mb-12 w-full">
@@ -196,7 +188,11 @@ export default function AllTalents() {
                                   <td className="date whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
                                     {processDate(talent?.createdAt)}
                                   </td>
-                                  <CompletionStatus enrollment={talent} />
+                                  <CompletionStatus
+                                    enrollment={{
+                                      userId: talent?.id,
+                                    }}
+                                  />
 
                                   <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-right align-middle text-xs">
                                     <div
@@ -240,97 +236,5 @@ export default function AllTalents() {
         )}
       </DashboardWrapper>
     </>
-  );
-}
-
-export function CompletionStatus({
-  enrollment,
-}: {
-  enrollment: {
-    userId: string;
-  };
-}) {
-  const talentId = enrollment?.userId;
-  const { data, isFetching } = useGetTalentEnrollmentsQuery(talentId, {
-    skip: !talentId,
-  });
-
-  const checkCompletionStatus = () => {
-    if (data?.data?.length === 0) return 0;
-    // check all enrollment objects field enrollmentStatus for values pending, completed then return the percentage completed
-    const completed = data?.data?.filter(
-      (enrollment: OnboardingProgramTalents) =>
-        enrollment?.enrollmentStatus === "completed",
-    );
-    const pending = data?.data?.filter(
-      (enrollment: OnboardingProgramTalents) =>
-        enrollment?.enrollmentStatus === "pending",
-    );
-    const total = completed?.length + pending?.length;
-    const percentage = (completed?.length / total) * 100;
-    return percentage;
-  };
-
-  const getSliderColor = (percentage: number) => {
-    // 0 - 30 red
-    // 31 - 60 orange
-    // 61 - 100 green
-
-    if (percentage >= 0 && percentage <= 30) {
-      return "bg-red-500";
-    }
-    if (percentage >= 31 && percentage <= 60) {
-      return "bg-yellow-500";
-    }
-    if (percentage >= 61 && percentage <= 100) {
-      return "bg-green-500";
-    }
-  };
-
-  const getSliderColorBorder = (percentage: number) => {
-    // 0 - 30 red
-    // 31 - 60 orange
-    // 61 - 100 green
-
-    if (percentage >= 0 && percentage <= 30) {
-      return "border-black/50";
-    }
-    if (percentage >= 31 && percentage <= 60) {
-      return "border-yellow-500";
-    }
-    if (percentage >= 61 && percentage <= 100) {
-      return "border-green-500";
-    }
-  };
-
-  return (
-    <td className="progress whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs">
-      {isFetching || !data ? (
-        <div className="h-[30px] w-4/5 animate-pulse rounded bg-gray-400" />
-      ) : (
-        <div className="flex items-center">
-          <span className="mr-2 w-[50px] text-right font-semibold">
-            {checkCompletionStatus().toFixed(0)}%
-          </span>
-          <div className="relative w-full">
-            <div
-              className={`flex h-3 overflow-hidden rounded-none border-[1px] border-amber-600 bg-transparent text-xs ${getSliderColorBorder(
-                checkCompletionStatus(),
-              )}`}
-            >
-              <motion.div
-                style={{ width: `${checkCompletionStatus()}%` }}
-                initial={{ width: 0 }}
-                whileInView={{ width: `${checkCompletionStatus()}%` }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className={`flex h-3 flex-col justify-center whitespace-nowrap rounded-none text-center text-white ${getSliderColor(
-                  checkCompletionStatus(),
-                )}`}
-              ></motion.div>
-            </div>
-          </div>
-        </div>
-      )}
-    </td>
   );
 }

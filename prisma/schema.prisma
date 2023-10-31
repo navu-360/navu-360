@@ -186,7 +186,7 @@ model EventEnrollment {
   courseCompleted Boolean           @default(false)
   quizCompleted   Boolean           @default(false)
   scoreComputed   Boolean           @default(false)
-  viewedChapters  String[]
+  viewedChapters  String[]          @default([])
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
 

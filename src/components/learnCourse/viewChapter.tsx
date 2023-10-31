@@ -75,6 +75,8 @@ export default function ViewChapterLearn({
     }
   };
 
+  if (!chapter) return;
+
   return (
     <section className="no-scrollbar h-[calc(100%_-_0px)] w-full overflow-y-auto rounded-md">
       {renderSectionType(chapter)}

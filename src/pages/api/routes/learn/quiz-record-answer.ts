@@ -25,24 +25,42 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return;
     }
 
-    prisma.talentQuizAnswers.upsert({
+    const exists = await prisma.talentQuizAnswers.findMany({
       where: {
-        userId_programId_questionId: {
+        programId,
+        userId: session.user.id,
+        questionId,
+      },
+      select: {
+        id: true,
+      }
+    });
+
+    if (exists?.length > 0) {
+      const updated = await prisma.talentQuizAnswers.update({
+        where: {
+          userId_programId_questionId: {
+            userId: session.user.id,
+            programId,
+            questionId,
+          },
+        },
+        data: {
+          talentAnswer,
+        },
+      });
+      console.log("updated", updated)
+    } else {
+      const created = await prisma.talentQuizAnswers.create({
+        data: {
           userId: session.user.id,
           programId,
           questionId,
+          talentAnswer,
         },
-      },
-      update: {
-        talentAnswer,
-      },
-      create: {
-        userId: session.user.id,
-        programId,
-        questionId,
-        talentAnswer,
-      },
-    });
+      });
+      console.log("created", created)
+    }
 
     return res.status(200).json({ message: `Answer recorded` });
   } catch (error) {

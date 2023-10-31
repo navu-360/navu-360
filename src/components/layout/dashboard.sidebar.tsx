@@ -51,7 +51,7 @@ export default function AdminNav({
   });
   // get chapters for Library
   const { currentData: chapters } = useGetLibraryChaptersQuery(undefined, {
-    skip: session?.user?.role === "talent",
+    skip: session?.user?.role === "talent" || !session,
   });
 
   const dispatch = useDispatch();

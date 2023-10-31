@@ -14,23 +14,35 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     // get events for a talent for certain program. Required fields: userId, programId
 
-    const { programId } = req.body as {
+    const { programId, userId } = req.body as {
       programId: string;
+      userId?: string;
     };
 
-    if (!programId) {
+    if (!programId && !userId) {
       res.status(400).json({ message: `Missing required fields.` });
       return;
     }
 
-    const events = await prisma.eventEnrollment.findMany({
-      where: {
-        programId,
-        userId: session.user.id,
-      },
-    });
+    if (session?.user?.role === "talent") {
+      const events = await prisma.eventEnrollment.findFirst({
+        where: {
+          programId,
+          userId: session.user.id,
+        },
+      });
 
-    return res.status(200).json({ message: `Events retrieved`, data: events });
+      return res.status(200).json({ message: `Events retrieved`, data: events });
+    } else {
+      const events = await prisma.eventEnrollment.findMany({
+        where: {
+          userId: userId,
+        },
+      });
+
+      return res.status(200).json({ message: `Events retrieved`, data: events });
+    }
+
   } catch (error) {
     return (
       res

@@ -5,6 +5,7 @@ import type {
   User,
 } from "@prisma/client";
 import Header from "components/common/head";
+import { NoAssignedCourses } from "components/dashboard/guides";
 import DashboardWrapper from "components/layout/dashboardWrapper";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,6 +13,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setOrgId, setOrganizationData } from "redux/auth/authSlice";
 import {
+  useGetEnrollmentStatusQuery,
   useGetOrganizationByIdQuery,
   useGetTalentEnrollmentsQuery,
 } from "services/baseApiSlice";
@@ -49,7 +51,7 @@ export default function LearnCenter() {
 
   // get all enrolled programs
   const talentId = userProfile?.id;
-  const { data } = useGetTalentEnrollmentsQuery(talentId, {
+  const { data, isFetching } = useGetTalentEnrollmentsQuery(talentId, {
     skip: !talentId,
   });
 
@@ -64,66 +66,76 @@ export default function LearnCenter() {
       />
       <DashboardWrapper>
         <div className="relative ml-[90px] mt-[1rem] pr-4 pt-8 text-tertiary md:ml-[250px]">
-          <h1 className="w-full text-2xl font-bold capitalize">My Courses</h1>
-          <div className="mt-8 flex items-center gap-4">
-            <div className="flex w-max flex-col items-center justify-center gap-1">
-              <button
-                onClick={() => setActiveTab("all")}
-                className={`text-base tracking-wider ${
-                  activeTab === "all"
-                    ? "font-bold text-tertiary"
-                    : "font-semibold text-gray-400"
-                }`}
-              >
-                All
-              </button>
+          {(data?.data?.length > 0 || isFetching) && (
+            <>
+              <h1 className="w-full text-2xl font-bold capitalize">
+                My Courses
+              </h1>
+              <div className="mt-8 flex items-center gap-4">
+                <div className="flex w-max flex-col items-center justify-center gap-1">
+                  <button
+                    onClick={() => setActiveTab("all")}
+                    className={`text-base tracking-wider ${
+                      activeTab === "all"
+                        ? "font-bold text-tertiary"
+                        : "font-semibold text-gray-400"
+                    }`}
+                  >
+                    All
+                  </button>
+                </div>
+                <div className="flex w-max flex-col items-center justify-center gap-1">
+                  <button
+                    onClick={() => setActiveTab("active")}
+                    className={`text-base tracking-wider ${
+                      activeTab === "active"
+                        ? "font-bold text-tertiary"
+                        : "font-semibold text-gray-400"
+                    }`}
+                  >
+                    Active
+                  </button>
+                </div>
+                <div className="flex w-max flex-col items-center justify-center gap-1">
+                  <button
+                    onClick={() => setActiveTab("completed")}
+                    className={`text-base tracking-wider ${
+                      activeTab === "completed"
+                        ? "font-bold text-tertiary"
+                        : "font-semibold text-gray-400"
+                    }`}
+                  >
+                    Completed
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
+          {data?.data?.length > 0 && (
+            <div className="mt-4 grid w-full grid-cols-5 gap-4">
+              {data?.data?.map(
+                (
+                  program: OnboardingProgramTalents & {
+                    OnboardingProgram: OnboardingProgram & {
+                      ProgramSection: ProgramSection[];
+                    };
+                  },
+                ) => (
+                  <OneCourse
+                    image={program.OnboardingProgram.image as string}
+                    key={program.id}
+                    title={program.OnboardingProgram.name}
+                    numofChapters={
+                      program.OnboardingProgram.ProgramSection?.length
+                    }
+                    id={program.id}
+                    programId={program.OnboardingProgram.id}
+                  />
+                ),
+              )}
             </div>
-            <div className="flex w-max flex-col items-center justify-center gap-1">
-              <button
-                onClick={() => setActiveTab("active")}
-                className={`text-base tracking-wider ${
-                  activeTab === "active"
-                    ? "font-bold text-tertiary"
-                    : "font-semibold text-gray-400"
-                }`}
-              >
-                Active
-              </button>
-            </div>
-            <div className="flex w-max flex-col items-center justify-center gap-1">
-              <button
-                onClick={() => setActiveTab("completed")}
-                className={`text-base tracking-wider ${
-                  activeTab === "completed"
-                    ? "font-bold text-tertiary"
-                    : "font-semibold text-gray-400"
-                }`}
-              >
-                Completed
-              </button>
-            </div>
-          </div>
+          )}
           <div className="mt-4 grid w-full grid-cols-5 gap-4">
-            {data?.data?.map(
-              (
-                program: OnboardingProgramTalents & {
-                  OnboardingProgram: OnboardingProgram & {
-                    ProgramSection: ProgramSection[];
-                  };
-                },
-              ) => (
-                <OneCourse
-                  image={program.OnboardingProgram.image as string}
-                  key={program.OnboardingProgram.id}
-                  title={program.OnboardingProgram.name}
-                  numofChapters={
-                    program.OnboardingProgram.ProgramSection?.length ?? 0
-                  }
-                  completedChapters={0}
-                  id={program.id}
-                />
-              ),
-            )}
             {!data && (
               <>
                 <CourseShimmer />
@@ -134,6 +146,8 @@ export default function LearnCenter() {
               </>
             )}
           </div>
+
+          {data?.data?.length === 0 && <NoAssignedCourses />}
         </div>
       </DashboardWrapper>
     </>
@@ -144,15 +158,23 @@ function OneCourse({
   image,
   title,
   numofChapters,
-  completedChapters,
+  programId,
   id,
 }: {
   image: string;
   title: string;
   numofChapters: number;
-  completedChapters: number;
   id: string;
+  programId: string;
 }) {
+  const body = {
+    programId,
+  };
+
+  const { data: enrollmentStatus } = useGetEnrollmentStatusQuery(body, {
+    skip: !programId,
+  });
+
   return (
     <Link
       href={`/learn/${id}`}
@@ -172,24 +194,36 @@ function OneCourse({
         <h2 className="w-[80%] text-base font-bold text-tertiary">
           {title?.length > 40 ? title?.slice(0, 40) + "..." : title}
         </h2>
-        <div className="flex flex-col gap-1">
-          <span className="text-sm font-semibold">
-            {completedChapters}/{numofChapters}
-          </span>
-          <div className="flex w-full gap-2">
-            {[...Array(numofChapters)].map((_, i) => (
-              <div
-                key={i}
-                className={`h-2 w-[25%] rounded-3xl ${
-                  i < completedChapters ? "bg-secondary" : "bg-secondary/10"
-                }`}
-              />
-            ))}
+        {enrollmentStatus?.data?.viewedChapters && numofChapters > 0 && (
+          <div className="flex flex-col gap-1">
+            {enrollmentStatus?.data?.viewedChapters?.length ===
+            numofChapters ? (
+              <span className="text-sm font-semibold">100%</span>
+            ) : (
+              <span className="text-sm font-semibold">
+                {enrollmentStatus?.data?.viewedChapters?.length}/{numofChapters}
+              </span>
+            )}
+            <div className="flex w-full gap-2">
+              {[...Array(numofChapters)].map((_, i) => (
+                <div
+                  key={i}
+                  style={{
+                    width: `${(1 / numofChapters) * 100}%`,
+                  }}
+                  className={`h-2 rounded-3xl ${
+                    i < enrollmentStatus?.data?.viewedChapters?.length
+                      ? "bg-secondary"
+                      : "bg-secondary/10"
+                  }`}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
-      <div className="absolute bottom-8 right-4 flex h-[30px] w-[30px] items-center justify-center rounded-full bg-secondary text-white shadow-md transition-all duration-300 ease-in">
+      <div className="absolute bottom-10 right-4 flex h-[30px] w-[30px] items-center justify-center rounded-full bg-secondary text-white shadow-md transition-all duration-300 ease-in">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"

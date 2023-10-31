@@ -1,5 +1,5 @@
 import type { IQuizQuestion } from "components/createProgram/createOrEditQuestionPopUp";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function TakeQuizQuestion({
   question,
@@ -12,14 +12,29 @@ export function TakeQuizQuestion({
   goPrev,
   isFirst,
   isLast,
+  isLoading,
+  quizDone,
+  talentAnswer,
+  correctAnswer,
 }: IQuizQuestion & {
   goNext: (selectedAnswer: string) => void;
   goPrev: () => void;
   isFirst: boolean;
   isLast: boolean;
+  isLoading: boolean;
+  quizDone: boolean;
+  talentAnswer?: string;
+  correctAnswer?: string;
 }) {
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
-  const showExplanation = false;
+
+  console.log("correctAnswer", correctAnswer);
+
+  useEffect(() => {
+    if (talentAnswer && talentAnswer?.length > 0) {
+      setSelectedAnswer(talentAnswer);
+    }
+  }, [talentAnswer]);
   return (
     <div className="shadowAroundFeature relative flex w-full flex-col gap-4 rounded-xl p-4">
       <div className="flex w-full items-center justify-between">
@@ -54,7 +69,7 @@ export function TakeQuizQuestion({
             </div>
           ))}
       </div>
-      {explanation?.length > 0 && showExplanation && (
+      {explanation?.length > 0 && quizDone && (
         <div className="flex flex-col gap-2">
           <p className="text-sm font-medium text-gray-700">
             Explanation: <span className="font-semibold">{explanation}</span>
@@ -62,22 +77,24 @@ export function TakeQuizQuestion({
         </div>
       )}
 
-      <div className="absolute -bottom-20 left-0 flex w-full items-center gap-8">
-        <button
-          onClick={() => goPrev()}
-          disabled={isFirst}
-          className="rounded-md border-[1px] border-secondary px-8 py-1.5 text-base font-semibold text-secondary"
-        >
-          Prev
-        </button>
-        <button
-          disabled={selectedAnswer.length === 0}
-          onClick={() => goNext(selectedAnswer)}
-          className="rounded-md bg-secondary px-8 py-1.5 text-base font-semibold text-white"
-        >
-          {isLast ? "Finish Quiz" : "Next"}
-        </button>
-      </div>
+      {!quizDone && (
+        <div className="absolute -bottom-20 left-0 flex w-full items-center gap-8">
+          <button
+            onClick={() => goPrev()}
+            disabled={isFirst || isLoading}
+            className="rounded-md border-[1px] border-secondary px-8 py-1.5 text-base font-semibold text-secondary"
+          >
+            Prev
+          </button>
+          <button
+            disabled={selectedAnswer.length === 0 || isLoading}
+            onClick={() => goNext(selectedAnswer)}
+            className="rounded-md bg-secondary px-8 py-1.5 text-base font-semibold text-white"
+          >
+            {isLast ? "Finish Quiz" : "Next"}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

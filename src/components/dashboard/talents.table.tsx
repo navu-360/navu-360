@@ -5,8 +5,8 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   useGetAllTalentsQuery,
+  useGetEnrollmentStatusQuery,
   useGetOrganizationEnrollmentsQuery,
-  useGetTalentEnrollmentsQuery,
 } from "services/baseApiSlice";
 import { generateAvatar } from "utils/avatar";
 import { processDate } from "utils/date";
@@ -14,6 +14,7 @@ import { processDate } from "utils/date";
 import { useGetSentInvitesQuery } from "services/baseApiSlice";
 import { TalentSwitch } from "./common";
 import type {
+  EventEnrollment,
   OnboardingProgram,
   OnboardingProgramTalents,
   Organization,
@@ -150,7 +151,7 @@ export default function AllTalents({
     }
     // check: if we have joined talents and no enrolled talents, set selectedType to Joined
     if (data?.data?.length > 0 && talentsWithoutPrograms?.length === 0) {
-      setSelectedType("Joined");
+      setSelectedType("Enrolled");
     }
   }, [sentInvites?.data, data?.data, talentsWithoutPrograms]);
 
@@ -346,7 +347,11 @@ export default function AllTalents({
                               {processDate(talent?.createdAt)}
                             </td>
                             {selectedType === "Enrolled" && (
-                              <CompletionStatus enrollment={talent} />
+                              <CompletionStatus
+                                enrollment={{
+                                  userId: talent?.id,
+                                }}
+                              />
                             )}
                             <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-right align-middle text-xs">
                               <div
@@ -446,24 +451,34 @@ export function CompletionStatus({
     userId: string;
   };
 }) {
-  const talentId = enrollment?.userId;
-  const { data, isFetching } = useGetTalentEnrollmentsQuery(talentId, {
-    skip: !talentId,
-  });
+  const body = {
+    userId: enrollment?.userId,
+  };
+  const { data: enrollmentStatus, isFetching } = useGetEnrollmentStatusQuery(
+    body,
+    {
+      skip: !enrollment?.userId,
+    },
+  );
 
   const checkCompletionStatus = () => {
-    if (data?.data?.length === 0) return 0;
-    // check all enrollment objects field enrollmentStatus for values pending, completed then return the percentage completed
-    const completed = data?.data?.filter(
-      (enrollment: OnboardingProgramTalents) =>
-        enrollment?.enrollmentStatus === "completed",
+    // in array enrollmentStatus?.data we contruct an array of objects for status of each course. like one course to be {programId, courseCompleted}
+    const allTalentsProgramsStatus = enrollmentStatus?.data?.map(
+      (enrollment: EventEnrollment) => {
+        return {
+          programId: enrollment?.programId,
+          courseCompleted: enrollment?.courseCompleted,
+        };
+      },
     );
-    const pending = data?.data?.filter(
-      (enrollment: OnboardingProgramTalents) =>
-        enrollment?.enrollmentStatus === "pending",
+
+    // we calculate completed / total
+    const completed = allTalentsProgramsStatus?.filter(
+      (enrollment: EventEnrollment) => enrollment?.courseCompleted,
     );
-    const total = completed?.length + pending?.length;
-    const percentage = (completed?.length / total) * 100;
+
+    const percentage =
+      (completed?.length / enrollmentStatus?.data?.length) * 100;
     return percentage;
   };
 
@@ -501,7 +516,7 @@ export function CompletionStatus({
 
   return (
     <td className="progress whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs">
-      {isFetching || !data ? (
+      {isFetching || !enrollmentStatus ? (
         <div className="h-[30px] w-4/5 animate-pulse rounded bg-gray-400" />
       ) : (
         <div className="flex items-center">
