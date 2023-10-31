@@ -57,6 +57,7 @@ model User {
   CreatedOnboardingPrograms OnboardingProgram[]        @relation("createdBy")
   Organization              Organization?
   OnboardingProgramTalents  OnboardingProgramTalents[]
+  TalentProgramResults      TalentProgramResults[]
 
   @@index([email], name: "email")
 }
@@ -93,6 +94,8 @@ model OnboardingProgram {
   courseModuleId           String?
   ProgramSection           ProgramSection[]
   QuizQuestion             QuizQuestion[]
+  TalentQuizAnswers        TalentQuizAnswers[]
+  TalentProgramResults     TalentProgramResults[]
 }
 
 model ProgramSection {
@@ -113,7 +116,7 @@ model ProgramSection {
 model OnboardingProgramTalents {
   id                String            @id @default(uuid())
   enrollmentStatus  String            @default("pending")
-  currentActiveStep    String               @default("intro") // intro, chapter {index}, quiz, complete
+  currentActiveStep String            @default("intro") // intro, chapter {index}, quiz, complete
   userId            String
   User              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   programId         String
@@ -129,39 +132,44 @@ model OnboardingProgramTalents {
 }
 
 model QuizQuestion {
-  id          String            @id @default(cuid())
-  question    String
-  choiceA     String
-  choiceB     String
-  choiceC     String
-  choiceD     String
-  answer      String
-  explanation String
-  programId   String
-  Program     OnboardingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
-  createdAt   DateTime          @default(now())
-  updatedAt   DateTime          @updatedAt
+  id                String              @id @default(cuid())
+  question          String
+  choiceA           String
+  choiceB           String
+  choiceC           String
+  choiceD           String
+  answer            String
+  explanation       String
+  programId         String
+  Program           OnboardingProgram   @relation(fields: [programId], references: [id], onDelete: Cascade)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  TalentQuizAnswers TalentQuizAnswers[]
 
   @@index([programId], name: "programId")
 }
 
 model TalentProgramResults {
-  id          String   @id @default(cuid())
-  userId      String
-  programId   String
-  score       Int // 0 - 100
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String            @id @default(cuid())
+  userId    String
+  programId String
+  score     Int // 0 - 100
+  User      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Program   OnboardingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
 }
 
 model TalentQuizAnswers {
-  id         String   @id @default(cuid())
-  userId     String
-  programId  String
-  questionId String
-  talentAnswer     String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id           String            @id @default(cuid())
+  userId       String
+  programId    String
+  questionId   String
+  talentAnswer String
+  Program      OnboardingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
+  Question     QuizQuestion      @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
 }
 
 model waitlist {
