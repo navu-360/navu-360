@@ -145,10 +145,10 @@ export default function CreateLinkChapter({
 
   return (
     <div
-      className={`relative flex  flex-col ${
+      className={`relative flex justify-center h-[calc(100vh_-_400px)] flex-col ${
         fromLibrary
-          ? "h-full w-full items-center justify-start"
-          : "ml-auto min-h-[50vh] w-[calc(100%_-_330px)]"
+          ? "h-full w-full gap-8 pb-8"
+          : "ml-auto w-[calc(100%_-_330px)] gap-8"
       }`}
     >
       {!showLinkPreview && (
@@ -207,7 +207,7 @@ export default function CreateLinkChapter({
       )}
 
       {showLinkPreview && (
-        <div className="mt-8 flex h-max w-full justify-center gap-8 pb-8">
+        <div className="absolute inset-x-0 -bottom-24 flex w-full justify-start gap-8 bg-white pb-8">
           <button
             disabled={editingSection || creatingSection || !docsLink}
             onClick={() => {

@@ -173,10 +173,10 @@ export default function CreateDocumentChapter({
 
   return (
     <div
-      className={`relative flex flex-col gap-8 ${
+      className={`relative flex h-[calc(100vh_-_400px)] flex-col ${
         fromLibrary
-          ? "mx-auto ml-0 mr-16 h-full w-auto items-start justify-start gap-8"
-          : "ml-auto min-h-[50vh] w-[calc(100%_-_330px)]"
+          ? "h-full w-full gap-8 pb-8"
+          : "ml-auto w-[calc(100%_-_330px)] gap-8"
       }`}
     >
       {uploadedDocument && (
@@ -184,6 +184,7 @@ export default function CreateDocumentChapter({
           file={uploadedDocument}
           onLoadSuccess={onDocumentLoadSuccess}
           options={options}
+          className={"no-scrollbar h-[calc(100%_-_100px)] overflow-y-auto"}
           onLoadError={(err) => console.log(err)}
         >
           {Array.from(new Array(numPages), (el, index) => (
@@ -193,6 +194,9 @@ export default function CreateDocumentChapter({
       )}
       <div
         onClick={() => {
+          if (editingSection || creatingSection || uploading) {
+            return;
+          }
           setUploadedDocument(undefined);
           setDoc(undefined);
         }}
@@ -216,10 +220,10 @@ export default function CreateDocumentChapter({
         </svg>
       </div>
       {!uploadedDocument && (
-        <div className="flex w-full items-center justify-center">
+        <div className="flex h-[calc(100%_-_100px)] w-full items-center justify-center">
           <label
             htmlFor="dropzone-file"
-            className="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 "
+            className="dark:hover:bg-bray-800 flex h-full w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 "
           >
             <div className="flex flex-col items-center justify-center pb-6 pt-5">
               <svg
@@ -260,7 +264,7 @@ export default function CreateDocumentChapter({
           </label>
         </div>
       )}
-      <div className="flex w-full flex-col gap-2">
+      <div className="flex h-max w-full flex-col gap-2">
         <label htmlFor="name">Chapter Name</label>
         <input
           type="text"
@@ -272,7 +276,7 @@ export default function CreateDocumentChapter({
           className="common-input"
         />
       </div>
-      <div className="flex w-full justify-start gap-8 pb-8">
+      <div className="absolute inset-x-0 -bottom-24 flex w-full justify-start gap-8 bg-white pb-8">
         <button
           disabled={
             !uploadedDocument || editingSection || creatingSection || uploading

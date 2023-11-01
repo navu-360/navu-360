@@ -31,6 +31,7 @@ export default function AllTalents() {
     organizationId,
     {
       skip: !organizationId,
+      refetchOnMountOrArgChange: true,
     },
   );
 
@@ -219,7 +220,6 @@ export default function AllTalents() {
                     }}
                     talentId={showTalentEnrolModal[0] as string}
                     talentName={showTalentEnrolModal[1] as string}
-                    programs={[]}
                   />
                 )}
               </AnimatePresence>

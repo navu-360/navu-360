@@ -124,10 +124,10 @@ export default function CreateBlockChapter({
 
   return (
     <div
-      className={`relative flex  flex-col ${
+      className={`relative flex h-[calc(100vh_-_400px)] flex-col ${
         fromLibrary
           ? "h-full w-full gap-8 pb-8"
-          : "ml-auto min-h-[50vh] w-[calc(100%_-_330px)] gap-8"
+          : "ml-auto w-[calc(100%_-_330px)] gap-8"
       }`}
     >
       <Editor
@@ -149,7 +149,7 @@ export default function CreateBlockChapter({
         />
       </div>
 
-      <div className="flex w-full justify-start gap-8 pb-8">
+      <div className="absolute inset-x-0 -bottom-24 flex w-full justify-start gap-8 bg-white pb-8">
         <button
           disabled={
             blockContent?.blocks?.length === 0 ||

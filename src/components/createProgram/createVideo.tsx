@@ -156,10 +156,10 @@ export default function CreateVideoChapter({
 
   return (
     <div
-      className={`relative flex flex-col ${
+      className={`relative flex h-[calc(100vh_-_400px)] flex-col ${
         fromLibrary
-          ? "mx-auto ml-0 mr-16 h-full w-auto items-start justify-start gap-8"
-          : "ml-auto min-h-[50vh] w-[calc(100%_-_330px)] gap-8"
+          ? "h-full w-full gap-8 pb-8"
+          : "ml-auto w-[calc(100%_-_330px)] gap-8"
       }`}
     >
       {uploadedVideo && (
@@ -169,7 +169,7 @@ export default function CreateVideoChapter({
           autoPlay
           controls
           loop
-          className={`h-[400px] w-full rounded-lg bg-neutral-300 object-contain`}
+          className={`h-full w-full rounded-lg bg-neutral-300 object-contain`}
         >
           Your browser does not support the video tag.
           <source
@@ -184,6 +184,7 @@ export default function CreateVideoChapter({
       )}
       <div
         onClick={() => {
+          if (editingSection || creatingSection || uploading) return;
           setUploadedVideo(undefined);
           setVideo(undefined);
         }}
@@ -207,10 +208,10 @@ export default function CreateVideoChapter({
         </svg>
       </div>
       {!uploadedVideo && (
-        <div className="flex w-full items-center justify-center">
+        <div className="flex h-[calc(100%_-_100px)] w-full items-center justify-center">
           <label
             htmlFor="dropzone-file"
-            className="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 "
+            className="dark:hover:bg-bray-800 flex h-full w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 "
           >
             <div className="flex flex-col items-center justify-center pb-6 pt-5">
               <svg
@@ -263,7 +264,7 @@ export default function CreateVideoChapter({
           className="common-input"
         />
       </div>
-      <div className="flex w-full justify-start gap-8 pb-8">
+      <div className="absolute inset-x-0 -bottom-24 flex w-full justify-start gap-8 bg-white pb-8">
         <button
           disabled={
             !uploadedVideo || editingSection || creatingSection || uploading

@@ -16,14 +16,14 @@ export function CreateQuiz() {
   });
 
   return (
-    <section className="flex w-full max-w-5xl flex-col gap-2 text-left">
+    <section className="flex h-[calc(100vh_-_300px)] w-full max-w-5xl flex-col gap-2 text-left">
       <h2 className="text-2xl font-semibold text-tertiary">Create Quiz</h2>
       <p className="max-w-xl text-sm font-medium text-gray-700">
         You can add multiple questions to the course quiz. When done adding
         questions, click on the &quot;View Course&quot; to finish.
       </p>
 
-      <div className="relative mt-4 flex w-full flex-col gap-6">
+      <div className="no-scrollbar relative mt-4 flex h-full w-full flex-col gap-6 overflow-y-auto px-2 py-4">
         {currentData?.data?.map((question: IQuizQuestion, index: number) => (
           <QuestionView
             {...question}

@@ -44,7 +44,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       },
       orderBy: {
-        enrollmentStatus: "desc",
+        createdAt: "desc",
       },
     });
 

@@ -69,6 +69,7 @@ export default function ViewEnrollment({
   };
   const { data: enrollmentStatus } = useGetEnrollmentStatusQuery(body, {
     skip: !data?.OnboardingProgram?.id,
+    refetchOnMountOrArgChange: true,
   });
 
   const recordViewCourse = async () => {
@@ -282,11 +283,8 @@ export default function ViewEnrollment({
       // setQuizDone - if enrollmentStatus?.data.quizCompleted
       setQuizDone(enrollmentStatus?.data.quizCompleted);
     }
-  }, [
-    enrollmentStatus?.data,
-    data?.OnboardingProgram?.ProgramSection,
-    preview,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enrollmentStatus?.data, data?.OnboardingProgram, preview]);
 
   return (
     <>
@@ -424,7 +422,7 @@ export default function ViewEnrollment({
                         <path d="M8 12h8" />
                         <path d="m12 16 4-4-4-4" />
                       </svg>
-                      <span>Start Course</span>
+                      <span>{preview ? "View" : "Start"} Course</span>
                     </button>
                   </>
                 )}
@@ -575,6 +573,7 @@ export default function ViewEnrollment({
                       if (!preview) {
                         // add preview query to url
                         router.push(`${router.asPath}?preview=true`);
+                        // refetchStatus();
                       }
                     }}
                   />

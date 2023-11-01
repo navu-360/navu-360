@@ -28,8 +28,6 @@ export function TakeQuizQuestion({
 }) {
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
 
-  console.log("correctAnswer", correctAnswer);
-
   useEffect(() => {
     if (talentAnswer && talentAnswer?.length > 0) {
       setSelectedAnswer(talentAnswer);

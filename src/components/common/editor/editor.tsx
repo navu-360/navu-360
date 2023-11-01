@@ -22,8 +22,6 @@ function MyEditor({
 
   const [outputData, setOutputData] = React.useState<OutputData | null>(null);
 
-  console.log("outputData -", outputData);
-
   useEffect(() => {
     if (initialData?.blocks?.length === 0) return;
     setOutputData(initialData);
@@ -83,14 +81,14 @@ function MyEditor({
 
   return (
     <div
-      className={`mb-8 rounded-lg  bg-tertiary p-8 text-white md:min-w-[35vw] ${
+      className={`h-full rounded-lg overflow-y-auto bg-tertiary p-8 text-white pt-4 ${
         isReadOnly
           ? `${
               router?.pathname.includes("learn")
                 ? "w-full max-w-[unset]"
                 : "w-full md:max-w-[unset]"
             }`
-          : "w-full max-w-[95%] md:max-w-[80vw]"
+          : "w-full"
       }`}
       id="editorjs"
     />

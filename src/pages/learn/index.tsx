@@ -54,6 +54,7 @@ export default function LearnCenter() {
   const talentId = userProfile?.id;
   const { data, isFetching } = useGetTalentEnrollmentsQuery(talentId, {
     skip: !talentId,
+    refetchOnMountOrArgChange: true,
   });
 
   const [activeTab, setActiveTab] = useState("all");
@@ -72,7 +73,7 @@ export default function LearnCenter() {
               <h1 className="w-full text-2xl font-bold capitalize">
                 My Courses
               </h1>
-              <div className="mt-8 flex items-center gap-4">
+              <div className="mt-8 hidden items-center gap-4">
                 <div className="flex w-max flex-col items-center justify-center gap-1">
                   <button
                     onClick={() => setActiveTab("all")}

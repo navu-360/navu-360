@@ -221,7 +221,7 @@ export default function CreateProgram() {
       <DashboardWrapper hideSearch>
         <div className="relative ml-[90px] mt-[40px] flex h-full flex-col items-start justify-start gap-8 rounded-md  p-4 md:ml-[300px] md:w-[calc(100%_-_400px)]">
           <Steps doneSteps={getDoneSteps()} activeStep={activeTab} />
-          <div className="shadowAroundFeature relative h-full min-h-[80vh] w-full rounded-md bg-white p-4 pb-16">
+          <div className="shadowAroundFeature relative h-[calc(100vh_-_200px)] overflow-hidden w-full rounded-md bg-white p-4 pb-16">
             {activeTab === 0 && (
               <ProgramDetails receiveData={setProgramDetails} />
             )}

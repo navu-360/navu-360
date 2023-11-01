@@ -182,7 +182,7 @@ export default function SelectFromLibrary({
                     className={`absolute right-8 ml-1 flex h-5 w-5 items-center justify-center rounded-full text-xs font-semibold text-white ${
                       tab.type === activeTab
                         ? "bg-secondary text-white"
-                        : "bg-gray-300 text-gray-700"
+                        : "bg-neutral-400 text-gray-800"
                     }`}
                   >
                     {getChaptersForType(tab.type)?.length}

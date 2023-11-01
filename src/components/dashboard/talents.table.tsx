@@ -316,9 +316,7 @@ export default function AllTalents({
                           colSpan={selectedType !== "Invited" ? 6 : 4}
                           className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-lg font-bold"
                         >
-                          No talents have{" "}
-                          {selectedType !== "Joined" ? "been" : ""}{" "}
-                          {selectedType.toLowerCase()} yet
+                          No talents have here
                         </td>
                       </tr>
                     )}
@@ -421,7 +419,6 @@ export default function AllTalents({
             }}
             talentId={showTalentEnrolModal[0] as string}
             talentName={showTalentEnrolModal[1] as string}
-            programs={onboardingPrograms}
           />
         )}
       </AnimatePresence>
@@ -465,13 +462,8 @@ export function CompletionStatus({
     body,
     {
       skip: !enrollment?.userId,
+      refetchOnMountOrArgChange: true,
     },
-  );
-
-  console.log(
-    "totalChapters",
-    totalChapters,
-    enrollmentStatus?.data?.viewedChapters?.length,
   );
 
   const checkCompletionStatus = () => {
