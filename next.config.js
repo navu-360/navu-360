@@ -21,11 +21,23 @@ const config = withPWA({
     hideSourceMaps: true,
   },
   images: {
-    domains: [
-      "res.cloudinary.com",
-      "lh3.googleusercontent.com",
-      "avatars.navu360.com",
-      "mdbcdn.b-cdn.net",
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
+      {
+        protocol: "https",
+        hostname: "avatars.navu360.com",
+      },
+      {
+        protocol: "https",
+        hostname: "mdbcdn.b-cdn.net",
+      },
     ],
   },
 
