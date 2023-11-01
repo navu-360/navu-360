@@ -60,7 +60,7 @@ export function CreateOrEditQuestionPopUp({
     if (!obj.answer) {
       toaster({
         status: "error",
-        message: "Answer is required",
+        message: "Please select which option is the correct course",
       });
       return;
     }

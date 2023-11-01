@@ -38,7 +38,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       include: {
         OnboardingProgram: {
           include: {
-            ProgramSection: true
+            ProgramSection: true,
+            QuizQuestion: true,
           }
         },
       },

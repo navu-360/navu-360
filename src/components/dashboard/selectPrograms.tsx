@@ -1,5 +1,9 @@
 import { motion } from "framer-motion";
-import type { OnboardingProgram, Organization } from "@prisma/client";
+import type {
+  EventEnrollment,
+  OnboardingProgram,
+  Organization,
+} from "@prisma/client";
 
 import React, { useState, useEffect } from "react";
 import toaster from "utils/toaster";
@@ -7,6 +11,7 @@ import {
   useEnrollTalentMutation,
   useSendEnrolledEmailMutation,
   useGetOrganizationProgramsQuery,
+  useGetEnrollmentStatusQuery,
 } from "services/baseApiSlice";
 import { useSelector } from "react-redux";
 import useDebounce from "utils/useDebounce";
@@ -17,7 +22,6 @@ export function SelectPrograms({
   talentId,
   closeModal,
 }: {
-  programs: OnboardingProgram[];
   talentName: string;
   closeModal: (val?: boolean) => void;
   talentId: string;
@@ -35,10 +39,37 @@ export function SelectPrograms({
       skip: !orgId,
     },
   );
+  const body = {
+    userId: talentId,
+  };
+  const { data: enrollmentStatus } = useGetEnrollmentStatusQuery(body, {
+    skip: !talentId,
+  });
+
+  console.log("enrollmentStatus", enrollmentStatus?.data);
 
   useEffect(() => {
-    setShowingItems(programs?.data);
-  }, [programs]);
+    if (programs?.data && enrollmentStatus?.data) {
+      // we check enrollmentStatus?.data - get all programIds
+      const allEnrolledProgramIds = enrollmentStatus?.data?.map(
+        (enrollment: EventEnrollment) => enrollment.programId,
+      );
+      const allEnrolledProgramIdsOnlyUnique = [
+        ...new Set(allEnrolledProgramIds),
+      ];
+      console.log(
+        "allEnrolledProgramIdsOnlyUnique",
+        allEnrolledProgramIdsOnlyUnique,
+        programs?.data,
+      );
+      // filter out all programs that are not enrolled
+      const filteredPrograms = programs?.data?.filter(
+        (program: OnboardingProgram) =>
+          !allEnrolledProgramIdsOnlyUnique.includes(program.id),
+      );
+      setShowingItems(filteredPrograms);
+    }
+  }, [programs, enrollmentStatus?.data]);
 
   const [selectedProgramIds, setSelectedProgramIds] = useState<string[]>([]);
 
@@ -168,7 +199,7 @@ export function SelectPrograms({
         <div className="flex h-full flex-col justify-between">
           <div className="flex flex-col gap-8">
             <h1 className="text-center text-xl font-semibold text-[#243669]">
-              Choose programs to enroll{" "}
+              Choose courses to enroll{" "}
               <span className="font-black capitalize">{talentName}</span>
             </h1>
             <div className="flex w-full justify-between">
@@ -176,7 +207,7 @@ export function SelectPrograms({
                 <input
                   type="text"
                   className="common-input max-w-[600px]"
-                  placeholder="Search for programs"
+                  placeholder="Search for courses"
                   id="search"
                   name="search"
                   value={search}

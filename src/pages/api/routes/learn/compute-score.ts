@@ -55,8 +55,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       res.status(400).json({ message: `Program quiz not found.` });
       return;
     }
-    console.log("talentAnswers", talentAnswers);
-    console.log("programQuiz", programQuiz);
     // check if all questions have been answered. compare length of talentAnswers and programQuiz
     if (talentAnswers.length !== programQuiz.length) {
       res.status(400).json({ message: `All questions must be answered.` });
@@ -72,12 +70,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
     }
 
+    const percentageScore = (score / programQuiz.length) * 100;
+
     // record score
     const results = await prisma.talentProgramResults.create({
       data: {
         userId: session.user.id,
         programId,
-        score,
+        score: percentageScore,
       },
     });
 

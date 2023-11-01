@@ -1,9 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import type {
-  OnboardingProgram,
-  OnboardingProgramTalents,
-  User,
-} from "@prisma/client";
+
 import axios from "axios";
 import Header from "components/common/head";
 import Spinner from "components/common/spinner";
@@ -14,13 +10,11 @@ import { useGetTalentEnrollmentsQuery } from "services/baseApiSlice";
 import { generateAvatar } from "utils/avatar";
 import { processDate } from "utils/date";
 
-import { useGetOrganizationProgramsQuery } from "services/baseApiSlice";
-import { useSelector } from "react-redux";
-
 import { AnimatePresence } from "framer-motion";
 import { SelectPrograms } from "components/dashboard/selectPrograms";
 import { ConfirmUnenroll } from "components/dashboard/confirmUnenroll";
 import { RemoveUserConfirmModal } from "components/dashboard/confirmRemoveUser";
+import type { User } from "@prisma/client";
 
 export default function Talent({ data }: { data: User }) {
   const talentId = data?.id;
@@ -34,19 +28,11 @@ export default function Talent({ data }: { data: User }) {
   });
 
   const [showTalentEnrolModal, setShowTalentEnrolModal] = useState<string[]>(
-    []
+    [],
   );
-
-  const orgId = useSelector(
-    (state: { auth: { orgId: string } }) => state.auth.orgId
-  );
-  // get programs created by this organization
-  const { data: allPrograms } = useGetOrganizationProgramsQuery(orgId, {
-    skip: !orgId,
-  });
 
   const [showUnenrollModal, setShowUnenrollModal] = useState<boolean | string>(
-    false
+    false,
   );
 
   const [showRemoveUser, setShowRemoveUser] = useState<boolean | string>(false);
@@ -61,7 +47,7 @@ export default function Talent({ data }: { data: User }) {
           {/* sections */}
           {/* user details part - like on talent feed */}
           <section className="relative flex w-[95%] flex-col gap-8 xl:flex-row">
-            <div className="mt-16 flex h-max w-full flex-col justify-between rounded-xl bg-white p-4 pb-4 shadow-lg xl:fixed xl:left-[300px] xl:top-[140px] xl:mt-0 xl:h-[300px] xl:w-[400px] xl:pb-6">
+            <div className="mt-16 flex h-max w-full flex-col justify-between rounded-xl bg-white p-4 pb-4 shadow-lg xl:fixed xl:left-[300px] xl:top-[140px] xl:mt-0 xl:h-[270px] xl:w-[400px] xl:pb-6">
               <div className="w-full">
                 <div className="flex flex-col gap-4 md:flex-row">
                   <img
@@ -69,11 +55,11 @@ export default function Talent({ data }: { data: User }) {
                     className="mx-auto h-20 w-20 rounded-full md:mx-0"
                     alt={data?.name as string}
                   />
-                  <div className="flex flex-col gap-0 pb-8">
+                  <div className="flex flex-col gap-4 pb-8">
                     <h1 className="text-2xl font-bold capitalize text-tertiary">
                       {data?.name}
                     </h1>
-                    <div className="mt-3 flex items-center gap-1">
+                    <div className="flex items-center gap-1">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
@@ -92,33 +78,7 @@ export default function Talent({ data }: { data: User }) {
                       <p className="text-sm">{data?.email}</p>
                     </div>
 
-                    <div className="mt-3 flex items-center gap-1">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="lucide lucide-briefcase"
-                      >
-                        <rect
-                          width="20"
-                          height="14"
-                          x="2"
-                          y="7"
-                          rx="2"
-                          ry="2"
-                        ></rect>
-                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-                      </svg>
-                      <p className="text-sm">{data?.position}</p>
-                    </div>
-
-                    <div className="mt-3 flex items-center gap-1">
+                    <div className="flex items-center gap-1">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
@@ -156,8 +116,8 @@ export default function Talent({ data }: { data: User }) {
                   </div>
                 </div>
               </div>
-              <div className="hr-color h-[1px] hidden w-full"></div>
-              <div className="mt-8 hidden w-full flex-col gap-4 md:mt-0">
+              <div className="hr-color h-[1px] w-full"></div>
+              <div className="mt-8 flex w-full flex-col gap-4 md:mt-0">
                 <button
                   onClick={() => setShowRemoveUser(data?.id)}
                   className="flex items-center justify-center gap-2 rounded-md bg-red-400 py-2 text-base font-semibold text-white"
@@ -231,14 +191,6 @@ export default function Talent({ data }: { data: User }) {
               }}
               talentId={showTalentEnrolModal[0] as string}
               talentName={showTalentEnrolModal[1] as string}
-              // remove already enrolled programs: enrollments?.data where id === program.id
-              programs={allPrograms?.data?.filter(
-                (program: OnboardingProgram) =>
-                  !enrollments?.data?.some(
-                    (enrollment: OnboardingProgramTalents) =>
-                      enrollment.programId === program.id
-                  )
-              )}
             />
           )}
         </AnimatePresence>
@@ -276,7 +228,7 @@ export const getStaticPaths = async () => {
       `${process.env.NEXT_PUBLIC_API_BASE_URL_V1}users/all`,
       {
         headers: { "Accept-Encoding": "gzip,deflate,compress" },
-      }
+      },
     );
     const paths = res.data.data.map((user: User) => ({
       params: { id: user.id.toString() },
@@ -299,7 +251,7 @@ export const getStaticProps = async ({
       `${process.env.NEXT_PUBLIC_API_BASE_URL_V1}/users/${params.id}`,
       {
         headers: { "Accept-Encoding": "gzip,deflate,compress" },
-      }
+      },
     );
     if (res.data.data) {
       return {

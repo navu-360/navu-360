@@ -40,7 +40,7 @@ export function TakeQuizQuestion({
       <div className="flex w-full items-center justify-between">
         <h3 className="text-lg font-semibold text-gray-700">{question}</h3>
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="relative flex flex-col gap-2">
         {[
           { value: "A", label: choiceA },
           { value: "B", label: choiceB },
@@ -52,14 +52,22 @@ export function TakeQuizQuestion({
             <div
               key={option.value}
               onClick={() => setSelectedAnswer(option.value)}
-              className="flex cursor-default items-center gap-2"
+              className="relative flex cursor-default items-center gap-2"
             >
               <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-200">
                 <div
-                  className={`flex h-4 w-4 items-center justify-center rounded-full bg-secondary ${
+                  className={`flex h-4 w-4 items-center justify-center rounded-full ${
                     option.value === selectedAnswer
                       ? "bg-opacity-100"
+                      : option.value === correctAnswer
+                      ? "bg-opacity-100"
                       : "bg-opacity-0"
+                  } ${
+                    talentAnswer
+                      ? option.value === correctAnswer
+                        ? "bg-green-500"
+                        : "bg-gray-400"
+                      : "bg-secondary"
                   }`}
                 />
               </div>
@@ -68,6 +76,15 @@ export function TakeQuizQuestion({
               </p>
             </div>
           ))}
+        {talentAnswer && (
+          <span
+            className={`text-sm font-medium ${
+              talentAnswer === correctAnswer ? "text-green-500" : "text-red-500"
+            }`}
+          >
+            {talentAnswer === correctAnswer ? "Correct!" : "Failed"}
+          </span>
+        )}
       </div>
       {explanation?.length > 0 && quizDone && (
         <div className="flex flex-col gap-2">

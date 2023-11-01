@@ -12,7 +12,7 @@ export default function ChapterStrip({
   return (
     <div className="flex w-full items-center justify-around rounded-lg bg-gray-200 p-2 py-3 font-medium text-tertiary">
       <span className="w-max font-semibold">{index}</span>
-      <p className="w-[75%] text-sm">{title}</p>
+      <p className={`w-[75%] text-sm ${done ? "line-through text-gray-500" : "text-tertiary"}`}>{title}</p>
       {done ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"

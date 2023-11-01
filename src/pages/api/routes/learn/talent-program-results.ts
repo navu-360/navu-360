@@ -33,9 +33,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     });
 
+    // get talentProgramResults for using userId: session.user.id and programId
+    const talentProgramResults = await prisma.talentProgramResults.findFirst({
+      where: {
+        programId,
+        userId: session.user.id,
+      },
+    });
+
     return res
       .status(200)
-      .json({ message: `Answer recorded`, data: talentAnswers });
+      .json({ message: `Answer recorded`, data: { results: talentAnswers, score: talentProgramResults?.score } });
   } catch (error) {
     return (
       res

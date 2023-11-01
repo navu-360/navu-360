@@ -34,13 +34,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       return res.status(200).json({ message: `Events retrieved`, data: events });
     } else {
-      const events = await prisma.eventEnrollment.findMany({
-        where: {
-          userId: userId,
-        },
-      });
+      if (programId) {
+        const events = await prisma.eventEnrollment.findFirst({
+          where: {
+            programId,
+            userId: userId
+          },
+        });
+        return res.status(200).json({ message: `Events retrieved`, data: events });
+      } else {
+        const events = await prisma.eventEnrollment.findMany({
+          where: {
+            userId: userId,
+          },
+        });
 
-      return res.status(200).json({ message: `Events retrieved`, data: events });
+        return res.status(200).json({ message: `Events retrieved`, data: events });
+      }
+
     }
 
   } catch (error) {

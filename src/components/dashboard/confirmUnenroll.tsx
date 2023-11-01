@@ -55,7 +55,7 @@ export function ConfirmUnenroll({
               Unenroll
             </h1>
             <p className="text-center text-sm font-medium text-[#243669]">
-              Are you sure you want to unenroll {userName} from this program?
+              Are you sure you want to unenroll {userName} from this course?
             </p>
 
             <div className="flex justify-center gap-4">

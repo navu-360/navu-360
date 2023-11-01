@@ -2,6 +2,7 @@ import type {
   OnboardingProgram,
   OnboardingProgramTalents,
   ProgramSection,
+  QuizQuestion,
   User,
 } from "@prisma/client";
 import Header from "components/common/head";
@@ -118,6 +119,7 @@ export default function LearnCenter() {
                   program: OnboardingProgramTalents & {
                     OnboardingProgram: OnboardingProgram & {
                       ProgramSection: ProgramSection[];
+                      QuizQuestion: QuizQuestion[];
                     };
                   },
                 ) => (
@@ -130,6 +132,7 @@ export default function LearnCenter() {
                     }
                     id={program.id}
                     programId={program.OnboardingProgram.id}
+                    hasQuiz={program.OnboardingProgram.QuizQuestion?.length > 0}
                   />
                 ),
               )}
@@ -160,12 +163,14 @@ function OneCourse({
   numofChapters,
   programId,
   id,
+  hasQuiz,
 }: {
   image: string;
   title: string;
   numofChapters: number;
   id: string;
   programId: string;
+  hasQuiz: boolean;
 }) {
   const body = {
     programId,
@@ -174,6 +179,11 @@ function OneCourse({
   const { data: enrollmentStatus } = useGetEnrollmentStatusQuery(body, {
     skip: !programId,
   });
+
+  const doneSections =
+    enrollmentStatus?.data?.viewedChapters?.length +
+    (enrollmentStatus?.data?.quizCompleted ? 1 : 0);
+  const requiredSections = numofChapters + (hasQuiz ? 1 : 0);
 
   return (
     <Link
@@ -194,30 +204,36 @@ function OneCourse({
         <h2 className="w-[80%] text-base font-bold text-tertiary">
           {title?.length > 40 ? title?.slice(0, 40) + "..." : title}
         </h2>
-        {enrollmentStatus?.data?.viewedChapters && numofChapters > 0 && (
+        {enrollmentStatus?.data?.viewedChapters && requiredSections > 0 ? (
           <div className="flex flex-col gap-1">
-            {enrollmentStatus?.data?.viewedChapters?.length ===
-            numofChapters ? (
+            {doneSections === requiredSections ? (
               <span className="text-sm font-semibold">100%</span>
             ) : (
               <span className="text-sm font-semibold">
-                {enrollmentStatus?.data?.viewedChapters?.length}/{numofChapters}
+                {doneSections}/{requiredSections}
               </span>
             )}
             <div className="flex w-full gap-2">
-              {[...Array(numofChapters)].map((_, i) => (
+              {[...Array(requiredSections)].map((_, i) => (
                 <div
                   key={i}
                   style={{
-                    width: `${(1 / numofChapters) * 100}%`,
+                    width: `${(1 / requiredSections) * 100}%`,
                   }}
                   className={`h-2 rounded-3xl ${
-                    i < enrollmentStatus?.data?.viewedChapters?.length
-                      ? "bg-secondary"
-                      : "bg-secondary/10"
+                    i < doneSections ? "bg-secondary" : "bg-secondary/10"
                   }`}
                 />
               ))}
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-1">
+            <div className="h-4 w-8 animate-pulse rounded-lg bg-gray-300"></div>
+            <div className="flex w-full">
+              <div className={`h-3 w-1/3 rounded-3xl bg-gray-300`} />
+              <div className={`h-3 w-1/3 rounded-3xl bg-gray-300`} />
+              <div className={`h-3 w-1/3 rounded-3xl bg-gray-300`} />
             </div>
           </div>
         )}

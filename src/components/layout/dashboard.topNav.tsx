@@ -133,10 +133,6 @@ function AdminCard() {
 
   const router = useRouter();
 
-  const userProfile = useSelector(
-    (state: { auth: { userProfile: User } }) => state.auth.userProfile,
-  );
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -160,30 +156,30 @@ function AdminCard() {
       className="right-4 top-2 flex cursor-pointer items-center gap-2 pt-0 transition-all duration-300 ease-in md:fixed"
     >
       <div className="relative flex h-[50px] w-[50px] items-center justify-center rounded-full">
-        {userProfile?.id ? (
+        {session?.user?.id ? (
           <img
-            src={generateAvatar(userProfile?.name as string)}
+            src={generateAvatar(session?.user?.name as string)}
             className="h-[40px] w-[40px]"
-            alt={userProfile?.name as string}
+            alt={session?.user?.name as string}
           />
         ) : (
-          <div className="h-[40px] w-[40px] rounded-full bg-white/5" />
+          <div className="h-[40px] w-[40px] animate-pulse rounded-full bg-gray-300" />
         )}
       </div>
 
-      {userProfile?.name ? (
+      {session?.user?.name ? (
         <div className="flex flex-col gap-0">
           <h2 className="text-xl font-bold capitalize text-tertiary">
-            {userProfile?.name}
+            {session?.user?.name}
           </h2>
           <p className="text-md font-medium text-gray-500">
-            {userProfile?.position}
+            {session?.user?.position}
           </p>
         </div>
       ) : (
         <div className="flex flex-col gap-1">
-          <div className="h-[20px] w-[150px] bg-tertiary"></div>
-          <div className="h-[10px] w-[100px] bg-tertiary"></div>
+          <div className="h-[20px] w-[150px] animate-pulse bg-gray-300"></div>
+          <div className="h-[10px] w-[100px] animate-pulse bg-gray-300"></div>
         </div>
       )}
     </div>

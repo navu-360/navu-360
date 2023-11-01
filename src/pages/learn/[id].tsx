@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
 import axios from "axios";
 import Header from "components/common/head";
@@ -8,7 +9,6 @@ import type {
   OnboardingProgramTalents,
   ProgramSection,
   QuizQuestion,
-  TalentQuizAnswers,
   User,
 } from "@prisma/client";
 import Image from "next/image";
@@ -20,17 +20,12 @@ import CourseDone from "components/learnCourse/courseComplete";
 import {
   useComputeScoreForQuizMutation,
   useGetEnrollmentStatusQuery,
-  useGetTalentResultsPostMutation,
   useGetTalentResultsQuery,
   useRecordCourseEventMutation,
   useRecordQuizAnswerMutation,
 } from "services/baseApiSlice";
 import toaster from "utils/toaster";
 import { useRouter } from "next/router";
-
-interface ResultsType extends TalentQuizAnswers {
-  Question: QuizQuestion;
-}
 
 export default function ViewEnrollment({
   data,
@@ -55,24 +50,26 @@ export default function ViewEnrollment({
     QuizQuestion | undefined
   >();
 
-  const [talentResults, setTalentResults] = useState<ResultsType[]>();
-
   const router = useRouter();
   const { preview } = router.query;
 
   const programId = data?.OnboardingProgram?.id;
-  const { data: results } = useGetTalentResultsQuery(programId, {
+  const { data: results, refetch } = useGetTalentResultsQuery(programId, {
     skip: !programId,
   });
-
-  console.log("results", results?.data);
 
   const [recordEvent, { isLoading }] = useRecordCourseEventMutation();
   const [recordAnswer, { isLoading: recordingAnswer }] =
     useRecordQuizAnswerMutation();
   const [computeScore, { isLoading: computing }] =
     useComputeScoreForQuizMutation();
-  const [getResults] = useGetTalentResultsPostMutation();
+
+  const body = {
+    programId: data?.OnboardingProgram?.id,
+  };
+  const { data: enrollmentStatus } = useGetEnrollmentStatusQuery(body, {
+    skip: !data?.OnboardingProgram?.id,
+  });
 
   const recordViewCourse = async () => {
     const body = {
@@ -86,7 +83,11 @@ export default function ViewEnrollment({
     recordEvent(body)
       .unwrap()
       .then(() => {
-        setShowingIntro(false);
+        recordViewChapter(
+          data?.OnboardingProgram?.ProgramSection?.[0]?.id as string,
+          true,
+        );
+        // setShowingIntro(false);
       })
       .catch((error) => {
         toaster({
@@ -96,18 +97,30 @@ export default function ViewEnrollment({
       });
   };
 
-  const recordViewChapter = async (chapterId: string) => {
+  const recordViewChapter = async (chapterId: string, hideIntro = false) => {
     const body = {
       programId: data?.OnboardingProgram?.id,
       viewChapterId: chapterId,
     };
     if (preview) {
+      if (hideIntro) {
+        setShowingIntro(false);
+      }
+      return;
+    }
+
+    if (enrollmentStatus?.data?.viewedChapters?.includes(chapterId)) {
+      if (hideIntro) {
+        setShowingIntro(false);
+      }
       return;
     }
     recordEvent(body)
       .unwrap()
       .then(() => {
-        console.log("");
+        if (hideIntro) {
+          setShowingIntro(false);
+        }
       })
       .catch((error) => {
         toaster({
@@ -150,18 +163,8 @@ export default function ViewEnrollment({
     computeScore(body)
       .unwrap()
       .then(() => {
-        getResults(body)
-          .unwrap()
-          .then((payload) => {
-            setTalentResults(payload?.data);
-            setQuizDone(true);
-          })
-          .catch((error) => {
-            toaster({
-              status: "error",
-              message: error?.data?.message,
-            });
-          });
+        refetch();
+        setQuizDone(true);
       })
       .catch((error) => {
         toaster({
@@ -228,16 +231,8 @@ export default function ViewEnrollment({
       });
   };
 
-  const body = {
-    programId: data?.OnboardingProgram?.id,
-  };
-  const { data: enrollmentStatus } = useGetEnrollmentStatusQuery(body, {
-    skip: !data?.OnboardingProgram?.id,
-  });
-
   useEffect(() => {
     if (enrollmentStatus?.data && !preview) {
-      console.log("enrollmentStatus", enrollmentStatus?.data);
       // setShowingIntro - enrollmentStatus?.data.viewedCourse
       setShowingIntro(!enrollmentStatus?.data.viewedCourse);
       //setChaptersDone - if enrollmentStatus?.data.viewedChapters === data?.OnboardingProgram?.ProgramSection?.length
@@ -260,10 +255,28 @@ export default function ViewEnrollment({
       setCurrentChapter(
         data?.OnboardingProgram?.ProgramSection?.[latestViewedIndex + 1],
       );
-      recordViewChapter(
-        data?.OnboardingProgram?.ProgramSection?.[latestViewedIndex + 1]
-          ?.id as string,
-      );
+      if (enrollmentStatus?.data?.viewedChapters?.length > 0) {
+        if (
+          enrollmentStatus?.data?.viewedChapters?.length ===
+          data?.OnboardingProgram?.ProgramSection?.length
+        ) {
+          if (data?.OnboardingProgram?.QuizQuestion?.length === 0) {
+            console.log("course done - no quiz");
+            recordCourseCompleted();
+          } else {
+            console.log("show quiz");
+            setCurrentQuestion(data?.OnboardingProgram?.QuizQuestion?.[0]);
+            setChaptersDone(true);
+          }
+        } else {
+          console.log("not done with chapters");
+          recordViewChapter(
+            data?.OnboardingProgram?.ProgramSection?.[latestViewedIndex + 1]
+              ?.id as string,
+          );
+        }
+      }
+
       // setCourseDone - if enrollmentStatus?.data.courseCompleted
       setCourseDone(enrollmentStatus?.data.courseCompleted);
       // setQuizDone - if enrollmentStatus?.data.quizCompleted
@@ -274,11 +287,6 @@ export default function ViewEnrollment({
     data?.OnboardingProgram?.ProgramSection,
     preview,
   ]);
-
-  console.log(
-    "enrollmentStatus?.data?.viewedChapters?.length",
-    enrollmentStatus?.data,
-  );
 
   return (
     <>
@@ -345,10 +353,12 @@ export default function ViewEnrollment({
                         {data?.OnboardingProgram?.QuizQuestion?.length > 0 && (
                           <div className="flex w-full items-center justify-around rounded-lg bg-gray-200 p-2 py-3 font-medium text-tertiary">
                             <span className="w-max font-semibold">
-                              {data?.OnboardingProgram?.ProgramSection?.length}
+                              0
+                              {data?.OnboardingProgram?.ProgramSection?.length +
+                                1}
                             </span>
                             <p className="w-[75%] text-sm">Course Quiz</p>
-                            {quizDone ? (
+                            {enrollmentStatus?.data.quizCompleted ? (
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"
@@ -438,6 +448,15 @@ export default function ViewEnrollment({
                       currentQuestion &&
                       (quizDone ? (
                         <div className="mb-8 flex flex-col gap-4">
+                          <div className="flex w-full flex-col">
+                            <h3>
+                              You scored{" "}
+                              <span className="font-semibold text-secondary">
+                                {results?.data?.score}%
+                              </span>{" "}
+                              in the quiz
+                            </h3>
+                          </div>
                           {data?.OnboardingProgram?.QuizQuestion?.map(
                             (currentQuestion) => (
                               <TakeQuizQuestion
@@ -462,14 +481,14 @@ export default function ViewEnrollment({
                                 isLoading={recordingAnswer}
                                 quizDone
                                 talentAnswer={
-                                  talentResults?.find(
-                                    (result) =>
+                                  results?.data?.results?.find(
+                                    (result: any) =>
                                       result.questionId === currentQuestion?.id,
                                   )?.talentAnswer
                                 }
                                 correctAnswer={
-                                  talentResults?.find(
-                                    (result) =>
+                                  results?.data?.results?.find(
+                                    (result: any) =>
                                       result.questionId === currentQuestion?.id,
                                   )?.Question?.answer
                                 }
@@ -613,6 +632,9 @@ export default function ViewEnrollment({
                             // check if already done with quiz
                             if (enrollmentStatus?.data.quizCompleted) {
                               setChaptersDone(true);
+                              setCurrentQuestion(
+                                data?.OnboardingProgram?.QuizQuestion?.[0],
+                              );
                               setQuizDone(true);
                             } else {
                               setCurrentQuestion(
@@ -679,39 +701,65 @@ export default function ViewEnrollment({
                         <div className="flex w-full justify-between gap-0">
                           <span>
                             {(
-                              (enrollmentStatus?.data?.viewedChapters?.length /
-                                (data?.OnboardingProgram?.ProgramSection
-                                  ?.length || 0)) *
+                              ((enrollmentStatus?.data?.viewedChapters?.length +
+                                (enrollmentStatus?.data.quizCompleted
+                                  ? 1
+                                  : 0)) /
+                                (data.OnboardingProgram.ProgramSection?.length +
+                                  (data?.OnboardingProgram?.QuizQuestion
+                                    ?.length > 0
+                                    ? 1
+                                    : 0))) *
                               100
                             ).toFixed(0)}
                             % Completed
                           </span>
                           <span>
-                            {enrollmentStatus?.data?.viewedChapters?.length}/
-                            {data.OnboardingProgram.ProgramSection?.length}
+                            {enrollmentStatus?.data?.viewedChapters?.length +
+                              (enrollmentStatus?.data.quizCompleted ? 1 : 0)}
+                            /
+                            {data.OnboardingProgram.ProgramSection?.length +
+                              (data?.OnboardingProgram?.QuizQuestion?.length > 0
+                                ? 1
+                                : 0)}
                           </span>
                         </div>
                         <div className="flex w-full flex-col gap-6">
                           <div className="flex w-full gap-2">
                             {[
                               ...Array(
-                                data.OnboardingProgram.ProgramSection?.length,
+                                data.OnboardingProgram.ProgramSection?.length +
+                                  (data?.OnboardingProgram?.QuizQuestion
+                                    ?.length > 0
+                                    ? 1
+                                    : 0),
                               ),
                             ].map((_, i) => (
                               <div
                                 key={i}
                                 style={{
                                   width: `${
-                                    (enrollmentStatus?.data?.viewedChapters
-                                      ?.length /
+                                    ((enrollmentStatus?.data?.viewedChapters
+                                      ?.length +
+                                      (enrollmentStatus?.data.quizCompleted
+                                        ? 1
+                                        : 0)) /
                                       data.OnboardingProgram.ProgramSection
-                                        ?.length) *
+                                        ?.length +
+                                      (data?.OnboardingProgram?.QuizQuestion
+                                        ?.length > 0
+                                        ? 1
+                                        : 0)) *
                                     100
                                   }%`,
                                 }}
                                 className={`h-2 rounded-3xl ${
                                   i <
-                                  enrollmentStatus?.data?.viewedChapters?.length
+                                  enrollmentStatus?.data?.viewedChapters
+                                    ?.length +
+                                    (enrollmentStatus?.data.quizCompleted
+                                      ? 1
+                                      : 0)
                                     ? "bg-secondary"
                                     : "bg-secondary/20"
                                 }`}
@@ -737,12 +785,19 @@ export default function ViewEnrollment({
                               0 && (
                               <div className="flex w-full items-center justify-around rounded-lg bg-gray-200 p-2 py-3 font-medium text-tertiary">
                                 <span className="w-max font-semibold">
-                                  {
-                                    data?.OnboardingProgram?.ProgramSection
-                                      ?.length
-                                  }
+                                  0
+                                  {data?.OnboardingProgram?.ProgramSection
+                                    ?.length + 1}
                                 </span>
-                                <p className="w-[75%] text-sm">Course Quiz</p>
+                                <p
+                                  className={`w-[75%] text-sm ${
+                                    enrollmentStatus?.data.quizCompleted
+                                      ? "text-gray-500 line-through"
+                                      : "text-tertiary"
+                                  }`}
+                                >
+                                  Course Quiz
+                                </p>
                                 {enrollmentStatus?.data.quizCompleted ? (
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"

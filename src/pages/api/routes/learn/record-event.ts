@@ -43,17 +43,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     });
 
-    // viewed Chapters. Create array but ensure no duplicates
-    const viewedChapters: string[] = [];
-    if (viewChapterId) {
-      // check if viewChapterId already exists in event.viewedChapters
-      if (event?.viewedChapters?.includes(viewChapterId)) {
-        viewedChapters.push(...event.viewedChapters);
-      } else {
-        viewedChapters.push(viewChapterId);
-      }
-    }
-
     await prisma.eventEnrollment.upsert({
       where: {
         userId_programId: {
@@ -66,7 +55,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         courseCompleted: courseCompleted ?? event?.courseCompleted ?? false,
         quizCompleted: quizCompleted ?? event?.quizCompleted ?? false,
         scoreComputed: scoreComputed ?? event?.scoreComputed ?? false,
-        viewedChapters: viewedChapters,
+        viewedChapters: viewChapterId ? {
+          push: viewChapterId,
+        } : event?.viewedChapters ?? [],
       },
       // create only called when viewing course
       create: {

@@ -173,7 +173,7 @@ export default function CreateDocumentChapter({
 
   return (
     <div
-      className={`relative flex flex-col ${
+      className={`relative flex flex-col gap-8 ${
         fromLibrary
           ? "mx-auto ml-0 mr-16 h-full w-auto items-start justify-start gap-8"
           : "ml-auto min-h-[50vh] w-[calc(100%_-_330px)]"

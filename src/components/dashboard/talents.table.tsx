@@ -447,14 +447,19 @@ export default function AllTalents({
 export function CompletionStatus({
   enrollment,
   fromTalentView,
+  fromViewTalent,
+  totalChapters,
 }: {
   enrollment: {
     userId: string;
   };
   fromTalentView?: boolean;
+  fromViewTalent?: string;
+  totalChapters?: number;
 }) {
   const body = {
     userId: enrollment?.userId,
+    programId: fromViewTalent ?? undefined,
   };
   const { data: enrollmentStatus, isFetching } = useGetEnrollmentStatusQuery(
     body,
@@ -463,25 +468,38 @@ export function CompletionStatus({
     },
   );
 
+  console.log(
+    "totalChapters",
+    totalChapters,
+    enrollmentStatus?.data?.viewedChapters?.length,
+  );
+
   const checkCompletionStatus = () => {
-    // in array enrollmentStatus?.data we contruct an array of objects for status of each course. like one course to be {programId, courseCompleted}
-    const allTalentsProgramsStatus = enrollmentStatus?.data?.map(
-      (enrollment: EventEnrollment) => {
-        return {
-          programId: enrollment?.programId,
-          courseCompleted: enrollment?.courseCompleted,
-        };
-      },
-    );
+    if (totalChapters) {
+      const totalRequired = totalChapters;
+      const completed = enrollmentStatus?.data?.viewedChapters?.length ?? 0;
+      const percentage = (completed / totalRequired) * 100;
+      return percentage;
+    } else {
+      // in array enrollmentStatus?.data we contruct an array of objects for status of each course. like one course to be {programId, courseCompleted}
+      const allTalentsProgramsStatus = enrollmentStatus?.data?.map(
+        (enrollment: EventEnrollment) => {
+          return {
+            programId: enrollment?.programId,
+            courseCompleted: enrollment?.courseCompleted,
+          };
+        },
+      );
 
-    // we calculate completed / total
-    const completed = allTalentsProgramsStatus?.filter(
-      (enrollment: EventEnrollment) => enrollment?.courseCompleted,
-    );
+      // we calculate completed / total
+      const completed = allTalentsProgramsStatus?.filter(
+        (enrollment: EventEnrollment) => enrollment?.courseCompleted,
+      );
 
-    const percentage =
-      (completed?.length / enrollmentStatus?.data?.length) * 100;
-    return percentage;
+      const percentage =
+        (completed?.length / enrollmentStatus?.data?.length) * 100;
+      return percentage;
+    }
   };
 
   const getSliderColor = (percentage: number) => {
@@ -519,13 +537,17 @@ export function CompletionStatus({
   return (
     <td
       className={`progress whitespace-nowrap border-l-0 border-r-0 border-t-0 align-middle text-xs ${
-        fromTalentView ? "px-0" : "p-4 px-6"
+        fromTalentView || fromViewTalent ? "w-full px-0" : "p-4 px-6"
       }`}
     >
-      {isFetching || !enrollmentStatus ? (
+      {isFetching || !enrollmentStatus?.data ? (
         <div className="h-[30px] w-4/5 animate-pulse rounded bg-gray-400" />
       ) : (
-        <div className={`flex w-full items-center ${fromTalentView ? "flex-row-reverse" : "flex-row"}`}>
+        <div
+          className={`flex w-full items-center ${
+            fromTalentView || fromViewTalent ? "flex-row-reverse" : "flex-row"
+          }`}
+        >
           <span className="mr-2 w-[50px] text-right font-semibold">
             {checkCompletionStatus().toFixed(0)}%
           </span>
