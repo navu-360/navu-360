@@ -43,6 +43,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     });
 
+    if (event?.viewedChapters?.includes(viewChapterId)) {
+      return res.status(200).json({ message: `Event recorded` });
+    }
+
     await prisma.eventEnrollment.upsert({
       where: {
         userId_programId: {

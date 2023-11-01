@@ -3,17 +3,18 @@ import type {
   OnboardingProgram,
   OnboardingProgramTalents,
   ProgramSection,
+  QuizQuestion,
   User,
 } from "@prisma/client";
 import React from "react";
 
 import { motion } from "framer-motion";
 import { useGetEnrollmentStatusQuery } from "services/baseApiSlice";
-import { CompletionStatus } from "./talents.table";
 
 export interface IEnrollment extends OnboardingProgramTalents {
   OnboardingProgram: OnboardingProgram & {
     ProgramSection: ProgramSection[];
+    QuizQuestion: QuizQuestion[];
   };
 }
 
@@ -28,8 +29,6 @@ export default function MyEnrolledPrograms({
   setShowTalentEnrolModal?: (arg: [string, string]) => void;
   unenroll: (arg: string) => void;
 }) {
-  console.log("data", data);
-
   if (!data) return null;
 
   return (
@@ -109,20 +108,6 @@ export function OneProgramCard({
   unenroll: (arg: string) => void;
   user: User;
 }) {
-  const body = {
-    programId: program?.programId,
-  };
-  const { data: enrollmentStatus } = useGetEnrollmentStatusQuery(body, {
-    skip: !program,
-  });
-  console.log(
-    "length",
-    program?.OnboardingProgram?.ProgramSection?.length,
-    "course",
-    program?.OnboardingProgram?.name,
-    "status",
-    enrollmentStatus?.data,
-  );
   return (
     <motion.div
       initial={{ y: 15 }}
@@ -160,10 +145,9 @@ export function OneProgramCard({
               enrollment={{
                 userId: user?.id,
               }}
-              fromViewTalent={program?.programId}
-              totalChapters={
-                program?.OnboardingProgram?.ProgramSection?.length ?? 0
-              }
+              programId={program?.programId}
+              totalChapters={program?.OnboardingProgram?.ProgramSection?.length}
+              hasQuiz={program.OnboardingProgram.QuizQuestion?.length > 0}
             />
           </div>
         </div>
@@ -190,5 +174,108 @@ export function OneProgramCard({
         </button>
       </div>
     </motion.div>
+  );
+}
+
+export function CompletionStatus({
+  enrollment,
+  totalChapters,
+  programId,
+  hasQuiz,
+}: {
+  enrollment: {
+    userId: string;
+  };
+  programId: string;
+  totalChapters: number;
+  hasQuiz: boolean;
+}) {
+  const body = {
+    userId: enrollment?.userId,
+    programId,
+    allTalentPrograms: true,
+  };
+  const { data: enrollmentStatus, isFetching } = useGetEnrollmentStatusQuery(
+    body,
+    {
+      skip: !enrollment?.userId,
+      refetchOnMountOrArgChange: true,
+    },
+  );
+
+  const totalRequired = totalChapters + (hasQuiz ? 1 : 0);
+  const completed =
+    enrollmentStatus?.data?.viewedChapters?.length +
+    (enrollmentStatus?.data?.quizCompleted ? 1 : 0);
+
+  const checkCompletionStatus = () => {
+    const percentage = (completed / totalRequired) * 100;
+    return percentage;
+  };
+
+  const getSliderColor = (percentage: number) => {
+    // 0 - 30 red
+    // 31 - 60 orange
+    // 61 - 100 green
+
+    if (percentage >= 0 && percentage <= 30) {
+      return "bg-red-500";
+    }
+    if (percentage >= 31 && percentage <= 60) {
+      return "bg-yellow-500";
+    }
+    if (percentage >= 61 && percentage <= 100) {
+      return "bg-green-500";
+    }
+  };
+
+  const getSliderColorBorder = (percentage: number) => {
+    // 0 - 30 red
+    // 31 - 60 orange
+    // 61 - 100 green
+
+    if (percentage >= 0 && percentage <= 30) {
+      return "border-black/50";
+    }
+    if (percentage >= 31 && percentage <= 60) {
+      return "border-yellow-500";
+    }
+    if (percentage >= 61 && percentage <= 100) {
+      return "border-green-500";
+    }
+  };
+
+  return (
+    <td
+      className={`progress w-full whitespace-nowrap border-l-0 border-r-0 border-t-0 px-0 align-middle text-xs`}
+    >
+      {isFetching || !enrollmentStatus?.data ? (
+        <div className="h-[30px] w-4/5 animate-pulse rounded bg-gray-400" />
+      ) : (
+        <div className={`flex w-full flex-row-reverse items-center`}>
+          <span className="mr-2 w-[50px] text-right font-semibold">
+            {checkCompletionStatus().toFixed(0)}%
+          </span>
+          <div className="relative w-full">
+            <div
+              className={`flex h-3 overflow-hidden rounded-none border-[1px] border-amber-600 bg-transparent text-xs ${getSliderColorBorder(
+                checkCompletionStatus(),
+              )}`}
+            >
+              <motion.div
+                style={{ width: `${checkCompletionStatus()}%` }}
+                initial={{ width: 0 }}
+                whileInView={{ width: `${checkCompletionStatus()}%` }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                viewport={{ once: true }}
+                className={`flex h-3 flex-col justify-center whitespace-nowrap rounded-none text-center text-white ${getSliderColor(
+                  checkCompletionStatus(),
+                )}`}
+              ></motion.div>
+            </div>
+          </div>
+        </div>
+      )}
+    </td>
   );
 }
