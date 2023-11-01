@@ -125,7 +125,11 @@ export default function SearchResults() {
                         <td className="date whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
                           {processDate(talent?.createdAt)}
                         </td>
-                        <CompletionStatus enrollment={talent} />
+                        <CompletionStatus
+                          enrollment={{
+                            userId: talent?.id,
+                          }}
+                        />
 
                         <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-right align-middle text-xs">
                           <div

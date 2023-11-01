@@ -15,6 +15,7 @@ import { setOrgId, setOrganizationData } from "redux/auth/authSlice";
 import { resetCommon, setDraftProgramId } from "redux/common/commonSlice";
 import {
   useGetOneOrganizationQuery,
+  useGetOrganizationEnrollmentsQuery,
   useGetOrganizationProgramsQuery,
 } from "services/baseApiSlice";
 
@@ -47,8 +48,6 @@ export default function Dashboard() {
   const [showSelectTemplate, setShowSelectTemplate] = useState(false);
 
   const [countOfPrograms, setCountOfPrograms] = useState(0);
-  const [countOfTalents, setCountOfTalents] = useState(0);
-  const [countOfOnboarded, setCountOfOnboarded] = useState(0);
 
   const [isReady, setIsReady] = useState(false);
 
@@ -86,6 +85,28 @@ export default function Dashboard() {
   }, [programs]);
 
   const searchQuery = useSelector((state: any) => state.common.searchQuery);
+
+  const organizationId = orgId;
+  const { data: enrollments } = useGetOrganizationEnrollmentsQuery(
+    organizationId,
+    {
+      skip: !organizationId,
+      refetchOnMountOrArgChange: true,
+    },
+  );
+
+  const getEnrolledTalentsFromEnrollments = () => {
+    // from data?.data, we get all data?.data[0]?.user where it an object for user, has field id. From all enrollments, get the users then remove duplicates
+    const enrolledTalents = enrollments?.data?.map(
+      (enrollment: any) => enrollment?.User,
+    );
+    const uniqueEnrolledTalents = Array.from(
+      new Set(enrolledTalents?.map((a: User) => a?.id)),
+    ).map((id) => {
+      return enrolledTalents?.find((a: User) => a?.id === id);
+    });
+    return uniqueEnrolledTalents;
+  };
 
   if (!isReady) return null;
 
@@ -150,7 +171,7 @@ export default function Dashboard() {
                       </svg>
                     }
                     text={`Total Talents`}
-                    num={countOfTalents}
+                    num={getEnrolledTalentsFromEnrollments()?.length ?? 0}
                     roundLastCard={programs?.data?.length === 0}
                   />
                   <OneStat
@@ -196,7 +217,7 @@ export default function Dashboard() {
                         <path d="m9 12 2 2 4-4" />
                       </svg>
                     }
-                    num={countOfOnboarded}
+                    num={enrollments?.data?.length ?? 0}
                     roundLastCard={programs?.data?.length === 0}
                   />
                 </div>
@@ -204,10 +225,8 @@ export default function Dashboard() {
                   {(programs?.data?.length > 0 ||
                     (isFetching && !programs)) && (
                     <AllTalents
-                      sendTotalTalents={(num: number) => setCountOfTalents(num)}
-                      setTotalOnboarded={(num: number) =>
-                        setCountOfOnboarded(num)
-                      }
+                      sendTotalTalents={() => console.log("")}
+                      setTotalOnboarded={() => console.log("")}
                       onboardingPrograms={programs?.data}
                     />
                   )}
