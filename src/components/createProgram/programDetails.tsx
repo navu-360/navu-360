@@ -119,7 +119,7 @@ export function ProgramDetails({
           type="text"
           name="role"
           id="role"
-          maxLength={100}
+          maxLength={70}
           value={name}
           onChange={(e) => setName(e.target.value)}
           aria-required
