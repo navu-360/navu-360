@@ -4,6 +4,8 @@ import dynamic from "next/dynamic";
 const MyEditor = dynamic(() => import("components/common/editor/editor"), {
   ssr: false,
 });
+import * as Sentry from "@sentry/nextjs";
+
 import Header from "components/common/head";
 import DashboardWrapper from "components/layout/dashboardWrapper";
 import React, { useState } from "react";
@@ -451,6 +453,7 @@ export const getStaticPaths = async () => {
     return { paths, fallback: "blocking" };
   } catch (error) {
     console.log(error, "error");
+    Sentry.captureException(error);
     return { paths: [], fallback: "blocking" };
   }
 };
@@ -484,6 +487,7 @@ export const getStaticProps = async ({
     };
   } catch (error) {
     console.log(error, "error");
+    Sentry.captureException(error);
     // navigate to 404 page
     return {
       notFound: true,

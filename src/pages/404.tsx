@@ -19,7 +19,7 @@ export default function Custom404() {
             <span className="relative block border border-current bg-[#1A2238] px-12 py-3 font-bold">
               <button
                 onClick={() => {
-                  window.location.href = "/";
+                  window.location.href = "/?home";
                 }}
               >
                 Go Home
