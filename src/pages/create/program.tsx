@@ -63,14 +63,10 @@ export default function CreateProgram() {
   const saveStepOne = async () => {
     // validate
     if (!draftProgramId) {
-      if (
-        !programDetails?.name &&
-        !programDetails?.description &&
-        programDetails?.selectedDepartments?.length === 0
-      ) {
+      if (!programDetails?.name && !programDetails?.description) {
         toaster({
           status: "error",
-          message: "Course name, description and categories are required",
+          message: "Course name and description are required",
         });
         return;
       }
@@ -213,15 +209,14 @@ export default function CreateProgram() {
   const [showDeleteProgramModal, setShowDeleteProgramModal] = useState("");
 
   const [noUnsavedChanges, setNoUnsavedChanges] = useState(true);
-  console.log(noUnsavedChanges);
 
   return (
     <>
       <Header title="Create a new Course" />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[90px] mt-[40px] flex h-full flex-col items-start justify-start gap-8 rounded-md  p-4 md:ml-[300px] md:w-[calc(100%_-_400px)]">
+        <div className="relative ml-[90px] mt-[20px] flex h-full flex-col items-start justify-start gap-4 rounded-md p-4 md:ml-[300px] md:w-[calc(100%_-_400px)]">
           <Steps doneSteps={getDoneSteps()} activeStep={activeTab} />
-          <div className="shadowAroundFeature relative h-[calc(100vh_-_200px)] overflow-hidden w-full rounded-md bg-white p-4 pb-16">
+          <div className="shadowAroundFeature relative h-[calc(100vh_-_160px)] w-full overflow-hidden rounded-md bg-white p-4 pb-16">
             {activeTab === 0 && (
               <ProgramDetails receiveData={setProgramDetails} />
             )}
@@ -232,7 +227,7 @@ export default function CreateProgram() {
             )}
             {activeTab === 2 && <ConfirmStep />}
 
-            <div className="absolute inset-x-0 bottom-2 flex w-full justify-between px-4">
+            <div className="absolute inset-x-0 bottom-0 flex w-full justify-between bg-neutral-100 border-t-[1px] border-t-neutral-200 px-4 py-2">
               <button
                 onClick={() => {
                   if (activeTab === 0) {

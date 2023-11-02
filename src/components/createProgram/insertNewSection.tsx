@@ -11,7 +11,7 @@ export function InsertNewSection({
   showLibrary: () => void;
 }) {
   return (
-    <div className="relative mx-auto flex w-[500px] flex-col gap-4 self-center rounded-md p-4 pb-16 shadow-md">
+    <div className="relative mx-auto flex 2xl:max-w-[500px] flex-col gap-2 rounded-md p-4 pb-16 shadow-md">
       <h3 className="flex items-center gap-1 text-lg font-semibold text-blue-500">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -30,7 +30,7 @@ export function InsertNewSection({
         </svg>{" "}
         {isFirst ? "Add first chapter" : "Add another chapter?"}
       </h3>
-      <div className="flex w-full flex-col gap-2 font-medium text-gray-500">
+      <div className="flex w-full flex-col gap-0 font-medium text-gray-500">
         <Tooltip
           direction="right"
           content="Create content from text, images, checkboxes, tables, lists"

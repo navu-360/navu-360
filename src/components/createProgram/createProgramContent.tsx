@@ -173,9 +173,9 @@ export function CreateProgramContent({
   if (!clientReady) return null;
 
   return (
-    <div className="relative w-full">
-      <div className="relative my-6 flex w-[95%] pt-0 text-gray-600">
-        <div className="no-scrollbar relative h-[600px] min-w-[270px] max-w-[300px] overflow-y-auto rounded-xl bg-gray-100 p-4 pt-4">
+    <div className="relative h-full w-full">
+      <div className="relative flex h-full w-full pt-0 text-gray-600">
+        <div className="no-scrollbar relative h-[100%] min-w-[270px] max-w-[300px] overflow-y-auto rounded-xl bg-gray-100 p-4 pt-4">
           <h2 className="mb-2 text-center text-base font-bold">
             Course Chapters
           </h2>

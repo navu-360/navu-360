@@ -142,6 +142,7 @@ export default function AllTalents({
           ) ?? [],
         )
       : setShowingTalents(talentsWithoutPrograms ?? []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.data, selectedType, sentInvites?.data, talentsWithoutPrograms]);
 
   useEffect(() => {

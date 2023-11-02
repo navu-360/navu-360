@@ -173,10 +173,10 @@ export default function CreateDocumentChapter({
 
   return (
     <div
-      className={`relative flex h-[calc(100vh_-_400px)] flex-col ${
+      className={`relative flex flex-col ${
         fromLibrary
-          ? "h-full w-full gap-8 pb-8"
-          : "ml-auto w-[calc(100%_-_330px)] gap-8"
+          ? "h-[calc(100vh_-_180px)] w-full gap-8 2xl:h-[calc(100vh_-_400px)] pl-4"
+          : "ml-auto h-[calc(100vh_-_310px)] w-[calc(100%_-_330px)] gap-8 2xl:h-[calc(100vh_-_400px)]"
       }`}
     >
       {uploadedDocument && (
@@ -200,7 +200,7 @@ export default function CreateDocumentChapter({
           setUploadedDocument(undefined);
           setDoc(undefined);
         }}
-        className="absolute -right-14 top-0 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-red-400 text-white"
+        className="absolute right-2 top-2 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-red-400 text-white"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -220,7 +220,7 @@ export default function CreateDocumentChapter({
         </svg>
       </div>
       {!uploadedDocument && (
-        <div className="flex h-[calc(100%_-_100px)] w-full items-center justify-center">
+        <div className="flex h-[calc(100%_-_100px)] w-[calc(100%_-_100px)] items-center justify-center">
           <label
             htmlFor="dropzone-file"
             className="dark:hover:bg-bray-800 flex h-full w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 "
@@ -264,7 +264,7 @@ export default function CreateDocumentChapter({
           </label>
         </div>
       )}
-      <div className="flex h-max w-full flex-col gap-2">
+      <div className="flex h-max w-[calc(100%_-_100px)] flex-col gap-2">
         <label htmlFor="name">Chapter Name</label>
         <input
           type="text"

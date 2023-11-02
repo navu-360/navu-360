@@ -60,7 +60,7 @@ export function CreateOrEditQuestionPopUp({
     if (!obj.answer) {
       toaster({
         status: "error",
-        message: "Please select which option is the correct course",
+        message: "Please select which option is the correct answer",
       });
       return;
     }
@@ -154,7 +154,7 @@ export function CreateOrEditQuestionPopUp({
 
   return (
     <div className="fixed inset-0 z-[130] flex h-full w-full items-center justify-center bg-black/50 backdrop:blur-md md:fixed">
-      <div className="no-scrollbar flex h-[700px] w-[800px] flex-col overflow-y-auto rounded-3xl bg-white p-8">
+      <div className="no-scrollbar flex h-[90vh] max-h-[700px] w-[800px] flex-col overflow-y-auto rounded-3xl bg-white p-8">
         <h3 className="text-center text-lg font-semibold text-tertiary">
           {editingData ? "Edit Question" : "Add Question"}
         </h3>
