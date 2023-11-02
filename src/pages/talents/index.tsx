@@ -122,6 +122,9 @@ export default function AllTalents() {
                             <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                               Talent
                             </th>
+                            <th className="role whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                              Courses Enrolled
+                            </th>
                             <th className="date whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                               Enrolled
                             </th>
@@ -178,6 +181,13 @@ export default function AllTalents() {
                                     <span className="ml-3 font-bold capitalize">
                                       {talent?.name}
                                     </span>
+                                  </td>
+                                  <td className="role whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
+                                    {data?.data?.filter(
+                                      (enrollment: OnboardingProgramTalents) =>
+                                        enrollment?.userId === talent?.id,
+                                    )?.length ?? 0}{" "}
+                                    Courses
                                   </td>
                                   <td className="date whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
                                     {processDate(talent?.createdAt)}

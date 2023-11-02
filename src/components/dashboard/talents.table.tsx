@@ -128,21 +128,23 @@ export default function AllTalents({
 
   // set correct data to table on switch
   useEffect(() => {
-    selectedType === "Enrolled"
-      ? setShowingTalents(getEnrolledTalentsFromEnrollments())
-      : selectedType === "Invited"
-      ? // filter invites, remove those who are already enrolled, filter by email
-        setShowingTalents(
-          sentInvites?.data?.filter(
-            (invite: invites) =>
-              !data?.data?.find(
-                (enrolledTalent: { User: { email: string } }) =>
-                  enrolledTalent?.User?.email === invite?.email,
-              ),
-          ) ?? [],
-        )
-      : setShowingTalents(talentsWithoutPrograms ?? []);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (data?.data && sentInvites?.data) {
+      const allEnrolledUsersEmails = data?.data?.map(
+        (enrollment: OnboardingProgramTalents & { User: User }) =>
+          enrollment?.User?.email,
+      );
+      // get not union of invited and enrolled
+      const invitedAndNotEnrolled = sentInvites?.data?.filter(
+        (invite: invites) => !allEnrolledUsersEmails?.includes(invite.email),
+      );
+      selectedType === "Enrolled"
+        ? setShowingTalents(getEnrolledTalentsFromEnrollments())
+        : selectedType === "Invited"
+        ? // filter invites, remove those who are already enrolled, filter by email
+          setShowingTalents(invitedAndNotEnrolled ?? [])
+        : setShowingTalents(talentsWithoutPrograms ?? []);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.data, selectedType, sentInvites?.data, talentsWithoutPrograms]);
 
   useEffect(() => {
@@ -161,6 +163,20 @@ export default function AllTalents({
   );
 
   const [showInviteModal, setShowInviteModal] = useState(false);
+
+  const getTabName = () => {
+    switch (selectedType) {
+      case "Enrolled":
+        return "Enrolled Talents";
+      case "Invited":
+        return "Pending Invites";
+      case "Joined":
+        return "Awaiting Enrollment";
+
+      default:
+        break;
+    }
+  };
 
   if (isFetching || !orgId)
     return (
@@ -268,7 +284,7 @@ export default function AllTalents({
                 <div className="flex flex-wrap items-center">
                   <div className="relative w-full max-w-full flex-1 flex-grow px-4 ">
                     <h3 className="text-lg font-semibold text-tertiary">
-                      {selectedType} Talents ({showingTalents?.length || 0})
+                      {getTabName()} ({showingTalents?.length || 0})
                     </h3>
                   </div>
                 </div>
@@ -282,7 +298,7 @@ export default function AllTalents({
                           Talent
                         </th>
                         <th className="role whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                          Role
+                          Courses Enrolled
                         </th>
                         <th className="date whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                           {selectedType === "Enrolled" ? "Enrolled" : "Joined"}
@@ -340,7 +356,11 @@ export default function AllTalents({
                               </span>
                             </td>
                             <td className="role whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
-                              {talent?.position}
+                              {data?.data?.filter(
+                                (enrollment: OnboardingProgramTalents) =>
+                                  enrollment?.userId === talent?.id,
+                              )?.length ?? 0}{" "}
+                              Courses
                             </td>
                             <td className="date whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
                               {processDate(talent?.createdAt)}
@@ -383,7 +403,7 @@ export default function AllTalents({
                         ) : (
                           <tr
                             className="invite border border-secondary/25 hover:bg-secondary/10"
-                            key={talent?.id}
+                            key={talent?.email}
                           >
                             <th className="flex flex-col gap-2 whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 text-left text-xs lg:flex-row lg:items-center lg:gap-0 lg:px-6 lg:align-middle">
                               <img
@@ -530,7 +550,7 @@ export function CompletionStatus({
   return (
     <td
       className={`progress whitespace-nowrap border-l-0 border-r-0 border-t-0 align-middle text-xs ${
-        fromTalentView || fromViewTalent ? "w-full px-0" : "p-4 px-6"
+        fromTalentView || fromViewTalent ? "w-full px-0" : "p-4 px-6 pl-4"
       }`}
     >
       {isFetching || !enrollmentStatus?.data ? (
