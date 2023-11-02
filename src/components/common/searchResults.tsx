@@ -86,6 +86,7 @@ export default function SearchResults() {
                       id={course.id}
                       programId={course.id}
                       hasQuiz={course?.QuizQuestion?.length > 0}
+                      programChapters={course?.ProgramSection}
                     />
                   ))}
               </div>
