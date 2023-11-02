@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type {
   OnboardingProgram,
   OnboardingProgramTalents,
@@ -6,6 +7,7 @@ import type {
   User,
 } from "@prisma/client";
 import Header from "components/common/head";
+import SearchResults from "components/common/searchResults";
 import { NoAssignedCourses } from "components/dashboard/guides";
 import DashboardWrapper from "components/layout/dashboardWrapper";
 import { useSession } from "next-auth/react";
@@ -14,6 +16,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setOrgId, setOrganizationData } from "redux/auth/authSlice";
+import { setAllTalentCourses } from "redux/common/commonSlice";
 import {
   useGetEnrollmentStatusQuery,
   useGetOrganizationByIdQuery,
@@ -56,6 +59,18 @@ export default function LearnCenter() {
     refetchOnMountOrArgChange: true,
   });
 
+  useEffect(() => {
+    if (data?.data?.length > 0) {
+      const allCourses = data?.data?.map(
+        (program: any) => program.OnboardingProgram,
+      );
+      dispatch(setAllTalentCourses(allCourses));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
+  const searchQuery = useSelector((state: any) => state.common.searchQuery);
+
   const [activeTab, setActiveTab] = useState("all");
 
   if (!isReady) return null;
@@ -66,97 +81,103 @@ export default function LearnCenter() {
         title={`${organizationData?.organization?.name ?? ""} Learn Center`}
       />
       <DashboardWrapper>
-        <div className="relative ml-[90px] mt-[1rem] pr-4 pt-8 text-tertiary md:ml-[250px]">
-          {(data?.data?.length > 0 || isFetching) && (
-            <>
-              <h1 className="w-full text-2xl font-bold capitalize">
-                My Courses
-              </h1>
-              <div className="mt-8 hidden items-center gap-4">
-                <div className="flex w-max flex-col items-center justify-center gap-1">
-                  <button
-                    onClick={() => setActiveTab("all")}
-                    className={`text-base tracking-wider ${
-                      activeTab === "all"
-                        ? "font-bold text-tertiary"
-                        : "font-semibold text-gray-400"
-                    }`}
-                  >
-                    All
-                  </button>
-                </div>
-                <div className="flex w-max flex-col items-center justify-center gap-1">
-                  <button
-                    onClick={() => setActiveTab("active")}
-                    className={`text-base tracking-wider ${
-                      activeTab === "active"
-                        ? "font-bold text-tertiary"
-                        : "font-semibold text-gray-400"
-                    }`}
-                  >
-                    Active
-                  </button>
-                </div>
-                <div className="flex w-max flex-col items-center justify-center gap-1">
-                  <button
-                    onClick={() => setActiveTab("completed")}
-                    className={`text-base tracking-wider ${
-                      activeTab === "completed"
-                        ? "font-bold text-tertiary"
-                        : "font-semibold text-gray-400"
-                    }`}
-                  >
-                    Completed
-                  </button>
-                </div>
-              </div>
-            </>
-          )}
-          {data?.data?.length > 0 && (
-            <div className="mt-4 grid w-full grid-cols-4 gap-4 2xl:grid-cols-5">
-              {data?.data?.map(
-                (
-                  program: OnboardingProgramTalents & {
-                    OnboardingProgram: OnboardingProgram & {
-                      ProgramSection: ProgramSection[];
-                      QuizQuestion: QuizQuestion[];
-                    };
-                  },
-                ) => (
-                  <OneCourse
-                    image={program.OnboardingProgram.image as string}
-                    key={program.id}
-                    title={program.OnboardingProgram.name}
-                    numofChapters={
-                      program.OnboardingProgram.ProgramSection?.length
-                    }
-                    id={program.id}
-                    programId={program.OnboardingProgram.id}
-                    hasQuiz={program.OnboardingProgram.QuizQuestion?.length > 0}
-                  />
-                ),
-              )}
-            </div>
-          )}
-          <div className="mt-4 grid w-full grid-cols-4 gap-4 2xl:grid-cols-5">
-            {!data && (
+        {searchQuery?.length > 0 ? (
+          <SearchResults />
+        ) : (
+          <div className="relative ml-[90px] mt-[1rem] pr-4 pt-8 text-tertiary md:ml-[250px]">
+            {(data?.data?.length > 0 || isFetching) && (
               <>
-                <CourseShimmer />
-                <CourseShimmer />
-                <CourseShimmer />
-                <CourseShimmer />
+                <h1 className="w-full text-2xl font-bold capitalize">
+                  My Courses
+                </h1>
+                <div className="mt-8 hidden items-center gap-4">
+                  <div className="flex w-max flex-col items-center justify-center gap-1">
+                    <button
+                      onClick={() => setActiveTab("all")}
+                      className={`text-base tracking-wider ${
+                        activeTab === "all"
+                          ? "font-bold text-tertiary"
+                          : "font-semibold text-gray-400"
+                      }`}
+                    >
+                      All
+                    </button>
+                  </div>
+                  <div className="flex w-max flex-col items-center justify-center gap-1">
+                    <button
+                      onClick={() => setActiveTab("active")}
+                      className={`text-base tracking-wider ${
+                        activeTab === "active"
+                          ? "font-bold text-tertiary"
+                          : "font-semibold text-gray-400"
+                      }`}
+                    >
+                      Active
+                    </button>
+                  </div>
+                  <div className="flex w-max flex-col items-center justify-center gap-1">
+                    <button
+                      onClick={() => setActiveTab("completed")}
+                      className={`text-base tracking-wider ${
+                        activeTab === "completed"
+                          ? "font-bold text-tertiary"
+                          : "font-semibold text-gray-400"
+                      }`}
+                    >
+                      Completed
+                    </button>
+                  </div>
+                </div>
               </>
             )}
-          </div>
+            {data?.data?.length > 0 && (
+              <div className="mt-4 grid w-full grid-cols-4 gap-4 2xl:grid-cols-5">
+                {data?.data?.map(
+                  (
+                    program: OnboardingProgramTalents & {
+                      OnboardingProgram: OnboardingProgram & {
+                        ProgramSection: ProgramSection[];
+                        QuizQuestion: QuizQuestion[];
+                      };
+                    },
+                  ) => (
+                    <OneCourse
+                      image={program.OnboardingProgram.image as string}
+                      key={program.id}
+                      title={program.OnboardingProgram.name}
+                      numofChapters={
+                        program.OnboardingProgram.ProgramSection?.length
+                      }
+                      id={program.id}
+                      programId={program.OnboardingProgram.id}
+                      hasQuiz={
+                        program.OnboardingProgram.QuizQuestion?.length > 0
+                      }
+                    />
+                  ),
+                )}
+              </div>
+            )}
+            <div className="mt-4 grid w-full grid-cols-4 gap-4 2xl:grid-cols-5">
+              {!data && (
+                <>
+                  <CourseShimmer />
+                  <CourseShimmer />
+                  <CourseShimmer />
+                  <CourseShimmer />
+                </>
+              )}
+            </div>
 
-          {data?.data?.length === 0 && <NoAssignedCourses />}
-        </div>
+            {data?.data?.length === 0 && <NoAssignedCourses />}
+          </div>
+        )}
       </DashboardWrapper>
     </>
   );
 }
 
-function OneCourse({
+export function OneCourse({
   image,
   title,
   numofChapters,

@@ -5,8 +5,10 @@ import { DeleteConfirmModal } from "components/dashboard/confirmDeleteProgram";
 import { CompletionStatus } from "components/dashboard/talents.table";
 import ChapterCard from "components/library/chapterCardView";
 import { AnimatePresence } from "framer-motion";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { OneCourse } from "pages/learn";
 import { OneProgramCard } from "pages/programs";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,6 +33,8 @@ export default function SearchResults() {
   const [showDeleteProgramModal, setShowDeleteProgramModal] = useState<
     boolean | string
   >(false);
+
+  const { data: session } = useSession();
 
   const router = useRouter();
 
@@ -62,19 +66,32 @@ export default function SearchResults() {
           {resultsCourses?.length > 0 && (
             <div className="flex w-full flex-col gap-4">
               <h2>Found Courses({resultsCourses?.length})</h2>
-              <div className="flex flex-wrap gap-4">
-                {resultsCourses?.map((course: any, i: number) => (
-                  <OneProgramCard
-                    program={course}
-                    key={course.id}
-                    delay={i * 0.05}
-                    deleteProgram={(id) => setShowDeleteProgramModal(id)}
-                  />
-                ))}
+              <div className="grid grid-cols-4 gap-4">
+                {session?.user?.role === "admin" &&
+                  resultsCourses?.map((course: any, i: number) => (
+                    <OneProgramCard
+                      program={course}
+                      key={course.id}
+                      delay={i * 0.05}
+                      deleteProgram={(id) => setShowDeleteProgramModal(id)}
+                    />
+                  ))}
+                {session?.user?.role === "talent" &&
+                  resultsCourses?.map((course: any) => (
+                    <OneCourse
+                      image={course.image as string}
+                      key={course.id}
+                      title={course.name}
+                      numofChapters={course?.ProgramSection?.length}
+                      id={course.id}
+                      programId={course.id}
+                      hasQuiz={course?.QuizQuestion?.length > 0}
+                    />
+                  ))}
               </div>
             </div>
           )}
-          {resultsTalents?.length > 0 && (
+          {resultsTalents?.length > 0 && session?.user?.role === "admin" && (
             <div className="flex flex-col gap-4">
               <h2>Found Talents({resultsTalents?.length})</h2>
               <div className="flex flex-wrap">
@@ -151,7 +168,7 @@ export default function SearchResults() {
               </div>
             </div>
           )}
-          {resultsChapters?.length > 0 && (
+          {resultsChapters?.length > 0 && session?.user?.role === "admin" && (
             <div className="flex flex-col gap-4">
               <h2>Found Library Chapters({resultsChapters?.length})</h2>
               <div className="grid grid-cols-4 flex-wrap">

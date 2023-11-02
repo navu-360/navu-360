@@ -55,6 +55,9 @@ export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
     (state: any) => state.common.allEnrolledTalents,
   );
   const allCourses = useSelector((state: any) => state.common.allCourses);
+  const allTalentCourses = useSelector(
+    (state: any) => state.common.allTalentCourses,
+  );
   const allLibraryChapters = useSelector(
     (state: any) => state.common.allLibraryChapters,
   );
@@ -64,7 +67,7 @@ export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
     if (debouncedValue?.length > 0) {
       // to search: allEnrolledTalents, allCourses, allLibraryChapters
       // allEnrolledTalents - we check field name
-      if (allEnrolledTalents?.length > 0) {
+      if (allEnrolledTalents?.length > 0 && session?.user?.role === "admin") {
         const filtered = allEnrolledTalents.filter(
           (talent: User) =>
             talent?.name?.toLowerCase().includes(debouncedValue?.toLowerCase()),
@@ -79,8 +82,15 @@ export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
         );
         dispatch(setResultsCourses(filtered));
       }
+      if (allTalentCourses?.length > 0) {
+        const filtered = allTalentCourses.filter(
+          (course: OnboardingProgram) =>
+            course?.name?.toLowerCase().includes(debouncedValue?.toLowerCase()),
+        );
+        dispatch(setResultsCourses(filtered));
+      }
       // allLibraryChapters - we check field name
-      if (allLibraryChapters?.length > 0) {
+      if (allLibraryChapters?.length > 0 && session?.user?.role === "admin") {
         const filtered = allLibraryChapters.filter(
           (chapter: ProgramSection) =>
             chapter?.name
@@ -95,7 +105,9 @@ export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
     allEnrolledTalents,
     allCourses,
     allLibraryChapters,
+    allTalentCourses,
     dispatch,
+    session,
   ]);
 
   return (

@@ -7,6 +7,7 @@ const initialState = {
   inviteId: undefined,
   allEnrolledTalents: [],
   allCourses: [],
+  allTalentCourses: [],
   allLibraryChapters: [],
   searchQuery: "",
   resultsCourses: [],
@@ -49,6 +50,9 @@ export const commonSlice = createSlice({
     setResultsChapters: (state, action) => {
       state.resultsChapters = action.payload;
     },
+    setAllTalentCourses: (state, action) => {
+      state.allTalentCourses = action.payload;
+    }
   },
 });
 export const {
@@ -63,5 +67,6 @@ export const {
   setResultsCourses,
   setResultsTalents,
   setResultsChapters,
+  setAllTalentCourses
 } = commonSlice.actions;
 export default commonSlice.reducer;
