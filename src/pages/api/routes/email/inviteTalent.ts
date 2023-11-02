@@ -68,7 +68,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     talentEmails.forEach(async (talentEmail: string) => {
       if (talentEmail === "") {
-        console.log("empty email");
+        console.log("");
       } else {
         const inviteLink = await createInviteRecord(talentEmail);
         const msg = {

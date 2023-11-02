@@ -53,7 +53,7 @@ function MyEditor({
       editorRef.current?.isReady
         .then(
           () => {
-            console.log("Editor.js is ready to work!");
+            console.log("");
           },
           // @ts-ignore
         )
@@ -64,6 +64,7 @@ function MyEditor({
           });
         });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialData, isReadOnly]);
 
   const saveData = async () => {
@@ -81,14 +82,14 @@ function MyEditor({
 
   return (
     <div
-      className={`mb-8 rounded-lg  bg-tertiary p-8 text-white md:min-w-[35vw] ${
+      className={`h-full rounded-lg overflow-y-auto bg-tertiary p-8 pl-12 text-white pt-4 ${
         isReadOnly
           ? `${
               router?.pathname.includes("learn")
                 ? "w-full max-w-[unset]"
                 : "w-full md:max-w-[unset]"
             }`
-          : "w-full max-w-[95%] md:max-w-[80vw]"
+          : "w-full"
       }`}
       id="editorjs"
     />

@@ -1,14 +1,22 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
-import type { User } from "@prisma/client";
+import type { OnboardingProgram, ProgramSection, User } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserProfile } from "redux/auth/authSlice";
+import {
+  setResultsChapters,
+  setResultsCourses,
+  setResultsTalents,
+  setSearchQuery,
+} from "redux/common/commonSlice";
 import { generateAvatar } from "utils/avatar";
+import useDebounce from "utils/useDebounce";
 
 export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const router = useRouter();
 
@@ -32,39 +40,99 @@ export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
         }
       }
     }
+    if (status === "unauthenticated") {
+      router.push("/");
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
+
+  const searchQuery = useSelector((state: any) => state.common.searchQuery);
+
+  // @ts-ignore
+  const debouncedValue: string = useDebounce(searchQuery, 500);
+
+  const allEnrolledTalents = useSelector(
+    (state: any) => state.common.allEnrolledTalents,
+  );
+  const allCourses = useSelector((state: any) => state.common.allCourses);
+  const allTalentCourses = useSelector(
+    (state: any) => state.common.allTalentCourses,
+  );
+  const allLibraryChapters = useSelector(
+    (state: any) => state.common.allLibraryChapters,
+  );
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (debouncedValue?.length > 0) {
+      // to search: allEnrolledTalents, allCourses, allLibraryChapters
+      // allEnrolledTalents - we check field name
+      if (allEnrolledTalents?.length > 0 && session?.user?.role === "admin") {
+        const filtered = allEnrolledTalents.filter(
+          (talent: User) =>
+            talent?.name?.toLowerCase().includes(debouncedValue?.toLowerCase()),
+        );
+        dispatch(setResultsTalents(filtered));
+      }
+      // allCourses - we check field name
+      if (allCourses?.length > 0) {
+        const filtered = allCourses.filter(
+          (course: OnboardingProgram) =>
+            course?.name?.toLowerCase().includes(debouncedValue?.toLowerCase()),
+        );
+        dispatch(setResultsCourses(filtered));
+      }
+      if (allTalentCourses?.length > 0) {
+        const filtered = allTalentCourses.filter(
+          (course: OnboardingProgram) =>
+            course?.name?.toLowerCase().includes(debouncedValue?.toLowerCase()),
+        );
+        dispatch(setResultsCourses(filtered));
+      }
+      // allLibraryChapters - we check field name
+      if (allLibraryChapters?.length > 0 && session?.user?.role === "admin") {
+        const filtered = allLibraryChapters.filter(
+          (chapter: ProgramSection) =>
+            chapter?.name
+              ?.toLowerCase()
+              .includes(debouncedValue?.toLowerCase()),
+        );
+        dispatch(setResultsChapters(filtered));
+      }
+    }
+  }, [
+    debouncedValue,
+    allEnrolledTalents,
+    allCourses,
+    allLibraryChapters,
+    allTalentCourses,
+    dispatch,
+    session,
+  ]);
+
   return (
-    <header className="fixed left-[80px] top-0 z-[100] flex h-[75px] w-full bg-white py-2 md:left-[200px]">
+    <header className="fixed left-[80px] top-0 z-[100] flex h-[75px] w-full items-center bg-white py-2 md:left-[200px]">
       {!hideSearch && (
-        <form className="relative ml-4 h-full w-[50%] rounded-md bg-blue-700/10 px-4 py-2 pr-16 2xl:w-[70%]">
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          className="relative ml-[15%] mr-auto h-[40px] w-[50%] rounded-md border-[1px] border-gray-300 px-4 py-1 2xl:w-[50%]"
+        >
           <input
             type="text"
             name="search"
             id="search"
             required
-            minLength={3}
-            className="mr-4 h-full w-full rounded-md bg-white px-8 text-base font-medium tracking-tight focus:outline-none"
-            placeholder="Search for programs or people ..."
-          />
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={3}
-            stroke="#30475E"
-            className="absolute right-4 top-1/2 h-8 w-8 -translate-y-1/2 cursor-pointer"
-            role="submit"
-            onClick={(e) => {
-              e.preventDefault();
+            value={searchQuery}
+            onChange={(e) => {
+              dispatch(setSearchQuery(e.target.value));
             }}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-            />
-          </svg>
+            className="h-full w-4/5 rounded-md bg-white text-base font-medium tracking-tight focus:outline-none"
+            placeholder={`${
+              session?.user?.role === "talent"
+                ? "Search for courses..."
+                : "Search for courses, chapters or people ..."
+            }`}
+          />
         </form>
       )}
       <AdminCard />
@@ -76,10 +144,6 @@ function AdminCard() {
   const { data: session } = useSession();
 
   const router = useRouter();
-
-  const userProfile = useSelector(
-    (state: { auth: { userProfile: User } }) => state.auth.userProfile,
-  );
 
   const dispatch = useDispatch();
 
@@ -104,30 +168,30 @@ function AdminCard() {
       className="right-4 top-2 flex cursor-pointer items-center gap-2 pt-0 transition-all duration-300 ease-in md:fixed"
     >
       <div className="relative flex h-[50px] w-[50px] items-center justify-center rounded-full">
-        {userProfile?.id ? (
+        {session?.user?.id ? (
           <img
-            src={generateAvatar(userProfile?.name as string)}
+            src={generateAvatar(session?.user?.name as string)}
             className="h-[40px] w-[40px]"
-            alt={userProfile?.name as string}
+            alt={session?.user?.name as string}
           />
         ) : (
-          <div className="h-[40px] w-[40px] rounded-full bg-white/5" />
+          <div className="h-[40px] w-[40px] animate-pulse rounded-full bg-gray-300" />
         )}
       </div>
 
-      {userProfile?.name ? (
+      {session?.user?.name ? (
         <div className="flex flex-col gap-0">
           <h2 className="text-xl font-bold capitalize text-tertiary">
-            {userProfile?.name}
+            {session?.user?.name}
           </h2>
           <p className="text-md font-medium text-gray-500">
-            {userProfile?.position}
+            {session?.user?.position}
           </p>
         </div>
       ) : (
         <div className="flex flex-col gap-1">
-          <div className="h-[20px] w-[150px] bg-tertiary"></div>
-          <div className="h-[10px] w-[100px] bg-tertiary"></div>
+          <div className="h-[20px] w-[150px] animate-pulse bg-gray-300"></div>
+          <div className="h-[10px] w-[100px] animate-pulse bg-gray-300"></div>
         </div>
       )}
     </div>

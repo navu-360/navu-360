@@ -1,10 +1,10 @@
 export function OneCreatedSection({
-  index,
   openEditMode,
   id,
   activeId,
   deleteSection,
   svg,
+  name,
 }: {
   type: string;
   total: number;
@@ -14,6 +14,7 @@ export function OneCreatedSection({
   activeId: string | undefined;
   deleteSection: () => void;
   svg: React.ReactNode;
+  name: string;
 }) {
   return (
     <div
@@ -28,11 +29,10 @@ export function OneCreatedSection({
         {svg}
       </div>
 
-      <div className="flex w-max flex-col justify-start gap-4">
-        <span
-          onClick={() => openEditMode()}
-          className="text-xl font-semibold"
-        >{`Section ${index + 1}`}</span>
+      <div className="flex w-full flex-col justify-start gap-4">
+        <span onClick={() => openEditMode()} className="text-base w-[90%] truncate font-semibold">
+          {name}
+        </span>
         <div className="flex gap-6">
           <div
             onClick={() => openEditMode()}

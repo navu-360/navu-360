@@ -11,18 +11,18 @@ export function TalentSwitch({
   return (
     <div className="left-0 right-0 top-0 mb-4 flex w-full justify-between md:absolute md:mb-0">
       <OneOption
-        text="Enrolled"
+        text="Enrolled Talents"
         isSelected={selectedOption === "Enrolled"}
         selectOption={() => setSelectedOption("Enrolled")}
         customStyles=""
       />
       <OneOption
-        text="Joined"
+        text="Awaiting Enrollment"
         isSelected={selectedOption === "Joined"}
         selectOption={() => setSelectedOption("Joined")}
       />
       <OneOption
-        text="Invited"
+        text="Pending Invites"
         isSelected={selectedOption === "Invited"}
         selectOption={() => setSelectedOption("Invited")}
         customStyles=""

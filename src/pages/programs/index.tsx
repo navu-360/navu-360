@@ -2,7 +2,6 @@
 /* eslint-disable @next/next/no-img-element */
 import type { OnboardingProgram } from "@prisma/client";
 import Header from "components/common/head";
-import Spinner from "components/common/spinner";
 import DashboardWrapper from "components/layout/dashboardWrapper";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
@@ -18,13 +17,14 @@ import { DeleteConfirmModal } from "components/dashboard/confirmDeleteProgram";
 import { useRouter } from "next/router";
 import SelectTemplate from "components/dashboard/selectTemplate";
 import { resetCommon, setDraftProgramId } from "redux/common/commonSlice";
+import SearchResults from "components/common/searchResults";
 
 export default function Programs() {
   const orgId = useSelector(
     (state: { auth: { orgId: string } }) => state.auth.orgId,
   );
   // get organization programs
-  const { data, isFetching, refetch } = useGetOrganizationProgramsQuery(orgId, {
+  const { data, refetch } = useGetOrganizationProgramsQuery(orgId, {
     skip: !orgId,
     refetchOnMountOrArgChange: true,
   });
@@ -55,78 +55,83 @@ export default function Programs() {
     dispatch(resetCommon());
   }, [dispatch]);
 
-  if (!isReady) return null;
+  const router = useRouter();
 
-  if (isFetching && !data)
-    return (
-      <>
-        <Header title="All Training Programs - Loading ..." />
-        <DashboardWrapper hideSearch>
-          <div className="relative ml-[80px] mt-[20px] flex h-full flex-col items-center justify-center gap-8 md:ml-[300px]">
-            <div className="flex w-full flex-wrap gap-8">
-              <div className="flex min-h-[70vh] w-full items-center justify-center">
-                <Spinner />
-              </div>
-            </div>
-          </div>
-        </DashboardWrapper>
-      </>
-    );
+  const searchQuery = useSelector((state: any) => state.common.searchQuery);
+
+  if (!isReady) return null;
 
   return (
     <>
       <Header title={`All Training Programs - Navu360`} />
-      <DashboardWrapper hideSearch>
-        <div className="relative ml-[80px] mt-[3rem] flex h-full flex-col items-center justify-center gap-8 pb-16 pt-20 md:ml-[250px] 2xl:ml-[250px]">
-          <button
-            onClick={() => setShowSelectTemplate(true)}
-            className="absolute right-12 top-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-[#fa3264] focus:outline-none focus:ring-4 md:mr-0"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="h-6 w-6"
+      <DashboardWrapper>
+        {searchQuery?.length > 0 ? (
+          <SearchResults />
+        ) : (
+          <div className="relative ml-[80px] mt-[3rem] flex h-full flex-col items-center justify-center gap-8 pb-16 pt-20 md:ml-[250px] 2xl:ml-[250px]">
+            <div className="absolute left-0 top-0 flex w-max flex-col gap-0 text-left">
+              <h1 className="text-xl font-bold text-tertiary">Courses</h1>
+            </div>
+            <button
+              onClick={() => router.push("/create/program")}
+              className="absolute right-12 top-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary/90 focus:outline-none focus:ring-4 md:mr-0"
             >
-              <path
-                fillRule="evenodd"
-                d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
-                clipRule="evenodd"
-              />
-            </svg>
-
-            <span>Create Course</span>
-          </button>
-          {programsArray?.length === 0 && (
-            <div className="flex min-h-[70vh] w-full items-center justify-center gap-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
-                fill="#9d2a57"
-                className="h-8 w-8"
+                fill="currentColor"
+                className="h-6 w-6"
               >
                 <path
                   fillRule="evenodd"
-                  d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z"
+                  d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
                   clipRule="evenodd"
                 />
               </svg>
-              <p>You have no courses yet.</p>
-            </div>
-          )}
-          {programsArray?.length > 0 && (
-            <div className="flex w-full flex-wrap justify-center gap-8 md:justify-start">
-              {programsArray?.map((program, i) => (
-                <OneProgramCard
-                  key={program.id}
-                  program={program}
-                  delay={i * 0.05}
-                  deleteProgram={(id) => setShowDeleteProgramModal(id)}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+
+              <span>Create Course</span>
+            </button>
+            {programsArray?.length === 0 && (
+              <div className="flex min-h-[70vh] w-full items-center justify-center gap-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="#9d2a57"
+                  className="h-8 w-8"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <p>You have no courses yet.</p>
+              </div>
+            )}
+            {programsArray?.length > 0 && (
+              <div className="flex w-full flex-wrap justify-center gap-8 md:justify-start">
+                {programsArray?.map((program, i) => (
+                  <OneProgramCard
+                    key={program.id}
+                    program={program}
+                    delay={i * 0.05}
+                    deleteProgram={(id) => setShowDeleteProgramModal(id)}
+                  />
+                ))}
+              </div>
+            )}
+            {!data && (
+              <div className="flex w-full flex-wrap justify-center gap-8 md:justify-start">
+                <ProgramShimmer />
+                <ProgramShimmer />
+                <ProgramShimmer />
+                <ProgramShimmer />
+                <ProgramShimmer />
+                <ProgramShimmer />
+              </div>
+            )}
+          </div>
+        )}
         <AnimatePresence>
           {showDeleteProgramModal && (
             <DeleteConfirmModal
@@ -351,6 +356,64 @@ export function OneProgramCard({
           </div>
         </div>
       </Link>
+    </motion.div>
+  );
+}
+
+function ProgramShimmer() {
+  return (
+    <motion.div
+      initial={{ y: 10 }}
+      transition={{ duration: 0.3, ease: "easeIn" }}
+      whileInView={{ y: 0 }}
+      className="stat-shadow"
+    >
+      <div className="relative flex h-[350px] w-[350px] flex-col gap-4 rounded-lg bg-white text-tertiary shadow-md">
+        <div className="relative flex h-[60px] w-full animate-pulse items-center gap-2 rounded-t-lg bg-gray-300 p-4 py-10"></div>
+
+        <div className="absolute bottom-4 right-4 flex flex-row-reverse items-center justify-end gap-6">
+          <div
+            id="delete1"
+            className="flex h-[35px] w-[35px] animate-pulse items-center justify-center rounded-full bg-gray-300 hover:bg-secondary/20"
+          ></div>
+
+          <div className="flex h-[35px] w-[35px] animate-pulse items-center justify-center rounded-full bg-gray-300 hover:bg-secondary/20"></div>
+        </div>
+
+        <div className="flex w-full flex-col gap-2">
+          <div className="flex w-full items-center gap-2 px-4">
+            <div
+              id="delete1"
+              className="flex h-[35px] w-[35px] animate-pulse items-center justify-center rounded-full bg-gray-300 hover:bg-secondary/20"
+            ></div>
+            <div className="h-7 w-4/5 animate-pulse bg-gray-300 text-xs font-medium"></div>
+          </div>
+          <div className="flex w-full items-center gap-2 px-4">
+            <div
+              id="delete1"
+              className="flex h-[35px] w-[35px] animate-pulse items-center justify-center rounded-full bg-gray-300 hover:bg-secondary/20"
+            ></div>
+            <div className="h-7 w-4/5 animate-pulse bg-gray-300 text-xs font-medium"></div>
+          </div>
+          <div className="flex w-full items-center gap-2 px-4">
+            <div
+              id="delete1"
+              className="flex h-[35px] w-[35px] animate-pulse items-center justify-center rounded-full bg-gray-300 hover:bg-secondary/20"
+            ></div>
+            <div className="h-7 w-4/5 animate-pulse bg-gray-300 text-xs font-medium"></div>
+          </div>
+        </div>
+        <div className="flex flex-col items-start gap-2 px-4">
+          <div className="h-6 w-1/2 animate-pulse bg-gray-300 text-xs font-medium"></div>
+          <div className="flex w-full items-center gap-4">
+            <div
+              id="delete1"
+              className="flex h-[50px] w-[50px] animate-pulse items-center justify-center rounded-full bg-gray-300 hover:bg-secondary/20"
+            ></div>
+            <div className="h-6 w-1/3 animate-pulse bg-gray-300 text-xs font-medium"></div>
+          </div>
+        </div>
+      </div>
     </motion.div>
   );
 }

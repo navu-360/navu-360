@@ -188,7 +188,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     },
                 });
 
-                if (user?.talentOrgId) {
+                if (user?.talentOrgId && user?.hasBeenOnboarded) {
                     res
                         .status(400)
                         .json({

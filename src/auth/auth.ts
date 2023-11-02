@@ -8,7 +8,6 @@ import {
   type NextAuthOptions,
   type DefaultSession
 } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { env } from "../env/server.mjs";
 import { prisma } from "./db";
@@ -33,6 +32,7 @@ declare module "next-auth" {
       hasBeenOnboarded: boolean;
       position: string;
       customerId: string;
+      talentOrgId: string;
     } & DefaultSession["user"];
   }
 
@@ -45,6 +45,7 @@ declare module "next-auth" {
     hasBeenOnboarded?: boolean;
     position?: string;
     customerId?: string;
+    talentOrgId?: string;
   }
 }
 
@@ -68,6 +69,7 @@ export const authOptions: NextAuthOptions = {
         session.user.hasBeenOnboarded = userObj?.hasBeenOnboarded ?? false;
         session.user.position = userObj?.position ?? "";
         session.user.customerId = userObj?.customerId ?? "";
+        session.user.talentOrgId = userObj?.talentOrgId ?? "";
       }
 
       return session;
@@ -76,10 +78,6 @@ export const authOptions: NextAuthOptions = {
   // @ts-ignore
   adapter: PrismaAdapter(prisma),
   providers: [
-    GoogleProvider({
-      clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET
-    }),
     Auth0({
       clientId: env.AUTH0_CLIENT_ID,
       clientSecret: env.AUTH0_CLIENT_SECRET,

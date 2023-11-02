@@ -92,9 +92,9 @@ export default function NavBar() {
               fill="none"
               stroke="currentColor"
               id="features-svg"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               className="lucide lucide-chevron-down"
             >
               <path d="m6 9 6 6 6-6" />

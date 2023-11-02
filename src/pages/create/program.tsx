@@ -63,14 +63,10 @@ export default function CreateProgram() {
   const saveStepOne = async () => {
     // validate
     if (!draftProgramId) {
-      if (
-        !programDetails?.name &&
-        !programDetails?.description &&
-        programDetails?.selectedDepartments?.length === 0
-      ) {
+      if (!programDetails?.name && !programDetails?.description) {
         toaster({
           status: "error",
-          message: "Course name, description and categories are required",
+          message: "Course name and description are required",
         });
         return;
       }
@@ -200,14 +196,14 @@ export default function CreateProgram() {
     if (edit) {
       dispatch(setDraftProgramId(edit as string));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [edit]);
 
   useEffect(() => {
     if (edit && editingProgram?.data?.ProgramSection) {
       dispatch(setCreateSectionIds(editingProgram?.data?.ProgramSection));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editingProgram?.data?.ProgramSection, edit]);
 
   const [showDeleteProgramModal, setShowDeleteProgramModal] = useState("");
@@ -218,9 +214,9 @@ export default function CreateProgram() {
     <>
       <Header title="Create a new Course" />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[90px] mt-[40px] flex h-full flex-col items-start justify-start gap-8 rounded-md  p-4 md:ml-[300px] md:w-[calc(100%_-_400px)]">
+        <div className="relative ml-[90px] mt-[20px] flex h-full flex-col items-start justify-start gap-4 rounded-md p-4 md:ml-[300px] md:w-[calc(100%_-_400px)]">
           <Steps doneSteps={getDoneSteps()} activeStep={activeTab} />
-          <div className="shadowAroundFeature relative h-full min-h-[80vh] w-full rounded-md bg-white p-4 pb-16">
+          <div className="shadowAroundFeature relative h-[calc(100vh_-_160px)] w-full overflow-hidden rounded-md bg-white p-4 pb-16">
             {activeTab === 0 && (
               <ProgramDetails receiveData={setProgramDetails} />
             )}
@@ -231,7 +227,7 @@ export default function CreateProgram() {
             )}
             {activeTab === 2 && <ConfirmStep />}
 
-            <div className="absolute inset-x-0 bottom-2 flex w-full justify-between px-4">
+            <div className="absolute inset-x-0 bottom-0 flex w-full justify-between bg-neutral-100 border-t-[1px] border-t-neutral-200 px-4 py-2">
               <button
                 onClick={() => {
                   if (activeTab === 0) {
@@ -253,26 +249,24 @@ export default function CreateProgram() {
                     }
                     if (activeTab === 0) {
                       if (!draftProgramId) {
-                        console.log("save step 1");
                         saveStepOne();
                       } else {
-                        console.log("update step 1");
                         updateStepOne();
                       }
                       return;
                     }
                     if (activeTab === 1) {
-                      if (createSectionIds?.length === 0) {
-                        toaster({
-                          status: "error",
-                          message: "Please add at least one section",
-                        });
-                        return;
-                      }
                       if (!noUnsavedChanges) {
                         toaster({
                           status: "error",
                           message: "Please save the chapter before continuing",
+                        });
+                        return;
+                      }
+                      if (createSectionIds?.length === 0) {
+                        toaster({
+                          status: "error",
+                          message: "Please add at least one section",
                         });
                         return;
                       }

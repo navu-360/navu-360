@@ -112,14 +112,14 @@ export function ProgramDetails({
   }, [editingProgram]);
 
   return (
-    <form className="flex flex-col gap-8">
+    <form className="flex h-full flex-col gap-8 overflow-y-auto">
       <div className="flex flex-col gap-2">
         <label htmlFor="role">Course Name</label>
         <input
           type="text"
           name="role"
           id="role"
-          maxLength={100}
+          maxLength={70}
           value={name}
           onChange={(e) => setName(e.target.value)}
           aria-required
@@ -156,7 +156,7 @@ export function ProgramDetails({
           onChange={(e) => setSelectedDepartments(e)}
         />
       </div>
-      <div className="flex max-w-[600px] flex-col gap-2">
+      <div className="mb-4 flex max-w-[600px] flex-col gap-2">
         <label>Course Cover Image</label>
 
         <div className="relative flex h-[300px] w-full items-center justify-center">
@@ -208,7 +208,7 @@ export function ProgramDetails({
                   : (uploadedImage as string)
               }
               fill
-              className="object-cover"
+              className="rounded-lg bg-gray-100 object-cover"
               alt="Uploaded Image"
             />
           )}

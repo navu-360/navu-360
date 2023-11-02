@@ -45,6 +45,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { GoogleDocumentViewer } from "components/createProgram/googleDocumentViewer";
 import { QuestionView } from "components/createProgram/questionView";
+import { CompletionStatus } from "components/dashboard/talents.table";
 
 export interface IEnrollmentWithTalent extends OnboardingProgramTalents {
   User: User;
@@ -147,7 +148,7 @@ export default function Program({
             </h1>
             {/* created by */}
             <div className="flex items-center gap-1">
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
                 <img
                   src={generateAvatar(data?.creator?.name)}
                   className="h-[30px] w-[30px] rounded-full"
@@ -199,7 +200,7 @@ export default function Program({
               <h2 className="pl-2 text-lg font-semibold text-tertiary">
                 Course Details
               </h2>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-2 px-2">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -237,7 +238,7 @@ export default function Program({
                   </span>
                 </div>
               </div>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-1 pl-[2px]">
                 <div className="flex items-center gap-2 px-2">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -350,14 +351,14 @@ export default function Program({
               </div>
             </div>
             {/* list of talents */}
-            <div className="flex w-full flex-col gap-4">
+            <div className="flex w-full flex-col gap-0">
               {enrolledTalents?.data?.length > 0 && (
                 <div className="relative mb-0 mt-8 flex items-center justify-between">
                   <h2 className="tetx-lg font-semibold">Talents enrolled</h2>
                 </div>
               )}
               {/* // enrolled talents */}
-              <div className="mt-2 flex flex-col gap-4 rounded-xl border-[1px] border-gray-400 p-4 text-tertiary">
+              <div className="mt-0 flex flex-col gap-4 rounded-xl p-4 px-0 text-tertiary">
                 {enrolledTalents?.data?.length === 0 && (
                   <p className="flex items-center gap-2 text-center">
                     <svg
@@ -390,54 +391,21 @@ export default function Program({
                       whileInView={{ y: 0 }}
                       viewport={{ once: true }}
                       key={enrollment.id}
-                      className="relative flex w-full items-center gap-3 rounded-lg bg-tertiary/80 p-4 text-white"
+                      className="question-input relative cursor-default flex w-auto mx-1 items-center gap-3 rounded-lg p-4 text-tertiary"
                     >
                       <img
                         src={generateAvatar(enrollment?.User?.name as string)}
                         className="h-[50px] w-[50px] rounded-full"
                         alt={""}
                       />
-                      <div>
-                        <p>{enrollment?.User?.name}</p>
-                      </div>
-                      <div
-                        className={`absolute right-1 flex h-max items-center justify-between gap-2 rounded-lg px-4 py-2 pl-0 text-white`}
-                      >
-                        {enrollment?.enrollmentStatus === "completed" ? (
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="h-6 w-6"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M4.5 12.75l6 6 9-13.5"
-                            />
-                          </svg>
-                        ) : (
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="h-6 w-6"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                          </svg>
-                        )}
-
-                        <p className={`text-xs font-semibold capitalize`}>
-                          {enrollment?.enrollmentStatus}
-                        </p>
+                      <div className="flex w-full flex-col gap-1">
+                        <p className="font-medium">{enrollment?.User?.name}</p>
+                        <CompletionStatus
+                          enrollment={{
+                            userId: enrollment?.User?.id,
+                          }}
+                          fromTalentView
+                        />
                       </div>
                     </motion.div>
                   ),

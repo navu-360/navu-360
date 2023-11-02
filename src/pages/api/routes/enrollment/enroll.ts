@@ -32,7 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     // create enrollments for each program
     const enrollments = programId.map(async (programId) => {
-      await prisma.onboardingProgramTalents.create({
+      return await prisma.onboardingProgramTalents.create({
         data: {
           programId,
           userId: talentId,
@@ -42,6 +42,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     const enrollment = await Promise.all(enrollments);
+
+    const enrollmentEvents = enrollment.map(async (enrollment) => {
+      return await prisma.eventEnrollment.create({
+        data: {
+          userId: talentId,
+          programId: enrollment.programId,
+        },
+      });
+    });
+
+    const enrollmentEvent = await Promise.all(enrollmentEvents);
+
+    console.log(!!enrollmentEvent);
 
     return res
       .status(200)

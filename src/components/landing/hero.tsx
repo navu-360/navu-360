@@ -8,7 +8,7 @@ export default function Hero() {
     <>
       <section className="relative flex h-max min-h-[calc(100vh_-_65px)] w-full flex-col-reverse items-center justify-center gap-6 overflow-hidden bg-dark px-8 pb-8 text-white lg:flex-row lg:justify-start lg:pb-32 xl:gap-12 2xl:gap-32 2xl:px-32">
         <div className="flex cursor-default flex-col items-center gap-8 lg:min-w-max lg:max-w-[500px] lg:items-start 2xl:gap-16">
-          <h1 className="text-center text-3xl font-bold lg:text-left lg:text-2xl xl:text-5xl 2xl:text-7xl !leading-[140%] md:!leading-[120%]">
+          <h1 className="text-center text-3xl font-bold lg:text-left lg:text-2xl xl:text-5xl 2xl:text-6xl !leading-[140%] md:!leading-[120%]">
             Streamline Talent Development <br className="hidden md:block" />{" "}
             with Navu360&apos;s LMS
           </h1>

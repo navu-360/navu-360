@@ -5,8 +5,8 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   useGetAllTalentsQuery,
+  useGetEnrollmentStatusQuery,
   useGetOrganizationEnrollmentsQuery,
-  useGetTalentEnrollmentsQuery,
 } from "services/baseApiSlice";
 import { generateAvatar } from "utils/avatar";
 import { processDate } from "utils/date";
@@ -14,6 +14,7 @@ import { processDate } from "utils/date";
 import { useGetSentInvitesQuery } from "services/baseApiSlice";
 import { TalentSwitch } from "./common";
 import type {
+  EventEnrollment,
   OnboardingProgram,
   OnboardingProgramTalents,
   Organization,
@@ -104,26 +105,46 @@ export default function AllTalents({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.data]);
 
-  const [showingTalents, setShowingTalents] = useState([]);
+  const [showingTalents, setShowingTalents] = useState<User[]>([]);
 
   const [selectedType, setSelectedType] = useState("Enrolled");
 
+  const getEnrolledTalentsFromEnrollments = () => {
+    // from data?.data, we get all data?.data[0]?.user where it an object for user, has field id. From all enrollments, get the users then remove duplicates
+    const enrolledTalents = data?.data?.map(
+      (
+        enrollment: OnboardingProgramTalents & {
+          User: User;
+        },
+      ) => enrollment?.User,
+    );
+    const uniqueEnrolledTalents = Array.from(
+      new Set(enrolledTalents?.map((a: User) => a?.id)),
+    ).map((id) => {
+      return enrolledTalents?.find((a: User) => a?.id === id);
+    });
+    return uniqueEnrolledTalents;
+  };
+
   // set correct data to table on switch
   useEffect(() => {
-    selectedType === "Enrolled"
-      ? setShowingTalents(data?.data ?? [])
-      : selectedType === "Invited"
-      ? // filter invites, remove those who are already enrolled, filter by email
-        setShowingTalents(
-          sentInvites?.data?.filter(
-            (invite: invites) =>
-              !data?.data?.find(
-                (enrolledTalent: { User: { email: string } }) =>
-                  enrolledTalent?.User?.email === invite?.email,
-              ),
-          ) ?? [],
-        )
-      : setShowingTalents(talentsWithoutPrograms ?? []);
+    if (data?.data && sentInvites?.data) {
+      const allEnrolledUsersEmails = data?.data?.map(
+        (enrollment: OnboardingProgramTalents & { User: User }) =>
+          enrollment?.User?.email,
+      );
+      // get not union of invited and enrolled
+      const invitedAndNotEnrolled = sentInvites?.data?.filter(
+        (invite: invites) => !allEnrolledUsersEmails?.includes(invite.email),
+      );
+      selectedType === "Enrolled"
+        ? setShowingTalents(getEnrolledTalentsFromEnrollments())
+        : selectedType === "Invited"
+        ? // filter invites, remove those who are already enrolled, filter by email
+          setShowingTalents(invitedAndNotEnrolled ?? [])
+        : setShowingTalents(talentsWithoutPrograms ?? []);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.data, selectedType, sentInvites?.data, talentsWithoutPrograms]);
 
   useEffect(() => {
@@ -133,7 +154,7 @@ export default function AllTalents({
     }
     // check: if we have joined talents and no enrolled talents, set selectedType to Joined
     if (data?.data?.length > 0 && talentsWithoutPrograms?.length === 0) {
-      setSelectedType("Joined");
+      setSelectedType("Enrolled");
     }
   }, [sentInvites?.data, data?.data, talentsWithoutPrograms]);
 
@@ -142,6 +163,20 @@ export default function AllTalents({
   );
 
   const [showInviteModal, setShowInviteModal] = useState(false);
+
+  const getTabName = () => {
+    switch (selectedType) {
+      case "Enrolled":
+        return "Enrolled Talents";
+      case "Invited":
+        return "Pending Invites";
+      case "Joined":
+        return "Awaiting Enrollment";
+
+      default:
+        break;
+    }
+  };
 
   if (isFetching || !orgId)
     return (
@@ -174,7 +209,7 @@ export default function AllTalents({
                           Talent
                         </th>
                         <th className="role whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                          Role
+                          Courses Enrolled
                         </th>
                         <th className="date whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                           {selectedType === "Enrolled" ? "Enrolled" : "Joined"}
@@ -204,7 +239,7 @@ export default function AllTalents({
                     <tr>
                       <td
                         align="center"
-                        colSpan={selectedType !== "Invited" ? 6 : 4}
+                        colSpan={selectedType !== "Invited" ? 5 : 4}
                         className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs"
                       >
                         <Spinner smaller />
@@ -249,7 +284,7 @@ export default function AllTalents({
                 <div className="flex flex-wrap items-center">
                   <div className="relative w-full max-w-full flex-1 flex-grow px-4 ">
                     <h3 className="text-lg font-semibold text-tertiary">
-                      {selectedType} Talents ({showingTalents?.length || 0})
+                      {getTabName()} ({showingTalents?.length || 0})
                     </h3>
                   </div>
                 </div>
@@ -263,7 +298,7 @@ export default function AllTalents({
                           Talent
                         </th>
                         <th className="role whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                          Role
+                          Courses Enrolled
                         </th>
                         <th className="date whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                           {selectedType === "Enrolled" ? "Enrolled" : "Joined"}
@@ -298,9 +333,7 @@ export default function AllTalents({
                           colSpan={selectedType !== "Invited" ? 6 : 4}
                           className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-lg font-bold"
                         >
-                          No talents have{" "}
-                          {selectedType !== "Joined" ? "been" : ""}{" "}
-                          {selectedType.toLowerCase()} yet
+                          No talents have here
                         </td>
                       </tr>
                     )}
@@ -314,24 +347,30 @@ export default function AllTalents({
                           >
                             <td className="relative flex flex-col gap-3 whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-left text-xs md:flex-row md:items-center md:gap-0">
                               <img
-                                src={generateAvatar(
-                                  talent?.User?.name ?? talent?.name,
-                                )}
+                                src={generateAvatar(talent?.name)}
                                 className="h-12 w-12 rounded-full"
-                                alt={talent?.User?.name ?? talent?.name}
+                                alt={talent?.name}
                               />
                               <span className="ml-3 font-bold capitalize">
-                                {talent?.User?.name ?? talent?.name}
+                                {talent?.name}
                               </span>
                             </td>
                             <td className="role whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
-                              {talent?.User?.position ?? talent?.position}
+                              {data?.data?.filter(
+                                (enrollment: OnboardingProgramTalents) =>
+                                  enrollment?.userId === talent?.id,
+                              )?.length ?? 0}{" "}
+                              Courses
                             </td>
                             <td className="date whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
                               {processDate(talent?.createdAt)}
                             </td>
                             {selectedType === "Enrolled" && (
-                              <CompletionStatus enrollment={talent} />
+                              <CompletionStatus
+                                enrollment={{
+                                  userId: talent?.id,
+                                }}
+                              />
                             )}
                             <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-right align-middle text-xs">
                               <div
@@ -340,7 +379,7 @@ export default function AllTalents({
                               >
                                 {selectedType === "Enrolled" ? (
                                   <Link
-                                    href={`/talents/${talent?.User?.id}`}
+                                    href={`/talents/${talent?.id}`}
                                     className="text-blueGray-700 mb-2 block w-max rounded-xl border-[1px] border-secondary/50 bg-white px-4 py-2 text-sm font-semibold text-secondary transition-all duration-150 ease-in hover:bg-secondary hover:text-white md:px-12"
                                   >
                                     View
@@ -364,7 +403,7 @@ export default function AllTalents({
                         ) : (
                           <tr
                             className="invite border border-secondary/25 hover:bg-secondary/10"
-                            key={talent?.id}
+                            key={talent?.email}
                           >
                             <th className="flex flex-col gap-2 whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 text-left text-xs lg:flex-row lg:items-center lg:gap-0 lg:px-6 lg:align-middle">
                               <img
@@ -401,7 +440,6 @@ export default function AllTalents({
             }}
             talentId={showTalentEnrolModal[0] as string}
             talentName={showTalentEnrolModal[1] as string}
-            programs={onboardingPrograms}
           />
         )}
       </AnimatePresence>
@@ -426,30 +464,55 @@ export default function AllTalents({
 
 export function CompletionStatus({
   enrollment,
+  fromTalentView,
+  fromViewTalent,
+  totalChapters,
 }: {
   enrollment: {
     userId: string;
   };
+  fromTalentView?: boolean;
+  fromViewTalent?: string;
+  totalChapters?: number;
 }) {
-  const talentId = enrollment?.userId;
-  const { data, isFetching } = useGetTalentEnrollmentsQuery(talentId, {
-    skip: !talentId,
-  });
+  const body = {
+    userId: enrollment?.userId,
+    programId: fromViewTalent ?? undefined,
+  };
+  const { data: enrollmentStatus, isFetching } = useGetEnrollmentStatusQuery(
+    body,
+    {
+      skip: !enrollment?.userId,
+      refetchOnMountOrArgChange: true,
+    },
+  );
 
   const checkCompletionStatus = () => {
-    if (data?.data?.length === 0) return 0;
-    // check all enrollment objects field enrollmentStatus for values pending, completed then return the percentage completed
-    const completed = data?.data?.filter(
-      (enrollment: OnboardingProgramTalents) =>
-        enrollment?.enrollmentStatus === "completed",
-    );
-    const pending = data?.data?.filter(
-      (enrollment: OnboardingProgramTalents) =>
-        enrollment?.enrollmentStatus === "pending",
-    );
-    const total = completed?.length + pending?.length;
-    const percentage = (completed?.length / total) * 100;
-    return percentage;
+    if (totalChapters) {
+      const totalRequired = totalChapters;
+      const completed = enrollmentStatus?.data?.viewedChapters?.length ?? 0;
+      const percentage = (completed / totalRequired) * 100;
+      return percentage;
+    } else {
+      // in array enrollmentStatus?.data we contruct an array of objects for status of each course. like one course to be {programId, courseCompleted}
+      const allTalentsProgramsStatus = enrollmentStatus?.data?.map(
+        (enrollment: EventEnrollment) => {
+          return {
+            programId: enrollment?.programId,
+            courseCompleted: enrollment?.courseCompleted,
+          };
+        },
+      );
+
+      // we calculate completed / total
+      const completed = allTalentsProgramsStatus?.filter(
+        (enrollment: EventEnrollment) => enrollment?.courseCompleted,
+      );
+
+      const percentage =
+        (completed?.length / enrollmentStatus?.data?.length) * 100;
+      return percentage;
+    }
   };
 
   const getSliderColor = (percentage: number) => {
@@ -485,11 +548,19 @@ export function CompletionStatus({
   };
 
   return (
-    <td className="progress whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs">
-      {isFetching || !data ? (
+    <td
+      className={`progress whitespace-nowrap border-l-0 border-r-0 border-t-0 align-middle text-xs ${
+        fromTalentView || fromViewTalent ? "w-full px-0" : "p-4 px-6 pl-4"
+      }`}
+    >
+      {isFetching || !enrollmentStatus?.data ? (
         <div className="h-[30px] w-4/5 animate-pulse rounded bg-gray-400" />
       ) : (
-        <div className="flex items-center">
+        <div
+          className={`flex w-full items-center ${
+            fromTalentView || fromViewTalent ? "flex-row-reverse" : "flex-row"
+          }`}
+        >
           <span className="mr-2 w-[50px] text-right font-semibold">
             {checkCompletionStatus().toFixed(0)}%
           </span>

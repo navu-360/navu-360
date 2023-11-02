@@ -57,6 +57,8 @@ model User {
   CreatedOnboardingPrograms OnboardingProgram[]        @relation("createdBy")
   Organization              Organization?
   OnboardingProgramTalents  OnboardingProgramTalents[]
+  TalentProgramResults      TalentProgramResults[]
+  LearnEvents               EventEnrollment[]
 
   @@index([email], name: "email")
 }
@@ -73,6 +75,7 @@ model Organization {
   onboardingProgramTalents OnboardingProgramTalents[]
   createdAt                DateTime                   @default(now())
   updatedAt                DateTime                   @updatedAt
+  ProgramSection           ProgramSection[]
 }
 
 model OnboardingProgram {
@@ -80,7 +83,7 @@ model OnboardingProgram {
   name                     String
   description              String
   categories               String[]
-  image                    String?
+  image                    String?                    @default("https://res.cloudinary.com/dpnbddror/image/upload/v1698909075/navu/Group_8_hqowkd.png")
   creator                  User                       @relation(fields: [createdBy], references: [id], name: "createdBy", onDelete: Cascade)
   createdBy                String
   organization             Organization               @relation(fields: [organizationId], references: [id])
@@ -92,23 +95,30 @@ model OnboardingProgram {
   courseModuleId           String?
   ProgramSection           ProgramSection[]
   QuizQuestion             QuizQuestion[]
+  TalentQuizAnswers        TalentQuizAnswers[]
+  TalentProgramResults     TalentProgramResults[]
+  LearnEvents              EventEnrollment[]
 }
 
 model ProgramSection {
-  id        String            @id @default(cuid())
-  type      String
-  content   String?
-  link      String?
-  published Boolean           @default(false)
-  programId String
-  Program   OnboardingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
-  createdAt DateTime          @default(now())
-  updatedAt DateTime          @updatedAt
+  id           String             @id @default(cuid())
+  type         String
+  content      String?
+  link         String?
+  name         String?
+  published    Boolean            @default(false)
+  programId    String?
+  Program      OnboardingProgram? @relation(fields: [programId], references: [id], onDelete: Cascade)
+  orgId        String
+  Organization Organization       @relation(fields: [orgId], references: [id])
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
 }
 
 model OnboardingProgramTalents {
   id                String            @id @default(uuid())
-  enrollmentStatus  String            @default("pending") // pending, enrolled, completed
+  enrollmentStatus  String            @default("pending")
+  currentActiveStep String            @default("intro") // intro, chapter {index}, quiz, complete
   userId            String
   User              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   programId         String
@@ -124,40 +134,63 @@ model OnboardingProgramTalents {
 }
 
 model QuizQuestion {
-  id        String            @id @default(cuid())
-  question  String
-  choiceA   String
-  choiceB   String
-  choiceC   String
-  choiceD   String
-  answer    String
-  explanation String
-  programId String
-  Program   OnboardingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
-  createdAt DateTime          @default(now())
-  updatedAt DateTime          @updatedAt
+  id                String              @id @default(cuid())
+  question          String
+  choiceA           String
+  choiceB           String
+  choiceC           String
+  choiceD           String
+  answer            String
+  explanation       String
+  programId         String
+  Program           OnboardingProgram   @relation(fields: [programId], references: [id], onDelete: Cascade)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  TalentQuizAnswers TalentQuizAnswers[]
 
   @@index([programId], name: "programId")
 }
 
 model TalentProgramResults {
-  id          String   @id @default(cuid())
-  userId      String
-  programId   String
-  quizAnswers String[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String            @id @default(cuid())
+  userId    String
+  programId String
+  score     Int // 0 - 100
+  User      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Program   OnboardingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
 }
 
 model TalentQuizAnswers {
-  id         String   @id @default(cuid())
-  userId     String
-  programId  String
-  questionId String
-  answer     String
-  isCorrect  Boolean
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id           String            @id @default(cuid())
+  userId       String
+  programId    String
+  questionId   String
+  talentAnswer String
+  Program      OnboardingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
+  Question     QuizQuestion      @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  @@unique([userId, programId, questionId])
+}
+
+model EventEnrollment {
+  id              String            @id @default(cuid())
+  userId          String
+  Talent          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  programId       String
+  Course          OnboardingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
+  viewedCourse    Boolean           @default(false)
+  courseCompleted Boolean           @default(false)
+  quizCompleted   Boolean           @default(false)
+  scoreComputed   Boolean           @default(false)
+  viewedChapters  String[]          @default([])
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  @@unique([userId, programId])
 }
 
 model waitlist {

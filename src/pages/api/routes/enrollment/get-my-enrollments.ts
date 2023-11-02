@@ -36,14 +36,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         userId: talentId,
       },
       include: {
-        OnboardingProgram: true,
+        OnboardingProgram: {
+          include: {
+            ProgramSection: true,
+            QuizQuestion: true,
+          }
+        },
       },
       orderBy: {
-        enrollmentStatus: "desc",
-      },
-      cacheStrategy: {
-        ttl: 30,
-        swr: 60,
+        createdAt: "desc",
       },
     });
 

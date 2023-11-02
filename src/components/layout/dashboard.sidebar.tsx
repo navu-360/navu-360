@@ -7,6 +7,16 @@ import { signOut, useSession } from "next-auth/react";
 import { useDispatch, useSelector } from "react-redux";
 import type { User } from "@prisma/client";
 import { resetAuth } from "redux/auth/authSlice";
+import {
+  useGetAllTalentsQuery,
+  useGetLibraryChaptersQuery,
+  useGetOrganizationProgramsQuery,
+} from "services/baseApiSlice";
+import {
+  setAllCourses,
+  setAllEnrolledTalents,
+  setAllLibraryChapters,
+} from "redux/common/commonSlice";
 
 export default function AdminNav({
   showInviteTalent,
@@ -25,7 +35,39 @@ export default function AdminNav({
     (state: { auth: { userProfile: User } }) => state.auth.userProfile,
   );
 
+  const orgId = useSelector(
+    (state: { auth: { orgId: string } }) => state.auth.orgId,
+  );
+
   const { data: session } = useSession();
+
+  // get all talents
+  const { data: allUsers } = useGetAllTalentsQuery(undefined, {
+    skip: session?.user?.role === "talent",
+  });
+  // get courses
+  const { data: courses } = useGetOrganizationProgramsQuery(orgId, {
+    skip: !orgId || session?.user?.role === "talent",
+  });
+  // get chapters for Library
+  const { currentData: chapters } = useGetLibraryChaptersQuery(undefined, {
+    skip: session?.user?.role === "talent" || !session,
+  });
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (allUsers?.data?.length > 0) {
+      dispatch(setAllEnrolledTalents(allUsers?.data));
+    }
+    if (courses?.data?.length > 0) {
+      dispatch(setAllCourses(courses?.data));
+    }
+    if (chapters?.data?.length > 0) {
+      dispatch(setAllLibraryChapters(chapters?.data));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allUsers, courses, chapters, router.pathname]);
 
   if (!isReady) return null;
 
@@ -66,7 +108,7 @@ export default function AdminNav({
                 <rect x="3" y="16" width="7" height="5"></rect>
               </svg>
             }
-            text={"Dashboard"}
+            text={userProfile?.role === "admin" ? "Dashboard" : "My Courses"}
             isActive={
               router.pathname === "/dashboard" || router.pathname === "/learn"
             }
@@ -82,20 +124,45 @@ export default function AdminNav({
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  className=" transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
                 >
-                  <path d="m16 6 4 14"></path>
-                  <path d="M12 6v14"></path>
-                  <path d="M8 8v12"></path>
-                  <path d="M4 4v16"></path>
+                  <path d="M2 16V4a2 2 0 0 1 2-2h11" />
+                  <path d="M5 14H4a2 2 0 1 0 0 4h1" />
+                  <path d="M22 18H11a2 2 0 1 0 0 4h11V6H11a2 2 0 0 0-2 2v12" />
                 </svg>
               }
               text={userProfile?.role === "admin" ? "Courses" : "My Courses"}
               isActive={router.pathname.includes("programs")}
               to={"/programs"}
+            />
+          )}
+          {userProfile?.role === "admin" && (
+            <OneItem
+              svg={
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
+                >
+                  <path d="m16 6 4 14" />
+                  <path d="M12 6v14" />
+                  <path d="M8 8v12" />
+                  <path d="M4 4v16" />
+                </svg>
+              }
+              text={"Library"}
+              isActive={router.pathname.includes("library")}
+              to={"/library"}
             />
           )}
 

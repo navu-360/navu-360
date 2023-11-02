@@ -4,12 +4,14 @@ import Image from "next/image";
 export function InsertNewSection({
   isFirst,
   chooseType,
+  showLibrary,
 }: {
   isFirst?: boolean;
   chooseType: (val: string) => void;
+  showLibrary: () => void;
 }) {
   return (
-    <div className="relative mx-auto flex w-[500px] flex-col gap-4 self-center rounded-md p-4 pb-16 shadow-md">
+    <div className="relative mx-auto flex 2xl:max-w-[500px] flex-col gap-2 rounded-md p-4 pb-16 shadow-md">
       <h3 className="flex items-center gap-1 text-lg font-semibold text-blue-500">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +30,7 @@ export function InsertNewSection({
         </svg>{" "}
         {isFirst ? "Add first chapter" : "Add another chapter?"}
       </h3>
-      <div className="flex w-full flex-col gap-2 font-medium text-gray-500">
+      <div className="flex w-full flex-col gap-0 font-medium text-gray-500">
         <Tooltip
           direction="right"
           content="Create content from text, images, checkboxes, tables, lists"
@@ -154,6 +156,45 @@ export function InsertNewSection({
                 <p className="text-sm font-medium text-gray-600">
                   Embed real-time Google Docs or Slides for collaborative and
                   up-to-date training content.
+                </p>
+              </div>
+            </div>
+          </div>
+        </Tooltip>
+
+        <Tooltip
+          direction="right"
+          content="Select a pre-created chapter from your library"
+        >
+          <div
+            onClick={() => showLibrary()}
+            className="flex w-full cursor-pointer items-center justify-between p-2 hover:bg-gray-50 hover:text-gray-600"
+          >
+            <div className="flex items-center gap-4">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-secondary/20 shadow-sm">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="text-secondary transition-all duration-300 ease-in"
+                >
+                  <path d="m16 6 4 14" />
+                  <path d="M12 6v14" />
+                  <path d="M8 8v12" />
+                  <path d="M4 4v16" />
+                </svg>
+              </div>
+
+              <div className="flex flex-col">
+                <h3 className="text-lg font-semibold">Chapter From library</h3>
+                <p className="text-sm font-medium text-gray-600">
+                  Select a pre-created chapter from your library
                 </p>
               </div>
             </div>

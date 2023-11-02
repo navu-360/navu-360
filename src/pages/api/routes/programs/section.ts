@@ -20,15 +20,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         case "POST":
             try {
                 // type, content, link, programId
-                const { type, content, link, programId } = req.body as {
+                const { type, content, link, programId, name } = req.body as {
                     type: string;
                     content?: string;
                     link?: string;
-                    programId: string;
+                    programId?: string;
+                    name: string;
                 };
 
+                const organization = await prisma.organization.findFirst({
+                    where: {
+                        userId: session?.user?.id as string,
+                    },
+                    select: {
+                        id: true,
+                    }
+                });
 
-                if (!type || !programId || !(content || link)) return res.status(400).json({ message: `Missing fields.` });
+                if (!organization) return res.status(404).json({ message: `Organization not found.` });
+
+
+                if (!type || !(content || link) || !name) return res.status(400).json({ message: `Missing fields.` });
 
                 // create ProgramSection
                 const programSection = await prisma.programSection.create({
@@ -36,7 +48,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                         type,
                         content,
                         link,
-                        programId
+                        programId,
+                        name,
+                        orgId: organization.id
                     },
                 });
 
@@ -54,13 +68,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         case "PATCH":
             // edit a program section given id and new content
             try {
-                const { id, content, link } = req.body as {
+                const { id, content, link, name, programId } = req.body as {
                     id: string;
                     content?: string;
                     link?: string;
+                    name?: string;
+                    programId?: string;
                 };
 
-                if (!id || !(content || link)) return res.status(400).json({ message: `Missing fields.` });
+                if (!id) return res.status(400).json({ message: `Missing fields.` });
 
                 const programSection = await prisma.programSection.update({
                     where: {
@@ -68,7 +84,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     },
                     data: {
                         content,
-                        link
+                        link,
+                        name,
+                        programId
                     }
                 });
 
@@ -106,7 +124,33 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     // @ts-ignore
                     .json({ message: error.message });
             }
+        case "GET":
+            // get the organization sections which do not have a programId - library sections, get using field orgId
 
+            const organization = await prisma.organization.findFirst({
+                where: {
+                    userId: session?.user?.id as string,
+                },
+                select: {
+                    id: true,
+                }
+            });
+
+            if (!organization) return res.status(404).json({ message: `Organization not found.` });
+
+            const sections = await prisma.programSection.findMany({
+                where: {
+                    orgId: organization.id,
+                    programId: null
+                },
+                orderBy: {
+                    createdAt: "desc"
+                }
+            });
+
+            return res
+                .status(200)
+                .json({ message: `Sections fetched.`, data: sections });
         default:
             return res
                 .status(405)

@@ -30,7 +30,7 @@ export default function DashboardWrapper({
   const id = orgId;
 
   const { data: sentInvites } = useGetSentInvitesQuery(id, {
-    skip: !id,
+    skip: !id || session?.user?.role === "talent",
   });
 
   return (
@@ -41,7 +41,7 @@ export default function DashboardWrapper({
     >
       {!hideNav && <AdminNav showInviteTalent={() => setShowModal(true)} />}
       <TopNavAdmin hideSearch={hideSearch} />
-      {status === "loading" ? (
+      {status === "loading" || session?.user?.role === "talent" ? (
         children
       ) : session?.user?.customerId ? (
         children
