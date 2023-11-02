@@ -329,9 +329,9 @@ export function OneCourse({
   return (
     <Link
       href={`/learn/${id}`}
-      className="question-input group relative h-[400px] w-full justify-between rounded-xl bg-white"
+      className="question-input group relative h-[350px] w-full justify-between rounded-xl bg-white"
     >
-      <div className="relative h-[50%] w-full">
+      <div className="relative h-[40%] w-full">
         <Image
           className="h-full w-full rounded-t-xl object-cover"
           src={image}
