@@ -32,7 +32,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 };
 
                 const countOfTrueBooleans = (booleansArray: boolean[]) => {
-                    console.log(booleansArray);
                     return booleansArray.filter((boolean) => boolean).length;
                 };
 
@@ -134,8 +133,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 const { programId } = req.query as {
                     programId: string;
                 };
-
-                console.log(programId);
 
                 if (!programId) return res.status(400).json({ message: `Missing fields.` });
 

@@ -32,7 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const { public_id } = req.body;
 
         cloudinary.v2.uploader.destroy(public_id, function (result: unknown) {
-          console.log(result);
+          console.log(!!result);
         });
 
         return res.status(200).json({ message: `Image deleted.` });

@@ -36,7 +36,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(200).json({ message: `Events retrieved`, data: events });
     } else {
       if (programId) {
-        console.log("getting for user and program")
         const events = await prisma.eventEnrollment.findFirst({
           where: {
             programId,
@@ -45,7 +44,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         });
         return res.status(200).json({ message: `Events retrieved`, data: events });
       } else {
-        console.log("getting for user")
         const events = await prisma.eventEnrollment.findMany({
           where: {
             userId: userId,

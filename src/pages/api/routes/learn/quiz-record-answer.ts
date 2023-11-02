@@ -37,7 +37,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     if (exists?.length > 0) {
-      const updated = await prisma.talentQuizAnswers.update({
+     await prisma.talentQuizAnswers.update({
         where: {
           userId_programId_questionId: {
             userId: session.user.id,
@@ -49,9 +49,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           talentAnswer,
         },
       });
-      console.log("updated", updated)
     } else {
-      const created = await prisma.talentQuizAnswers.create({
+      await prisma.talentQuizAnswers.create({
         data: {
           userId: session.user.id,
           programId,
@@ -59,7 +58,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           talentAnswer,
         },
       });
-      console.log("created", created)
     }
 
     return res.status(200).json({ message: `Answer recorded` });
