@@ -108,7 +108,7 @@ export default function AdminNav({
                 <rect x="3" y="16" width="7" height="5"></rect>
               </svg>
             }
-            text={"Dashboard"}
+            text={userProfile?.role === "admin" ? "Dashboard" : "My Courses"}
             isActive={
               router.pathname === "/dashboard" || router.pathname === "/learn"
             }

@@ -164,7 +164,6 @@ export default function SearchResults() {
                       created={block.createdAt}
                       updated={block.updatedAt}
                       view={() => {
-                        console.log("view");
                         router.push(
                           `/library?view=${block.type}&id=${block.id}`,
                         );

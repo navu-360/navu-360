@@ -56,7 +56,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
     }
     const cancelSub = await makeRequest(optionsCancel, paramsCancel);
-    console.log(cancelSub);
     if (!cancelSub.status) {
         res.status(400).json({ message: `Failed. Could not cancel subscription` });
         return;
@@ -80,7 +79,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const createSub = await makeRequest(optionsCreate, paramsCreate);
-    console.log(createSub);
     if (!createSub) {
         res.status(400).json({ message: `Failed. Could not create subscription` });
         return;

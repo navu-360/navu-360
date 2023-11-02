@@ -53,7 +53,7 @@ function MyEditor({
       editorRef.current?.isReady
         .then(
           () => {
-            console.log("Editor.js is ready to work!");
+            console.log("");
           },
           // @ts-ignore
         )
@@ -64,6 +64,7 @@ function MyEditor({
           });
         });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialData, isReadOnly]);
 
   const saveData = async () => {

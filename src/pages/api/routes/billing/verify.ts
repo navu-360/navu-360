@@ -56,7 +56,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
                 res.status(200).json({ message: 'Transaction verified' });
             } else {
-                console.log("responseData", responseData)
                 res.status(400).json({ message: 'Transaction not verified' });
             }
         });

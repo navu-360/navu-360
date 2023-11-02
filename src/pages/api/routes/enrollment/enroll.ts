@@ -54,7 +54,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const enrollmentEvent = await Promise.all(enrollmentEvents);
 
-    console.log("enrollmentEvent", enrollmentEvent);
+    console.log(!!enrollmentEvent);
 
     return res
       .status(200)

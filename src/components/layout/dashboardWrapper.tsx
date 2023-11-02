@@ -33,8 +33,6 @@ export default function DashboardWrapper({
     skip: !id || session?.user?.role === "talent",
   });
 
-  console.log("session?.user?.role", session?.user);
-
   return (
     <main
       className={`flex h-max min-h-screen w-full flex-col gap-0 ${

@@ -8,6 +8,7 @@ import type {
 import Header from "components/common/head";
 import { NoAssignedCourses } from "components/dashboard/guides";
 import DashboardWrapper from "components/layout/dashboardWrapper";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -24,11 +25,9 @@ export default function LearnCenter() {
     (state: { auth: { userProfile: User } }) => state.auth.userProfile,
   );
 
-  const orgId = useSelector(
-    (state: { auth: { orgId: string } }) => state.auth.orgId,
-  );
+  const { data: session } = useSession();
 
-  const id = orgId;
+  const id = session?.user?.talentOrgId;
   // get organization data
   const { data: organizationData } = useGetOrganizationByIdQuery(id, {
     skip: !id,
@@ -114,7 +113,7 @@ export default function LearnCenter() {
             </>
           )}
           {data?.data?.length > 0 && (
-            <div className="mt-4 grid w-full grid-cols-5 gap-4">
+            <div className="mt-4 grid w-full grid-cols-4 gap-4 2xl:grid-cols-5">
               {data?.data?.map(
                 (
                   program: OnboardingProgramTalents & {
@@ -139,10 +138,9 @@ export default function LearnCenter() {
               )}
             </div>
           )}
-          <div className="mt-4 grid w-full grid-cols-5 gap-4">
+          <div className="mt-4 grid w-full grid-cols-4 gap-4 2xl:grid-cols-5">
             {!data && (
               <>
-                <CourseShimmer />
                 <CourseShimmer />
                 <CourseShimmer />
                 <CourseShimmer />

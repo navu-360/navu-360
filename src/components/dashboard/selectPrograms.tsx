@@ -46,8 +46,6 @@ export function SelectPrograms({
     skip: !talentId,
   });
 
-  console.log("enrollmentStatus", enrollmentStatus?.data);
-
   useEffect(() => {
     if (programs?.data && enrollmentStatus?.data) {
       // we check enrollmentStatus?.data - get all programIds
@@ -57,11 +55,6 @@ export function SelectPrograms({
       const allEnrolledProgramIdsOnlyUnique = [
         ...new Set(allEnrolledProgramIds),
       ];
-      console.log(
-        "allEnrolledProgramIdsOnlyUnique",
-        allEnrolledProgramIdsOnlyUnique,
-        programs?.data,
-      );
       // filter out all programs that are not enrolled
       const filteredPrograms = programs?.data?.filter(
         (program: OnboardingProgram) =>
@@ -92,7 +85,7 @@ export function SelectPrograms({
     await sendEmailAction(body)
       .unwrap()
       .then(() => {
-        console.log("email sent");
+        console.log("");
       })
       .catch(
         (error: {

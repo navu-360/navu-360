@@ -262,15 +262,12 @@ export default function ViewEnrollment({
           data?.OnboardingProgram?.ProgramSection?.length
         ) {
           if (data?.OnboardingProgram?.QuizQuestion?.length === 0) {
-            console.log("course done - no quiz");
             recordCourseCompleted();
           } else {
-            console.log("show quiz");
             setCurrentQuestion(data?.OnboardingProgram?.QuizQuestion?.[0]);
             setChaptersDone(true);
           }
         } else {
-          console.log("not done with chapters");
           recordViewChapter(
             data?.OnboardingProgram?.ProgramSection?.[latestViewedIndex + 1]
               ?.id as string,
@@ -288,13 +285,13 @@ export default function ViewEnrollment({
 
   return (
     <>
-      <Header title={`${data?.OnboardingProgram?.name} - Navu360`} />
+      <Header title={`${data?.OnboardingProgram?.name}`} />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[90px] mr-4 mt-[30px] flex h-[calc(100vh_-_115px)] w-auto items-start justify-start rounded-md bg-gray-100 p-4 md:ml-[250px]">
+        <div className="relative ml-[90px] mr-4 mt-[20px] flex h-[calc(100vh_-_105px)] w-auto items-start justify-start rounded-md bg-gray-100 p-4 md:ml-[250px]">
           {enrollmentStatus?.data && (
             <>
               <div
-                className={`relative flex h-full flex-col gap-8 ${
+                className={`no-scrollbar relative flex h-full flex-col gap-6 overflow-y-auto ${
                   courseDone ? "w-full" : "w-[calc(100%_-_350px)]"
                 }`}
               >
@@ -303,7 +300,7 @@ export default function ViewEnrollment({
                     <h1 className="text-3xl font-bold text-tertiary">
                       {data?.OnboardingProgram?.name}
                     </h1>
-                    <div className="relative h-[400px] w-full overflow-hidden">
+                    <div className="relative h-[250px] w-full shrink-0 overflow-hidden 2xl:h-[400px]">
                       <Image
                         className="relative z-50 h-full w-full object-contain"
                         fill
@@ -461,10 +458,10 @@ export default function ViewEnrollment({
                                 {...(currentQuestion as QuizQuestion)}
                                 key={currentQuestion?.id}
                                 goNext={() => {
-                                  console.log("next");
+                                  console.log("");
                                 }}
                                 goPrev={() => {
-                                  console.log("prev");
+                                  console.log("");
                                 }}
                                 isFirst={
                                   data?.OnboardingProgram?.QuizQuestion?.[0]
@@ -532,7 +529,6 @@ export default function ViewEnrollment({
                             }}
                             goPrev={() => {
                               // go to previous question
-                              console.log("prev");
                               const currentIndex =
                                 data?.OnboardingProgram?.QuizQuestion?.findIndex(
                                   (q) => q.id === currentQuestion?.id,
