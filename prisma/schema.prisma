@@ -83,7 +83,7 @@ model OnboardingProgram {
   name                     String
   description              String
   categories               String[]
-  image                    String?
+  image                    String?                    @default("https://res.cloudinary.com/dpnbddror/image/upload/v1698909075/navu/Group_8_hqowkd.png")
   creator                  User                       @relation(fields: [createdBy], references: [id], name: "createdBy", onDelete: Cascade)
   createdBy                String
   organization             Organization               @relation(fields: [organizationId], references: [id])
