@@ -184,7 +184,7 @@ export default function CreateDocumentChapter({
           file={uploadedDocument}
           onLoadSuccess={onDocumentLoadSuccess}
           options={options}
-          className={"no-scrollbar h-[calc(100%_-_100px)] overflow-y-auto"}
+          className={"no-scrollbar h-[calc(100%_-_100px)] overflow-y-auto w-full"}
           onLoadError={(err) => console.log(err)}
         >
           {Array.from(new Array(numPages), (el, index) => (

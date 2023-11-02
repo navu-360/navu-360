@@ -388,7 +388,7 @@ export default function MyLibrary() {
 
         {showCreateBlock && (
           <div className="fixed inset-0 z-[200] flex h-screen w-screen items-center justify-center bg-black/50 backdrop-blur-sm">
-            <div className="relative h-[90vh] max-h-[700px] w-[80vw] max-w-[1200px] overflow-y-auto rounded-lg bg-white p-4 pb-8">
+            <div className="no-scrollbar relative h-[90vh] max-h-[700px] w-[80vw] max-w-[1200px] overflow-y-auto rounded-lg bg-white p-4 pb-8">
               <CreateBlockChapter
                 currentEditing={currentEditing}
                 setShowDeleteModal={setShowDeleteModal}
@@ -410,7 +410,7 @@ export default function MyLibrary() {
         )}
         {showCreateDocument && (
           <div className="fixed inset-0 z-[200] flex h-screen w-screen items-center justify-center bg-black/50 backdrop-blur-sm">
-            <div className="relative h-[90vh] max-h-[700px] w-[80vw] max-w-[1200px] overflow-y-auto rounded-lg bg-white p-4">
+            <div className="no-scrollbar relative h-[90vh] max-h-[700px] w-[80vw] max-w-[1200px] overflow-y-auto rounded-lg bg-white p-4">
               <CreateDocumentChapter
                 currentEditing={currentEditing}
                 setShowDeleteModal={setShowDeleteModal}
@@ -433,7 +433,7 @@ export default function MyLibrary() {
         )}
         {showCreateVideo && (
           <div className="fixed inset-0 z-[200] flex h-screen w-screen items-center justify-center bg-black/50 backdrop-blur-sm">
-            <div className="relative h-[90vh] max-h-[700px] w-[80vw] max-w-[1200px] overflow-y-auto rounded-lg bg-white p-4">
+            <div className="no-scrollbar relative h-[90vh] max-h-[700px] w-[80vw] max-w-[1200px] overflow-y-auto rounded-lg bg-white p-4">
               <CreateVideoChapter
                 currentEditing={currentEditing}
                 setShowDeleteModal={setShowDeleteModal}
@@ -456,7 +456,7 @@ export default function MyLibrary() {
         )}
         {showCreateLink && (
           <div className="fixed inset-0 z-[200] flex h-screen w-screen items-center justify-center bg-black/50 backdrop-blur-sm">
-            <div className="relative h-[90vh] max-h-[700px] w-[80vw] max-w-[1200px] overflow-y-auto rounded-lg bg-white p-4">
+            <div className="no-scrollbar relative h-[90vh] max-h-[700px] w-[80vw] max-w-[1200px] overflow-y-auto rounded-lg bg-white p-4">
               <CreateLinkChapter
                 currentEditing={currentEditing}
                 setShowDeleteModal={setShowDeleteModal}
