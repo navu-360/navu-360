@@ -26,7 +26,7 @@ import Pricing from "components/landing/pricing";
 import { thousandSeparator } from "utils/num-utils";
 import { setDraftProgramId } from "redux/common/commonSlice";
 
-const AccountSettings: React.FC = () => {
+export default function Account() {
   const [activeTab, setActiveTab] = useState("account");
 
   const userProfile = useSelector(
@@ -509,7 +509,7 @@ const AccountSettings: React.FC = () => {
       </DashboardWrapper>
     </>
   );
-};
+}
 
 function Billing({
   changePlan,
@@ -748,5 +748,3 @@ function ChangePlan({
     </div>
   );
 }
-
-export default AccountSettings;

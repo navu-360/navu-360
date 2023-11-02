@@ -1,6 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { prisma } from "../../../../auth/db";
+import { prisma } from "auth/db";
+
+import * as Sentry from "@sentry/nextjs";
 
 import { getServerSession } from "next-auth";
 import { authOptions } from 'auth/auth';
@@ -40,6 +42,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .status(200)
         .json({ message: `Program fetched.`, data: { ...program, creator: { name: user?.name, id: user?.id } } });
     } catch (error) {
+      Sentry.captureException(error);
+      console.log(error);
       return res
         .status(500)
         // @ts-ignore
@@ -64,6 +68,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .status(200)
         .json({ message: `Program deleted.`, data: program });
     } catch (error) {
+      Sentry.captureException(error);
       return res
         .status(500)
         // @ts-ignore
@@ -101,6 +106,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .status(200)
         .json({ message: `Program updated.`, data: program });
     } catch (error) {
+      Sentry.captureException(error);
       return res
         .status(500)
         // @ts-ignore

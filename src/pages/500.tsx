@@ -18,7 +18,7 @@ export default function Custom500() {
         <button
           className="rounded-3xl bg-white px-12 py-2 font-semibold text-red-500"
           onClick={() => {
-            window.location.href = "/";
+            window.location.href = "/?home";
           }}
         >
           Go Home
