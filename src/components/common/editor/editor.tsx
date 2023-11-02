@@ -82,7 +82,7 @@ function MyEditor({
 
   return (
     <div
-      className={`h-full rounded-lg overflow-y-auto bg-tertiary p-8 text-white pt-4 ${
+      className={`h-full rounded-lg overflow-y-auto bg-tertiary p-8 pl-12 text-white pt-4 ${
         isReadOnly
           ? `${
               router?.pathname.includes("learn")

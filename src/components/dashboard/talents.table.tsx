@@ -209,7 +209,7 @@ export default function AllTalents({
                           Talent
                         </th>
                         <th className="role whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                          Role
+                          Courses Enrolled
                         </th>
                         <th className="date whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                           {selectedType === "Enrolled" ? "Enrolled" : "Joined"}
@@ -239,7 +239,7 @@ export default function AllTalents({
                     <tr>
                       <td
                         align="center"
-                        colSpan={selectedType !== "Invited" ? 6 : 4}
+                        colSpan={selectedType !== "Invited" ? 5 : 4}
                         className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs"
                       >
                         <Spinner smaller />

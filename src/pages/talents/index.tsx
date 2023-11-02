@@ -142,7 +142,7 @@ export default function AllTalents() {
                             <tr>
                               <td
                                 align="center"
-                                colSpan={6}
+                                colSpan={5}
                                 className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs"
                               >
                                 <Spinner smaller />
