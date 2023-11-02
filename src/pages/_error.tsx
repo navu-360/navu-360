@@ -21,7 +21,6 @@ const ErrorPage: NextPage<Props> = ({
     // getInitialProps is not called in case of
     // https://github.com/vercel/next.js/issues/8592. As a workaround, we pass
     // err via _app.js so it can be captured
-    console.log(err);
     Sentry.captureException(err);
     // Flushing is not required in this case as it only happens on the client
   }
@@ -58,7 +57,6 @@ ErrorPage.getInitialProps = async (context: NextPageContext) => {
   //    Boundaries: https://reactjs.org/docs/error-boundaries.html
 
   if (err) {
-    console.log(err);
     Sentry.captureException(err);
 
     return errorInitialProps;

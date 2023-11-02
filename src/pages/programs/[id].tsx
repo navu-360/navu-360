@@ -391,7 +391,7 @@ export default function Program({
                       whileInView={{ y: 0 }}
                       viewport={{ once: true }}
                       key={enrollment.id}
-                      className="question-input relative cursor-default flex w-auto mx-1 items-center gap-3 rounded-lg p-4 text-tertiary"
+                      className="question-input relative mx-1 flex w-auto cursor-default items-center gap-3 rounded-lg p-4 text-tertiary"
                     >
                       <img
                         src={generateAvatar(enrollment?.User?.name as string)}
@@ -450,6 +450,7 @@ export const getStaticPaths = async () => {
 
     return { paths, fallback: "blocking" };
   } catch (error) {
+    console.log(error, "error");
     return { paths: [], fallback: "blocking" };
   }
 };
