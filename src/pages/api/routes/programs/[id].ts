@@ -43,6 +43,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .json({ message: `Program fetched.`, data: { ...program, creator: { name: user?.name, id: user?.id } } });
     } catch (error) {
       Sentry.captureException(error);
+      console.log(error);
       return res
         .status(500)
         // @ts-ignore
