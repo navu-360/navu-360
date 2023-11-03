@@ -255,6 +255,7 @@ export default function AdminNav({
             text={"Feedback"}
             isActive={false}
             to={"#"}
+            isFeedback
           />
           <OneItem
             svg={
