@@ -3,6 +3,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
+import formbricks from "@formbricks/js";
+
 import { signOut, useSession } from "next-auth/react";
 import { useDispatch, useSelector } from "react-redux";
 import type { User } from "@prisma/client";
@@ -68,6 +70,16 @@ export default function AdminNav({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allUsers, courses, chapters, router.pathname]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      formbricks.init({
+        environmentId: process.env.NEXT_PUBLIC_FORMBRICKS_ENV_ID as string,
+        apiHost: process.env.NEXT_PUBLLIC_FORMBRICKS_API_HOST as string,
+        debug: process.env.NODE_ENV === "development",
+      });
+    }
+  }, []);
 
   if (!isReady) return null;
 
@@ -241,6 +253,28 @@ export default function AdminNav({
                 <circle cx="12" cy="12" r="4" />
               </svg>
             }
+            text={"Feedback"}
+            isActive={false}
+            to={"#"}
+          />
+          <OneItem
+            svg={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
+              >
+                <rect width="20" height="16" x="2" y="4" rx="2" />
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+              </svg>
+            }
             text={"Contact Us"}
             isActive={router.pathname === "/support"}
             to={"/account"}
@@ -305,6 +339,7 @@ function OneItem({
   to,
   isLogout,
   action,
+  isFeedback,
 }: {
   svg: React.ReactNode;
   text: string;
@@ -312,6 +347,7 @@ function OneItem({
   to: string;
   isLogout?: boolean;
   action?: () => void;
+  isFeedback?: boolean;
 }) {
   const dispatch = useDispatch();
   return (
@@ -330,6 +366,10 @@ function OneItem({
             callbackUrl: `http://localhost:3000/api/auth/logout`,
             redirect: true,
           });
+        }
+        if (isFeedback) {
+          e.preventDefault();
+          action && action();
         }
         if (action) {
           e.preventDefault();
