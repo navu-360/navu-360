@@ -23,8 +23,8 @@ import {
 if (typeof window !== "undefined") {
   console.log("init formbricks");
   formbricks.init({
-    environmentId: process.env.NEXT_PUBLIC_FORMBRICKS_ENV_ID as string,
-    apiHost: process.env.NEXT_PUBLLIC_FORMBRICKS_API_HOST as string,
+    environmentId: "cloihp7rwh336q70fu50y2jku",
+    apiHost: "https://app.formbricks.com",
     debug: process.env.NODE_ENV === "development",
   });
 }
