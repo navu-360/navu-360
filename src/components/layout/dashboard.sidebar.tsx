@@ -21,6 +21,7 @@ import {
 } from "redux/common/commonSlice";
 
 if (typeof window !== "undefined") {
+  console.log("init formbricks");
   formbricks.init({
     environmentId: process.env.NEXT_PUBLIC_FORMBRICKS_ENV_ID as string,
     apiHost: process.env.NEXT_PUBLLIC_FORMBRICKS_API_HOST as string,
@@ -78,17 +79,6 @@ export default function AdminNav({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allUsers, courses, chapters, router.pathname]);
-
-  useEffect(() => {
-    if (!window || typeof window === "undefined") return;
-    // Connect next.js router to Formbricks
-    const handleRouteChange = formbricks?.registerRouteChange;
-    router.events.on("routeChangeComplete", handleRouteChange);
-
-    return () => {
-      router.events.off("routeChangeComplete", handleRouteChange);
-    };
-  }, [router.events]);
 
   if (!isReady) return null;
 
@@ -359,7 +349,16 @@ function OneItem({
   isFeedback?: boolean;
 }) {
   const dispatch = useDispatch();
-  return (
+  return isFeedback ? (
+    <button
+      id="feedback"
+      className={`group flex items-center gap-2 rounded-md px-4 py-4 font-medium transition-all duration-300 ease-in hover:bg-secondary/50 md:px-8 md:py-2 md:pl-2 ${
+        isActive ? "bg-secondary/20" : "bg-transparent"
+      }`}
+    >
+      {svg} <span className="hidden md:block">{text}</span>
+    </button>
+  ) : (
     <Link
       href={to}
       onClick={(e) => {
