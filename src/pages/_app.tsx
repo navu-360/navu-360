@@ -25,8 +25,6 @@ const font = Nunito_Sans({
   weight: ["400", "500", "600", "700", "800"],
 });
 
-import { GoogleAnalytics } from "nextjs-google-analytics";
-
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
@@ -72,7 +70,6 @@ const MyApp: AppType<{ session: Session | null }> = ({
             }
           `}</style>
           <Component {...pageProps} />
-          <GoogleAnalytics />
           <Analytics />
         </Provider>
       </ErrorBoundary>
