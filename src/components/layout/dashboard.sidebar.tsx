@@ -80,6 +80,7 @@ export default function AdminNav({
   }, [allUsers, courses, chapters, router.pathname]);
 
   useEffect(() => {
+    if (!window || typeof window === "undefined") return;
     // Connect next.js router to Formbricks
     const handleRouteChange = formbricks?.registerRouteChange;
     router.events.on("routeChangeComplete", handleRouteChange);
