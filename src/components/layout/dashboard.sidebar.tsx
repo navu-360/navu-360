@@ -20,6 +20,14 @@ import {
   setAllLibraryChapters,
 } from "redux/common/commonSlice";
 
+if (typeof window !== "undefined") {
+  formbricks.init({
+    environmentId: process.env.NEXT_PUBLIC_FORMBRICKS_ENV_ID as string,
+    apiHost: process.env.NEXT_PUBLLIC_FORMBRICKS_API_HOST as string,
+    debug: process.env.NODE_ENV === "development",
+  });
+}
+
 export default function AdminNav({
   showInviteTalent,
 }: {
@@ -72,14 +80,14 @@ export default function AdminNav({
   }, [allUsers, courses, chapters, router.pathname]);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      formbricks.init({
-        environmentId: process.env.NEXT_PUBLIC_FORMBRICKS_ENV_ID as string,
-        apiHost: process.env.NEXT_PUBLLIC_FORMBRICKS_API_HOST as string,
-        debug: process.env.NODE_ENV === "development",
-      });
-    }
-  }, []);
+    // Connect next.js router to Formbricks
+    const handleRouteChange = formbricks?.registerRouteChange;
+    router.events.on("routeChangeComplete", handleRouteChange);
+
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router.events]);
 
   if (!isReady) return null;
 
