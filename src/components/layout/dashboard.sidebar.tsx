@@ -21,7 +21,6 @@ import {
 } from "redux/common/commonSlice";
 
 if (typeof window !== "undefined") {
-  console.log("init formbricks");
   formbricks.init({
     environmentId: "cloihp7rwh336q70fu50y2jku",
     apiHost: "https://app.formbricks.com",
