@@ -816,3 +816,31 @@ strong {
     color: #ffffff;
     cursor: pointer;
 }
+
+.blog-content p {
+    line-height: 1.5 !important;
+    letter-spacing: 0.01em !important;
+    margin-bottom: 1rem !important;
+}
+
+.blog-content h2 {
+    font-size: 1.5rem !important;
+    font-weight: 600 !important;
+    line-height: 1.5 !important;
+    letter-spacing: 0.01em !important;
+    margin-bottom: 0.1rem !important;
+}
+
+.blog-content ul, ol {
+    list-style: disc !important;
+    margin-left: 2rem !important;
+    margin-top: -0.8rem;
+}
+
+.blog-content li:last-child {
+    margin-bottom: 1rem !important;
+}
+
+.blog-content li {
+    margin-bottom: 0.2rem !important;
+}
