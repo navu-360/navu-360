@@ -46,13 +46,16 @@ export default function NavBar() {
       ) {
         if (session?.user?.role === "admin") {
           router.push("/dashboard");
-        } else {
+        } else if (
+          session?.user?.role === "talent" &&
+          session?.user?.hasBeenOnboarded
+        ) {
           router.push("/learn");
         }
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session, home]);
+  }, [session, home, inviteId]);
 
   const [showSolutionsDropdown, setShowSolutionsDropdown] =
     useState<boolean>(false);
@@ -69,9 +72,12 @@ export default function NavBar() {
   }, [showSolutionsDropdown]);
 
   return (
-    <nav className="fixed left-0 top-0 z-20 h-[80px] w-full bg-dark py-2.5 sm:px-4">
+    <nav className="nav-blur fixed left-0 top-0 z-20 h-[80px] w-full bg-dark py-2 sm:px-4 sm:pb-0">
       <div className="mx-auto flex flex-wrap items-center justify-between md:mx-0">
-        <Link href="/" className="relative flex flex-col items-start pl-4">
+        <Link
+          href={`${router.pathname.includes("invite") ? "/?home" : "/"}`}
+          className="relative flex flex-col items-start pl-4"
+        >
           <img src="/logo.svg" className="mr-3 h-6 sm:h-9" alt="Navu360" />
           <p className="mt-2 text-xs font-bold tracking-wide text-white">
             Empower. Train. Excel.

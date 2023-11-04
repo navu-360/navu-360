@@ -188,6 +188,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     },
                 });
 
+                if (!user) {
+                    res.status(404).json({ message: `User not found.` });
+                    return;
+                }
+
                 if (user?.talentOrgId && user?.hasBeenOnboarded) {
                     res
                         .status(400)
@@ -206,6 +211,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                         role: "talent",
                         hasBeenOnboarded: true,
                         talentOrgId: invite.orgId,
+                    },
+                });
+
+                await prisma.invites.delete({
+                    where: {
+                        email: session.user.email,
                     },
                 });
 

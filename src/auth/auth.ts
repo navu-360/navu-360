@@ -65,7 +65,7 @@ export const authOptions: NextAuthOptions = {
         session.user.id = userObj?.id ?? "";
         session.user.name = userObj?.name ?? "";
         session.user.image = userObj?.image ?? "";
-        session.user.role = userObj?.role ?? "admin";
+        session.user.role = userObj?.role ?? "";
         session.user.hasBeenOnboarded = userObj?.hasBeenOnboarded ?? false;
         session.user.position = userObj?.position ?? "";
         session.user.customerId = userObj?.customerId ?? "";
@@ -92,7 +92,7 @@ export const authOptions: NextAuthOptions = {
       }
     }),
   ],
-  debug: process.env.NODE_ENV === "development",
+  debug: process.env.VERCEL_ENV === "development",
   session: {
     strategy: "jwt",
   },

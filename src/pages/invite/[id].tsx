@@ -24,12 +24,6 @@ export default function InviteTalent({
 }: {
   data: invites & { user: User } & Organization;
 }) {
-  const [baseUrl, setBaseUrl] = useState("");
-
-  useEffect(() => {
-    setBaseUrl(window.location.origin);
-  }, []);
-
   const { data: session, status } = useSession();
 
   const router = useRouter();
@@ -88,7 +82,7 @@ export default function InviteTalent({
         // check if status code is 401, then signout user
         if (error.status === 401) {
           signOut({
-            callbackUrl: `http://localhost:3000/api/auth/logout`,
+            callbackUrl: `/api/auth/logout`,
             redirect: false,
           });
         }
@@ -177,8 +171,8 @@ export default function InviteTalent({
                   type="button"
                   onClick={() => {
                     signIn("auth0", {
-                      callbackUrl: `https://${baseUrl}/invite/${id}`,
-                      redirect: false,
+                      callbackUrl: `/invite/${id}`,
+                      redirect: true,
                     }).catch((err) => {
                       console.log(err);
                     });

@@ -189,6 +189,12 @@ export const baseApiSlice = createApi({
         body,
       }),
     }),
+    deleteInvite: builder.mutation({
+      query: (id) => ({
+        url: `invite/${id}`,
+        method: "DELETE",
+      }),
+    }),
     // get sent invites for a program
     getSentInvites: builder.query({
       query: (id) => `invite?orgId=${id}`,
@@ -379,4 +385,5 @@ export const {
   useGetEnrollmentStatusQuery,
   useGetTalentResultsQuery,
   useGetTalentResultsPostMutation,
+  useDeleteInviteMutation
 } = baseApiSlice;

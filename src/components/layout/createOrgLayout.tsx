@@ -92,7 +92,7 @@ export default function CreateOrganizationLayout({
               if (session) {
                 e.preventDefault();
                 signOut({
-                  callbackUrl: "/",
+                  callbackUrl: "/api/auth/logout",
                 });
               } else {
               }
