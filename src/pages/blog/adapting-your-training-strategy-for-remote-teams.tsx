@@ -15,7 +15,7 @@ export default function BlogView() {
             Adapting Your Training Strategy for Remote Teams
           </h1>
           <p className="text-base font-medium !leading-[1.6] tracking-wide text-gray-500">
-            Published on 20th January 2020
+            Published on 4th November 2023
           </p>
         </div>
         <div className="relative h-[400px] w-full rounded-xl">
