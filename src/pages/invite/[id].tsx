@@ -24,7 +24,6 @@ export default function InviteTalent({
 }: {
   data: invites & { user: User } & Organization;
 }) {
-
   const { data: session, status } = useSession();
 
   const router = useRouter();
@@ -83,7 +82,7 @@ export default function InviteTalent({
         // check if status code is 401, then signout user
         if (error.status === 401) {
           signOut({
-            callbackUrl: `http://localhost:3000/api/auth/logout`,
+            callbackUrl: `/api/auth/logout`,
             redirect: false,
           });
         }

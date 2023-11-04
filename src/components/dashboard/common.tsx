@@ -72,7 +72,7 @@ export function GoBack({ customText }: { customText?: string }) {
         if (customText === "Cancel") {
           signOut({
             redirect: true,
-            callbackUrl: `http://localhost:3000/api/auth/logout`,
+            callbackUrl: `/api/auth/logout`,
           });
         } else {
           router.back();

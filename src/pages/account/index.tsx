@@ -435,7 +435,7 @@ export default function Account() {
                           dispatch(setUserId(""));
                           dispatch(setUserProfile(undefined));
                           signOut({
-                            callbackUrl: `http://localhost:3000/api/auth/logout`,
+                            callbackUrl: `/api/auth/logout`,
                           });
                         }
                       }}
