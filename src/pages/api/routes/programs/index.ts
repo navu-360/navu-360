@@ -87,13 +87,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           orderBy: {
             createdAt: "desc",
           },
+          cacheStrategy: {
+            ttl: 60,
+            swr: 10,
+          },
         });
 
         return res
           .status(200)
           .json({ message: `Programs fetched.`, data: programs });
       } catch (error) {
-        console.log(error);
         return res
           .status(500)
           // @ts-ignore

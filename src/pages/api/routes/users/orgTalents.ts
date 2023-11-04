@@ -24,7 +24,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
       select: {
         id: true,
-      }
+      },
+      cacheStrategy: {
+        ttl: 60,
+        swr: 10,
+      },
     });
 
 
