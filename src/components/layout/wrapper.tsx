@@ -27,7 +27,7 @@ export default function LandingWrapper({
 
 export function Footer() {
   return (
-    <footer className="mt-0 w-full bg-dark mt-auto py-4 shadow">
+    <footer className="mt-auto w-full bg-dark py-4 shadow">
       <div className="mx-auto w-full max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
         <div className="flex items-center text-sm text-gray-300 sm:text-center">
           <Link href="/" className="relative flex items-center pl-4">
@@ -46,13 +46,18 @@ export function Footer() {
             </Link>
           </li>
           <li>
-            <Link href="#features" className="mr-4 hover:underline md:mr-6">
+            <Link href="#pricing" className="mr-4 hover:underline md:mr-6">
               Pricing
             </Link>
           </li>
           <li>
             <Link href="/privacy" className="mr-4 hover:underline md:mr-6 ">
               Privacy Policy
+            </Link>
+          </li>
+          <li>
+            <Link href="/blog" className="mr-4 hover:underline md:mr-6 ">
+              Blog
             </Link>
           </li>
           <li>

@@ -107,6 +107,7 @@ export default function NavBar() {
             </svg>
           </button>
           <OneLink to="#pricing" text="Pricing" />
+          <OneLink to="/blog" text="Blog" />
         </div>
         <div className="flex items-center md:order-2">
           {!session && (

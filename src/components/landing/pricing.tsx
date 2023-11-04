@@ -68,25 +68,25 @@ export default function Pricing({
   return (
     <section
       id="pricing"
-      className="mx-auto my-16 w-full px-5 py-10 text-gray-600"
+      className="mx-auto my-16 w-full px-4 py-10 text-gray-600"
     >
-      <div className="mx-auto max-w-7xl flex-col lg:flex xl:flex-row">
+      <div className="mx-auto max-w-7xl flex-col lg:flex">
         {!fromStart && (
-          <div className="lg:flex-col xl:flex xl:w-1/4">
-            <div className="w-full flex-grow text-center xl:pr-5 xl:text-left">
+          <div className="mb-8 lg:flex-col xl:flex xl:w-full">
+            <div className="w-full flex-grow text-center xl:pr-5">
               <h2
                 className={`textGradientTitles mb-5 text-4xl font-bold ${font.className}`}
               >
                 Pricing
               </h2>
               <p className="text-md mb-5 font-medium tracking-tight">
-                Unleash Talent, Unchain Productivity: Our Plans Make It Happen
+                Exceptional Training, Budget-Friendly Pricing
               </p>
             </div>
           </div>
         )}
         <div
-          className={`${fromStart ? "w-full" : "lg:w-full xl:w-3/4"} mr-auto`}
+          className={`${fromStart ? "w-full" : "lg:w-full xl:w-full"} mr-auto`}
         >
           <div className="mx-auto max-w-6xl lg:flex">
             <motion.div
@@ -94,7 +94,7 @@ export default function Pricing({
               whileInView={{ x: 0, scale: 1 }}
               transition={{ ease: "easeOut", duration: 0.5, delay: 0.1 }}
               viewport={{ amount: 0.9, once: true }}
-              className="shadowAroundFeature featureThreeGradient relative mx-auto mb-3 w-max min-w-[300px] rounded-md px-8 py-8 text-white lg:my-2 lg:flex lg:w-1/3 lg:max-w-none lg:flex-col lg:px-10 lg:py-10"
+              className="shadowAroundFeature featureThreeGradient relative mx-auto mb-3 w-max min-w-[250px] rounded-md px-4 py-8 text-white lg:my-2 lg:flex lg:w-1/3 lg:max-w-none lg:flex-col lg:px-4 lg:py-10"
             >
               <div className="w-full flex-grow">
                 <h3

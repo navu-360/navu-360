@@ -11,11 +11,11 @@ const font = Play({
 
 export default function Features() {
   return (
-    <section className="relative flex w-full lg:justify-around justify-center items-center bg-white py-8 pt-44 text-white lg:flex-row lg:flex-wrap xl:flex-nowrap flex-col lg:gap-8 gap-16 px-6">
+    <section className="relative flex w-full flex-col items-center justify-center gap-16 bg-white px-6 py-8 pt-44 text-white lg:flex-row lg:flex-wrap lg:justify-around lg:gap-8 xl:flex-nowrap">
       <h2
-        className={`textGradientTitles absolute lg:left-0 left-0 right-0 top-20 cursor-default text-3xl font-semibold ${font.className} text-center`}
+        className={`textGradientTitles absolute px-4 left-0 right-0 top-20 cursor-default text-3xl font-semibold lg:left-0 ${font.className} text-center`}
       >
-        Superior Features
+        Navu360: Where Training Gets a Modern Makeover
       </h2>
       <OneFeature
         svg={
@@ -34,8 +34,8 @@ export default function Features() {
             <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
           </svg>
         }
-        title="Create Rich Training Content"
-        description="Take the guesswork out of the onboarding and training process, providing a clear roadmap."
+        title="Elevate Your Talent Training"
+        description="Say goodbye to dull slides and outdated training methods. Empowers your team with!"
         delay={0}
       />
       <OneFeature
@@ -68,8 +68,8 @@ export default function Features() {
             <path d="m11 13.73-4 6.93"></path>
           </svg>
         }
-        title="Exceptional Learning Experience"
-        description="Support your new hires to be successful in their new role, and help them grow in their career."
+        title="Streamline Learning Management"
+        description="Simplify your training process. Save time and provide personalized learning experiences."
         delay={1}
       />
       <OneFeature
@@ -97,8 +97,8 @@ export default function Features() {
             <path d="M12.2 6.2 11 5"></path>
           </svg>
         }
-        title="Track TalentProgress"
-        description="We reduce the administrative workload associated with training talents"
+        title="Transform Training into Results"
+        description="turn your training into a strategic advantage. Unlock your team's full potential!"
         delay={2}
       />
     </section>

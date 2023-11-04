@@ -15,8 +15,8 @@ export default function Hero() {
           <p className="text-medium text-center text-base !leading-[150%] lg:text-left xl:text-lg 2xl:text-xl">
             Create, manage, and scale custom training programs effortlessly.{" "}
             <br className="hidden md:block" />
-            Our LMS platform makes talent management and employee training a
-            breeze!
+            Our LMS platform turns talent management and employee training into
+            an inspiring journey!
           </p>
           <Link
             href="/welcome/plan"

@@ -48,7 +48,7 @@ export default function CreateOrganizationLayout({
   const router = useRouter();
   return (
     <section className="no-scrollbar flex h-[100vh] w-screen overflow-x-hidden overflow-y-hidden">
-      <div className="relative hidden h-full w-[50%] bg-dark md:block">
+      <div className="relative hidden h-full w-[38%] bg-dark md:block">
         <div className="spotlight absolute left-0 right-0 top-0 z-10 mx-auto h-full w-[30vw]">
           <div className="">
             <div className="spotlight-one absolute -right-32 -top-48 h-[10vw] w-[10vw] rounded-full"></div>
@@ -62,10 +62,10 @@ export default function CreateOrganizationLayout({
             Step into the Future
             {session ? ", " + session?.user?.name.split(" ")[0] + "!" : ""}
           </h1>
-          <div className="bg-gradient-to-r from-white to-white to-50% bg-clip-text text-xl font-extrabold text-transparent [text-wrap:balance]">
+          <div className="bg-gradient-to-r from-white to-white to-50% bg-clip-text text-base font-extrabold text-transparent [text-wrap:balance]">
             Built for the modern workplace, built for{" "}
-            <span className="inline-flex h-[calc(theme(fontSize.xl)*theme(lineHeight.tight))] flex-col overflow-hidden text-secondary md:h-[calc(theme(fontSize.xl)*theme(lineHeight.tight))]">
-              <ul className="animate-text-slide-5 block text-left leading-tight [&_li]:block">
+            <span className="inline-flex h-[calc(theme(fontSize.base)*theme(lineHeight.tight))] flex-col overflow-hidden text-secondary md:h-[calc(theme(fontSize.base)*theme(lineHeight.tight))]">
+              <ul className="block animate-text-slide-5 text-left leading-tight [&_li]:block">
                 <li>Employee Training</li>
                 <li>Sales Training</li>
                 <li>Onboarding Training</li>
@@ -103,7 +103,7 @@ export default function CreateOrganizationLayout({
           <img src="/logo.svg" className="mr-3 h-6 sm:h-9" alt="Navu360" />
         </Link>
       </div>
-      <div className="relative flex h-auto w-full flex-col p-8 pt-4 md:w-[50%] md:pt-4">
+      <div className="no-scrollbar relative flex h-auto w-full flex-col overflow-y-auto p-8 px-4 pt-4 md:w-[62%] md:pt-4">
         <div className="relative">
           <GoBack customText="Cancel" />
         </div>
