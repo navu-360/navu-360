@@ -17,34 +17,47 @@ export default function FeaturesNavu() {
   const features = [
     {
       image:
-        "https://res.cloudinary.com/dpnbddror/image/upload/v1695740221/navu/6131317852b1cc37a92ece7d_Challenges_to_workplace_diversity_mkyerw.jpg",
-      title: "Custom-Tailored Onboarding",
-      description: `Ensure every new hire feels uniquely welcomed. Our platform allows you to craft distinct onboarding experiences, tuned to individual preferences and roles.`,
+        "https://res.cloudinary.com/dpnbddror/image/upload/v1699111496/navu/app/Screenshot_from_2023-11-04_18-13-09_hmrnrg_d25473.png",
+      title: "Create Courses with Ease",
+      description: `Effortlessly build engaging courses with Navu360's intuitive course creator. Add text, images, videos, and documents. Say goodbye to complex course authoring tools.`,
       gradientClass: "featureThreeGradient",
       reverse: false,
     },
     {
       image:
-        "https://res.cloudinary.com/dpnbddror/image/upload/v1695740268/navu/Interactive-Training-Tools_vqcbqb.jpg",
-      title: "Engaging Multimedia Learning",
-      description: `Turn training sessions into captivating experiences. With Navu360, employees aren't just passive listeners; they're active participants.`,
+        "https://res.cloudinary.com/dpnbddror/image/upload/v1699111614/navu/app/Screenshot_from_2023-11-04_18-12-14_py0k1h_50081d.png",
+      title: "Next-Gen Dashboards",
+      description: `Navigate your talent development journey seamlessly with Navu360's clean and user-friendly dashboard. Monitor progress, track results, and manage courses effortlessly.`,
       gradientClass: "featureThreeGradient",
       reverse: true,
     },
     {
       image:
-        "https://res.cloudinary.com/dpnbddror/image/upload/v1695740316/navu/1679913952058_bdst6u.jpg",
-      title: "Insightful Engagement Metrics",
-      description: `It's not just about training; it's about understanding its impact. With our advanced analytics, you can delve deep into how engaged your employees truly are.`,
+        "https://res.cloudinary.com/dpnbddror/image/upload/v1699111904/navu/app/Screenshot_from_2023-11-04_18-10-17_b153s9_6e2a22.png",
+      title: "Engage with Multimedia Learning",
+      description: `Keep your team engaged with videos, quizzes, and interactive modules. Deliver effective skill development while making learning enjoyable.`,
       gradientClass: "featureThreeGradient",
       reverse: false,
+    },
+    {
+      image:
+        "https://res.cloudinary.com/dpnbddror/image/upload/v1699111978/navu/app/Screenshot_from_2023-11-04_18-23-10_yeycey_5243d9.png",
+      title: "Courses Library",
+      description: `Streamline talent training with your library of pre-built chapters. Save time and ensure consistency in training.`,
+      gradientClass: "featureThreeGradient",
+      reverse: true,
     },
   ];
   return (
     <section
       id="features"
-      className="mt-16 flex w-full flex-col justify-center gap-8 px-6"
+      className="relative mt-16 flex w-full flex-col pt-16 justify-center gap-8 px-6"
     >
+      <h2
+        className={`textGradientTitles absolute left-0 right-0 -top-0 cursor-default text-3xl font-semibold lg:left-0 ${font.className} text-center`}
+      >
+        Empower Your Talent Training Journey
+      </h2>
       {features?.map((feature, i) => (
         <motion.div
           initial={{ y: 30, scale: 0.9 }}
@@ -61,12 +74,12 @@ export default function FeaturesNavu() {
               }`}
             >
               <div
-                className={`md:h-1/2 w-full shrink-0 grow-0 basis-auto md:mb-12 h-1/3 md:rounded-lg lg:mb-0 lg:h-full lg:w-5/12`}
+                className={`h-1/3 w-full shrink-0 grow-0 basis-auto md:mb-12 md:h-1/2 md:rounded-lg lg:mb-0 lg:h-full lg:w-5/12`}
               >
                 <div className="relative flex h-full w-full lg:py-12">
                   <Image
                     src={feature.image}
-                    className={`z-[10] w-full object-cover ${
+                    className={`z-[10] w-full object-cover object-left ${
                       feature.reverse ? "md:rounded-r-lg" : "md:rounded-l-lg"
                     }`}
                     alt={feature.title}
@@ -97,7 +110,7 @@ export default function FeaturesNavu() {
                     </p>
                     <Link
                       href="/welcome/plan"
-                      className="rounded-full border-2 border-neutral-50 px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-neutral-50 transition-all duration-300 ease-in hover:border-neutral-100 hover:bg-neutral-100 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 group-hover:px-10"
+                      className="rounded-full border-2 border-neutral-50 px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-neutral-50 transition-all duration-300 ease-in hover:border-neutral-100 hover:bg-neutral-100 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 hover:px-10"
                     >
                       Explore Now
                     </Link>
