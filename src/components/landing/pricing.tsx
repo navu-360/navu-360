@@ -68,7 +68,7 @@ export default function Pricing({
   return (
     <section
       id="pricing"
-      className="mx-auto my-16 w-full px-5 py-10 text-gray-600"
+      className="mx-auto my-16 w-full px-4 py-10 text-gray-600"
     >
       <div className="mx-auto max-w-7xl flex-col lg:flex">
         {!fromStart && (
@@ -94,7 +94,7 @@ export default function Pricing({
               whileInView={{ x: 0, scale: 1 }}
               transition={{ ease: "easeOut", duration: 0.5, delay: 0.1 }}
               viewport={{ amount: 0.9, once: true }}
-              className="shadowAroundFeature featureThreeGradient relative mx-auto mb-3 w-max min-w-[300px] rounded-md px-8 py-8 text-white lg:my-2 lg:flex lg:w-1/3 lg:max-w-none lg:flex-col lg:px-10 lg:py-10"
+              className="shadowAroundFeature featureThreeGradient relative mx-auto mb-3 w-max min-w-[250px] rounded-md px-4 py-8 text-white lg:my-2 lg:flex lg:w-1/3 lg:max-w-none lg:flex-col lg:px-4 lg:py-10"
             >
               <div className="w-full flex-grow">
                 <h3

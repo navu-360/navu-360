@@ -54,7 +54,7 @@ export default function FeaturesNavu() {
       className="relative mt-16 flex w-full flex-col pt-16 justify-center gap-8 px-6"
     >
       <h2
-        className={`textGradientTitles absolute left-0 right-0 -top-0 cursor-default text-3xl font-semibold lg:left-0 ${font.className} text-center`}
+        className={`textGradientTitles absolute left-0 right-0 -top-0 px-4 cursor-default text-3xl font-semibold lg:left-0 ${font.className} text-center`}
       >
         Empower Your Talent Training Journey
       </h2>
@@ -69,12 +69,12 @@ export default function FeaturesNavu() {
         >
           <section className="">
             <div
-              className={`shadowAroundFeature mx-auto flex h-[400px] w-full max-w-6xl flex-wrap justify-end rounded-lg lg:h-[350px] lg:w-auto ${
+              className={`shadowAroundFeature mx-auto flex h-[450px] w-full max-w-6xl flex-wrap justify-end rounded-lg lg:h-[350px] lg:w-auto ${
                 feature.reverse ? "flex-row-reverse" : "flex-row"
               }`}
             >
               <div
-                className={`h-1/3 w-full shrink-0 grow-0 basis-auto md:mb-12 md:h-1/2 md:rounded-lg lg:mb-0 lg:h-full lg:w-5/12`}
+                className={`h-1/2 w-full shrink-0 grow-0 basis-auto md:mb-12 md:h-1/2 md:rounded-lg lg:mb-0 lg:h-full lg:w-5/12`}
               >
                 <div className="relative flex h-full w-full lg:py-12">
                   <Image
@@ -88,7 +88,7 @@ export default function FeaturesNavu() {
                 </div>
               </div>
               <div
-                className={`h-2/3 w-full shrink-0 grow-0 basis-auto md:h-1/2 lg:h-full lg:w-7/12`}
+                className={`h-1/2 w-full shrink-0 grow-0 basis-auto md:h-1/2 lg:h-full lg:w-7/12`}
               >
                 <div
                   className={`flex h-full items-center py-10 pr-6 text-center text-white lg:text-left ${

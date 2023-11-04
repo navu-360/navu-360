@@ -13,7 +13,7 @@ export default function Features() {
   return (
     <section className="relative flex w-full flex-col items-center justify-center gap-16 bg-white px-6 py-8 pt-44 text-white lg:flex-row lg:flex-wrap lg:justify-around lg:gap-8 xl:flex-nowrap">
       <h2
-        className={`textGradientTitles absolute left-0 right-0 top-20 cursor-default text-3xl font-semibold lg:left-0 ${font.className} text-center`}
+        className={`textGradientTitles absolute px-4 left-0 right-0 top-20 cursor-default text-3xl font-semibold lg:left-0 ${font.className} text-center`}
       >
         Navu360: Where Training Gets a Modern Makeover
       </h2>
