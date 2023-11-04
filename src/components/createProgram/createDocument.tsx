@@ -175,7 +175,7 @@ export default function CreateDocumentChapter({
     <div
       className={`relative flex flex-col ${
         fromLibrary
-          ? "h-[calc(100vh_-_180px)] w-full gap-8 2xl:h-[calc(100vh_-_400px)] pl-4"
+          ? "h-[calc(100vh_-_180px)] w-full gap-8 2xl:h-[calc(100vh_-_480px)] pl-4"
           : "ml-auto h-[calc(100vh_-_310px)] w-[calc(100%_-_330px)] gap-8 2xl:h-[calc(100vh_-_400px)]"
       }`}
     >

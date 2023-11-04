@@ -147,7 +147,7 @@ export default function CreateLinkChapter({
     <div
       className={`relative flex flex-col justify-center ${
         fromLibrary
-          ? "h-[calc(100vh_-_180px)] w-full gap-8 pl-4 2xl:h-[calc(100vh_-_400px)]"
+          ? "h-[calc(100vh_-_180px)] w-full gap-8 pl-4 2xl:h-[calc(100vh_-_480px)]"
           : "ml-auto h-[calc(100vh_-_310px)] w-[calc(100%_-_330px)] gap-8 2xl:h-[calc(100vh_-_400px)]"
       }`}
     >

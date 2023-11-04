@@ -158,7 +158,7 @@ export default function CreateVideoChapter({
     <div
       className={`relative flex flex-col ${
         fromLibrary
-          ? "h-[calc(100vh_-_180px)] w-full gap-8 pl-4 2xl:h-[calc(100vh_-_300px)]"
+          ? "h-[calc(100vh_-_180px)] w-full gap-8 pl-4 2xl:h-[calc(100vh_-_480px)]"
           : "ml-auto h-[calc(100vh_-_310px)] w-[calc(100%_-_330px)] gap-8 2xl:h-[calc(100vh_-_400px)]"
       }`}
     >
@@ -169,7 +169,7 @@ export default function CreateVideoChapter({
           autoPlay
           controls
           loop
-          className={`h-full w-full rounded-lg bg-neutral-300 object-contain`}
+          className={`h-[calc(100%_-_100px)] w-full rounded-lg bg-neutral-300 object-contain`}
         >
           Your browser does not support the video tag.
           <source
