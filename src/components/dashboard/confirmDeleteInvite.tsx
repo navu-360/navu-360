@@ -46,7 +46,7 @@ export function DeleteinviteModal({
       >
         <div className="flex h-full flex-col justify-between">
           <div className="flex flex-col gap-8">
-            <h1 className="text-center text-xl font-bold text-[#243669]">
+            <h1 className="text-center text-xl font-bold capitalize text-[#243669]">
               Delete invite for {id}?
             </h1>
             <p className="text-center text-sm font-medium text-[#243669]">

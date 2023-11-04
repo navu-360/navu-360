@@ -68,7 +68,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     talentEmails.forEach(async (talentEmail: string) => {
       if (talentEmail === "") {
-        console.log("");
       } else {
         const inviteLink = await createInviteRecord(talentEmail);
         const msg = {
@@ -97,6 +96,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       message: `Talents have been invited to ${organizationName}`,
     });
   } catch (error) {
+    console.log(error);
     // @ts-ignore
     return res.status(400).json({ message: error.message });
   }

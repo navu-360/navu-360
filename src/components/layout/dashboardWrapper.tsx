@@ -8,7 +8,6 @@ import type { invites } from "@prisma/client";
 
 import { AnimatePresence } from "framer-motion";
 import { useSession } from "next-auth/react";
-import { GetPlan } from "components/dashboard/guides";
 
 export default function DashboardWrapper({
   children,
@@ -25,9 +24,10 @@ export default function DashboardWrapper({
     (state: { auth: { orgId: string } }) => state.auth.orgId,
   );
 
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   const id = orgId;
+
 
   const { data: sentInvites } = useGetSentInvitesQuery(id, {
     skip: !id || session?.user?.role === "talent",
@@ -40,14 +40,11 @@ export default function DashboardWrapper({
       }`}
     >
       {!hideNav && <AdminNav showInviteTalent={() => setShowModal(true)} />}
+
       <TopNavAdmin hideSearch={hideSearch} />
-      {status === "loading" || session?.user?.role === "talent" ? (
-        children
-      ) : session?.user?.customerId ? (
-        children
-      ) : (
-        <GetPlan />
-      )}
+
+      {children}
+
       <AnimatePresence>
         {showModal && (
           <InviteTalentsModal

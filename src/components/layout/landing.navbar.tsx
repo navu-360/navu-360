@@ -46,13 +46,16 @@ export default function NavBar() {
       ) {
         if (session?.user?.role === "admin") {
           router.push("/dashboard");
-        } else {
+        } else if (
+          session?.user?.role === "talent" &&
+          session?.user?.hasBeenOnboarded
+        ) {
           router.push("/learn");
         }
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session, home]);
+  }, [session, home, inviteId]);
 
   const [showSolutionsDropdown, setShowSolutionsDropdown] =
     useState<boolean>(false);

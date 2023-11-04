@@ -44,6 +44,7 @@ export default function InviteTalentsModal({
   );
 
   const invietHandler = async () => {
+    checkIfNotAllowed(emailOne);
     try {
       const body = {
         adminName: userProfile?.name,

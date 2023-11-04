@@ -24,11 +24,6 @@ export default function InviteTalent({
 }: {
   data: invites & { user: User } & Organization;
 }) {
-  const [baseUrl, setBaseUrl] = useState("");
-
-  useEffect(() => {
-    setBaseUrl(window.location.origin);
-  }, []);
 
   const { data: session, status } = useSession();
 
@@ -177,8 +172,8 @@ export default function InviteTalent({
                   type="button"
                   onClick={() => {
                     signIn("auth0", {
-                      callbackUrl: `https://${baseUrl}/invite/${id}`,
-                      redirect: false,
+                      callbackUrl: `/invite/${id}`,
+                      redirect: true,
                     }).catch((err) => {
                       console.log(err);
                     });
