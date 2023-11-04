@@ -452,7 +452,6 @@ export const getStaticPaths = async () => {
 
     return { paths, fallback: "blocking" };
   } catch (error) {
-    console.log(error, "error");
     Sentry.captureException(error);
     return { paths: [], fallback: "blocking" };
   }
@@ -475,8 +474,6 @@ export const getStaticProps = async ({
         props: {
           data: res.data.data,
         },
-        // revalidate every 24 hours
-        revalidate: 60 * 60 * 24,
       };
     }
 
@@ -486,7 +483,6 @@ export const getStaticProps = async ({
       },
     };
   } catch (error) {
-    console.log(error, "error");
     Sentry.captureException(error);
     // navigate to 404 page
     return {

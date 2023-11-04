@@ -26,6 +26,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
       where: {
         orgId: orgId,
+      }, cacheStrategy: {
+        ttl: 60,
+        swr: 10,
       },
     });
 

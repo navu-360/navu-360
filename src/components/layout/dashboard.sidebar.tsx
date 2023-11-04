@@ -3,6 +3,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
+import formbricks from "@formbricks/js";
+
 import { signOut, useSession } from "next-auth/react";
 import { useDispatch, useSelector } from "react-redux";
 import type { User } from "@prisma/client";
@@ -17,6 +19,14 @@ import {
   setAllEnrolledTalents,
   setAllLibraryChapters,
 } from "redux/common/commonSlice";
+
+if (typeof window !== "undefined") {
+  formbricks.init({
+    environmentId: "cloihp7rwh336q70fu50y2jku",
+    apiHost: "https://app.formbricks.com",
+    debug: process.env.VERCEL_ENV !== "production",
+  });
+}
 
 export default function AdminNav({
   showInviteTalent,
@@ -241,6 +251,29 @@ export default function AdminNav({
                 <circle cx="12" cy="12" r="4" />
               </svg>
             }
+            text={"Feedback"}
+            isActive={false}
+            to={"#"}
+            isFeedback
+          />
+          <OneItem
+            svg={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
+              >
+                <rect width="20" height="16" x="2" y="4" rx="2" />
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+              </svg>
+            }
             text={"Contact Us"}
             isActive={router.pathname === "/support"}
             to={"/account"}
@@ -305,6 +338,7 @@ function OneItem({
   to,
   isLogout,
   action,
+  isFeedback,
 }: {
   svg: React.ReactNode;
   text: string;
@@ -312,9 +346,19 @@ function OneItem({
   to: string;
   isLogout?: boolean;
   action?: () => void;
+  isFeedback?: boolean;
 }) {
   const dispatch = useDispatch();
-  return (
+  return isFeedback ? (
+    <button
+      id="feedback"
+      className={`group flex items-center gap-2 rounded-md px-4 py-4 font-medium transition-all duration-300 ease-in hover:bg-secondary/50 md:px-8 md:py-2 md:pl-2 ${
+        isActive ? "bg-secondary/20" : "bg-transparent"
+      }`}
+    >
+      {svg} <span className="hidden md:block">{text}</span>
+    </button>
+  ) : (
     <Link
       href={to}
       onClick={(e) => {
@@ -330,6 +374,10 @@ function OneItem({
             callbackUrl: `http://localhost:3000/api/auth/logout`,
             redirect: true,
           });
+        }
+        if (isFeedback) {
+          e.preventDefault();
+          action && action();
         }
         if (action) {
           e.preventDefault();

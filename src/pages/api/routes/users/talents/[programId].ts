@@ -23,6 +23,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       where: {
         programId,
       },
+      cacheStrategy: {
+        ttl: 60,
+        swr: 10,
+      },
     });
 
     return res.status(200).json({ message: `Talents found.`, data: talents });
