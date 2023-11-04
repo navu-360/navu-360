@@ -320,7 +320,7 @@ export function OneCourse({
             <path d="M13 18h8" />
           </svg>
         ),
-        type: "quizzes",
+        type: "quiz",
         count: quizzes,
       },
     ];

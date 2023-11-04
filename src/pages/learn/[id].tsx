@@ -26,6 +26,7 @@ import {
 } from "services/baseApiSlice";
 import toaster from "utils/toaster";
 import { useRouter } from "next/router";
+import { processDate } from "utils/date";
 
 export default function ViewEnrollment({
   data,
@@ -71,6 +72,17 @@ export default function ViewEnrollment({
     skip: !data?.OnboardingProgram?.id,
     refetchOnMountOrArgChange: true,
   });
+
+  const [completeChapters, setCompleteChapters] = useState<string[]>([]);
+
+  const addChapterToDone = (chapterId: string) => {
+    // check if chapter is already in completeChapters
+    if (completeChapters.includes(chapterId)) {
+      return;
+    }
+    // add chapter to completeChapters
+    setCompleteChapters([...completeChapters, chapterId]);
+  };
 
   const recordViewCourse = async () => {
     const body = {
@@ -241,6 +253,7 @@ export default function ViewEnrollment({
         enrollmentStatus?.data.viewedChapters ===
           data?.OnboardingProgram?.ProgramSection?.length,
       );
+      setCompleteChapters(enrollmentStatus?.data.viewedChapters ?? []);
       //setCurrentChapter - check current viewed chapters, find latest chapter, get its index, set current chapter to next chapter
       const latestViewed = data?.OnboardingProgram?.ProgramSection.find(
         (section) =>
@@ -279,6 +292,19 @@ export default function ViewEnrollment({
       setCourseDone(enrollmentStatus?.data.courseCompleted);
       // setQuizDone - if enrollmentStatus?.data.quizCompleted
       setQuizDone(enrollmentStatus?.data.quizCompleted);
+    }
+    if (enrollmentStatus?.data) {
+      if (completeChapters?.length === 0) {
+        setCompleteChapters(enrollmentStatus?.data.viewedChapters ?? []);
+      }
+      if (!courseDone) {
+        // setCourseDone - if enrollmentStatus?.data.courseCompleted
+        setCourseDone(enrollmentStatus?.data.courseCompleted);
+      }
+      if (!quizDone) {
+        // setQuizDone - if enrollmentStatus?.data.quizCompleted
+        setQuizDone(enrollmentStatus?.data.quizCompleted);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enrollmentStatus?.data, data?.OnboardingProgram, preview]);
@@ -322,7 +348,7 @@ export default function ViewEnrollment({
                       <h3 className="text-lg font-semibold text-tertiary">
                         Description
                       </h3>
-                      <p className="text-base font-medium text-gray-500">
+                      <p className="max-w-2xl text-base font-medium text-gray-500">
                         {data?.OnboardingProgram?.description}
                       </p>
                     </div>
@@ -338,9 +364,7 @@ export default function ViewEnrollment({
                               title={section?.name as string}
                               index={`0${index + 1}`}
                               done={
-                                enrollmentStatus?.data?.viewedChapters?.includes(
-                                  section.id,
-                                ) ?? false
+                                completeChapters?.includes(section.id) ?? false
                               }
                             />
                           ),
@@ -353,7 +377,7 @@ export default function ViewEnrollment({
                                 1}
                             </span>
                             <p className="w-[75%] text-sm">Course Quiz</p>
-                            {enrollmentStatus?.data.quizCompleted ? (
+                            {quizDone ? (
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"
@@ -619,6 +643,11 @@ export default function ViewEnrollment({
                           index + 1 >=
                           data?.OnboardingProgram?.ProgramSection?.length
                         ) {
+                          // set viewed the last one
+                          addChapterToDone(
+                            data?.OnboardingProgram?.ProgramSection?.[index]
+                              ?.id as string,
+                          );
                           if (
                             data?.OnboardingProgram?.QuizQuestion?.length === 0
                           ) {
@@ -641,7 +670,11 @@ export default function ViewEnrollment({
 
                           return;
                         }
-
+                        // set viewed the last one
+                        addChapterToDone(
+                          data?.OnboardingProgram?.ProgramSection?.[index]
+                            ?.id as string,
+                        );
                         // set current chapter to next chapter
                         setCurrentChapter(
                           data?.OnboardingProgram?.ProgramSection?.[index + 1],
@@ -663,7 +696,7 @@ export default function ViewEnrollment({
                 <div className="fixed bottom-5 right-4 top-[95px] z-50 flex h-auto w-[350px] flex-col gap-8 rounded-br-md rounded-tr-md border-l-[1px] border-gray-300 bg-gray-100 p-4 px-0">
                   <div className="flex flex-col gap-6 px-4 text-tertiary">
                     <h2 className="text-lg font-semibold">About the Course</h2>
-                    <div className="flex w-full items-center gap-1">
+                    <div className="flex w-full flex-col items-start gap-3">
                       <div className="flex items-center gap-4">
                         <img
                           src={generateAvatar(
@@ -681,6 +714,24 @@ export default function ViewEnrollment({
                           </span>
                         </div>
                       </div>
+                      <div className="flex items-center gap-2 px-2">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          className="h-6 w-6 text-gray-500"
+                        >
+                          <path d="M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM7.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM8.25 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM9.75 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM10.5 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM12.75 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM14.25 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 13.5a.75.75 0 100-1.5.75.75 0 000 1.5z" />
+                          <path
+                            fillRule="evenodd"
+                            d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zm13.5 9a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        <span className="text-xs font-medium text-gray-500">
+                          Created on {processDate(data.createdAt)}
+                        </span>
+                      </div>
                     </div>
                     <p className="text-base font-medium text-gray-500">
                       {data?.OnboardingProgram?.description}
@@ -696,10 +747,7 @@ export default function ViewEnrollment({
                         <div className="flex w-full justify-between gap-0">
                           <span>
                             {(
-                              ((enrollmentStatus?.data?.viewedChapters?.length +
-                                (enrollmentStatus?.data.quizCompleted
-                                  ? 1
-                                  : 0)) /
+                              ((completeChapters?.length + (quizDone ? 1 : 0)) /
                                 (data.OnboardingProgram.ProgramSection?.length +
                                   (data?.OnboardingProgram?.QuizQuestion
                                     ?.length > 0
@@ -710,9 +758,7 @@ export default function ViewEnrollment({
                             % Completed
                           </span>
                           <span>
-                            {enrollmentStatus?.data?.viewedChapters?.length +
-                              (enrollmentStatus?.data.quizCompleted ? 1 : 0)}
-                            /
+                            {completeChapters?.length + (quizDone ? 1 : 0)}/
                             {data.OnboardingProgram.ProgramSection?.length +
                               (data?.OnboardingProgram?.QuizQuestion?.length > 0
                                 ? 1
@@ -734,11 +780,8 @@ export default function ViewEnrollment({
                                 key={i}
                                 style={{
                                   width: `${
-                                    ((enrollmentStatus?.data?.viewedChapters
-                                      ?.length +
-                                      (enrollmentStatus?.data.quizCompleted
-                                        ? 1
-                                        : 0)) /
+                                    ((completeChapters?.length +
+                                      (quizDone ? 1 : 0)) /
                                       data.OnboardingProgram.ProgramSection
                                         ?.length +
                                       (data?.OnboardingProgram?.QuizQuestion
@@ -750,11 +793,7 @@ export default function ViewEnrollment({
                                 }}
                                 className={`h-2 rounded-3xl ${
                                   i <
-                                  enrollmentStatus?.data?.viewedChapters
-                                    ?.length +
-                                    (enrollmentStatus?.data.quizCompleted
-                                      ? 1
-                                      : 0)
+                                  completeChapters?.length + (quizDone ? 1 : 0)
                                     ? "bg-secondary"
                                     : "bg-secondary/20"
                                 }`}
@@ -769,9 +808,8 @@ export default function ViewEnrollment({
                                   title={section?.name as string}
                                   index={`0${index + 1}`}
                                   done={
-                                    enrollmentStatus?.data?.viewedChapters?.includes(
-                                      section.id,
-                                    ) ?? false
+                                    completeChapters?.includes(section.id) ??
+                                    false
                                   }
                                 />
                               ),
@@ -786,14 +824,14 @@ export default function ViewEnrollment({
                                 </span>
                                 <p
                                   className={`w-[75%] text-sm ${
-                                    enrollmentStatus?.data.quizCompleted
+                                    quizDone
                                       ? "text-gray-500 line-through"
                                       : "text-tertiary"
                                   }`}
                                 >
                                   Course Quiz
                                 </p>
-                                {enrollmentStatus?.data.quizCompleted ? (
+                                {quizDone ? (
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="24"
