@@ -27,6 +27,8 @@ import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
 import { NoInvitedTalents } from "./guides";
 import InviteTalentsModal from "./inviteTalents";
+import toaster from "utils/toaster";
+import { DeleteinviteModal } from "./confirmDeleteInvite";
 
 export default function AllTalents({
   sendTotalTalents,
@@ -178,6 +180,16 @@ export default function AllTalents({
     }
   };
 
+  const copyLink = (link: string) => {
+    navigator.clipboard.writeText(link);
+    toaster({
+      status: "success",
+      message: `Link copied!`,
+    });
+  };
+
+  const [showDeleteInvite, setShowDeleteInvite] = useState<string>("");
+
   if (isFetching || !orgId)
     return (
       <section className="w-full rounded-l p-2 lg:w-full">
@@ -230,6 +242,12 @@ export default function AllTalents({
                         </th>
                         <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                           Invite Date
+                        </th>
+                        <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                          Invite Link
+                        </th>
+                        <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                          Action
                         </th>
                       </tr>
                     )}
@@ -319,6 +337,12 @@ export default function AllTalents({
                         </th>
                         <th className="invite-date whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                           Invite Date
+                        </th>
+                        <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                          Invite Link
+                        </th>
+                        <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                          Action
                         </th>
                       </tr>
                     )}
@@ -419,6 +443,28 @@ export default function AllTalents({
                             <td className="invite-date whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
                               {processDate(talent?.createdAt)}
                             </td>
+                            <td className="invite-date whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
+                              <button
+                                onClick={() =>
+                                  copyLink(
+                                    `${window.location.origin}/invite/${talent.id}`,
+                                  )
+                                }
+                                className="text-blueGray-700 mb-2 block w-max rounded-xl border-[1px] border-secondary/50 bg-white px-4 py-2 text-sm font-semibold text-secondary transition-all duration-150 ease-in hover:bg-secondary hover:text-white md:px-12"
+                              >
+                                Copy Link
+                              </button>
+                            </td>
+                            <td className="invite-date whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
+                              <button
+                                onClick={() =>
+                                  setShowDeleteInvite(talent?.email)
+                                }
+                                className="text-blueGray-700 mb-2 block w-max rounded-xl border-[1px] border-secondary/50 bg-white px-4 py-2 text-sm font-semibold text-secondary transition-all duration-150 ease-in hover:bg-secondary hover:text-white md:px-12"
+                              >
+                                Delete Invite
+                              </button>
+                            </td>
                           </tr>
                         ),
                       )}
@@ -455,6 +501,19 @@ export default function AllTalents({
                 ? sentInvites?.data?.map((inv: invites) => inv?.email)
                 : []
             }
+          />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {showDeleteInvite?.length > 0 && (
+          <DeleteinviteModal
+            id={showDeleteInvite}
+            setShowConfirmModal={(val) => {
+              if (val) {
+                getInvites();
+              }
+              setShowDeleteInvite("");
+            }}
           />
         )}
       </AnimatePresence>
