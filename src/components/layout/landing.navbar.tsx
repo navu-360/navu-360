@@ -69,7 +69,7 @@ export default function NavBar() {
   }, [showSolutionsDropdown]);
 
   return (
-    <nav className="fixed left-0 top-0 z-20 h-[80px] w-full bg-dark py-2.5 sm:px-4">
+    <nav className="nav-blur fixed left-0 top-0 z-20 h-[80px] w-full bg-dark py-2 sm:px-4 sm:pb-0">
       <div className="mx-auto flex flex-wrap items-center justify-between md:mx-0">
         <Link href="/" className="relative flex flex-col items-start pl-4">
           <img src="/logo.svg" className="mr-3 h-6 sm:h-9" alt="Navu360" />

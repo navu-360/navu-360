@@ -753,3 +753,66 @@ strong {
     background: rgb(32, 33, 50);
     background: linear-gradient(39deg, rgba(32, 33, 50, 1) 0%, rgba(24, 25, 37, 1) 100%);
 }
+
+.card {
+    width: 100%;
+    height: 450px;
+    background: #fff;
+    border-radius: 1rem;
+    padding: 1rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.card-img-holder {
+    width: 100%;
+    height: 40%;
+    position: relative;
+}
+
+.card-img-holder img {
+    width: 100%;
+    height: auto;
+    max-height: 15rem;
+    object-fit: cover;
+    border-radius: 0.8rem;
+}
+
+.blog-title {
+    color: #374151;
+    padding: 1rem 0;
+    font-size: 1.5rem;
+}
+
+.description {
+    padding: 1rem 0;
+    font-size: 1rem;
+}
+
+.blog-time {
+    font-size: .8rem;
+    color: #374151;
+    font-weight: 500;
+}
+
+.options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1rem;
+}
+
+.options span {
+    font-weight: 500;
+    color: #374151;
+}
+
+.btn {
+    font-size: 1rem;
+    padding: .5rem 3rem;
+    border-radius: .8rem;
+    font-weight: 600;
+    background: #9d2a57;
+    color: #ffffff;
+    cursor: pointer;
+}
