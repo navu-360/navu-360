@@ -9,18 +9,20 @@ export default function BlogView() {
     <main className="flex h-screen min-h-screen w-full flex-col pt-[100px]">
       <Header
         title={`Gamification in Training: Leveling Up Your Talent Development`}
+        description="Explore how gamified learning experiences can boost employee engagement and improve retention of critical skills."
+        image="https://res.cloudinary.com/dpnbddror/image/upload/c_limit,w_400/v1699093082/navu/blog/lorenzo-herrera-p0j-mE6mGo4-unsplash_f8txsh.jpg"
       />
       <NavBar />
-      <section className="mx-auto flex w-full max-w-3xl flex-col gap-10 py-8 pb-16">
+      <section className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-8 py-8 pb-16">
         <div className="flex flex-col gap-2 text-center">
-          <h1 className="text-4xl font-bold leading-[1.2] tracking-tight text-tertiary">
+          <h1 className="text-2xl font-bold leading-[1.2] tracking-tight text-tertiary md:text-4xl">
             Gamification in Training: Leveling Up Your Talent Development
           </h1>
           <p className="text-base font-medium !leading-[1.6] tracking-wide text-gray-500">
             Published on 4th November 2023
           </p>
         </div>
-        <div className="relative h-[400px] w-full rounded-xl">
+        <div className="relative h-[200px] w-full rounded-xl md:h-[400px]">
           <Image
             src="https://res.cloudinary.com/dpnbddror/image/upload/v1699093082/navu/blog/lorenzo-herrera-p0j-mE6mGo4-unsplash_f8txsh.jpg"
             fill

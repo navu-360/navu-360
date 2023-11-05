@@ -7,18 +7,22 @@ import React from "react";
 export default function BlogView() {
   return (
     <main className="flex h-screen min-h-screen w-full flex-col pt-[100px]">
-      <Header title={`Adapting Your Training Strategy for Remote Teams`} />
+      <Header
+        title={`Adapting Your Training Strategy for Remote Teams`}
+        description="With remote work becoming the norm, find out how to adapt your training methods to support geographically dispersed teams effectively."
+        image="https://res.cloudinary.com/dpnbddror/image/upload/c_limit,w_400/v1699092206/navu/blog/blog4_ajanfo.jpg"
+      />
       <NavBar />
-      <section className="mx-auto flex w-full max-w-3xl flex-col gap-10 py-8 pb-16">
+      <section className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-8 py-8 pb-16">
         <div className="flex flex-col gap-2 text-center">
-          <h1 className="text-4xl font-bold leading-[1.2] tracking-tight text-tertiary">
+          <h1 className="text-2xl font-bold leading-[1.2] tracking-tight text-tertiary md:text-4xl">
             Adapting Your Training Strategy for Remote Teams
           </h1>
           <p className="text-base font-medium !leading-[1.6] tracking-wide text-gray-500">
             Published on 4th November 2023
           </p>
         </div>
-        <div className="relative h-[400px] w-full rounded-xl">
+        <div className="relative h-[200px] w-full rounded-xl md:h-[400px]">
           <Image
             src="https://res.cloudinary.com/dpnbddror/image/upload/v1699092206/navu/blog/blog4_ajanfo.jpg"
             fill

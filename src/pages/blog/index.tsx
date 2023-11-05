@@ -104,9 +104,13 @@ export default function Blog() {
   ];
   return (
     <main className="flex h-screen min-h-screen w-full flex-col pt-[100px]">
-      <Header title={`Navu360 Blog`} />
+      <Header
+        title={`Navu360 Blog`}
+        description="Get tips and advice on delivering exceptional talent training,
+            create effective courses, and building an effective workforce."
+      />
       <NavBar />
-      <section className="mx-auto flex w-full max-w-5xl flex-col gap-10 py-8 pb-16">
+      <section className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-4 py-8 pb-16">
         <div className="flex flex-col gap-2">
           <h1 className="text-5xl font-bold leading-[1.2] tracking-tight text-tertiary">
             Navu360 Blog
@@ -117,7 +121,7 @@ export default function Blog() {
           </p>
         </div>
 
-        <section className="grid w-full grid-cols-2 gap-8">
+        <section className="grid w-full grid-cols-1 gap-8 md:grid-cols-2">
           {blogs.map((blog) => (
             <OneBlogCard key={blog.id} {...blog} />
           ))}
@@ -159,7 +163,7 @@ function OneBlogCard({
         />
       </div>
       <h3 className="blog-title">{title}</h3>
-      <span className="blog-time">Monday Jan 20, 2020</span>
+      <span className="blog-time">Saturday 4th November, 2023</span>
       <p className="description text-slate-500">{description}</p>
       <div className="options">
         <span>Read Full Blog</span>
