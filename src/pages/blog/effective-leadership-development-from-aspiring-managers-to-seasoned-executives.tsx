@@ -9,11 +9,13 @@ export default function BlogView() {
     <main className="flex h-screen min-h-screen w-full flex-col pt-[100px]">
       <Header
         title={`Effective Leadership Development: From Aspiring Managers to Seasoned Executives`}
+        description="Uncover the key principles of developing leaders at all levels, ensuring your organization has a robust leadership pipeline"
+        image="https://res.cloudinary.com/dpnbddror/image/upload/c_limit,w_400/v1699092208/navu/blog/blog8_wn8gsm.jpg"
       />
       <NavBar />
-      <section className="mx-auto flex w-full max-w-3xl flex-col gap-10 py-8 pb-16">
+      <section className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-8 py-8 pb-16">
         <div className="flex flex-col gap-2 text-center">
-          <h1 className="text-4xl font-bold leading-[1.2] tracking-tight text-tertiary">
+          <h1 className="text-2xl font-bold leading-[1.2] tracking-tight text-tertiary md:text-4xl">
             Effective Leadership Development: From Aspiring Managers to Seasoned
             Executives
           </h1>
@@ -21,7 +23,7 @@ export default function BlogView() {
             Published on 4th November 2023
           </p>
         </div>
-        <div className="relative h-[400px] w-full rounded-xl">
+        <div className="relative h-[200px] w-full rounded-xl md:h-[400px]">
           <Image
             src="https://res.cloudinary.com/dpnbddror/image/upload/v1699092208/navu/blog/blog8_wn8gsm.jpg"
             fill
