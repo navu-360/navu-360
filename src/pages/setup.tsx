@@ -136,6 +136,17 @@ export default function Setup() {
     plan: getPlanIdFromName(sub as string),
     firstname: session?.user.name?.split(" ")[0],
     lastname: session?.user.name?.split(" ")[1],
+    // free trial for sub===starter, of 14 days. Today + 14 days
+    // @ts-ignore
+    start_date:
+      sub === "starter"
+        ? new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString()
+        : undefined,
+    // @ts-ignore
+    start:
+      sub === "starter"
+        ? new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString()
+        : undefined,
   };
 
   const textToCapitalize = (text: string) => {
