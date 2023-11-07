@@ -54,7 +54,7 @@ export default function LearnCenter() {
 
   // get all enrolled programs
   const talentId = userProfile?.id;
-  const { data, isFetching } = useGetTalentEnrollmentsQuery(talentId, {
+  const { currentData: data, isFetching } = useGetTalentEnrollmentsQuery(talentId, {
     skip: !talentId,
     refetchOnMountOrArgChange: true,
   });
