@@ -8,10 +8,10 @@ import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 
 import {
-  useChangePlanMutation,
   useGetCustomerTranscationsQuery,
   useGetOneOrganizationQuery,
   useGetUserPayStackDetailsQuery,
+  useInitializeTranscationMutation,
   useUpdateOrgMutation,
   useUpdateUserMutation,
 } from "services/baseApiSlice";
@@ -21,10 +21,12 @@ import { useDispatch } from "react-redux";
 import { setUserId, setUserProfile } from "redux/auth/authSlice";
 import toaster from "utils/toaster";
 import { processDate } from "utils/date";
-import { getPlanIdFromName, getPlanNameFromAmount } from "pages/setup";
+import { getPlanNameFromAmount } from "pages/setup";
 import Pricing from "components/landing/pricing";
 import { thousandSeparator } from "utils/num-utils";
 import { setDraftProgramId } from "redux/common/commonSlice";
+import { useRouter } from "next/router";
+import { UpgradeSuccess } from "components/dashboard/guides";
 
 export default function Account() {
   const [activeTab, setActiveTab] = useState("account");
@@ -34,6 +36,9 @@ export default function Account() {
   );
 
   const dispatch = useDispatch();
+  const router = useRouter();
+
+  const { upgraded } = router.query;
 
   const { data: session } = useSession();
 
@@ -506,6 +511,13 @@ export default function Account() {
             }}
           />
         )}
+        {upgraded && (
+          <UpgradeSuccess
+            showSelectTemplate={() => {
+              router.push("/account");
+            }}
+          />
+        )}
       </DashboardWrapper>
     </>
   );
@@ -686,30 +698,33 @@ function Billing({
   );
 }
 
-function ChangePlan({
+export function ChangePlan({
   close,
   currentPlanName,
 }: {
   close: () => void;
   currentPlanName: string;
 }) {
-  const [changePlanAction, { isLoading }] = useChangePlanMutation();
+  const [waitingForCheckout, setWaitingForCheckout] = useState(false);
+  const [initializePayment, { isLoading }] = useInitializeTranscationMutation();
 
   const changePlan = async (plan: string) => {
-    const planSub = getPlanIdFromName(plan.toLowerCase());
-    await changePlanAction(planSub)
+    setWaitingForCheckout(true);
+    const body = {
+      sub: plan,
+    };
+    initializePayment(body)
       .unwrap()
-      .then(() => {
-        toaster({
-          status: "success",
-          message: "You have successfully changed your plan",
-        });
+      .then((payload) => {
+        window.location.href = payload?.data?.authorization_url;
+        setWaitingForCheckout(false);
         close();
       })
       .catch((error) => {
+        setWaitingForCheckout(false);
         toaster({
           status: "error",
-          message: error.data.message,
+          message: error.message,
         });
       });
   };
@@ -738,10 +753,9 @@ function ChangePlan({
         </svg>
         <section className="flex h-full w-full flex-col items-center">
           <Pricing
-            fromStart
             currentPlan={currentPlanName}
             changeTo={(plan: string) => changePlan(plan)}
-            isLoading={isLoading}
+            isLoading={waitingForCheckout || isLoading}
           />
         </section>
       </motion.div>

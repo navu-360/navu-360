@@ -79,7 +79,7 @@ export default function Pricing({
               <h2
                 className={`textGradientTitles mb-5 text-4xl font-bold ${font.className}`}
               >
-                Pricing
+                Choose a Plan
               </h2>
               <p className="text-md mb-5 font-medium tracking-tight">
                 Exceptional Training, Budget-Friendly Pricing
@@ -198,7 +198,7 @@ export default function Pricing({
                       ? currentPlan
                         ? upgradeOrDowngradeText("starter")
                         : "Continue"
-                      : "Start for Free"}
+                      : "Continue"}
                   </button>
                 )}
               </div>
@@ -310,7 +310,7 @@ export default function Pricing({
                       ? currentPlan
                         ? upgradeOrDowngradeText("regular")
                         : "Continue"
-                      : "Start for Free"}
+                      : "Continue"}
                   </button>
                 )}
               </div>
@@ -422,7 +422,7 @@ export default function Pricing({
                       ? currentPlan
                         ? upgradeOrDowngradeText("pro")
                         : "Continue"
-                      : "Start for Free"}
+                      : "Continue"}
                   </button>
                 )}
               </div>

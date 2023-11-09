@@ -25,7 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         plan: getPlanIdFromName(sub as string),
         firstname: session?.user.name?.split(" ")[0],
         lastname: session?.user.name?.split(" ")[1],
-        callback_url: `${process.env.NEXTAUTH_URL}/setup?sub=${sub}`,
+        callback_url: `${process.env.NEXTAUTH_URL}/account?upgraded=true`,
         // start_date: now + 14 days, free trial
         start_date: new Date(fourteenDaysLater).toISOString(),
     })
@@ -53,8 +53,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
             if (responseData.status) {
                 const transactionData = responseData.data;
-                console.log(transactionData);
-
                 res.status(200).json({ message: 'Customer details fetched', data: transactionData });
             } else {
                 res.status(404).json({ message: 'Could not get customer details' });

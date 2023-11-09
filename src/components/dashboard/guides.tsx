@@ -1,11 +1,14 @@
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { motion } from "framer-motion";
 import Pricing from "components/landing/pricing";
 import { useSession } from "next-auth/react";
 import { useSelector } from "react-redux";
 import type { Organization } from "@prisma/client";
+import { useRouter } from "next/router";
+import { useVerifyReferenceQuery } from "services/baseApiSlice";
+import toaster from "utils/toaster";
 
 export function NoCourses({
   showSelectTemplate,
@@ -40,6 +43,73 @@ export function NoCourses({
         <span>Continue</span>
       </button>
     </motion.section>
+  );
+}
+
+export function UpgradeSuccess({
+  showSelectTemplate,
+}: {
+  showSelectTemplate: () => void;
+}) {
+  const router = useRouter();
+  const { reference } = router.query;
+  const { isFetching, error } = useVerifyReferenceQuery(reference as string, {
+    skip: !reference,
+  });
+
+  useEffect(() => {
+    if (error) {
+      toaster({
+        status: "error",
+        message: "We could not verify your payment. Please try again",
+      });
+    }
+  }, [error]);
+
+  return (
+    <div className="fixed inset-0 z-[120] flex h-full w-full items-center justify-center  bg-black/50 backdrop-blur-sm">
+      <motion.section
+        initial={{ y: 30 }}
+        whileInView={{ y: 0 }}
+        transition={{ ease: "easeIn", duration: 0.3 }}
+        className="m-auto flex max-w-4xl flex-col justify-center gap-6 rounded-3xl bg-gray-200 p-4 px-8 text-center"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="#686868"
+          onClick={() => close()}
+          className="absolute right-2 top-2 h-12 w-12"
+        >
+          <path
+            fillRule="evenodd"
+            d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z"
+            clipRule="evenodd"
+          />
+        </svg>
+        <Image
+          src={"/ebook.svg"}
+          alt="Create a new Course"
+          height={120}
+          width={120}
+          className="mx-auto"
+        />
+        <h2 className="text-2xl font-bold text-tertiary">
+          Plan Activated Successfully!
+        </h2>
+        <p className="mx-auto max-w-[75%] text-base font-medium text-gray-500">
+          You have successfully activated your plan. You can manage and view
+          your billing information on the settings page.
+        </p>
+        <button
+          disabled={isFetching}
+          onClick={() => showSelectTemplate()}
+          className="z-50 mx-auto flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white transition-all duration-150 ease-in hover:bg-[#651b38] focus:outline-none focus:ring-4"
+        >
+          <span>Continue</span>
+        </button>
+      </motion.section>
+    </div>
   );
 }
 

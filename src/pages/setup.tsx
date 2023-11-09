@@ -32,7 +32,7 @@ export const getAmountFromPlan = (planName: string) => {
     case "pro":
       return Number(process.env.NEXT_PUBLIC_PLAN_PRO_PRICE!);
     default:
-      return Number(process.env.NEXT_PUBLIC_PLAN_STARTER_PRICE!);
+      return 0;
   }
 };
 
@@ -45,7 +45,7 @@ export const getPlanNameFromAmount = (amount: number) => {
     case Number(process.env.NEXT_PUBLIC_PLAN_PRO_PRICE!):
       return "pro";
     default:
-      return "starter";
+      return "Free";
   }
 };
 
@@ -58,7 +58,7 @@ export const getMaxTalentCountFromAmount = (amount: number) => {
     case Number(process.env.NEXT_PUBLIC_PLAN_PRO_PRICE!):
       return 200;
     default:
-      return 10;
+      return 3;
   }
 };
 
@@ -71,7 +71,7 @@ export const getPlanIdFromName = (planName: string) => {
     case "pro":
       return process.env.NEXT_PUBLIC_PLAN_PRO;
     default:
-      return process.env.NEXT_PUBLIC_PLAN_STARTER;
+      return "free";
   }
 };
 
