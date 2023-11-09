@@ -4,6 +4,8 @@ import React from "react";
 import { motion } from "framer-motion";
 import Pricing from "components/landing/pricing";
 import { useSession } from "next-auth/react";
+import { useSelector } from "react-redux";
+import type { Organization } from "@prisma/client";
 
 export function NoCourses({
   showSelectTemplate,
@@ -28,12 +30,58 @@ export function NoCourses({
         Create Your First Course
       </h2>
       <p className="mx-auto max-w-[75%] text-base font-medium text-gray-500">
-        Welcome to Navu360. You can easily create a new course from scratch or
-        use one of our templates.
+        Create a new course using our intuitive course creator. You can create
+        chapters fortext, images, videos, and documents.
       </p>
       <button
         onClick={() => showSelectTemplate()}
         className="z-50 mx-auto flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white transition-all duration-150 ease-in hover:bg-[#651b38] focus:outline-none focus:ring-4"
+      >
+        <span>Continue</span>
+      </button>
+    </motion.section>
+  );
+}
+
+export function WelcomeGuide({
+  awesome,
+  loading,
+}: {
+  awesome: () => void;
+  loading: boolean;
+}) {
+  const { data: session } = useSession();
+  const organizationData = useSelector(
+    (state: { auth: { organizationData: Organization } }) =>
+      state.auth.organizationData,
+  );
+  return (
+    <motion.section
+      initial={{ y: 30 }}
+      whileInView={{ y: 0 }}
+      transition={{ ease: "easeIn", duration: 0.3 }}
+      className="m-auto flex max-w-4xl flex-col justify-center gap-6 rounded-3xl bg-gray-200 p-4 px-8 text-center"
+    >
+      <Image
+        src={"/ebook.svg"}
+        alt="Create a new Course"
+        height={120}
+        width={120}
+        className="mx-auto"
+      />
+      <h2 className="text-2xl font-bold text-tertiary">Welcome to Navu360!</h2>
+      <p className="mx-auto max-w-[75%] text-base font-medium text-gray-500">
+        Hi {session?.user?.name} 👋 <br />
+        We&apos;re excited to have you onboard Navu360, a platform committed to
+        redefining the way talent is trained in {organizationData?.name}. <br />
+        <br />
+        You&apos;re currently using our generous free plan. You can upgrade to a
+        paid plan at any time. <br />
+      </p>
+      <button
+        disabled={loading}
+        onClick={() => awesome()}
+        className="z-50 mx-auto flex h-max min-h-[45px] w-max min-w-[200px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white transition-all duration-150 ease-in hover:bg-[#651b38] focus:outline-none focus:ring-4"
       >
         <span>Continue</span>
       </button>

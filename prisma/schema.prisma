@@ -48,6 +48,7 @@ model User {
   role                      String?
   talentOrgId               String?
   customerId                String?
+  seenWelcomeGuide          Boolean?                   @default(false)
   hasBeenOnboarded          Boolean?                   @default(false)
   accounts                  Account[]
   sessions                  Session[]

@@ -2,12 +2,13 @@
 import type { Organization, User } from "@prisma/client";
 import Header from "components/common/head";
 import SearchResults from "components/common/searchResults";
-import { NoCourses } from "components/dashboard/guides";
+import { NoCourses, WelcomeGuide } from "components/dashboard/guides";
 import Programs from "components/dashboard/programs.table";
 import SelectTemplate from "components/dashboard/selectTemplate";
 import AllTalents from "components/dashboard/talents.table";
 import DashboardWrapper from "components/layout/dashboardWrapper";
 import { AnimatePresence } from "framer-motion";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,7 +18,9 @@ import {
   useGetOneOrganizationQuery,
   useGetOrganizationEnrollmentsQuery,
   useGetOrganizationProgramsQuery,
+  useUpdateUserMutation,
 } from "services/baseApiSlice";
+import toaster from "utils/toaster";
 
 export default function Dashboard() {
   const userProfile = useSelector(
@@ -108,6 +111,27 @@ export default function Dashboard() {
     return uniqueEnrolledTalents;
   };
 
+  const { data: session, update } = useSession();
+
+  const [updateUser, { isLoading }] = useUpdateUserMutation();
+
+  const hasSeenGuide = async () => {
+    const body = {
+      seenWelcomeGuide: true,
+    };
+    await updateUser(body)
+      .unwrap()
+      .then(() => {
+        update();
+      })
+      .catch((error) => {
+        toaster({
+          status: "error",
+          message: error.message,
+        });
+      });
+  };
+
   if (!isReady) return null;
 
   return (
@@ -116,135 +140,151 @@ export default function Dashboard() {
       <DashboardWrapper>
         {searchQuery?.length === 0 ? (
           <>
-            <div className="relative ml-[90px] mr-4 mt-[2rem] flex justify-between text-tertiary md:ml-[230px]">
-              <h1 className="text-2xl font-bold">
-                Hi, {userProfile?.name?.split(" ")[0] ?? ""}
-              </h1>
-              <button
-                disabled={isFetching}
-                onClick={() => router.push("/create/program")}
-                className={`z-50 flex h-max min-h-[45px] w-max min-w-[150px] shrink-0 items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white transition-all duration-150 ease-in hover:bg-secondary/90 focus:outline-none focus:ring-4 ${
-                  programs?.data?.length > 0 || isFetching ? "" : "hidden"
-                }`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  className="lucide lucide-plus-circle"
-                >
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M8 12h8" />
-                  <path d="M12 8v8" />
-                </svg>
+            {!session?.user?.seenWelcomeGuide && (
+              <WelcomeGuide
+                awesome={() => {
+                  hasSeenGuide();
+                }}
+                loading={isLoading}
+              />
+            )}
+            {session?.user?.seenWelcomeGuide && (
+              <>
+                <div className="relative ml-[90px] mr-4 mt-[2rem] flex justify-between text-tertiary md:ml-[230px]">
+                  <h1 className="text-2xl font-bold">
+                    Hi, {userProfile?.name?.split(" ")[0] ?? ""}
+                  </h1>
+                  <button
+                    disabled={isFetching}
+                    onClick={() => router.push("/create/program")}
+                    className={`z-50 flex h-max min-h-[45px] w-max min-w-[150px] shrink-0 items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white transition-all duration-150 ease-in hover:bg-secondary/90 focus:outline-none focus:ring-4 ${
+                      programs?.data?.length > 0 || isFetching ? "" : "hidden"
+                    }`}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      className="lucide lucide-plus-circle"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="M8 12h8" />
+                      <path d="M12 8v8" />
+                    </svg>
 
-                <span className="w-max">Create Course</span>
-              </button>
-            </div>
-            <div className="relative ml-[90px] mr-4 mt-[3rem] flex justify-between text-tertiary md:ml-[230px]">
-              <section className="flex w-[70%] flex-col">
-                <div className="mt-0 grid w-full grid-cols-3 gap-4 lg:justify-between lg:gap-4 2xl:mt-0">
-                  <OneStat
-                    svg={
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="52"
-                        height="52"
-                        className="h-6 w-6 md:h-12 md:w-12"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="9" cy="7" r="4"></circle>
-                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                      </svg>
-                    }
-                    text={`Total Talents`}
-                    num={getEnrolledTalentsFromEnrollments()?.length ?? 0}
-                    roundLastCard={programs?.data?.length === 0}
-                  />
-                  <OneStat
-                    text={`Total Courses`}
-                    svg={
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="52"
-                        height="52"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        className="h-6 w-6 md:h-12 md:w-12"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="m16 6 4 14"></path>
-                        <path d="M12 6v14"></path>
-                        <path d="M8 8v12"></path>
-                        <path d="M4 4v16"></path>
-                      </svg>
-                    }
-                    num={countOfPrograms}
-                    roundLastCard={programs?.data?.length === 0}
-                  />
-                  <OneStat
-                    text={`Total Enrollments`}
-                    svg={
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        className="h-6 w-6 md:h-12 md:w-12"
-                      >
-                        <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
-                        <path d="m9 12 2 2 4-4" />
-                      </svg>
-                    }
-                    num={enrollments?.data?.length ?? 0}
-                    roundLastCard={programs?.data?.length === 0}
+                    <span className="w-max">Create Course</span>
+                  </button>
+                </div>
+                <div className="relative ml-[90px] mr-4 mt-[3rem] flex justify-between text-tertiary md:ml-[230px]">
+                  <section className="flex w-[70%] flex-col">
+                    <div className="mt-0 grid w-full grid-cols-3 gap-4 lg:justify-between lg:gap-4 2xl:mt-0">
+                      <OneStat
+                        svg={
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="52"
+                            height="52"
+                            className="h-6 w-6 md:h-12 md:w-12"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                          </svg>
+                        }
+                        text={`Total Talents`}
+                        num={getEnrolledTalentsFromEnrollments()?.length ?? 0}
+                        roundLastCard={programs?.data?.length === 0}
+                      />
+                      <OneStat
+                        text={`Total Courses`}
+                        svg={
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="52"
+                            height="52"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            className="h-6 w-6 md:h-12 md:w-12"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="m16 6 4 14"></path>
+                            <path d="M12 6v14"></path>
+                            <path d="M8 8v12"></path>
+                            <path d="M4 4v16"></path>
+                          </svg>
+                        }
+                        num={countOfPrograms}
+                        roundLastCard={programs?.data?.length === 0}
+                      />
+                      <OneStat
+                        text={`Total Enrollments`}
+                        svg={
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            className="h-6 w-6 md:h-12 md:w-12"
+                          >
+                            <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                            <path d="m9 12 2 2 4-4" />
+                          </svg>
+                        }
+                        num={enrollments?.data?.length ?? 0}
+                        roundLastCard={programs?.data?.length === 0}
+                      />
+                    </div>
+                    <section className="mt-8 flex min-h-[65vh] w-full flex-col justify-between gap-2 lg:flex-row">
+                      {(programs?.data?.length > 0 ||
+                        (isFetching && !programs)) && (
+                        <AllTalents
+                          sendTotalTalents={() => console.log("")}
+                          setTotalOnboarded={() => console.log("")}
+                          onboardingPrograms={programs?.data}
+                        />
+                      )}
+
+                      {session?.user?.seenWelcomeGuide &&
+                        programs?.data?.length === 0 &&
+                        !isFetching && (
+                          <NoCourses
+                            showSelectTemplate={() =>
+                              setShowSelectTemplate(true)
+                            }
+                          />
+                        )}
+                    </section>
+                  </section>
+
+                  <Programs
+                    data={programs?.data}
+                    isFetching={isFetching}
+                    showSelectTemplate={() => setShowSelectTemplate(true)}
                   />
                 </div>
-                <section className="mt-8 flex min-h-[65vh] w-full flex-col justify-between gap-2 lg:flex-row">
-                  {(programs?.data?.length > 0 ||
-                    (isFetching && !programs)) && (
-                    <AllTalents
-                      sendTotalTalents={() => console.log("")}
-                      setTotalOnboarded={() => console.log("")}
-                      onboardingPrograms={programs?.data}
-                    />
-                  )}
-
-                  {programs?.data?.length === 0 && !isFetching && (
-                    <NoCourses
-                      showSelectTemplate={() => setShowSelectTemplate(true)}
-                    />
-                  )}
-                </section>
-              </section>
-
-              <Programs
-                data={programs?.data}
-                isFetching={isFetching}
-                showSelectTemplate={() => setShowSelectTemplate(true)}
-              />
-            </div>
+              </>
+            )}
           </>
         ) : (
           <SearchResults />

@@ -33,6 +33,7 @@ declare module "next-auth" {
       position: string;
       customerId: string;
       talentOrgId: string;
+      seenWelcomeGuide: boolean;
     } & DefaultSession["user"];
   }
 
@@ -46,6 +47,7 @@ declare module "next-auth" {
     position?: string;
     customerId?: string;
     talentOrgId?: string;
+    seenWelcomeGuide?: boolean;
   }
 }
 
@@ -70,6 +72,7 @@ export const authOptions: NextAuthOptions = {
         session.user.position = userObj?.position ?? "";
         session.user.customerId = userObj?.customerId ?? "";
         session.user.talentOrgId = userObj?.talentOrgId ?? "";
+        session.user.seenWelcomeGuide = userObj?.seenWelcomeGuide ?? false;
       }
 
       return session;

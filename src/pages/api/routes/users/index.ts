@@ -52,11 +52,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           image: toEdit,
           position,
           role,
+          seenWelcomeGuide
         } = req.body as {
           image: string;
           publicId: string;
           position: string;
           role: string;
+          seenWelcomeGuide: boolean;
         };
 
         const userToEdit = await prisma.user.update({
@@ -67,6 +69,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             image: toEdit,
             position,
             role,
+            seenWelcomeGuide
           },
         });
 
