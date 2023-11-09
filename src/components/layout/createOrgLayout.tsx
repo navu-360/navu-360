@@ -115,17 +115,21 @@ export default function CreateOrganizationLayout({
         {children}
         {!fromStart && (
           <div
-            className={`mt-8 flex w-full items-end justify-center px-0 md:px-8 md:pl-0 lg:justify-start`}
+            className={`mt-8 flex w-full flex-col items-start justify-start px-0 md:px-8 md:pl-0 lg:justify-start`}
           >
             <button
               disabled={loading}
               onClick={() => {
                 goToNext(role, companyDetails!);
               }}
-              className="w-full rounded-md bg-secondary px-12 py-2 text-base font-semibold text-white md:w-[400px]"
+              className="w-full rounded-md bg-secondary px-12 py-2 text-base font-semibold capitalize text-white md:w-[400px]"
             >
-              {loading ? "Loading..." : "Continue"}
+              {loading ? "Loading..." : "Activate my account"}
             </button>
+            <p className="mt-2 w-full text-start text-sm font-medium italic text-gray-400">
+              You will be redirected to a secure payment page to start your
+              subscription
+            </p>
           </div>
         )}
       </div>

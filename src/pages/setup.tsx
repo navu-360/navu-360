@@ -131,16 +131,6 @@ export default function Setup() {
     return text.charAt(0).toUpperCase() + text.slice(1);
   };
 
-  // // @ts-ignore
-  // const initializePayment: (
-  //   onSuccess: (e: { status: string; reference: string }) => void,
-  //   onClose: () => void,
-  // ) => void = usePaystackPayment(config);
-
-  // const subAction = async () => {
-  //   initializePayment(onSuccess, onClose);
-  // };
-
   const [updateUser, { isLoading }] = useUpdateUserMutation();
   const [createOrg, { isLoading: CreatingOrg }] =
     useCreateOrganizationMutation();
@@ -192,6 +182,8 @@ export default function Setup() {
       .unwrap()
       .then((payload) => {
         dispatch(setOrgId(payload?.data?.id));
+        router.push("/dashboard");
+        return;
         // @ts-ignore
         if (details?.status !== 100) {
           setWaitingForCheckout(true);
@@ -201,7 +193,6 @@ export default function Setup() {
           initializePayment(body)
             .unwrap()
             .then((payload) => {
-              console.log(payload?.data);
               window.location.href = payload?.data?.authorization_url;
               setWaitingForCheckout(false);
             })

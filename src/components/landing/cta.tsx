@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { signIn } from "next-auth/react";
 
 export default function Cta() {
   return (
@@ -19,12 +19,16 @@ export default function Cta() {
                 <h2 className="mb-12 cursor-default text-3xl font-bold leading-tight tracking-tight md:text-5xl">
                   Is your team&apos;s success worth the leap?
                 </h2>
-                <Link
-                  href="/welcome/plan"
+                <button
+                  onClick={() =>
+                    signIn("auth0", {
+                      callbackUrl: `${window.location.origin}/setup`,
+                    })
+                  }
                   className="rounded-3xl border-2  border-neutral-50 px-[46px] pb-[12px] pt-[14px] text-sm font-semibold uppercase leading-normal text-neutral-50 transition-all duration-300 ease-in hover:border-neutral-100 hover:bg-neutral-100 hover:bg-opacity-10 hover:px-[52px] hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200"
                 >
-                  Get started
-                </Link>
+                  Start for Free
+                </button>
               </div>
             </div>
             I

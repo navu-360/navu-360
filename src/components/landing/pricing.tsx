@@ -40,7 +40,9 @@ export default function Pricing({
           });
         }
       } else {
-        router.push(`/welcome/plan`);
+        signIn("auth0", {
+          callbackUrl: `${window.location.origin}/setup?sub=${plan}`,
+        });
       }
     }
   };
@@ -196,7 +198,7 @@ export default function Pricing({
                       ? currentPlan
                         ? upgradeOrDowngradeText("starter")
                         : "Continue"
-                      : "Get Started"}
+                      : "Start for Free"}
                   </button>
                 )}
               </div>
@@ -308,7 +310,7 @@ export default function Pricing({
                       ? currentPlan
                         ? upgradeOrDowngradeText("regular")
                         : "Continue"
-                      : "Get Started"}
+                      : "Start for Free"}
                   </button>
                 )}
               </div>
@@ -420,7 +422,7 @@ export default function Pricing({
                       ? currentPlan
                         ? upgradeOrDowngradeText("pro")
                         : "Continue"
-                      : "Get Started"}
+                      : "Start for Free"}
                   </button>
                 )}
               </div>

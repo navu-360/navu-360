@@ -23,7 +23,7 @@ export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
   useEffect(() => {
     if (session) {
       if (router.pathname === "/" && !session?.user?.hasBeenOnboarded) {
-        router.push("/welcome/plan");
+        router.push("/setup");
       } else if (
         router.pathname === "/setup" &&
         session?.user?.hasBeenOnboarded

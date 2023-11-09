@@ -32,7 +32,7 @@ export default function NavBar() {
         if (inviteId) {
           router.push("/invite/" + inviteId);
         } else {
-          router.push("/welcome/plan");
+          router.push("/setup");
         }
       } else if (
         router.pathname === "/setup" &&
@@ -125,12 +125,18 @@ export default function NavBar() {
               Login
             </button>
           )}
-          <Link
-            href={session ? "/dashboard" : "/welcome/plan"}
-            className="hidden h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white transition-all duration-300 ease-in hover:bg-secondary hover:bg-secondary/90 focus:outline-none focus:ring-1 md:mr-0 md:flex"
+          <button
+            onClick={() =>
+              !session
+                ? signIn("auth0", {
+                    callbackUrl: `${window.location.origin}/setup`,
+                  })
+                : router.push("/dashboard")
+            }
+            className="hidden h-max min-h-[45px] w-max min-w-[150px] items-center justify-center rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold capitalize text-white transition-all duration-300 ease-in hover:bg-secondary hover:bg-secondary/90 focus:outline-none focus:ring-1 md:mr-0 md:flex"
           >
-            {session ? "Dashboard" : "Get started"}
-          </Link>
+            {session ? "Dashboard" : "Start for Free"}
+          </button>
         </div>
       </div>
 
