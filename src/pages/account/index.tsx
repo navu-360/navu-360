@@ -553,7 +553,7 @@ export default function Account() {
                             type="text"
                             name="domain-name"
                             required
-                            placeholder={`e.g ${prefillDomainName()}.navu360.com`}
+                            placeholder={`e.g ${prefillDomainName()}`}
                             value={domain}
                             onChange={(e) => {
                               setDomain(

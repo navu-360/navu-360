@@ -61,6 +61,8 @@ export default function Pricing({
           : `Upgrade to ${textToCapitalize(toPlanName)}`;
       case "pro":
         return `Upgrade to ${textToCapitalize(toPlanName)}`;
+      case "free":
+        return `Upgrade to ${textToCapitalize(toPlanName)}`;
 
       default:
         return `Upgrade to ${textToCapitalize(toPlanName)}`;
