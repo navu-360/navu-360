@@ -202,7 +202,7 @@ export default function AdminNav({
               to={"/talents"}
             />
           )}
-          {userProfile?.role === "admin" && session?.user?.customerId && (
+          {userProfile?.role === "admin" && (
             <OneItem
               svg={
                 <svg
