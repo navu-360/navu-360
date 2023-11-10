@@ -517,38 +517,45 @@ export default function Account() {
                         >
                           Domain Name
                         </label>
-                        {domain?.length > 0 && (
-                          <p className="mt-2 flex items-center gap-1 text-sm font-medium text-gray-400">
-                            You custom domain{" "}
-                            {orgData?.organization?.domain ? "is" : "will be"}{" "}
-                            <a
-                              href={`https://${
+                        {domain?.length > 0 &&
+                          !orgData?.organization?.domain && (
+                            <p className="mt-2 flex items-center gap-1 text-sm font-medium text-gray-400">
+                              You custom domain{" "}
+                              {orgData?.organization?.domain ? "is" : "will be"}{" "}
+                              <a
+                                href={`https://${
+                                  orgData?.organization?.domain ?? domain
+                                }.navu360.com`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="font-semibold text-blue-500 underline"
+                              >{`https://${
                                 orgData?.organization?.domain ?? domain
-                              }.navu360.com`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="font-semibold text-blue-500 underline"
-                            >{`https://${
-                              orgData?.organization?.domain ?? domain
-                            }.navu360.com`}</a>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="2"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              className="lucide lucide-arrow-up-right-square h-4 w-4 text-blue-500"
-                            >
-                              <rect width="18" height="18" x="3" y="3" rx="2" />
-                              <path d="M8 8h8v8" />
-                              <path d="m8 16 8-8" />
-                            </svg>
-                          </p>
-                        )}
+                              }.navu360.com`}</a>
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                className="lucide lucide-arrow-up-right-square h-4 w-4 text-blue-500"
+                              >
+                                <rect
+                                  width="18"
+                                  height="18"
+                                  x="3"
+                                  y="3"
+                                  rx="2"
+                                />
+                                <path d="M8 8h8v8" />
+                                <path d="m8 16 8-8" />
+                              </svg>
+                            </p>
+                          )}
                         <div className="mt-2">
                           <input
                             id="domain-name"
