@@ -37,10 +37,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           },
           select: {
             id: true,
+            freeTrialCoursesIds: true
           }
         });
 
         if (!organization) return res.status(404).json({ message: `Organization not found.` });
+
+        // check if user is on free plan, then check if they reached limit of 3 trial courses
+        if (!session?.user?.customerId && organization?.freeTrialCoursesIds?.length === 3) {
+          return res.status(402).json({ message: `You have reached the limit of 3 trial courses. Please upgrade to a paid plan to enjoy unlimited courses.` });
+        }
 
         const program = await prisma.onboardingProgram.create({
           data: {
@@ -52,6 +58,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             description
           },
         });
+
+        // if user is on free plan, we add courseID to freeTrialCoursesIds on org
+        if (!session?.user?.customerId) {
+          await prisma.organization.update({
+            where: {
+              id: organization.id,
+            },
+            data: {
+              freeTrialCoursesIds: {
+                push: program.id
+              }
+            }
+          })
+        }
 
         return res
           .status(200)

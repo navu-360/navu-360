@@ -3,20 +3,18 @@ import AdminCompanyDetails from "components/createOrganization/admin.step";
 import LandingWrapper from "components/layout/wrapper";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setOrgId } from "redux/auth/authSlice";
 import {
   useCreateOrganizationMutation,
   useGetUserPayStackDetailsQuery,
+  useInitializeTranscationMutation,
   useSendWelcomeEmailMutation,
   useUpdateUserMutation,
-  useVerifyPaymentMutation,
+  useVerifyReferenceQuery,
 } from "services/baseApiSlice";
-import toast from "utils/toaster";
 
-import { usePaystackPayment } from "react-paystack";
-import type { PaystackProps } from "react-paystack/dist/types";
 import toaster from "utils/toaster";
 
 export interface CompanyDetails {
@@ -25,7 +23,7 @@ export interface CompanyDetails {
   noOfEmployees: string;
 }
 
-const getAmountFromPlan = (planName: string) => {
+export const getAmountFromPlan = (planName: string) => {
   switch (planName) {
     case "starter":
       return Number(process.env.NEXT_PUBLIC_PLAN_STARTER_PRICE!);
@@ -34,7 +32,7 @@ const getAmountFromPlan = (planName: string) => {
     case "pro":
       return Number(process.env.NEXT_PUBLIC_PLAN_PRO_PRICE!);
     default:
-      return Number(process.env.NEXT_PUBLIC_PLAN_STARTER_PRICE!);
+      return 0;
   }
 };
 
@@ -47,7 +45,7 @@ export const getPlanNameFromAmount = (amount: number) => {
     case Number(process.env.NEXT_PUBLIC_PLAN_PRO_PRICE!):
       return "pro";
     default:
-      return "starter";
+      return "Free";
   }
 };
 
@@ -60,7 +58,7 @@ export const getMaxTalentCountFromAmount = (amount: number) => {
     case Number(process.env.NEXT_PUBLIC_PLAN_PRO_PRICE!):
       return 200;
     default:
-      return 10;
+      return 3;
   }
 };
 
@@ -73,7 +71,7 @@ export const getPlanIdFromName = (planName: string) => {
     case "pro":
       return process.env.NEXT_PUBLIC_PLAN_PRO;
     default:
-      return process.env.NEXT_PUBLIC_PLAN_STARTER;
+      return "free";
   }
 };
 
@@ -81,7 +79,31 @@ export default function Setup() {
   const { data: session } = useSession();
 
   const router = useRouter();
-  const { sub } = router.query;
+  const { sub, reference } = router.query;
+  const { data, error, isFetching } = useVerifyReferenceQuery(
+    reference as string,
+    {
+      skip: !reference,
+    },
+  );
+
+  const [waitingForCheckout, setWaitingForCheckout] = React.useState(false);
+
+  useEffect(() => {
+    if (data) {
+      proceedAfterVerify();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
+  useEffect(() => {
+    if (error) {
+      toaster({
+        status: "error",
+        message: "We could not verify your payment. Please try again",
+      });
+    }
+  }, [error]);
 
   const email = session?.user.email as string;
 
@@ -89,77 +111,24 @@ export default function Setup() {
     skip: !email,
   });
 
-  const [verify, { isLoading: verifying }] = useVerifyPaymentMutation();
+  const [initializePayment] = useInitializeTranscationMutation();
   const [sendWelcomeEmail, { isLoading: sendingEmail }] =
     useSendWelcomeEmailMutation();
 
-  const verifyAction = async (reference: string) => {
-    const body = {
-      reference,
-      email: session?.user.email as string,
-    };
-    await verify(body)
-      .unwrap()
-      .then(() => {
-        sendWelcomeEmail(undefined)
-          .unwrap()
-          .then(() => {
-            toaster({
-              status: "success",
-              message:
-                "Organization created and successfully subscribed to " +
-                textToCapitalize((sub as string) ?? "Starter") +
-                " plan",
-            });
-            router.push("/dashboard");
-          })
-          .catch((error) => {
-            toast({
-              status: "error",
-              message: error?.data?.message,
-            });
-          });
-      })
-      .catch((error) => {
-        toast({
-          status: "error",
-          message: error?.data?.message,
-        });
-      });
-  };
-
-  // billing
-  const config: PaystackProps = {
-    email: session?.user.email as string,
-    amount: getAmountFromPlan(sub as string),
-    publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY as string,
-    plan: getPlanIdFromName(sub as string),
-    firstname: session?.user.name?.split(" ")[0],
-    lastname: session?.user.name?.split(" ")[1],
+  const proceedAfterVerify = async () => {
+    await sendWelcomeEmail(email);
+    toaster({
+      status: "success",
+      message:
+        "Organization created and successfully subscribed to " +
+        textToCapitalize((sub as string) ?? "Starter") +
+        " plan",
+    });
+    router.push("/dashboard");
   };
 
   const textToCapitalize = (text: string) => {
     return text.charAt(0).toUpperCase() + text.slice(1);
-  };
-
-  const onSuccess = (e: { status: string; reference: string }) => {
-    if (e.status === "success") {
-      verifyAction(e.reference);
-    }
-  };
-
-  const onClose = () => {
-    console.log("");
-  };
-
-  // @ts-ignore
-  const initializePayment: (
-    onSuccess: (e: { status: string; reference: string }) => void,
-    onClose: () => void,
-  ) => void = usePaystackPayment(config);
-
-  const subAction = async () => {
-    initializePayment(onSuccess, onClose);
   };
 
   const [updateUser, { isLoading }] = useUpdateUserMutation();
@@ -175,7 +144,7 @@ export default function Setup() {
     },
   ) => {
     if (!role || role === "") {
-      toast({
+      toaster({
         status: "error",
         message: "Please provide your role",
       });
@@ -186,7 +155,7 @@ export default function Setup() {
       companyDetails.industry === "" ||
       companyDetails.noOfEmployees === ""
     ) {
-      toast({
+      toaster({
         status: "error",
         message: "Please fill all fields",
       });
@@ -213,15 +182,33 @@ export default function Setup() {
       .unwrap()
       .then((payload) => {
         dispatch(setOrgId(payload?.data?.id));
+        router.push("/dashboard");
+        return;
         // @ts-ignore
-        if (details?.status === 404) {
-          subAction();
+        if (details?.status !== 100) {
+          setWaitingForCheckout(true);
+          const body = {
+            sub,
+          };
+          initializePayment(body)
+            .unwrap()
+            .then((payload) => {
+              window.location.href = payload?.data?.authorization_url;
+              setWaitingForCheckout(false);
+            })
+            .catch((error) => {
+              setWaitingForCheckout(false);
+              toaster({
+                status: "error",
+                message: error.message,
+              });
+            });
         } else {
           router.push("/dashboard");
         }
       })
       .catch((error) => {
-        toast({
+        toaster({
           status: "error",
           message: error.message,
         });
@@ -236,7 +223,13 @@ export default function Setup() {
           goToNext={(role: string, companyDetails: CompanyDetails) =>
             updateUserDetails(role, companyDetails)
           }
-          loading={isLoading || CreatingOrg || verifying || sendingEmail}
+          loading={
+            isLoading ||
+            CreatingOrg ||
+            isFetching ||
+            sendingEmail ||
+            waitingForCheckout
+          }
         />
       </LandingWrapper>
     </>
@@ -256,14 +249,14 @@ export default function Setup() {
             console.log();
           })
           .catch((error) => {
-            toast({
+            toaster({
               status: "error",
               message: error.message,
             });
           });
       })
       .catch((error) => {
-        toast({
+        toaster({
           status: "error",
           message: error.message,
         });

@@ -40,8 +40,16 @@ export function ProgramDetails({
       label: "Design",
     },
     {
-      value: "customer-success",
-      label: "Customer Success",
+      value: "customer-service",
+      label: "Customer Service",
+    },
+    {
+      value: "product",
+      label: "Product Development",
+    },
+    {
+      value: "research",
+      label: "Research",
     },
     {
       value: "human-resources",
@@ -112,8 +120,8 @@ export function ProgramDetails({
   }, [editingProgram]);
 
   return (
-    <form className="flex h-full flex-col gap-8 overflow-y-auto">
-      <div className="flex flex-col gap-2">
+    <form className="flex h-full flex-col gap-12 overflow-y-auto">
+      <div className="relative flex flex-col gap-2">
         <label htmlFor="role">Course Name</label>
         <input
           type="text"
@@ -128,8 +136,11 @@ export function ProgramDetails({
           className="common-input program-create-form text-sm"
           required
         />
+        <span className="absolute -bottom-6 left-0 text-sm font-medium text-gray-400">
+          {name?.length}/70
+        </span>
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="relative flex flex-col gap-2">
         <label htmlFor="role">Course Description</label>
         <textarea
           name="desc"
@@ -142,6 +153,9 @@ export function ProgramDetails({
           className="common-input program-create-form !h-[100px] text-sm"
           placeholder="e.g This Course is for sales team to learn how to sell our products"
         />
+        <span className="absolute -bottom-6 left-0 text-sm font-medium text-gray-400">
+          {description?.length}/200
+        </span>
       </div>
       <div className="flex max-w-[600px] flex-col gap-2">
         <label>Course Categories</label>
@@ -149,7 +163,6 @@ export function ProgramDetails({
           closeMenuOnSelect={false}
           components={animatedComponents}
           isMulti
-          required
           options={departments}
           placeholder="Select categories..."
           value={selectedDepartments}

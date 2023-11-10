@@ -89,7 +89,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const makeRequest = async (options: RequestOptions, params: string | undefined): Promise<any> => {
+export const makeRequest = async (options: RequestOptions, params: string | undefined): Promise<any> => {
     return new Promise((resolve, reject) => {
         const req = https.request(options, res => {
             let data = '';

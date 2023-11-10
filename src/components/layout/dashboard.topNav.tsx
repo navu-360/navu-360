@@ -3,6 +3,7 @@
 import type { OnboardingProgram, ProgramSection, User } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { ChangePlan } from "pages/account";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserProfile } from "redux/auth/authSlice";
@@ -23,7 +24,7 @@ export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
   useEffect(() => {
     if (session) {
       if (router.pathname === "/" && !session?.user?.hasBeenOnboarded) {
-        router.push("/welcome/plan");
+        router.push("/setup");
       } else if (
         router.pathname === "/setup" &&
         session?.user?.hasBeenOnboarded
@@ -115,7 +116,7 @@ export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
       {!hideSearch && (
         <form
           onSubmit={(e) => e.preventDefault()}
-          className="relative ml-[15%] mr-auto h-[40px] w-[50%] rounded-md border-[1px] border-gray-300 px-4 py-1 2xl:w-[50%]"
+          className="relative ml-[15%] mr-auto h-[40px] w-[50%] rounded-md border-[1px] border-gray-300 px-4 py-1 2xl:w-[40%]"
         >
           <input
             type="text"
@@ -135,15 +136,14 @@ export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
           />
         </form>
       )}
+
       <AdminCard />
     </header>
   );
 }
 
 function AdminCard() {
-  const { data: session } = useSession();
-
-  const router = useRouter();
+  const { data: session, update, status } = useSession();
 
   const dispatch = useDispatch();
 
@@ -160,13 +160,43 @@ function AdminCard() {
     setIsReady(true);
   }, []);
 
+  const router = useRouter();
+
+  useEffect(() => {
+    update();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.pathname]);
+
+  const [showChangePlan, setShowChangePlan] = useState(false);
+
   if (!isReady) return null;
 
   return (
-    <div
-      onClick={() => router.push("/account")}
-      className="right-4 top-2 flex cursor-pointer items-center gap-2 pt-0 transition-all duration-300 ease-in md:fixed"
-    >
+    <div className="right-4 top-2 flex cursor-pointer items-center gap-2 pt-0 transition-all duration-300 ease-in md:fixed">
+      {status !== "loading" && !session?.user?.customerId && (
+        <button
+          onClick={() => {
+            setShowChangePlan(true);
+          }}
+          className="mr-8 flex h-max w-max items-center justify-center gap-2 rounded-3xl bg-secondary px-12 py-2 text-base font-semibold text-white"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            className="lucide lucide-sparkle"
+          >
+            <path d="m12 3-1.9 5.8a2 2 0 0 1-1.287 1.288L3 12l5.8 1.9a2 2 0 0 1 1.288 1.287L12 21l1.9-5.8a2 2 0 0 1 1.287-1.288L21 12l-5.8-1.9a2 2 0 0 1-1.288-1.287Z" />
+          </svg>
+          Upgrade Plan
+        </button>
+      )}
       <div className="relative flex h-[50px] w-[50px] items-center justify-center rounded-full">
         {session?.user?.id ? (
           <img
@@ -193,6 +223,15 @@ function AdminCard() {
           <div className="h-[20px] w-[150px] animate-pulse bg-gray-300"></div>
           <div className="h-[10px] w-[100px] animate-pulse bg-gray-300"></div>
         </div>
+      )}
+
+      {showChangePlan && (
+        <ChangePlan
+          currentPlanName={"Free"}
+          close={() => {
+            setShowChangePlan(false);
+          }}
+        />
       )}
     </div>
   );

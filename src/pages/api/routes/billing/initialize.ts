@@ -3,32 +3,43 @@ import https from 'https';
 
 import { getServerSession } from "next-auth";
 import { authOptions } from 'auth/auth';
+import { getAmountFromPlan, getPlanIdFromName } from 'pages/setup';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+
     const session = await getServerSession(req, res, authOptions);
     if (!session) {
         res.status(401).json({ message: `Unauthorized.` });
         return;
     }
 
-    const customerId = session.user.customerId;
+    const { sub } = req.body;
 
-    if (!customerId) {
-        res.status(400).json({ message: `Failed. You do not have subscriptions` });
-        return;
-    }
+    const now = new Date().getTime();
+    const fourteenDaysLater = now + 14 * 24 * 60 * 60 * 1000;
 
+    const params = JSON.stringify({
+        email: session?.user.email as string,
+        amount: getAmountFromPlan(sub as string),
+        publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY as string,
+        plan: getPlanIdFromName(sub as string),
+        firstname: session?.user.name?.split(" ")[0],
+        lastname: session?.user.name?.split(" ")[1],
+        callback_url: `${process.env.NEXTAUTH_URL}/account?upgraded=true`,
+        // start_date: now + 14 days, free trial
+        start_date: new Date(fourteenDaysLater).toISOString(),
+    })
 
     const options = {
         hostname: 'api.paystack.co',
         port: 443,
-        path: `/transaction?customer=${customerId}`,
-        method: 'GET',
+        path: '/transaction/initialize',
+        method: 'POST',
         headers: {
             Authorization: 'Bearer ' + process.env.PAYSTACK_SECRET_KEY,
             'Content-Type': 'application/json'
         }
-    };
+    }
 
     const paystackReq = https.request(options, (resp) => {
         let data = '';
@@ -42,22 +53,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
             if (responseData.status) {
                 const transactionData = responseData.data;
-
-                // fields to return id: string; amount: number; currency: string; paid_at: string; status: string;
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const formattedTransactionData = transactionData.map((transaction: any) => {
-                    return {
-                        id: transaction.id,
-                        amount: transaction.amount,
-                        currency: transaction.currency,
-                        paid_at: transaction.paid_at,
-                        status: transaction.status
-                    };
-                });
-
-                res.status(200).json({ message: 'Customer transcations fetched', data: formattedTransactionData.filter((x: typeof formattedTransactionData[0]) => x.paid_at) });
+                res.status(200).json({ message: 'Customer details fetched', data: transactionData });
             } else {
-                res.status(400).json({ message: 'Could not get customer transcations' });
+                res.status(404).json({ message: 'Could not get customer details' });
             }
         });
     });
@@ -66,7 +64,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         res.status(500).json({ message: error.message });
     });
 
-    paystackReq.end();
+    paystackReq.write(params)
+    paystackReq.end()
 };
 
 export default handler;
+
+

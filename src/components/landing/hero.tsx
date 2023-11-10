@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 
-import Link from "next/link";
+import { signIn } from "next-auth/react";
 
 export default function Hero() {
   return (
@@ -18,12 +18,16 @@ export default function Hero() {
             Our LMS platform turns talent management and employee training into
             an inspiring journey!
           </p>
-          <Link
-            href="/welcome/plan"
-            className="h-max w-max rounded-[2rem] bg-secondary px-24 py-3 text-center text-lg font-bold text-white transition-all duration-300 ease-in hover:bg-secondary hover:px-28 focus:outline-none focus:ring-4 focus:ring-blue-300"
+          <button
+            onClick={() =>
+              signIn("auth0", {
+                callbackUrl: `${window.location.origin}/setup`,
+              })
+            }
+            className="h-max w-max rounded-[2rem] bg-secondary px-24 py-3 text-center text-lg font-bold capitalize text-white transition-all duration-300 ease-in hover:bg-secondary hover:px-28 focus:outline-none focus:ring-4 focus:ring-blue-300"
           >
-            Get Started Now
-          </Link>
+            Start for Free
+          </button>
         </div>
         <div className="max-w-1/2 relative z-10 mt-[120px] h-[20vw] min-h-[200px] w-[80vw] lg:-ml-[100px] lg:h-[400px] xl:-ml-[130px] 2xl:h-[600px]">
           <Image

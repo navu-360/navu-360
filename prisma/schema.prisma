@@ -48,6 +48,7 @@ model User {
   role                      String?
   talentOrgId               String?
   customerId                String?
+  seenWelcomeGuide          Boolean?                   @default(false)
   hasBeenOnboarded          Boolean?                   @default(false)
   accounts                  Account[]
   sessions                  Session[]
@@ -69,6 +70,7 @@ model Organization {
   noOfEmployees            String
   industry                 String
   website                  String?
+  freeTrialCoursesIds      String[]                  @default([])
   user                     User                       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId                   String                     @unique
   onboardingProgs          OnboardingProgram[]

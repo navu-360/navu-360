@@ -268,6 +268,22 @@ export const baseApiSlice = createApi({
         body,
       }),
     }),
+    verifyReference: builder.query({
+      query: (reference) => ({
+        url: `billing/verify`,
+        method: "POST",
+        body: {
+          reference,
+        },
+      }),
+    }),
+    initializeTranscation: builder.mutation({
+      query: (body) => ({
+        url: `billing/initialize`,
+        method: "POST",
+        body,
+      }),
+    }),
     getCustomerSubscription: builder.query({
       query: (body) => ({
         url: `billing/customer`,
@@ -385,5 +401,7 @@ export const {
   useGetEnrollmentStatusQuery,
   useGetTalentResultsQuery,
   useGetTalentResultsPostMutation,
-  useDeleteInviteMutation
+  useDeleteInviteMutation,
+  useInitializeTranscationMutation,
+  useVerifyReferenceQuery
 } = baseApiSlice;

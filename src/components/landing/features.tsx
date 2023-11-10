@@ -5,7 +5,7 @@ import React from "react";
 import { motion } from "framer-motion";
 
 import { Play } from "next/font/google";
-import Link from "next/link";
+import { signIn } from "next-auth/react";
 
 const font = Play({
   weight: ["700"],
@@ -51,10 +51,10 @@ export default function FeaturesNavu() {
   return (
     <section
       id="features"
-      className="relative mt-16 flex w-full flex-col pt-16 justify-center gap-8 px-6"
+      className="relative mt-16 flex w-full flex-col justify-center gap-8 px-6 pt-16"
     >
       <h2
-        className={`textGradientTitles absolute left-0 right-0 -top-0 px-4 cursor-default text-3xl font-semibold lg:left-0 ${font.className} text-center`}
+        className={`textGradientTitles absolute -top-0 left-0 right-0 cursor-default px-4 text-3xl font-semibold lg:left-0 ${font.className} text-center`}
       >
         Empower Your Talent Training Journey
       </h2>
@@ -108,12 +108,16 @@ export default function FeaturesNavu() {
                     <p className="mb-6 pb-2 text-sm md:text-base lg:pb-0">
                       {feature.description}
                     </p>
-                    <Link
-                      href="/welcome/plan"
-                      className="rounded-full border-2 border-neutral-50 px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-neutral-50 transition-all duration-300 ease-in hover:border-neutral-100 hover:bg-neutral-100 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 hover:px-10"
+                    <button
+                      onClick={() =>
+                        signIn("auth0", {
+                          callbackUrl: `${window.location.origin}/setup`,
+                        })
+                      }
+                      className="rounded-full border-2 border-neutral-50 px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-neutral-50 transition-all duration-300 ease-in hover:border-neutral-100 hover:bg-neutral-100 hover:bg-opacity-10 hover:px-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200"
                     >
-                      Explore Now
-                    </Link>
+                      Start for Free
+                    </button>
                   </div>
                 </div>
               </div>
