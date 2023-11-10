@@ -53,6 +53,7 @@ export const baseApiSlice = createApi({
     }),
     getOneOrganization: builder.query({
       query: () => `organization/me`,
+      keepUnusedDataFor: 0,
     }),
     updateOrg: builder.mutation({
       query: (body) => ({
@@ -351,6 +352,20 @@ export const baseApiSlice = createApi({
         body,
       }),
     }),
+    addCustomDomain: builder.mutation({
+      query: (body) => ({
+        url: `domain`,
+        method: "POST",
+        body,
+      }),
+    }),
+    editCustomDomain: builder.mutation({
+      query: (body) => ({
+        url: `domain`,
+        method: "PATCH",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -403,5 +418,7 @@ export const {
   useGetTalentResultsPostMutation,
   useDeleteInviteMutation,
   useInitializeTranscationMutation,
-  useVerifyReferenceQuery
+  useVerifyReferenceQuery,
+  useAddCustomDomainMutation,
+  useEditCustomDomainMutation,
 } = baseApiSlice;
