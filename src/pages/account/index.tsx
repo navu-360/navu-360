@@ -8,6 +8,8 @@ import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 
 import {
+  useAddCustomDomainMutation,
+  useEditCustomDomainMutation,
   useGetCustomerTranscationsQuery,
   useGetOneOrganizationQuery,
   useGetUserPayStackDetailsQuery,
@@ -60,6 +62,7 @@ export default function Account() {
   const [companyName, setCompanyName] = useState("");
   const [industry, setIndustry] = useState("");
   const [website, setWebsite] = useState("");
+  const [domain, setDomain] = useState("");
 
   useEffect(() => {
     if (userProfile) {
@@ -137,10 +140,22 @@ export default function Account() {
       setCompanyName(orgData?.organization?.name || "");
       setIndustry(orgData?.organization?.industry || "");
       setWebsite(orgData?.organization?.website || "");
+      setDomain(orgData?.organization?.domain || "");
     }
   }, [orgData]);
 
+  useEffect(() => {
+    if (!orgData?.organization?.domain) {
+      setDomain(prefillDomainName());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [orgData]);
+
   const [updateOrg, { isLoading: editingOrg }] = useUpdateOrgMutation();
+  const [addSubDomain, { isLoading: addingDomain }] =
+    useAddCustomDomainMutation();
+  const [updateDomain, { isLoading: editingDomain }] =
+    useEditCustomDomainMutation();
 
   const updateOrgInfo = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -180,9 +195,79 @@ export default function Account() {
       });
   };
 
+  const addDomain = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    if (domain === orgData?.organization?.domain) {
+      toaster({
+        status: "info",
+        message: "No changes made",
+      });
+      return;
+    }
+    // only send updated fields
+    const body = {
+      domain: domain,
+    };
+    await addSubDomain(body)
+      .unwrap()
+      .then(() => {
+        toaster({
+          status: "success",
+          message: "Domain updated successfully",
+        });
+        refetch();
+      })
+      .catch((error) => {
+        toaster({
+          status: "error",
+          message: error.data.message,
+        });
+      });
+  };
+
+  const editDomain = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    if (domain === orgData?.organization?.domain) {
+      toaster({
+        status: "info",
+        message: "No changes made",
+      });
+      return;
+    }
+    // only send updated fields
+    const body = {
+      domain: domain,
+    };
+    await updateDomain(body)
+      .unwrap()
+      .then(() => {
+        toaster({
+          status: "success",
+          message: "Domain updated successfully",
+        });
+        refetch();
+      })
+      .catch((error) => {
+        toaster({
+          status: "error",
+          message: error.data.message,
+        });
+      });
+  };
+
   useEffect(() => {
     dispatch(setDraftProgramId(undefined));
   }, [dispatch]);
+
+  const prefillDomainName = (): string => {
+    // check if has website then grab domain name. e.g https://www.google.com we suggest google
+    // if no website, then grab company name. We make it all lowercase and remove spaces
+    if (website) {
+      const url = new URL(website);
+      return url.hostname.split(".")[0] as string;
+    }
+    return companyName.toLowerCase().replace(/\s/g, "");
+  };
 
   return (
     <>
@@ -417,6 +502,92 @@ export default function Account() {
                   </form>
                 </div>
               )}
+              {session?.user?.role === "admin" && (
+                <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+                  <div>
+                    <h2 className="text-base font-semibold leading-7 text-tertiary">
+                      Custom Domain
+                    </h2>
+                    <p className="mt-1 text-sm leading-6 text-gray-500">
+                      Add and manage your custom domain here
+                    </p>
+                  </div>
+
+                  <form className="md:col-span-1">
+                    <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-1">
+                      <div className="sm:col-span-3">
+                        <label
+                          htmlFor="domain-name"
+                          className="block text-sm font-semibold leading-6 text-tertiary"
+                        >
+                          Domain Name
+                        </label>
+                        <p className="mt-2 flex items-center gap-1 text-sm font-medium text-gray-400">
+                          You custom domain{" "}
+                          {orgData?.organization?.domain ? "is" : "will be"}{" "}
+                          <a
+                            href={`https://${
+                              orgData?.organization?.domain ?? domain
+                            }.navu360.com`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-semibold text-blue-500 underline"
+                          >{`https://${
+                            orgData?.organization?.domain ?? domain
+                          }.navu360.com`}</a>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            className="lucide lucide-arrow-up-right-square h-4 w-4 text-blue-500"
+                          >
+                            <rect width="18" height="18" x="3" y="3" rx="2" />
+                            <path d="M8 8h8v8" />
+                            <path d="m8 16 8-8" />
+                          </svg>
+                        </p>
+                        <div className="mt-2">
+                          <input
+                            id="domain-name"
+                            type="text"
+                            name="domain-name"
+                            required
+                            placeholder={`e.g ${prefillDomainName()}.navu360.com`}
+                            value={domain}
+                            onChange={(e) => {
+                              setDomain(
+                                removeSpacesAndLowerCase(e.target.value),
+                              );
+                            }}
+                            className="block w-full rounded-md border-0 bg-white/5 py-1.5 pl-2 text-tertiary shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-8 flex">
+                      <button
+                        type="submit"
+                        disabled={editingDomain || addingDomain}
+                        onClick={(e: { preventDefault: () => void }) =>
+                          orgData?.organization?.domain
+                            ? editDomain(e)
+                            : addDomain(e)
+                        }
+                        className="rounded-md bg-tertiary px-12 py-2 text-sm font-semibold text-white shadow-sm hover:bg-tertiary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                      >
+                        Save
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              )}
 
               <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
                 <div>
@@ -453,7 +624,7 @@ export default function Account() {
               </div>
 
               {session?.user?.role === "admin" && (
-                <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+                <div className="hidden max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
                   <div>
                     <h2 className="text-base font-semibold leading-7 text-tertiary">
                       Delete account
@@ -763,3 +934,7 @@ export function ChangePlan({
     </div>
   );
 }
+
+const removeSpacesAndLowerCase = (str: string) => {
+  return str.replace(/\s/g, "").toLowerCase();
+};

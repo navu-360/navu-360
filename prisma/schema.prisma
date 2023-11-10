@@ -71,6 +71,7 @@ model Organization {
   industry                 String
   website                  String?
   freeTrialCoursesIds      String[]                  @default([])
+  domain                   String?
   user                     User                       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId                   String                     @unique
   onboardingProgs          OnboardingProgram[]
