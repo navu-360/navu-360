@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import { getServerSession } from "next-auth";
+import * as Sentry from "@sentry/nextjs";
 
 import axios from "axios";
 
@@ -60,6 +61,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     })
                     .catch(function (error) {
                         console.error(error?.response?.data?.errors);
+                        Sentry.captureException(error);
                         return res.status(500).json({
                             message: `Failed to check if domain exists.`,
                         });
@@ -115,6 +117,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                                 console.log("Organization updated with domain.");
                             })
                             .catch((error) => {
+                                Sentry.captureException(error);
                                 console.error(error);
                                 return res.status(500).json({
                                     message: `Failed to update organization with domain.`,
@@ -122,6 +125,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                             });
                     })
                     .catch(function (error) {
+                        Sentry.captureException(error);
                         console.error(error?.response?.data?.errors);
                         return res.status(500).json({
                             message: `Failed to create domain.`,
@@ -130,6 +134,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
                 res.status(200).json({ message: `Custom domain created.` });
             } catch (error: unknown) {
+                Sentry.captureException(error);
                 // @ts-ignore
                 res.status(500).json({ message: error.message });
             }
@@ -179,6 +184,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
                     })
                     .catch(function (error) {
+                        Sentry.captureException(error);
                         console.error(error?.response?.data?.errors);
                         return res.status(500).json({
                             message: `Failed to check if domain exists.`,
@@ -245,6 +251,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                                 console.log("Organization updated with domain.");
                             })
                             .catch((error) => {
+                                Sentry.captureException(error);
                                 console.error(error);
                                 return res.status(500).json({
                                     message: `Failed to update organization with domain.`,
@@ -252,6 +259,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                             });
                     })
                     .catch(function (error) {
+                        Sentry.captureException(error);
                         console.error(error?.response?.data?.errors);
                         return res.status(500).json({
                             message: `Failed to create domain.`,
@@ -263,6 +271,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 res.status(200).json({ message: `Custom domain updated.` });
 
             } catch (error: unknown) {
+                Sentry.captureException(error);
                 // @ts-ignore
                 res.status(500).json({ message: error.message });
             }
