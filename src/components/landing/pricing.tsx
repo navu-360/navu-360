@@ -73,20 +73,19 @@ export default function Pricing({
       className="mx-auto my-16 w-full px-4 py-10 text-gray-600"
     >
       <div className="mx-auto max-w-7xl flex-col lg:flex">
-        {!fromStart && (
-          <div className="mb-8 lg:flex-col xl:flex xl:w-full">
-            <div className="w-full flex-grow text-center xl:pr-5">
-              <h2
-                className={`textGradientTitles mb-5 text-4xl font-bold ${font.className}`}
-              >
-                Choose a Plan
-              </h2>
-              <p className="text-md mb-5 font-medium tracking-tight">
-                Exceptional Training, Budget-Friendly Pricing
-              </p>
-            </div>
+        <div className="mb-8 lg:flex-col xl:flex xl:w-full">
+          <div className="w-full flex-grow text-center xl:pr-5">
+            <h2
+              className={`textGradientTitles mb-5 text-4xl font-bold ${font.className}`}
+            >
+              Choose a Plan
+            </h2>
+            <p className="text-md mb-5 font-medium tracking-tight">
+              Exceptional Training, Budget-Friendly Pricing
+            </p>
           </div>
-        )}
+        </div>
+
         <div
           className={`${fromStart ? "w-full" : "lg:w-full xl:w-full"} mr-auto`}
         >
@@ -198,7 +197,7 @@ export default function Pricing({
                       ? currentPlan
                         ? upgradeOrDowngradeText("starter")
                         : "Continue"
-                      : "Continue"}
+                      : "Start for free"}
                   </button>
                 )}
               </div>
@@ -310,7 +309,7 @@ export default function Pricing({
                       ? currentPlan
                         ? upgradeOrDowngradeText("regular")
                         : "Continue"
-                      : "Continue"}
+                      : "Start for free"}
                   </button>
                 )}
               </div>
@@ -422,7 +421,7 @@ export default function Pricing({
                       ? currentPlan
                         ? upgradeOrDowngradeText("pro")
                         : "Continue"
-                      : "Continue"}
+                      : "Start for free"}
                   </button>
                 )}
               </div>

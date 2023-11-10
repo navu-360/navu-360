@@ -756,6 +756,7 @@ export function ChangePlan({
             currentPlan={currentPlanName}
             changeTo={(plan: string) => changePlan(plan)}
             isLoading={waitingForCheckout || isLoading}
+            fromStart
           />
         </section>
       </motion.div>

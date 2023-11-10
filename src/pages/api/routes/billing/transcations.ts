@@ -55,7 +55,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     };
                 });
 
-                res.status(200).json({ message: 'Customer transcations fetched', data: formattedTransactionData });
+                res.status(200).json({ message: 'Customer transcations fetched', data: formattedTransactionData.filter((x: typeof formattedTransactionData[0]) => x.paid_at) });
             } else {
                 res.status(400).json({ message: 'Could not get customer transcations' });
             }

@@ -85,6 +85,13 @@ export default function CreateProgram() {
         return;
       }
     }
+    if (!programDetails?.uploadedImage) {
+      toaster({
+        status: "error",
+        message: "Course image is required",
+      });
+      return;
+    }
     setUploading(true);
     const res = await uploadOne(programDetails?.uploadedImage as File);
     setUploading(false);
@@ -227,7 +234,7 @@ export default function CreateProgram() {
             )}
             {activeTab === 2 && <ConfirmStep />}
 
-            <div className="absolute inset-x-0 bottom-0 flex w-full justify-between bg-neutral-100 border-t-[1px] border-t-neutral-200 px-4 py-2">
+            <div className="absolute inset-x-0 bottom-0 flex w-full justify-between border-t-[1px] border-t-neutral-200 bg-neutral-100 px-4 py-2">
               <button
                 onClick={() => {
                   if (activeTab === 0) {

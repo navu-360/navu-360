@@ -126,10 +126,6 @@ export default function CreateOrganizationLayout({
             >
               {loading ? "Loading..." : "Activate my account"}
             </button>
-            <p className="mt-2 w-full text-start text-sm font-medium italic text-gray-400">
-              You will be redirected to a secure payment page to start your
-              subscription
-            </p>
           </div>
         )}
       </div>

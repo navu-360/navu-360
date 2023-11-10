@@ -96,7 +96,7 @@ export default function InviteTalentsModal({
   const [hasAlreadyReachedLimit, setHasAlreadyReachedLimit] = useState(false);
 
   useEffect(() => {
-    if (planDetails?.data) {
+    if (planDetails?.data && data?.data !== undefined) {
       const maxAllowed = getMaxTalentCountFromAmount(planDetails?.data);
       const remaining = maxAllowed - data?.data;
       setRemaining(remaining);
@@ -140,7 +140,7 @@ export default function InviteTalentsModal({
           receive an email with a link to join.
         </p>
         <p className="mb-4 flex w-[80%] flex-col font-semibold text-tertiary">
-          <span>Remaining talent seats: {remaining}</span>
+          <span>Remaining talent seats: {remaining ?? ""}</span>
           <span className="mt-1 text-sm font-medium italic">
             The count of remaining seats is updated once an invited talent
             accepts invitation

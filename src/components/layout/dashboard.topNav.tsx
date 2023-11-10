@@ -143,7 +143,7 @@ export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
 }
 
 function AdminCard() {
-  const { data: session, update } = useSession();
+  const { data: session, update, status } = useSession();
 
   const dispatch = useDispatch();
 
@@ -173,7 +173,7 @@ function AdminCard() {
 
   return (
     <div className="right-4 top-2 flex cursor-pointer items-center gap-2 pt-0 transition-all duration-300 ease-in md:fixed">
-      {!session?.user?.customerId && (
+      {status !== "loading" && !session?.user?.customerId && (
         <button
           onClick={() => {
             setShowChangePlan(true);

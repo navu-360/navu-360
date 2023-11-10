@@ -11,10 +11,10 @@ import { useVerifyReferenceQuery } from "services/baseApiSlice";
 import toaster from "utils/toaster";
 
 export function NoCourses({
-  showSelectTemplate,
 }: {
   showSelectTemplate: () => void;
 }) {
+  const router = useRouter();
   return (
     <motion.section
       initial={{ y: 30 }}
@@ -37,7 +37,7 @@ export function NoCourses({
         chapters fortext, images, videos, and documents.
       </p>
       <button
-        onClick={() => showSelectTemplate()}
+        onClick={() => router.push("/create/program")}
         className="z-50 mx-auto flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white transition-all duration-150 ease-in hover:bg-[#651b38] focus:outline-none focus:ring-4"
       >
         <span>Continue</span>
@@ -130,23 +130,29 @@ export function WelcomeGuide({
       initial={{ y: 30 }}
       whileInView={{ y: 0 }}
       transition={{ ease: "easeIn", duration: 0.3 }}
-      className="m-auto flex max-w-4xl flex-col justify-center gap-6 rounded-3xl bg-gray-200 p-4 px-8 text-center"
+      className="m-auto flex max-w-4xl flex-col justify-center gap-6 rounded-3xl bg-tertiary p-4 px-8 text-center"
     >
       <Image
-        src={"/ebook.svg"}
-        alt="Create a new Course"
+        src={"/logo.svg"}
+        alt="Welcome"
         height={120}
         width={120}
-        className="mx-auto"
+        className="mx-auto mt-4"
       />
-      <h2 className="text-2xl font-bold text-tertiary">Welcome to Navu360!</h2>
-      <p className="mx-auto max-w-[75%] text-base font-medium text-gray-500">
+      <h2 className="mt-4 text-2xl font-bold text-white">
+        Welcome to Navu360!
+      </h2>
+      <p className="mx-auto max-w-[75%] text-base font-medium text-neutral-100">
         Hi {session?.user?.name} 👋 <br />
         We&apos;re excited to have you onboard Navu360, a platform committed to
         redefining the way talent is trained in {organizationData?.name}. <br />
         <br />
-        You&apos;re currently using our generous free plan. You can upgrade to a
-        paid plan at any time. <br />
+        You&apos;re currently on our generous free plan, which grants you access
+        to <span className="font-semibold">create 3 courses</span> and{" "}
+        <span className="font-semibold">invite 3 talents</span>. Enjoy the full
+        range of features at your fingertips. Should you ever wish to unlock
+        more possibilities, you can seamlessly upgrade to a premium plan at your
+        convenience. <br />
       </p>
       <button
         disabled={loading}
