@@ -45,7 +45,7 @@ export const getPlanNameFromAmount = (amount: number) => {
     case Number(process.env.NEXT_PUBLIC_PLAN_PRO_PRICE!):
       return "pro";
     default:
-      return "Free";
+      return "free";
   }
 };
 
