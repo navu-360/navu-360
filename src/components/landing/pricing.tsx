@@ -54,7 +54,7 @@ export default function Pricing({
   const upgradeOrDowngradeText = (toPlanName: string) => {
     switch (toPlanName) {
       case "starter":
-        return `Downgrade to ${textToCapitalize(toPlanName)}`;
+        return `Upgrade to ${textToCapitalize(toPlanName)}`;
       case "regular":
         return currentPlan === "pro"
           ? `Downgrade to ${textToCapitalize(toPlanName)}`

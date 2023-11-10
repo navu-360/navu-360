@@ -213,7 +213,8 @@ export default function Account() {
       .catch((error) => {
         toaster({
           status: "error",
-          message: error.data.message,
+          message:
+            error?.data?.message ?? "Error while adding domain. Try again",
         });
       });
   };
@@ -243,7 +244,8 @@ export default function Account() {
       .catch((error) => {
         toaster({
           status: "error",
-          message: error.data.message,
+          message:
+            error?.data?.message ?? "Error while updating domain. Try again",
         });
       });
   };
@@ -515,7 +517,7 @@ export default function Account() {
                         >
                           Domain Name
                         </label>
-                        {orgData?.organization?.domain && (
+                        {domain?.length > 0 && (
                           <p className="mt-2 flex items-center gap-1 text-sm font-medium text-gray-400">
                             You custom domain{" "}
                             {orgData?.organization?.domain ? "is" : "will be"}{" "}
