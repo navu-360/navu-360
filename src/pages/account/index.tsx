@@ -213,7 +213,8 @@ export default function Account() {
       .catch((error) => {
         toaster({
           status: "error",
-          message: error.data.message,
+          message:
+            error?.data?.message ?? "Error while adding domain. Try again",
         });
       });
   };
@@ -243,7 +244,8 @@ export default function Account() {
       .catch((error) => {
         toaster({
           status: "error",
-          message: error.data.message,
+          message:
+            error?.data?.message ?? "Error while updating domain. Try again",
         });
       });
   };

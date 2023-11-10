@@ -132,11 +132,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                         });
                     });
 
-                res.status(200).json({ message: `Custom domain created.` });
+                return res.status(200).json({ message: `Custom domain created.` });
             } catch (error: unknown) {
                 Sentry.captureException(error);
                 // @ts-ignore
-                res.status(500).json({ message: error.message });
+                return res.status(500).json({ message: error.message });
             }
         case "PATCH":
             try {
@@ -268,15 +268,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 
 
-                res.status(200).json({ message: `Custom domain updated.` });
+                return res.status(200).json({ message: `Custom domain updated.` });
 
             } catch (error: unknown) {
                 Sentry.captureException(error);
                 // @ts-ignore
-                res.status(500).json({ message: error.message });
+                return res.status(500).json({ message: error.message });
             }
         default:
-            res.status(405).json({ message: `Method ${req.method} not allowed.` });
+            return res.status(405).json({ message: `Method ${req.method} not allowed.` });
     }
 };
 
