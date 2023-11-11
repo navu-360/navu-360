@@ -44,7 +44,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         if (!organization) return res.status(404).json({ message: `Organization not found.` });
 
         // check if user is on free plan, then check if they reached limit of 3 trial courses
-        if (!session?.user?.customerId && organization?.freeTrialCoursesIds?.length === 3) {
+        if (!session?.user?.customerId && organization?.freeTrialCoursesIds?.length === 5) {
           return res.status(402).json({ message: `You have reached the limit of 3 trial courses. Please upgrade to a paid plan to enjoy unlimited courses.` });
         }
 

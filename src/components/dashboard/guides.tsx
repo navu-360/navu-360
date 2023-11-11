@@ -148,8 +148,8 @@ export function WelcomeGuide({
         redefining the way talent is trained in {organizationData?.name}. <br />
         <br />
         You&apos;re currently on our generous free plan, which grants you access
-        to <span className="font-semibold">create 3 courses</span> and{" "}
-        <span className="font-semibold">invite 3 talents</span>. Enjoy the full
+        to <span className="font-semibold">create 5 courses</span> and{" "}
+        <span className="font-semibold">invite 5 talents</span>. Enjoy the full
         range of features at your fingertips. Should you ever wish to unlock
         more possibilities, you can seamlessly upgrade to a premium plan at your
         convenience. <br />

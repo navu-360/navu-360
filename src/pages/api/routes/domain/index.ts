@@ -281,7 +281,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 const removeSpacesAndLowerCase = (str: string) => {
-    return str.replace(/\s/g, "").toLowerCase();
+    return str.replace(/\s/g, "").toLowerCase().replace(/[^a-zA-Z0-9]/g, "")
 }
 
 export default handler;
