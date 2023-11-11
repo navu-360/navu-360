@@ -52,13 +52,13 @@ export const getPlanNameFromAmount = (amount: number) => {
 export const getMaxTalentCountFromAmount = (amount: number) => {
   switch (amount) {
     case Number(process.env.NEXT_PUBLIC_PLAN_STARTER_PRICE!):
-      return 10;
+      return 15;
     case Number(process.env.NEXT_PUBLIC_PLAN_REGULAR_PRICE!):
-      return 30;
+      return 40;
     case Number(process.env.NEXT_PUBLIC_PLAN_PRO_PRICE!):
       return 200;
     default:
-      return 3;
+      return 5;
   }
 };
 

@@ -54,7 +54,9 @@ export default function Pricing({
   const upgradeOrDowngradeText = (toPlanName: string) => {
     switch (toPlanName) {
       case "starter":
-        return `Upgrade to ${textToCapitalize(toPlanName)}`;
+        return currentPlan
+          ? `Downgrade to ${textToCapitalize(toPlanName)}`
+          : `Upgrade to ${textToCapitalize(toPlanName)}`;
       case "regular":
         return currentPlan === "pro"
           ? `Downgrade to ${textToCapitalize(toPlanName)}`
@@ -83,15 +85,17 @@ export default function Pricing({
               Choose a Plan
             </h2>
             <p className="text-md mb-5 font-medium tracking-tight">
-              Exceptional Training, Budget-Friendly Pricing
+              Exceptional Training, Budget-Friendly Pricing.
             </p>
           </div>
         </div>
 
         <div
-          className={`${fromStart ? "w-full" : "lg:w-full xl:w-full"} mr-auto`}
+          className={`${
+            fromStart ? "w-full" : "lg:w-full xl:w-full"
+          } relative mr-auto`}
         >
-          <div className="mx-auto max-w-6xl lg:flex">
+          <div className="relative mx-auto max-w-4xl lg:flex">
             <motion.div
               initial={{ x: -30, scale: 1 }}
               whileInView={{ x: 0, scale: 1 }}
@@ -122,7 +126,7 @@ export default function Pricing({
                         clipRule="evenodd"
                       />
                     </svg>
-                    10 talent seats
+                    15 talent seats
                   </li>
                   <li className="flex items-center gap-2 leading-tight">
                     <svg
@@ -182,7 +186,7 @@ export default function Pricing({
                         clipRule="evenodd"
                       />
                     </svg>
-                    Talent analytics
+                    Custom domain + SSL
                   </li>
                 </ul>
               </div>
@@ -294,7 +298,7 @@ export default function Pricing({
                         clipRule="evenodd"
                       />
                     </svg>
-                    Talent analytics
+                    Custom domain + SSL
                   </li>
                 </ul>
               </div>
@@ -406,7 +410,7 @@ export default function Pricing({
                         clipRule="evenodd"
                       />
                     </svg>
-                    Talent analytics
+                    Custom domain + SSL
                   </li>
                 </ul>
               </div>
@@ -429,6 +433,79 @@ export default function Pricing({
               </div>
             </motion.div>
           </div>
+
+          {!session && (
+            <div className="text-md absolute mb-5 flex w-full flex-col gap-2 pt-8 text-center text-sm font-medium italic tracking-tight">
+              <p className="text-base font-semibold">
+                All plans start with a free plan. No credit card required.
+              </p>
+              <div className="flex w-full items-center justify-center gap-4">
+                <div className="flex w-max items-center gap-1 text-tertiary">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="lucide lucide-sparkles text-secondary"
+                  >
+                    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+                    <path d="M5 3v4" />
+                    <path d="M19 17v4" />
+                    <path d="M3 5h4" />
+                    <path d="M17 19h4" />
+                  </svg>
+                  <span>Up to 5 talents</span>
+                </div>
+                <div className="flex w-max items-center gap-1 text-tertiary">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="lucide lucide-sparkles text-secondary"
+                  >
+                    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+                    <path d="M5 3v4" />
+                    <path d="M19 17v4" />
+                    <path d="M3 5h4" />
+                    <path d="M17 19h4" />
+                  </svg>
+                  <span>Up to 5 courses</span>
+                </div>
+                <div className="flex w-max items-center gap-1 text-tertiary">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="lucide lucide-sparkles text-secondary"
+                  >
+                    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+                    <path d="M5 3v4" />
+                    <path d="M19 17v4" />
+                    <path d="M3 5h4" />
+                    <path d="M17 19h4" />
+                  </svg>
+                  <span>Full access to other features</span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </section>

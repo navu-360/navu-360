@@ -518,7 +518,7 @@ export default function Account() {
                           Domain Name
                         </label>
                         {domain?.length > 0 &&
-                          !orgData?.organization?.domain && (
+                          orgData?.organization?.domain && (
                             <p className="mt-2 flex items-center gap-1 text-sm font-medium text-gray-400">
                               You custom domain{" "}
                               {orgData?.organization?.domain ? "is" : "will be"}{" "}
@@ -940,5 +940,6 @@ export function ChangePlan({
 }
 
 const removeSpacesAndLowerCase = (str: string) => {
-  return str.replace(/\s/g, "").toLowerCase();
+  // remove spaces, make lowercase and remove any special characters
+  return str.replace(/\s/g, "").toLowerCase().replace(/[^a-zA-Z0-9]/g, "");
 };
