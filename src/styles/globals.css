@@ -84,6 +84,7 @@ input,
 textarea {
     outline: 0;
     border: 0;
+    caret-color: #9d2a57;
 }
 
 textarea {
