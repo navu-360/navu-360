@@ -50,11 +50,11 @@ export default function Pricing({
   const textToCapitalize = (text: string) => {
     return text.charAt(0).toUpperCase() + text.slice(1);
   };
-
+  console.log(currentPlan);
   const upgradeOrDowngradeText = (toPlanName: string) => {
     switch (toPlanName) {
       case "starter":
-        return currentPlan
+        return currentPlan !== "Free"
           ? `Downgrade to ${textToCapitalize(toPlanName)}`
           : `Upgrade to ${textToCapitalize(toPlanName)}`;
       case "regular":
