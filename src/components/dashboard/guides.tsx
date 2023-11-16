@@ -4,16 +4,11 @@ import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import Pricing from "components/landing/pricing";
 import { useSession } from "next-auth/react";
-import { useSelector } from "react-redux";
-import type { Organization } from "@prisma/client";
 import { useRouter } from "next/router";
 import { useVerifyReferenceQuery } from "services/baseApiSlice";
 import toaster from "utils/toaster";
 
-export function NoCourses({
-}: {
-  showSelectTemplate: () => void;
-}) {
+export function NoCourses({}: { showSelectTemplate: () => void }) {
   const router = useRouter();
   return (
     <motion.section
@@ -34,7 +29,7 @@ export function NoCourses({
       </h2>
       <p className="mx-auto max-w-[75%] text-base font-medium text-gray-500">
         Create a new course using our intuitive course creator. You can create
-        chapters fortext, images, videos, and documents.
+        chapters for text, images, videos, and documents.
       </p>
       <button
         onClick={() => router.push("/create/program")}
@@ -121,10 +116,6 @@ export function WelcomeGuide({
   loading: boolean;
 }) {
   const { data: session } = useSession();
-  const organizationData = useSelector(
-    (state: { auth: { organizationData: Organization } }) =>
-      state.auth.organizationData,
-  );
   return (
     <motion.section
       initial={{ y: 30 }}
@@ -145,7 +136,7 @@ export function WelcomeGuide({
       <p className="mx-auto max-w-[75%] text-base font-medium text-neutral-100">
         Hi {session?.user?.name} 👋 <br />
         We&apos;re excited to have you onboard Navu360, a platform committed to
-        redefining the way talent is trained in {organizationData?.name}. <br />
+        redefining the way talent is trained. <br />
         <br />
         You&apos;re currently on our generous free plan, which grants you access
         to <span className="font-semibold">create 5 courses</span> and{" "}
@@ -153,6 +144,11 @@ export function WelcomeGuide({
         range of features at your fingertips. Should you ever wish to unlock
         more possibilities, you can seamlessly upgrade to a premium plan at your
         convenience. <br />
+        <br />
+        We release new features every week, so be sure to check back often for a
+        better experience. Should you have any feedback, please click{" "}
+        <span className="font-semibold">Feedback</span> on the side menu.
+        <br />
       </p>
       <button
         disabled={loading}
