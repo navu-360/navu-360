@@ -32,7 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
       replyTo: env.REPLY_TO,
       subject: `Welcome to Navu360!`,
-      html: stringTemplate.replace(/{{adminName}}/g, session?.user?.name),
+      html: stringTemplate.replace(/{{adminName}}/g, session?.user?.name).replace(/{{todayYear}}/g, new Date().getFullYear().toString()),
     };
 
     // @ts-ignore
