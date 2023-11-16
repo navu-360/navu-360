@@ -28,7 +28,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         };
 
         // validate request
-        if (!name || !industry || !noOfEmployees || !userId) {
+        if (!userId) {
           res.status(400).json({ message: `Missing required fields.` });
           return;
         }
@@ -53,7 +53,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         // update user field hasBeenOnboarded to true
         await prisma.user.update({
           where: { id: userId },
-          data: { hasBeenOnboarded: true },
+          data: { hasBeenOnboarded: true, role: "admin" },
         });
 
         return res
