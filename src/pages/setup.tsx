@@ -3,16 +3,13 @@ import AdminCompanyDetails from "components/createOrganization/admin.step";
 import LandingWrapper from "components/layout/wrapper";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { setOrgId } from "redux/auth/authSlice";
 import {
   useCreateOrganizationMutation,
-  useGetUserPayStackDetailsQuery,
-  useInitializeTranscationMutation,
   useSendWelcomeEmailMutation,
   useUpdateUserMutation,
-  useVerifyReferenceQuery,
 } from "services/baseApiSlice";
 
 import toaster from "utils/toaster";
@@ -79,57 +76,11 @@ export default function Setup() {
   const { data: session } = useSession();
 
   const router = useRouter();
-  const { sub, reference } = router.query;
-  const { data, error, isFetching } = useVerifyReferenceQuery(
-    reference as string,
-    {
-      skip: !reference,
-    },
-  );
-
-  const [waitingForCheckout, setWaitingForCheckout] = React.useState(false);
-
-  useEffect(() => {
-    if (data) {
-      proceedAfterVerify();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
-
-  useEffect(() => {
-    if (error) {
-      toaster({
-        status: "error",
-        message: "We could not verify your payment. Please try again",
-      });
-    }
-  }, [error]);
 
   const email = session?.user.email as string;
 
-  const { error: details } = useGetUserPayStackDetailsQuery(email, {
-    skip: !email,
-  });
-
-  const [initializePayment] = useInitializeTranscationMutation();
   const [sendWelcomeEmail, { isLoading: sendingEmail }] =
     useSendWelcomeEmailMutation();
-
-  const proceedAfterVerify = async () => {
-    await sendWelcomeEmail(email);
-    toaster({
-      status: "success",
-      message:
-        "Organization created and successfully subscribed to " +
-        textToCapitalize((sub as string) ?? "Starter") +
-        " plan",
-    });
-    router.push("/dashboard");
-  };
-
-  const textToCapitalize = (text: string) => {
-    return text.charAt(0).toUpperCase() + text.slice(1);
-  };
 
   const [updateUser, { isLoading }] = useUpdateUserMutation();
   const [createOrg, { isLoading: CreatingOrg }] =
@@ -143,24 +94,6 @@ export default function Setup() {
       noOfEmployees: string;
     },
   ) => {
-    if (!role || role === "") {
-      toaster({
-        status: "error",
-        message: "Please provide your role",
-      });
-      return;
-    }
-    if (
-      companyDetails.companyName === "" ||
-      companyDetails.industry === "" ||
-      companyDetails.noOfEmployees === ""
-    ) {
-      toaster({
-        status: "error",
-        message: "Please fill all fields",
-      });
-      return;
-    }
     await createHandler(role, companyDetails);
   };
 
@@ -173,39 +106,22 @@ export default function Setup() {
   }) => {
     // create organization
     const body = {
-      name: companyDetails.companyName,
-      industry: companyDetails.industry,
-      noOfEmployees: companyDetails.noOfEmployees,
+      name: companyDetails?.companyName,
+      industry: companyDetails?.industry,
+      noOfEmployees: companyDetails?.noOfEmployees,
       userId: session?.user?.id,
     };
-    await createOrg(body)
+    createOrg(body)
       .unwrap()
       .then((payload) => {
         dispatch(setOrgId(payload?.data?.id));
-        router.push("/dashboard");
-        return;
-        // @ts-ignore
-        if (details?.status !== 100) {
-          setWaitingForCheckout(true);
-          const body = {
-            sub,
-          };
-          initializePayment(body)
-            .unwrap()
-            .then((payload) => {
-              window.location.href = payload?.data?.authorization_url;
-              setWaitingForCheckout(false);
-            })
-            .catch((error) => {
-              setWaitingForCheckout(false);
-              toaster({
-                status: "error",
-                message: error.message,
-              });
-            });
-        } else {
+        sendWelcomeEmail(email).then(() => {
+          toaster({
+            status: "success",
+            message: "Organization created and account activated!",
+          });
           router.push("/dashboard");
-        }
+        });
       })
       .catch((error) => {
         toaster({
@@ -223,13 +139,7 @@ export default function Setup() {
           goToNext={(role: string, companyDetails: CompanyDetails) =>
             updateUserDetails(role, companyDetails)
           }
-          loading={
-            isLoading ||
-            CreatingOrg ||
-            isFetching ||
-            sendingEmail ||
-            waitingForCheckout
-          }
+          loading={isLoading || CreatingOrg || sendingEmail}
         />
       </LandingWrapper>
     </>
@@ -241,7 +151,7 @@ export default function Setup() {
       role: "admin",
     };
 
-    await updateUser(body)
+    updateUser(body)
       .unwrap()
       .then(() => {
         createOrganization(companyDetails)

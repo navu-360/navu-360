@@ -107,7 +107,7 @@ export default function CreateOrganizationLayout({
         <div className="relative">
           <GoBack customText="Cancel" />
         </div>
-        <div className="mt-16 flex flex-col gap-1 text-tertiary">
+        <div className="mt-16 flex max-w-[400px] flex-col gap-1 text-tertiary">
           <h1 className="text-2xl font-bold">{title}</h1>
           <p className="text-base font-medium">{desc}</p>
         </div>
@@ -125,6 +125,15 @@ export default function CreateOrganizationLayout({
               className="w-full rounded-md bg-secondary px-12 py-2 text-base font-semibold capitalize text-white md:w-[400px]"
             >
               {loading ? "Loading..." : "Activate my account"}
+            </button>
+            <button
+              disabled={loading}
+              onClick={() => {
+                goToNext(role, companyDetails!);
+              }}
+              className="mt-4 w-full rounded-md border-[1px] border-secondary bg-transparent px-12 py-2 text-base font-semibold capitalize text-secondary md:w-[400px]"
+            >
+              Skip
             </button>
           </div>
         )}
