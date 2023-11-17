@@ -101,6 +101,55 @@ export default function Blog() {
       description:
         "Delve into proven strategies to retain top talent, from career development opportunities to fostering a positive work environment.",
     },
+    {
+      id: 10,
+      title:
+        "Navigating Success: The Definitive Guide to Training Management Software",
+      image:
+        "https://res.cloudinary.com/dpnbddror/image/upload/c_limit,w_400/v1699092224/navu/blog/blog6_bv4gvl.jpg",
+      slug: "navigating-success-the-definitive-guide-to-training-management-software",
+      description:
+        "Explore the transformative power of training management software and how it can revolutionize talent development within your organization. Uncover key features, benefits, and best practices for seamless implementation.",
+    },
+    {
+      id: 11,
+      title: "Mastering Learning Management: A Deep Dive into LMS Software",
+      image:
+        "https://res.cloudinary.com/dpnbddror/image/upload/c_limit,w_400/v1700141951/navu/compare-fibre-JiOFFI3W7IA-unsplash_d7zdcm.jpg",
+      slug: "mastering-learning-management-a-deep-dive-into-lms-software",
+      description:
+        "Delve into the world of Learning Management Systems (LMS) and discover how these platforms empower organizations to enhance employee learning and skill development. Learn about the latest trends and tips for maximizing the potential of LMS software",
+    },
+    {
+      id: 12,
+      title:
+        "Onboarding Excellence: Crafting Effective Systems for New Employees",
+      image:
+        "https://res.cloudinary.com/dpnbddror/image/upload/c_limit,w_400/v1700141949/navu/jeshoots-com--2vD8lIhdnw-unsplash_foltwu.jpg",
+      slug: "onboarding-excellence-crafting-effective-systems-for-new-employees",
+      description:
+        "Unlock the secrets to successful onboarding systems for new employees. This blog explores the crucial elements of a comprehensive onboarding process, from orientation to integration, ensuring a smooth transition for every new team member.",
+    },
+    {
+      id: 13,
+      title:
+        "Leadership Skills Training: Building Tomorrow's Visionaries Today",
+      image:
+        "https://res.cloudinary.com/dpnbddror/image/upload/c_limit,w_400/v1700141945/navu/natalie-pedigo-wJK9eTiEZHY-unsplash_c1gowy.jpg",
+      slug: "leadership-skills-training-building-tomorrows-visionaries-today",
+      description:
+        "Dive into the realm of leadership skills training and discover how organizations can cultivate and nurture effective leaders. Explore training methodologies, essential skills, and innovative approaches to develop leadership capabilities.",
+    },
+    {
+      id: 14,
+      title:
+        "Empowering Growth: The Impact of Employee Training and Development",
+      image:
+        "https://res.cloudinary.com/dpnbddror/image/upload/c_limit,w_400/v1700141945/navu/markus-winkler-ypOsSfRgKZ4-unsplash_trzpov.jpg",
+      slug: "empowering-growth-the-impact-of-employee-training-and-development",
+      description:
+        "Uncover the significance of employee training and development in fostering organizational growth. This blog explores strategies, tools, and case studies that highlight the role of ongoing learning in shaping a dynamic and competitive workforce.",
+    },
   ];
   return (
     <main className="flex h-screen min-h-screen w-full flex-col pt-[100px]">
