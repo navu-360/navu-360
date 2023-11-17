@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "postbuild": "next-sitemap",
     "dev": "next dev",
     "postinstall": "prisma generate --no-engine",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,scss,json,md}\"",
