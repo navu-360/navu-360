@@ -23,7 +23,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               createdAt: "asc"
             }
           },
-        }
+        },
+        cacheStrategy: {
+          ttl: 60,
+          swr: 10,
+        },
       });
 
       let user = null;
@@ -34,6 +38,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           where: {
             id: program.createdBy,
           },
+          cacheStrategy: {
+            ttl: 60,
+            swr: 10,
+          },
+          select: {
+            name: true,
+            id: true
+          }
         });
       }
 
