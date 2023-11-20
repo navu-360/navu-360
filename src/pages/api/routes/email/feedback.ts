@@ -68,7 +68,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     .replace(/{{name}}/g, user.name)
                     .replace(/{{todayYear}}/g, new Date().getFullYear().toString()),
             };
-            await sgMail.send(msg);
+            // await sgMail.send(msg);
             // we add the email to emailTracking model
             await prisma.emailTracking.create({
                 data: {
