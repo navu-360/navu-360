@@ -17,27 +17,45 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const stringTemplate = readFileSync(path, "utf8");
 
         const sevenDaysAgo = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24 * 7);
-        const users = await prisma.user.findMany({
-            where: {
-                createdAt: {
-                    gte: sevenDaysAgo
-                },
-                Organization: {
-                    // check if count of field freeTrialCoursesIds is 0
-                    freeTrialCoursesIds: {
-                        isEmpty: true
+        // @ts-ignore
+        const users: {
+            name: string,
+            email: string
+        }[]
+            = await prisma.user.findMany({
+                where: {
+                    createdAt: {
+                        gte: sevenDaysAgo
+                    },
+                    Organization: {
+                        // check if count of field freeTrialCoursesIds is 0
+                        freeTrialCoursesIds: {
+                            isEmpty: true
+                        }
                     }
+                },
+                select: {
+                    name: true,
+                    email: true
                 }
-            },
-            select: {
-                name: true,
-                email: true
+            });
+
+        // we check emailTracking model(email, emailType). We check if we have sent type "feedback" to an email
+        const sendEmails = await prisma.emailTracking.findMany({
+            where: {
+                emailType: "feedback",
+                email: {
+                    in: users.map((user) => user.email)
+                }
             }
         });
 
-        console.log(users);
+        const emailsSent = sendEmails.map((email) => email.email);
 
-        users.forEach(async (user) => {
+        // we filter out emails that have already been sent
+        const filteredUsers = users.filter((user) => !emailsSent.includes(user.email));
+
+        filteredUsers.forEach(async (user) => {
             const msg: MailDataRequired = {
                 to: user.email as string,
                 from: {
@@ -51,6 +69,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     .replace(/{{todayYear}}/g, new Date().getFullYear().toString()),
             };
             await sgMail.send(msg);
+            // we add the email to emailTracking model
+            await prisma.emailTracking.create({
+                data: {
+                    email: user.email,
+                    emailType: "feedback"
+                }
+            });
         });
 
 
