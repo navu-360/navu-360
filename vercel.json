@@ -1,7 +1,7 @@
 {
   "crons": [
     {
-      "path": "/api/route/email/feedback",
+      "path": "/api/routes/email/feedback",
       "schedule": "0 0 * * *"
     }
   ]
