@@ -40,6 +40,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 }
             });
 
+        console.log(users);
+
         // we check emailTracking model(email, emailType). We check if we have sent type "feedback" to an email
         const sendEmails = await prisma.emailTracking.findMany({
             where: {
@@ -54,6 +56,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         // we filter out emails that have already been sent
         const filteredUsers = users.filter((user) => !emailsSent.includes(user.email));
+        console.log(filteredUsers);
 
         filteredUsers.forEach(async (user) => {
             const msg: MailDataRequired = {
