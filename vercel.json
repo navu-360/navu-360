@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/route/email/feedback",
+      "schedule": "0 0 * * *"
+    }
+  ]
+}
