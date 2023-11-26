@@ -50,6 +50,8 @@ export default function AdminCompanyDetails({
           <input
             type="text"
             name="role"
+            autoComplete="off"
+            spellCheck="false"
             id="role"
             value={role}
             onChange={(e) => setRole(e.target.value)}
@@ -64,6 +66,8 @@ export default function AdminCompanyDetails({
             type="text"
             name="name"
             id="name"
+            spellCheck="false"
+            autoComplete="off"
             className="common-input"
             value={companyName}
             onChange={(e) => setCompanyName(e.target.value)}
@@ -78,6 +82,7 @@ export default function AdminCompanyDetails({
             onChange={(e) => setIndustry(e.target.value)}
             className="common-input"
             name="industry"
+            autoComplete="off"
             id="industry"
           >
             <option value="default" selected>
@@ -102,6 +107,7 @@ export default function AdminCompanyDetails({
           <select
             className="common-input"
             name="noOfEmployees"
+            autoComplete="off"
             id="noOfEmployees"
             value={noOfEmployees}
             onChange={(e) => setNoOfEmployees(e.target.value)}

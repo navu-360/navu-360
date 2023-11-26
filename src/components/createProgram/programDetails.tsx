@@ -132,6 +132,7 @@ export function ProgramDetails({
           onChange={(e) => setName(e.target.value)}
           aria-required
           minLength={3}
+          autoFocus
           placeholder="e.g Sales Training Course"
           className="common-input program-create-form text-sm"
           required

@@ -163,6 +163,7 @@ export default function InviteTalentsModal({
                 placeholder="Email address"
                 className="common-input rounded-md border border-gray-300 p-2"
                 value={emailOne}
+                autoFocus
                 onChange={(e) => {
                   setEmailOne(e.target.value);
                 }}
