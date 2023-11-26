@@ -57,7 +57,7 @@ export default function CreateOrganizationLayout({
         </div>
         <div className="absolute inset-x-0 top-1/2 z-20 mx-auto flex w-[100%] -translate-y-1/2 flex-col gap-6 text-center">
           <h1
-            className={`text-center text-3xl font-bold text-white md:text-xl xl:text-4xl ${font.className}`}
+            className={`text-center text-3xl font-bold text-white md:text-xl capitalize xl:text-4xl ${font.className}`}
           >
             Step into the Future
             {session ? ", " + session?.user?.name.split(" ")[0] + "!" : ""}
@@ -103,7 +103,7 @@ export default function CreateOrganizationLayout({
           <img src="/logo.svg" className="mr-3 h-6 sm:h-9" alt="Navu360" />
         </Link>
       </div>
-      <div className="no-scrollbar relative flex h-auto w-full flex-col overflow-y-auto p-8 px-4 pt-4 md:w-[62%] md:pt-4">
+      <div className="no-scrollbar relative flex h-auto w-full flex-col overflow-y-auto p-8 px-4 pl-8 pt-4 md:w-[62%] md:pt-4">
         <div className="relative">
           <GoBack customText="Cancel" />
         </div>
