@@ -845,3 +845,10 @@ strong {
 .blog-content li {
     margin-bottom: 0.2rem !important;
 }
+
+@media screen and (max-width: 768px) {
+    .disable-mobile-animation {
+        animation: none !important;
+        transform: none !important;
+    }
+}
