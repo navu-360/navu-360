@@ -159,13 +159,13 @@ export default function SelectFromLibrary({
           </div>
         </div>
 
-        <div className="no-scrollbar absolute bottom-[unset] left-0 top-[59px] mx-0 mb-auto mr-auto flex h-auto w-full flex-col flex-wrap items-start justify-start gap-4 overflow-y-auto bg-white p-0 pt-0 md:bottom-[60px] md:w-[300px] md:flex-col md:border-r-[1px] md:border-r-neutral-300">
-          <ul className="no-scrollbar flex w-full flex-col items-start justify-end text-center text-sm font-semibold text-gray-400">
+        <div className="no-scrollbar bottom-[unset] left-0 top-[59px] mx-0 flex h-max w-full flex-col flex-wrap items-start justify-start gap-4 overflow-y-auto bg-white p-0 pt-0 md:absolute md:bottom-[60px] md:mb-auto md:mr-auto md:h-auto md:w-[300px] md:flex-col md:border-r-[1px] md:border-r-neutral-300">
+          <ul className="no-scrollbar flex w-full flex-row overflow-x-auto text-center text-sm font-semibold text-gray-400 md:flex-col md:items-start md:justify-end">
             {createChapterOptions.map((tab, i) => (
               <li
-                className={`sidemenu relative w-full border-r-[2px] ${
+                className={`sidemenu relative w-[200px] shrink-0 border-r-[2px] md:w-full ${
                   tab.type === activeTab ? "border-secondary" : "border-white"
-                }  rounded-l-md py-2 ${
+                }  py-2 md:rounded-l-md ${
                   tab.type === activeTab ? "bg-gray-200" : "bg-transparent"
                 }`}
                 onClick={() => {
@@ -179,7 +179,7 @@ export default function SelectFromLibrary({
                   {tab.icon}
                   {tab.displayName}
                   <span
-                    className={`absolute right-8 ml-1 flex h-5 w-5 items-center justify-center rounded-full text-xs font-semibold text-white ${
+                    className={`absolute right-2 ml-1 flex h-5 w-5 items-center justify-center rounded-full text-xs font-semibold text-white md:right-8 ${
                       tab.type === activeTab
                         ? "bg-secondary text-white"
                         : "bg-neutral-400 text-gray-800"
@@ -192,7 +192,7 @@ export default function SelectFromLibrary({
             ))}
           </ul>
         </div>
-        <div className="no-scrollbar relative mx-0 mt-auto flex h-[calc(100%_-_300px)] w-full flex-wrap items-start justify-start gap-4 overflow-y-auto bg-neutral-200 p-0 px-4 pb-16 pt-6 md:ml-auto md:h-[calc(100%_-_110px)] md:w-[calc(100%_-300px)]">
+        <div className="no-scrollbar relative mx-0 flex h-[calc(100%_-_200px)] w-full flex-wrap items-start justify-start gap-4 overflow-y-auto bg-neutral-200 p-0 px-4 pb-16 pt-6 md:ml-auto md:mt-auto md:h-[calc(100%_-_110px)] md:w-[calc(100%_-300px)]">
           {data && getChaptersForType(activeTab)?.length === 0 && (
             <div className="mx-auto mt-32 flex w-[500px] flex-col gap-4">
               <p className="text-center font-medium text-gray-600">

@@ -54,7 +54,7 @@ export const getActiveTypeSvg = (type: string) => {
       return (
         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-secondary/20 shadow-sm">
           <Image
-            src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/24px-Google_%22G%22_logo.svg.png"
             height={24}
             width={24}
             alt="Add a Link for Google Docs or Google Slides"
@@ -174,15 +174,19 @@ export function CreateProgramContent({
 
   return (
     <div className="relative h-full w-full">
-      <div className="relative flex h-full w-full pt-0 text-gray-600">
-        <div className="no-scrollbar relative h-[100%] min-w-[270px] max-w-[300px] overflow-y-auto rounded-xl bg-gray-100 p-4 pt-4">
-          <h2 className="mb-2 text-center text-base font-bold">
+      <div className="relative flex h-full w-full flex-col gap-4 overflow-y-auto pt-0 text-gray-600 md:flex-row md:overflow-y-hidden">
+        <div
+          className={`no-scrollbar relative h-[170px] w-full shrink-0 overflow-y-hidden overflow-x-scroll rounded-xl bg-gray-100 p-2 pt-4 md:h-[100%] md:min-w-[270px] md:max-w-[300px] md:overflow-y-auto md:p-4 ${
+            activeContentType !== "" ? "hidden md:block" : ""
+          }`}
+        >
+          <h2 className="mb-2 text-center text-sm font-bold md:text-base">
             Course Chapters
           </h2>
 
           {createSectionIds?.length === 0 && (
-            <div className="absolute inset-x-0 top-1/2 flex w-full -translate-y-1/2 flex-col gap-2">
-              <p className="text-center text-sm font-semibold">
+            <div className="absolute inset-x-0 top-2/3 flex w-full -translate-y-1/2 flex-col gap-2 md:top-1/2">
+              <p className="text-center text-xs font-semibold md:text-sm">
                 Created chapters will appear here
               </p>
               <svg
@@ -204,39 +208,41 @@ export function CreateProgramContent({
             </div>
           )}
 
-          {createSectionIds?.map((section: ProgramSection, i: number) => (
-            <OneCreatedSection
-              key={section?.id}
-              type={section?.type}
-              name={section?.name as string}
-              total={createSectionIds?.length}
-              index={i}
-              svg={getActiveTypeSvg(section?.type)}
-              activeId={currentEditing?.id}
-              id={section?.id}
-              deleteSection={() => setShowDeleteModal(section?.id)}
-              openEditMode={() => {
-                setBlockContent(undefined);
-                setActiveContentType(undefined);
+          <div className="no-scrollbar flex h-full w-full md:flex-col gap-4 overflow-x-auto flex-row md:overflow-y-auto">
+            {createSectionIds?.map((section: ProgramSection, i: number) => (
+              <OneCreatedSection
+                key={section?.id}
+                type={section?.type}
+                name={section?.name as string}
+                total={createSectionIds?.length}
+                index={i}
+                svg={getActiveTypeSvg(section?.type)}
+                activeId={currentEditing?.id}
+                id={section?.id}
+                deleteSection={() => setShowDeleteModal(section?.id)}
+                openEditMode={() => {
+                  setBlockContent(undefined);
+                  setActiveContentType(undefined);
 
-                if (section?.type === "block") {
-                  setBlockContent(JSON.parse(section?.content as string));
-                }
-                if (section?.type === "document") {
-                  setUploadedDocument(section?.link as string);
-                }
-                if (section?.type === "video") {
-                  setUploadedVideo(section?.link as string);
-                }
-                if (section?.type === "link") {
-                  setDocsLink(section?.link as string);
-                  setShowLinkPreview(false);
-                }
-                setCurrentEditing(section);
-                setActiveContentType(section?.type as string);
-              }}
-            />
-          ))}
+                  if (section?.type === "block") {
+                    setBlockContent(JSON.parse(section?.content as string));
+                  }
+                  if (section?.type === "document") {
+                    setUploadedDocument(section?.link as string);
+                  }
+                  if (section?.type === "video") {
+                    setUploadedVideo(section?.link as string);
+                  }
+                  if (section?.type === "link") {
+                    setDocsLink(section?.link as string);
+                    setShowLinkPreview(false);
+                  }
+                  setCurrentEditing(section);
+                  setActiveContentType(section?.type as string);
+                }}
+              />
+            ))}
+          </div>
         </div>
 
         {activeContentType === "block" && (

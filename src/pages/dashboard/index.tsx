@@ -184,8 +184,8 @@ export default function Dashboard() {
                   )}
                 </div>
                 <div className="relative ml-[90px] mr-4 mt-[3rem] flex justify-between text-tertiary md:ml-[230px]">
-                  <section className="flex w-[70%] flex-col">
-                    <div className="mt-0 grid w-full grid-cols-3 gap-4 lg:justify-between lg:gap-4 2xl:mt-0">
+                  <section className="flex md:w-[70%] w-full flex-col">
+                    <div className="mt-0 grid w-full md:grid-cols-3 grid-cols-1 gap-4 lg:justify-between lg:gap-4 2xl:mt-0">
                       <OneStat
                         svg={
                           <svg
@@ -314,13 +314,13 @@ function OneStat({
 }) {
   return (
     <div
-      className={`stat-shadow flex w-full flex-row items-center gap-3 bg-dark p-2 text-white transition-all duration-300 ease-in first:rounded-tl-3xl sm:w-max lg:w-full lg:flex-col ${
-        roundLastCard ? "last:rounded-tr-3xl" : "last:rounded-r-none"
+      className={`stat-shadow flex w-full flex-row items-center gap-3 bg-dark p-2 text-white transition-all duration-300 ease-in md:first:rounded-tl-3xl sm:w-max lg:w-full lg:flex-col ${
+        roundLastCard ? "md:last:rounded-tr-3xl" : "md:last:rounded-r-none"
       }`}
     >
       <div className="">{svg}</div>
 
-      <div className="mb-4 flex items-center gap-2 text-center text-base">
+      <div className="md:mb-4 flex items-center gap-2 text-center text-base">
         <span className="flex h-[35px] w-[35px] items-center justify-center rounded-full bg-white p-2 text-base font-medium leading-normal text-secondary">
           {num}
         </span>

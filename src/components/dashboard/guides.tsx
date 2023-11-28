@@ -15,7 +15,7 @@ export function NoCourses({}: { showSelectTemplate: () => void }) {
       initial={{ y: 30 }}
       whileInView={{ y: 0 }}
       transition={{ ease: "easeIn", duration: 0.3 }}
-      className="m-auto flex max-w-4xl flex-col justify-center gap-6 rounded-3xl bg-gray-200 p-4 px-8 text-center"
+      className="m-auto mb-4 flex w-full flex-col justify-center gap-6 rounded-3xl bg-gray-200 p-4 md:px-8 px-4 text-center md:max-w-4xl"
     >
       <Image
         src={"/ebook.svg"}
@@ -121,7 +121,7 @@ export function WelcomeGuide({
       initial={{ y: 30 }}
       whileInView={{ y: 0 }}
       transition={{ ease: "easeIn", duration: 0.3 }}
-      className="m-auto flex max-w-4xl flex-col justify-center gap-6 rounded-3xl bg-tertiary p-4 px-8 text-center"
+      className="flex w-full flex-col items-center justify-center gap-6 bg-tertiary p-4 px-8 pl-20 text-center md:m-auto md:max-w-4xl md:rounded-3xl md:pl-8"
     >
       <Image
         src={"/logo.svg"}
@@ -133,7 +133,7 @@ export function WelcomeGuide({
       <h2 className="mt-4 text-2xl font-bold text-white">
         Welcome to Navu360!
       </h2>
-      <p className="mx-auto max-w-[75%] text-base font-medium text-neutral-100">
+      <p className="mx-auto w-full text-base font-medium text-neutral-100 md:w-[75%]">
         Hi {session?.user?.name} 👋 <br />
         We&apos;re excited to have you onboard Navu360, a platform committed to
         redefining the way talent is trained. <br />

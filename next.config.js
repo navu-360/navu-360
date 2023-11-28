@@ -38,6 +38,10 @@ const config = withPWA({
         protocol: "https",
         hostname: "mdbcdn.b-cdn.net",
       },
+      {
+        protocol: "https",
+        hostname: "upload.wikimedia.org",
+      }
     ],
   },
 

@@ -63,10 +63,10 @@ export function QuestionView({
         </div>
       )}
       {!fromView && (
-        <div className="mt-2 flex w-full items-center justify-end gap-4">
+        <div className="mt-2 flex w-full flex-col items-center justify-end gap-4 md:flex-row">
           <button
             onClick={() => setShowEditQuestion(true)}
-            className="flex items-center gap-2 rounded-md border-[1px] border-gray-700 px-8 py-1.5 text-sm font-medium text-gray-700"
+            className="flex w-full items-center gap-2 rounded-md border-[1px] border-gray-700 px-8 py-1.5 text-sm font-medium text-gray-700 md:w-max"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -87,7 +87,7 @@ export function QuestionView({
           </button>
           <button
             onClick={() => setShowDeleteModal(id)}
-            className="flex items-center gap-2 rounded-md border-[1px] border-red-700 px-8 py-1.5 text-sm font-medium text-red-700"
+            className="flex w-full items-center gap-2 rounded-md border-[1px] border-red-700 px-8 py-1.5 text-sm font-medium text-red-700 md:w-max"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

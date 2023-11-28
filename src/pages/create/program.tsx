@@ -221,9 +221,9 @@ export default function CreateProgram() {
     <>
       <Header title="Create a new Course" />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[90px] mt-[20px] flex h-full flex-col items-start justify-start gap-4 rounded-md p-4 md:ml-[300px] md:w-[calc(100%_-_400px)]">
+        <div className="relative ml-[80px] mt-[20px] flex h-full w-[calc(100%_-_90px)] flex-col items-start justify-start gap-4 rounded-md p-0 md:ml-[300px] md:w-[calc(100%_-_400px)] md:p-4">
           <Steps doneSteps={getDoneSteps()} activeStep={activeTab} />
-          <div className="shadowAroundFeature relative h-[calc(100vh_-_160px)] w-full overflow-hidden rounded-md bg-white p-4 pb-16">
+          <div className="shadowAroundFeature relative h-[calc(100vh_-_140px)] w-full overflow-hidden rounded-md bg-white p-4 pb-32 md:h-[calc(100vh_-_160px)] md:pb-16">
             {activeTab === 0 && (
               <ProgramDetails receiveData={setProgramDetails} />
             )}
@@ -234,7 +234,7 @@ export default function CreateProgram() {
             )}
             {activeTab === 2 && <ConfirmStep />}
 
-            <div className="absolute inset-x-0 bottom-0 flex w-full justify-between border-t-[1px] border-t-neutral-200 bg-neutral-100 px-4 py-2">
+            <div className="absolute inset-x-0 bottom-0 flex w-full flex-col justify-between gap-5 border-t-[1px] border-t-neutral-200 bg-neutral-100 px-4 py-2 md:flex-row">
               <button
                 onClick={() => {
                   if (activeTab === 0) {
@@ -243,7 +243,7 @@ export default function CreateProgram() {
                   }
                   setActiveTab(activeTab - 1);
                 }}
-                className="rounded-md border-[1px] border-gray-400 bg-transparent px-8 py-1.5 text-sm font-medium text-gray-500"
+                className="md:w-max w-full rounded-md border-[1px] border-gray-400 bg-transparent px-8 py-1.5 text-sm font-medium text-gray-500"
               >
                 {activeTab === 0 ? "Cancel" : "Back"}
               </button>
@@ -281,7 +281,7 @@ export default function CreateProgram() {
                     setActiveTab(activeTab + 1);
                   }}
                   disabled={creating || uploading || editing}
-                  className="rounded-md bg-secondary px-8 py-1.5 text-sm font-semibold text-white"
+                  className="w-full rounded-md bg-secondary px-8 py-1.5 text-sm font-semibold text-white md:w-max"
                 >
                   {activeTab === 2
                     ? draftProgramId?.length > 0
@@ -319,7 +319,7 @@ function Steps({
 }) {
   // TODO: make steps clickable
   return (
-    <ol className="flex w-full items-center text-center text-sm font-medium text-gray-400 sm:text-base">
+    <ol className="flex w-full items-center pt-1 text-center text-sm font-medium text-gray-400 sm:text-base">
       <li
         className={`after:border-1 flex items-center font-medium tracking-tight text-secondary after:mx-6 after:hidden after:h-1 after:w-full  after:border-b sm:after:inline-block sm:after:content-[''] md:w-full xl:after:mx-5 ${
           doneSteps?.includes(0)
@@ -334,7 +334,7 @@ function Steps({
         >
           {doneSteps?.includes(0) ? (
             <svg
-              className="mr-2.5 h-3.5 w-3.5 sm:h-4 sm:w-4"
+              className="mr-2.5 h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -344,7 +344,7 @@ function Steps({
             </svg>
           ) : (
             <div
-              className={`mr-2 h-4 w-4 rounded-full ${
+              className={`mr-2 h-4 w-4 shrink-0 rounded-full ${
                 activeStep === 0 ? "bg-secondary" : "bg-gray-300"
               }`}
             />
@@ -368,7 +368,7 @@ function Steps({
         >
           {doneSteps?.includes(1) ? (
             <svg
-              className="mr-2.5 h-3.5 w-3.5 sm:h-4 sm:w-4"
+              className="mr-2.5 h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -378,7 +378,7 @@ function Steps({
             </svg>
           ) : (
             <div
-              className={`mr-2 h-4 w-4 rounded-full ${
+              className={`mr-2 h-4 w-4 shrink-0 rounded-full ${
                 activeStep === 1 ? "bg-secondary" : "bg-gray-300"
               }`}
             />
@@ -396,7 +396,7 @@ function Steps({
       >
         {doneSteps?.includes(2) ? (
           <svg
-            className="mr-2.5 h-3.5 w-3.5 sm:h-4 sm:w-4"
+            className="mr-2.5 h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
@@ -406,7 +406,7 @@ function Steps({
           </svg>
         ) : (
           <div
-            className={`mr-2 h-4 w-4 rounded-full ${
+            className={`mr-2 h-4 w-4 shrink-0 rounded-full ${
               activeStep === 2 ? "bg-secondary" : "bg-gray-300"
             }`}
           />

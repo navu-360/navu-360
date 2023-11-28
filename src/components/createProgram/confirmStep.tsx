@@ -25,29 +25,29 @@ export function ConfirmStep() {
 
   return (
     <section
-      className={`relative flex h-full min-h-[70vh] w-full flex-col items-center gap-4 text-center ${
+      className={`relative flex h-full w-full flex-col items-center gap-4 text-center md:min-h-[70vh] ${
         !showCreateQuiz ? "justify-center" : "justify-start"
       }`}
     >
       {!showCreateQuiz ? (
         <>
-          <h2 className="text-2xl font-semibold text-tertiary">
+          <h2 className="text-xl font-semibold text-tertiary md:text-2xl">
             {edit ? "Edit Complete!" : "Course Creation Complete!"}
           </h2>
           <p className="mx-auto max-w-xl text-sm font-medium text-gray-700">
             Your course has been successfully {edit ? "edited" : "created"}.{" "}
             <br /> Do you want to add a quiz to your course?
           </p>
-          <div className="mx-auto mt-2 flex w-max items-center gap-6">
+          <div className="mx-auto mt-2 flex flex-col items-center gap-6 md:w-[600px] md:flex-row">
             <button
               onClick={() => router.replace(`/programs/${draftProgramId}`)}
-              className="rounded-md border-[1px] border-gray-700 px-12 py-1.5 font-semibold text-gray-700"
+              className="w-full rounded-md border-[1px] border-gray-700 px-8 py-1.5 font-semibold text-gray-700"
             >
               No, I&apos;m done
             </button>
             <button
               onClick={() => setShowCreateQuiz(true)}
-              className="rounded-md bg-secondary px-12 py-1.5 font-semibold text-white"
+              className="h-max w-full rounded-md bg-secondary px-8 py-1.5 font-semibold text-white"
             >
               Yes, add a quiz
             </button>
