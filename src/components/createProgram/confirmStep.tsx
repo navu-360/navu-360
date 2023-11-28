@@ -38,16 +38,16 @@ export function ConfirmStep() {
             Your course has been successfully {edit ? "edited" : "created"}.{" "}
             <br /> Do you want to add a quiz to your course?
           </p>
-          <div className="mx-auto mt-2 flex flex-col items-center gap-6 md:w-max md:flex-row">
+          <div className="mx-auto mt-2 flex flex-col items-center gap-6 md:w-[600px] md:flex-row">
             <button
               onClick={() => router.replace(`/programs/${draftProgramId}`)}
-              className="w-full rounded-md border-[1px] border-gray-700 px-12 py-1.5 font-semibold text-gray-700"
+              className="w-full rounded-md border-[1px] border-gray-700 px-8 py-1.5 font-semibold text-gray-700"
             >
               No, I&apos;m done
             </button>
             <button
               onClick={() => setShowCreateQuiz(true)}
-              className="w-full rounded-md bg-secondary px-12 py-1.5 font-semibold text-white"
+              className="h-max w-full rounded-md bg-secondary px-8 py-1.5 font-semibold text-white"
             >
               Yes, add a quiz
             </button>
