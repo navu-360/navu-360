@@ -11,7 +11,7 @@ export function InsertNewSection({
   showLibrary: () => void;
 }) {
   return (
-    <div className="relative mx-auto flex 2xl:max-w-[500px] h-max flex-col gap-2 rounded-md p-4 pb-16 shadow-md">
+    <div className="relative mx-auto flex md:h-max h-auto w-full flex-col gap-2 rounded-md p-4 pb-16 shadow-md 2xl:max-w-[500px]">
       <h3 className="flex items-center gap-1 text-lg font-semibold text-blue-500">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -61,7 +61,9 @@ export function InsertNewSection({
               </div>
 
               <div className="flex flex-col">
-                <h3 className="text-lg font-semibold">Add a Block Editor</h3>
+                <h3 className="text-base font-semibold md:text-lg">
+                  Add a Block Editor
+                </h3>
                 <p className="text-sm font-medium text-gray-600">
                   Craft detailed chapter with text formatting, tables, lists,
                   checkboxes, images, and more.
@@ -87,7 +89,9 @@ export function InsertNewSection({
               </div>
 
               <div className="flex flex-col">
-                <h3 className="text-lg font-semibold">Add a Document</h3>
+                <h3 className="text-base font-semibold md:text-lg">
+                  Add a Document
+                </h3>
                 <p className="text-sm font-medium text-gray-600">
                   Add a PDF as a chapter for detailed instructions, guides, or
                   additional reading.
@@ -122,7 +126,9 @@ export function InsertNewSection({
               </div>
 
               <div className="flex flex-col">
-                <h3 className="text-lg font-semibold">Upload Video</h3>
+                <h3 className="text-base font-semibold md:text-lg">
+                  Upload Video
+                </h3>
                 <p className="text-sm font-medium text-gray-600">
                   Upload a video file as a chapter. Supported formats: MP4
                 </p>
@@ -142,7 +148,7 @@ export function InsertNewSection({
             <div className="flex items-center gap-4">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-secondary/20 shadow-sm">
                 <Image
-                  src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/24px-Google_%22G%22_logo.svg.png"
                   height={24}
                   width={24}
                   alt="Add a Link for Google Docs or Google Slides"
@@ -150,7 +156,7 @@ export function InsertNewSection({
               </div>
 
               <div className="flex flex-col">
-                <h3 className="text-lg font-semibold">
+                <h3 className="text-base font-semibold md:text-lg">
                   Add a Link for Google Docs or Google Slides
                 </h3>
                 <p className="text-sm font-medium text-gray-600">
@@ -192,7 +198,9 @@ export function InsertNewSection({
               </div>
 
               <div className="flex flex-col">
-                <h3 className="text-lg font-semibold">Chapter From library</h3>
+                <h3 className="text-base font-semibold md:text-lg">
+                  Chapter From library
+                </h3>
                 <p className="text-sm font-medium text-gray-600">
                   Select a pre-created chapter from your library
                 </p>
@@ -203,7 +211,7 @@ export function InsertNewSection({
       </div>
 
       {!isFirst && (
-        <p className="absolute bottom-3 w-full text-center text-sm font-medium italic text-gray-600">
+        <p className="md:absolute bottom-3 w-full inset-x-0 text-center text-sm font-medium italic text-gray-600">
           When done adding chapters, click on the &quot;Save & Continue&quot;
           button
         </p>

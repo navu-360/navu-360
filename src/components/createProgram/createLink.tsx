@@ -148,12 +148,12 @@ export default function CreateLinkChapter({
       className={`relative flex flex-col justify-center ${
         fromLibrary
           ? "h-[calc(100vh_-_180px)] w-full gap-8 pl-4 2xl:h-[calc(100vh_-_480px)]"
-          : "ml-auto h-[calc(100vh_-_310px)] w-[calc(100%_-_330px)] gap-8 2xl:h-[calc(100vh_-_400px)]"
+          : "h-[calc(100vh_-_310px)] w-full gap-8 md:ml-auto md:w-[calc(100%_-_330px)]"
       }`}
     >
       {!showLinkPreview && (
         <form
-          className={`mx-auto flex h-[50px] w-max shrink-0 items-center rounded-md`}
+          className={`mx-auto flex h-[50px] md:w-max shrink-0 items-center rounded-md`}
         >
           <input
             type="url"
@@ -165,7 +165,7 @@ export default function CreateLinkChapter({
             ]}
             autoComplete="website"
             placeholder="Paste a google document link here"
-            className="common-input block !h-full !w-[400px] items-center justify-start rounded-md !rounded-r-none bg-white/5 pl-2 text-tertiary shadow-sm ring-white/10 sm:text-sm sm:leading-6"
+            className="common-input block !h-full md:!w-[400px] w-full items-center justify-start rounded-md !rounded-r-none bg-white/5 pl-2 text-tertiary shadow-sm ring-white/10 sm:text-sm sm:leading-6"
           />
           <button
             onClick={(e) => {
@@ -207,7 +207,7 @@ export default function CreateLinkChapter({
       )}
 
       {showLinkPreview && (
-        <div className="absolute inset-x-0 -bottom-24 flex w-full justify-start gap-8 bg-white pb-8">
+        <div className="flex w-full flex-col justify-start gap-2 bg-white pb-8 md:absolute md:inset-x-0 md:-bottom-24 md:flex-row md:gap-8">
           <button
             disabled={editingSection || creatingSection || !docsLink}
             onClick={() => {
@@ -219,13 +219,13 @@ export default function CreateLinkChapter({
                 }
               }
             }}
-            className="h-max w-max rounded-md bg-green-500 px-8 py-1.5 text-sm font-semibold text-white"
+            className="h-max md:w-max w-full rounded-md bg-green-500 px-8 py-1.5 text-sm font-semibold text-white"
           >
             {editingSection || creatingSection
               ? "Saving..."
               : currentEditing
-              ? "Save Changes"
-              : "Save Chapter"}
+                ? "Save Changes"
+                : "Save Chapter"}
           </button>
           <button
             disabled={!currentEditing}

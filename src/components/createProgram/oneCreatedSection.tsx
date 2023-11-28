@@ -18,7 +18,7 @@ export function OneCreatedSection({
 }) {
   return (
     <div
-      className={`relative mb-2 flex h-28 w-full cursor-pointer items-center justify-between gap-6 rounded-lg border-[2px] bg-gray-50 p-2 pl-4 pr-14 shadow-sm  ${
+      className={`relative mb-2 flex h-28 md:w-full w-4/5 cursor-pointer items-center justify-between gap-6 rounded-lg border-[2px] bg-gray-50 p-2 pl-4 pr-14 shadow-sm  ${
         activeId === id ? "border-secondary" : "border-white"
       }`}
     >

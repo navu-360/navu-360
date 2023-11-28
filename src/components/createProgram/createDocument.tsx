@@ -175,8 +175,8 @@ export default function CreateDocumentChapter({
     <div
       className={`relative flex flex-col ${
         fromLibrary
-          ? "h-[calc(100vh_-_180px)] w-full gap-8 2xl:h-[calc(100vh_-_480px)] pl-4"
-          : "ml-auto h-[calc(100vh_-_310px)] w-[calc(100%_-_330px)] gap-8 2xl:h-[calc(100vh_-_400px)]"
+          ? "h-[calc(100vh_-_180px)] w-full gap-8 pl-4 2xl:h-[calc(100vh_-_480px)]"
+          : "h-[calc(100vh_-_310px)] w-full gap-8 md:ml-auto md:w-[calc(100%_-_330px)]"
       }`}
     >
       {uploadedDocument && (
@@ -184,7 +184,9 @@ export default function CreateDocumentChapter({
           file={uploadedDocument}
           onLoadSuccess={onDocumentLoadSuccess}
           options={options}
-          className={"no-scrollbar h-[calc(100%_-_100px)] overflow-y-auto w-full"}
+          className={
+            "no-scrollbar h-[calc(100%_-_100px)] min-h-[400px] w-full overflow-y-auto"
+          }
           onLoadError={(err) => console.log(err)}
         >
           {Array.from(new Array(numPages), (el, index) => (
@@ -220,7 +222,7 @@ export default function CreateDocumentChapter({
         </svg>
       </div>
       {!uploadedDocument && (
-        <div className="flex h-[calc(100%_-_100px)] w-[calc(100%_-_100px)] items-center justify-center">
+        <div className="flex h-[calc(100%_-_100px)] w-full items-center justify-center md:w-[calc(100%_-_100px)]">
           <label
             htmlFor="dropzone-file"
             className="dark:hover:bg-bray-800 flex h-full w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 "
@@ -241,7 +243,7 @@ export default function CreateDocumentChapter({
                   d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
                 />
               </svg>
-              <p className="mb-2 text-sm text-gray-500 ">
+              <p className="mb-2 pl-2 text-sm text-gray-500">
                 <span className="font-semibold">Click to upload</span> or drag
                 and drop
               </p>
@@ -264,7 +266,7 @@ export default function CreateDocumentChapter({
           </label>
         </div>
       )}
-      <div className="flex h-max w-[calc(100%_-_100px)] flex-col gap-2">
+      <div className="flex h-max w-full flex-col gap-2 md:w-[calc(100%_-_100px)]">
         <label htmlFor="name">Chapter Name</label>
         <input
           type="text"
@@ -276,7 +278,7 @@ export default function CreateDocumentChapter({
           className="common-input"
         />
       </div>
-      <div className="absolute inset-x-0 -bottom-24 flex w-full justify-start gap-8 bg-white pb-8">
+      <div className="flex w-full flex-col justify-start gap-2 bg-white pb-8 md:absolute md:inset-x-0 md:-bottom-24 md:flex-row md:gap-8">
         <button
           disabled={
             !uploadedDocument || editingSection || creatingSection || uploading
@@ -290,13 +292,13 @@ export default function CreateDocumentChapter({
               }
             }
           }}
-          className="h-max w-max rounded-md bg-green-500 px-8 py-1.5 text-sm font-semibold text-white"
+          className="h-max w-full rounded-md bg-green-500 px-8 py-1.5 text-sm font-semibold text-white md:w-max"
         >
           {editingSection || creatingSection || uploading
             ? "Saving..."
             : currentEditing
-            ? "Save Changes"
-            : "Save Chapter"}
+              ? "Save Changes"
+              : "Save Chapter"}
         </button>
         <button
           disabled={!currentEditing}

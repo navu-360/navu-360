@@ -596,6 +596,8 @@ button:disabled {
     position: relative;
 }
 
+
+
 /* Absolute positioning */
 .Tooltip-Tip {
     position: absolute;
@@ -610,6 +612,12 @@ button:disabled {
     line-height: 1;
     z-index: 100;
     white-space: nowrap;
+}
+
+@media screen and (max-width: 768px) {
+    .Tooltip-Tip {
+        display: none;
+    }
 }
 
 /* CSS border triangles */

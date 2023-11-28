@@ -35,7 +35,7 @@ export default function DashboardWrapper({
 
   return (
     <main
-      className={`flex h-max min-h-screen w-full flex-col gap-0 ${
+      className={`flex h-max min-h-screen w-full flex-col overflow-x-hidden gap-0 ${
         hideNav ? "pt-0" : "pt-[65px]"
       }`}
     >

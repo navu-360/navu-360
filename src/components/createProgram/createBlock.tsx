@@ -124,10 +124,10 @@ export default function CreateBlockChapter({
 
   return (
     <div
-      className={`relative flex flex-col ${
+      className={`relative flex flex-col no-scrollbar ${
         fromLibrary
           ? "h-[calc(100vh_-_180px)] w-full gap-8 2xl:h-[calc(100vh_-_400px)]"
-          : "ml-auto h-[calc(100vh_-_310px)] w-[calc(100%_-_330px)] gap-8"
+          : "md:ml-auto w-full h-[calc(100vh_-_310px)] md:w-[calc(100%_-_330px)] gap-8"
       }`}
     >
       <Editor
@@ -149,7 +149,7 @@ export default function CreateBlockChapter({
         />
       </div>
 
-      <div className="absolute inset-x-0 -bottom-24 flex w-full justify-start gap-8 bg-white pb-8">
+      <div className="md:absolute md:inset-x-0 md:-bottom-24 flex md:flex-row flex-col w-full justify-start md:gap-8 gap-2 bg-white pb-8">
         <button
           disabled={
             blockContent?.blocks?.length === 0 ||
@@ -167,7 +167,7 @@ export default function CreateBlockChapter({
               }
             }
           }}
-          className="h-max w-max rounded-md bg-green-500 px-8 py-1.5 text-sm font-semibold text-white"
+          className="h-max md:w-max rounded-md bg-green-500 w-full px-8 py-1.5 text-sm font-semibold text-white"
         >
           {editingSection || creatingSection
             ? "Saving..."
