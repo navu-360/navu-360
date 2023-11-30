@@ -2,6 +2,7 @@ import Image from "next/image";
 import React from "react";
 
 import { signIn } from "next-auth/react";
+import CtaCard from "./ctaCard";
 
 export default function Hero() {
   return (
@@ -15,8 +16,8 @@ export default function Hero() {
           <p className="text-medium text-center text-base !leading-[150%] lg:text-left xl:text-lg 2xl:text-xl">
             Create, manage, and scale custom training programs effortlessly.{" "}
             <br className="hidden md:block" />
-            Our LMS platform turns talent management and employee training into
-            an inspiring journey!
+            Start simplifying your training operations and achieve quantifiable
+            development today
           </p>
           <button
             onClick={() =>
@@ -28,8 +29,9 @@ export default function Hero() {
           >
             Start for Free
           </button>
+          <CtaCard />
         </div>
-        <div className="max-w-1/2 relative z-10 mt-[120px] h-[20vw] min-h-[200px] w-[80vw] lg:-ml-[100px] lg:h-[400px] xl:-ml-[130px] 2xl:h-[600px]">
+        <div className="max-w-1/2 relative z-10 mt-[50px] h-[20vw] min-h-[200px] w-[80vw] lg:-ml-[100px] lg:h-[400px] xl:-ml-[80px] 2xl:h-[600px]">
           <Image
             src="https://res.cloudinary.com/dpnbddror/image/upload/v1677952140/7450159_2_uweuhi.png"
             alt="Simpify your workflow"
