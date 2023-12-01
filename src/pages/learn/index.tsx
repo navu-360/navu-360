@@ -134,7 +134,7 @@ export default function LearnCenter() {
               </>
             )}
             {data?.data?.length > 0 && (
-              <div className="mt-4 grid w-full grid-cols-2 gap-4 2xl:grid-cols-4">
+              <div className="mt-4 grid w-full grid-cols-1 gap-4 lg:grid-cols-2 2xl:grid-cols-4">
                 {data?.data?.map(
                   (
                     program: OnboardingProgramTalents & {
@@ -162,7 +162,7 @@ export default function LearnCenter() {
                 )}
               </div>
             )}
-            <div className="mt-4 grid w-full grid-cols-4 gap-4">
+            <div className="mt-4 grid w-full grid-cols-1 gap-4 lg:grid-cols-2 2xl:grid-cols-4">
               {!data && (
                 <>
                   <CourseShimmer />
@@ -205,8 +205,6 @@ export function OneCourse({
   const { data: enrollmentStatus } = useGetEnrollmentStatusQuery(body, {
     skip: !programId,
   });
-
-  console.log(enrollmentStatus);
 
   const doneSections =
     enrollmentStatus?.data?.viewedChapters?.length +
