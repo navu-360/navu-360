@@ -305,6 +305,9 @@ export default function ViewEnrollment({
         // setQuizDone - if enrollmentStatus?.data.quizCompleted
         setQuizDone(enrollmentStatus?.data.quizCompleted);
       }
+      if (preview) {
+        setCourseDone(false);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enrollmentStatus?.data, data?.OnboardingProgram, preview]);

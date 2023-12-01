@@ -181,6 +181,9 @@ export default function AllTalents() {
                                     <span className="ml-3 font-bold capitalize">
                                       {talent?.name}
                                     </span>
+                                    <span className="ml-3 font-bold capitalize">
+                                      {talent?.email}
+                                    </span>
                                   </td>
                                   <td className="role whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
                                     {data?.data?.filter(
