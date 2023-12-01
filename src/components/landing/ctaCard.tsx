@@ -8,6 +8,8 @@ const font = Play({
   subsets: ["cyrillic"],
 });
 
+import { motion } from "framer-motion";
+
 export default function CtaCard() {
   return (
     <div className="w-full md:absolute md:bottom-12 md:left-1/2 md:w-max md:-translate-x-1/2 2xl:bottom-16">
@@ -15,17 +17,22 @@ export default function CtaCard() {
         Accelerate learning, minimize resource use
       </h2>
       <div className="mt-4 grid grid-cols-1 place-content-center place-items-center items-center gap-4 md:grid-cols-3">
-        <OneOffering text="Training" />
-        <OneOffering text="Onboarding" />
-        <OneOffering text="LMS" />
+        <OneOffering text="Training" delay={0} />
+        <OneOffering text="Onboarding" delay={0.1} />
+        <OneOffering text="LMS" delay={0.2} />
       </div>
     </div>
   );
 }
 
-function OneOffering({ text }: { text: string }) {
+function OneOffering({ text, delay }: { text: string; delay: number }) {
   return (
-    <div className="btn-offering w-full">
+    <motion.div
+      initial={{ x: 10, opacity: 0.5 }}
+      whileInView={{ x: 0, opacity: 1 }}
+      transition={{ ease: "easeIn", duration: 0.5, delay }}
+      className="btn-offering w-full"
+    >
       <span className="">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -47,6 +54,6 @@ function OneOffering({ text }: { text: string }) {
         </svg>{" "}
         {text}
       </span>
-    </div>
+    </motion.div>
   );
 }
