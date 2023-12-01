@@ -142,9 +142,9 @@ export default function AllTalents({
       selectedType === "Enrolled"
         ? setShowingTalents(getEnrolledTalentsFromEnrollments())
         : selectedType === "Invited"
-        ? // filter invites, remove those who are already enrolled, filter by email
-          setShowingTalents(invitedAndNotEnrolled ?? [])
-        : setShowingTalents(talentsWithoutPrograms ?? []);
+          ? // filter invites, remove those who are already enrolled, filter by email
+            setShowingTalents(invitedAndNotEnrolled ?? [])
+          : setShowingTalents(talentsWithoutPrograms ?? []);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.data, selectedType, sentInvites?.data, talentsWithoutPrograms]);
@@ -375,12 +375,14 @@ export default function AllTalents({
                                 className="h-12 w-12 rounded-full"
                                 alt={talent?.name}
                               />
-                              <span className="ml-3 font-bold capitalize">
-                                {talent?.name}
-                              </span>
-                              <span className="ml-3 font-bold capitalize">
-                                {talent?.email}
-                              </span>
+                              <div className="ml-3 flex flex-col">
+                                <span className="font-bold capitalize">
+                                  {talent?.name}
+                                </span>
+                                <span className="font-bold capitalize">
+                                  {talent?.email}
+                                </span>
+                              </div>
                             </td>
                             <td className="role whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
                               {data?.data?.filter(
