@@ -182,7 +182,7 @@ export default function AllTalents() {
                                       <span className="font-bold capitalize">
                                         {talent?.name}
                                       </span>
-                                      <span className="font-bold capitalize">
+                                      <span className="font-semibold lowercase text-gray-400 gap-1">
                                         {talent?.email}
                                       </span>
                                     </div>

@@ -379,7 +379,7 @@ export default function AllTalents({
                                 <span className="font-bold capitalize">
                                   {talent?.name}
                                 </span>
-                                <span className="font-bold capitalize">
+                                <span className="gap-1 font-semibold lowercase text-gray-400">
                                   {talent?.email}
                                 </span>
                               </div>
@@ -440,7 +440,7 @@ export default function AllTalents({
                                 className="ml-4 h-12 w-12 rounded-full lg:ml-0"
                                 alt={talent?.email as string}
                               />
-                              <span className="ml-3 font-bold">
+                              <span className="ml-3 font-bold lowercase">
                                 {talent?.email}
                               </span>
                             </th>
