@@ -305,6 +305,9 @@ export default function ViewEnrollment({
         // setQuizDone - if enrollmentStatus?.data.quizCompleted
         setQuizDone(enrollmentStatus?.data.quizCompleted);
       }
+      if (preview) {
+        setCourseDone(false);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enrollmentStatus?.data, data?.OnboardingProgram, preview]);
@@ -313,12 +316,12 @@ export default function ViewEnrollment({
     <>
       <Header title={`${data?.OnboardingProgram?.name}`} />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[90px] mr-4 mt-[20px] flex h-[calc(100vh_-_105px)] w-auto items-start justify-start rounded-md bg-gray-100 p-4 md:ml-[250px]">
+        <div className="relative ml-[90px] mr-4 mt-[20px] flex h-[calc(100vh_-_105px)] w-auto items-start md:flex-row flex-col justify-start rounded-md bg-gray-100 p-4 md:ml-[250px]">
           {enrollmentStatus?.data && (
             <>
               <div
                 className={`no-scrollbar relative flex h-full flex-col gap-6 overflow-y-auto ${
-                  courseDone ? "w-full" : "w-[calc(100%_-_350px)]"
+                  courseDone ? "w-full" : "md:w-[calc(100%_-_350px)] w-full"
                 }`}
               >
                 {showingIntro && (
@@ -600,7 +603,7 @@ export default function ViewEnrollment({
                 )}
 
                 {!showingIntro && !chaptersDone && !courseDone && (
-                  <div className="relative mt-auto flex h-[60px] w-full shrink-0 items-center justify-between rounded-b-md border-[1px] border-neutral-300 px-8">
+                  <div className="relative mt-auto flex h-[60px] w-full shrink-0 items-center justify-between rounded-b-md border-[1px] border-neutral-300 md:px-8 px-2">
                     <button
                       disabled={
                         data?.OnboardingProgram?.ProgramSection[0]?.id ===
@@ -693,7 +696,7 @@ export default function ViewEnrollment({
                 )}
               </div>
               {!courseDone && (
-                <div className="fixed bottom-5 right-4 top-[95px] z-50 flex h-auto w-[350px] flex-col gap-8 rounded-br-md rounded-tr-md border-l-[1px] border-gray-300 bg-gray-100 p-4 px-0">
+                <div className="z-50 hidden md:flex h-auto w-full flex-col gap-8 rounded-br-md rounded-tr-md border-l-[1px] border-gray-300 bg-gray-100 p-4 px-0 md:fixed md:bottom-5 md:right-4 md:top-[95px] md:w-[350px]">
                   <div className="flex flex-col gap-6 px-4 text-tertiary">
                     <h2 className="text-lg font-semibold">About the Course</h2>
                     <div className="flex w-full flex-col items-start gap-3">

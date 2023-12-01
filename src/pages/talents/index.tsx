@@ -178,9 +178,14 @@ export default function AllTalents() {
                                       className="h-12 w-12 rounded-full"
                                       alt={talent?.name}
                                     />
-                                    <span className="ml-3 font-bold capitalize">
-                                      {talent?.name}
-                                    </span>
+                                    <div className="ml-3 flex flex-col">
+                                      <span className="font-bold capitalize">
+                                        {talent?.name}
+                                      </span>
+                                      <span className="font-semibold lowercase text-gray-400 gap-1">
+                                        {talent?.email}
+                                      </span>
+                                    </div>
                                   </td>
                                   <td className="role whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
                                     {data?.data?.filter(

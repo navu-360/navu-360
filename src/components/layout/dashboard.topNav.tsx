@@ -116,7 +116,7 @@ export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
       {!hideSearch && (
         <form
           onSubmit={(e) => e.preventDefault()}
-          className="relative ml-[15%] mr-auto hidden h-[40px] w-[50%] rounded-md border-[1px] border-gray-300 px-4 py-1 md:block 2xl:w-[40%]"
+          className="relative mr-auto hidden h-[40px] w-[50%] rounded-md border-[1px] border-gray-300 px-4 py-1 md:block 2xl:ml-[15%] 2xl:w-[40%]"
         >
           <input
             type="text"
@@ -173,34 +173,35 @@ function AdminCard() {
 
   return (
     <div className="right-4 top-2 flex cursor-pointer items-center gap-2 pt-0 transition-all duration-300 ease-in md:fixed">
-      {status !== "loading" ? (
-        !session?.user?.customerId && (
-          <button
-            onClick={() => {
-              setShowChangePlan(true);
-            }}
-            className="mr-8 flex h-max w-max items-center justify-center gap-2 rounded-3xl bg-secondary px-12 py-2 text-base font-semibold text-white"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              className="lucide lucide-sparkle"
+      {(session?.user?.role === "admin" || status === "loading") &&
+        (status !== "loading" ? (
+          !session?.user?.customerId && (
+            <button
+              onClick={() => {
+                setShowChangePlan(true);
+              }}
+              className="mr-8 flex h-max w-max items-center justify-center gap-2 rounded-3xl bg-secondary px-12 py-2 text-base font-semibold text-white"
             >
-              <path d="m12 3-1.9 5.8a2 2 0 0 1-1.287 1.288L3 12l5.8 1.9a2 2 0 0 1 1.288 1.287L12 21l1.9-5.8a2 2 0 0 1 1.287-1.288L21 12l-5.8-1.9a2 2 0 0 1-1.288-1.287Z" />
-            </svg>
-            Upgrade Plan
-          </button>
-        )
-      ) : (
-        <button className="mr-8 flex h-[40px] w-full shrink-0 animate-pulse items-center justify-center gap-2 rounded-3xl bg-gray-400 px-12 py-2 text-base font-semibold text-white"></button>
-      )}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="lucide lucide-sparkle"
+              >
+                <path d="m12 3-1.9 5.8a2 2 0 0 1-1.287 1.288L3 12l5.8 1.9a2 2 0 0 1 1.288 1.287L12 21l1.9-5.8a2 2 0 0 1 1.287-1.288L21 12l-5.8-1.9a2 2 0 0 1-1.288-1.287Z" />
+              </svg>
+              Upgrade Plan
+            </button>
+          )
+        ) : (
+          <button className="mr-8 flex h-[40px] w-full shrink-0 animate-pulse items-center justify-center gap-2 rounded-3xl bg-gray-400 px-12 py-2 text-base font-semibold text-white"></button>
+        ))}
       <div
         onClick={() => router.push("/account")}
         className="relative flex h-[50px] w-[50px] shrink-0 items-center justify-center rounded-full"
