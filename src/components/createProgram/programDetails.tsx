@@ -120,7 +120,7 @@ export function ProgramDetails({
   }, [editingProgram]);
 
   return (
-    <form className="flex h-full flex-col gap-12 overflow-y-auto">
+    <form className="flex h-full w-full flex-col gap-12 overflow-y-auto">
       <div className="relative flex flex-col gap-2">
         <label htmlFor="role">Course Name</label>
         <input
@@ -132,6 +132,7 @@ export function ProgramDetails({
           onChange={(e) => setName(e.target.value)}
           aria-required
           minLength={3}
+          autoFocus
           placeholder="e.g Sales Training Course"
           className="common-input program-create-form text-sm"
           required
@@ -169,7 +170,7 @@ export function ProgramDetails({
           onChange={(e) => setSelectedDepartments(e)}
         />
       </div>
-      <div className="mb-4 flex max-w-[600px] flex-col gap-2">
+      <div className="mb-4 flex w-full max-w-[600px] flex-col gap-2">
         <label>Course Cover Image</label>
 
         <div className="relative flex h-[300px] w-full items-center justify-center">
@@ -225,29 +226,31 @@ export function ProgramDetails({
               alt="Uploaded Image"
             />
           )}
-          <div
-            onClick={() => {
-              setUploadedImage(null);
-            }}
-            title="Close editor"
-            className="absolute -right-14 top-0 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-gray-400 text-white"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              className="lucide lucide-x"
+          {uploadedImage && (
+            <div
+              onClick={() => {
+                setUploadedImage(null);
+              }}
+              title="Close editor"
+              className="absolute right-2 top-2 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-400 text-white md:-right-14 md:top-0"
             >
-              <path d="M18 6 6 18" />
-              <path d="m6 6 12 12" />
-            </svg>
-          </div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="lucide lucide-x"
+              >
+                <path d="M18 6 6 18" />
+                <path d="m6 6 12 12" />
+              </svg>
+            </div>
+          )}
         </div>
       </div>
     </form>

@@ -38,6 +38,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         talentOrgId: organization?.id,
         role: "talent",
       },
+      cacheStrategy: {
+        ttl: 60,
+        swr: 10,
+      },
     });
 
     return res.status(200).json({ message: `Users found.`, data: users });

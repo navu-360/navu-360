@@ -54,10 +54,13 @@ export default function LearnCenter() {
 
   // get all enrolled programs
   const talentId = userProfile?.id;
-  const { currentData: data, isFetching } = useGetTalentEnrollmentsQuery(talentId, {
-    skip: !talentId,
-    refetchOnMountOrArgChange: true,
-  });
+  const { currentData: data, isFetching } = useGetTalentEnrollmentsQuery(
+    talentId,
+    {
+      skip: !talentId,
+      refetchOnMountOrArgChange: true,
+    },
+  );
 
   useEffect(() => {
     if (data?.data?.length > 0) {
@@ -131,7 +134,7 @@ export default function LearnCenter() {
               </>
             )}
             {data?.data?.length > 0 && (
-              <div className="mt-4 grid w-full grid-cols-4 gap-4">
+              <div className="mt-4 grid w-full grid-cols-1 gap-4 lg:grid-cols-2 2xl:grid-cols-4">
                 {data?.data?.map(
                   (
                     program: OnboardingProgramTalents & {
@@ -159,7 +162,7 @@ export default function LearnCenter() {
                 )}
               </div>
             )}
-            <div className="mt-4 grid w-full grid-cols-4 gap-4">
+            <div className="mt-4 grid w-full grid-cols-1 gap-4 lg:grid-cols-2 2xl:grid-cols-4">
               {!data && (
                 <>
                   <CourseShimmer />
@@ -328,7 +331,11 @@ export function OneCourse({
 
   return (
     <Link
-      href={`/learn/${id}`}
+      href={
+        doneSections === requiredSections
+          ? `/learn/${id}?preview=true`
+          : `/learn/${id}`
+      }
       className="question-input group relative h-[350px] w-full justify-between rounded-xl bg-white"
     >
       <div className="relative h-[40%] w-full">
@@ -366,7 +373,7 @@ export function OneCourse({
                 </div>
               ))}
           </div>
-          {enrollmentStatus?.data?.viewedChapters && requiredSections > 0 ? (
+          {enrollmentStatus?.data?.viewedChapters ? (
             <div className="flex flex-col gap-1">
               {doneSections === requiredSections ? (
                 <span className="text-sm font-semibold">100%</span>

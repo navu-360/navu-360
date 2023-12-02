@@ -41,7 +41,7 @@ export function CreateQuiz() {
       <div className="no-scrollbar relative mt-4 flex h-full w-full flex-col gap-6">
         <div
           id="questions"
-          className="flex h-[calc(100%_-_100px)] flex-col gap-6 overflow-y-auto px-2 py-4"
+          className="flex h-[calc(100%_-_150px)] flex-col gap-6 overflow-y-auto px-2 py-4 md:h-[calc(100%_-_100px)]"
         >
           {currentData?.data?.map((question: IQuizQuestion, index: number) => (
             <QuestionView

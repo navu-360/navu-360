@@ -167,6 +167,9 @@ module.exports = {
           },
         },
       },
+      screens: {
+        lp: "1440px",
+      },
     },
   },
   plugins: [],

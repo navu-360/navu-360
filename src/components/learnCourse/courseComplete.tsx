@@ -17,7 +17,7 @@ export default function CourseDone({ viewCourse }: { viewCourse: () => void }) {
           You have successfully completed this course. You can go back to the
           home page or view the course again
         </p>
-        <div className="mt-4 flex items-center gap-8">
+        <div className="mt-4 flex md:flex-row flex-col items-center md:gap-8 gap-2">
           <button
             onClick={() => viewCourse()}
             className="rounded-md border-[1px] border-secondary px-8 py-1.5 text-base font-semibold text-secondary"
@@ -26,7 +26,7 @@ export default function CourseDone({ viewCourse }: { viewCourse: () => void }) {
           </button>
           <Link
             href={"/learn"}
-            className="rounded-md bg-secondary px-8 py-1.5 text-base font-semibold text-white"
+            className="rounded-md bg-secondary px-8 py-1.5 shrink-0 text-base font-semibold text-white"
           >
             Go to Home
           </Link>
