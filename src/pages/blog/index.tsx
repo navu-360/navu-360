@@ -8,6 +8,15 @@ import React from "react";
 export default function Blog() {
   const blogs = [
     {
+      id: 10,
+      title: "The Power of Next-Gen Learning Management Systems",
+      image:
+        "https://res.cloudinary.com/dpnbddror/image/upload/c_limit,w_400/v1700141951/navu/campaign-creators-gMsnXqILjp4-unsplash_ex53cu.jpg",
+      slug: "the-power-of-next-gen-learning-management-systems",
+      description:
+        "Discover how advanced Learning Management Systems (LMS) like Navu360 are transforming the landscape of employee training",
+    },
+    {
       id: 0,
       title: "The Ultimate Guide to Employee Onboarding Best Practices",
       slug: "the-ultimate-guide-to-employee-onboarding-best-practices",
@@ -163,7 +172,6 @@ function OneBlogCard({
         />
       </div>
       <h3 className="blog-title">{title}</h3>
-      <span className="blog-time">Saturday 4th November, 2023</span>
       <p className="description text-slate-500">{description}</p>
       <div className="options">
         <span>Read Full Blog</span>

@@ -6,6 +6,7 @@ import Hero from "components/landing/hero";
 import LandingWrapper from "components/layout/wrapper";
 import React from "react";
 import Pricing from "components/landing/pricing";
+import Faqs from "components/faq";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         <FeaturesNavu />
         <Features />
         <Pricing />
+        <Faqs />
         <Cta />
       </LandingWrapper>
     </>
