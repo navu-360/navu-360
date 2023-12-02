@@ -26,10 +26,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
       where: {
         orgId: orgId,
-      }, cacheStrategy: {
-        ttl: 60,
-        swr: 10,
       },
+      // cacheStrategy: {
+      //   ttl: 60,
+      //   swr: 10,
+      // },
     });
 
     return res.status(200).json({ message: `Invites found.`, data: invites });
