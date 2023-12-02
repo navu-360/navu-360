@@ -848,7 +848,7 @@ strong {
 .blog-content ul, ol {
     list-style: disc !important;
     margin-left: 2rem !important;
-    margin-top: -0.8rem;
+    margin-top: -0.5rem;
 }
 
 .blog-content li:last-child {
