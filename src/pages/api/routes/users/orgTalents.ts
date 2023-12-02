@@ -25,10 +25,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       select: {
         id: true,
       },
-      cacheStrategy: {
-        ttl: 60,
-        swr: 10,
-      },
+      // cacheStrategy: {
+      //   ttl: 60,
+      //   swr: 10,
+      // },
     });
 
 
@@ -38,10 +38,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         talentOrgId: organization?.id,
         role: "talent",
       },
-      cacheStrategy: {
-        ttl: 60,
-        swr: 10,
-      },
+      // cacheStrategy: {
+      //   ttl: 60,
+      //   swr: 10,
+      // },
     });
 
     return res.status(200).json({ message: `Users found.`, data: users });
