@@ -84,7 +84,7 @@ export default function Pricing({
               Choose a Plan
             </h2>
             <p className="text-md mb-5 font-medium tracking-tight">
-              Exceptional Training, Budget-Friendly Pricing.
+              Exceptional Training, Budget-Friendly Pricing. Start for free.
             </p>
           </div>
         </div>
