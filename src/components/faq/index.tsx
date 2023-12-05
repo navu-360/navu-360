@@ -103,9 +103,9 @@ function AccordionItem({ header, text }: { header: string; text: string }) {
         className={`faq-btn flex w-full text-left`}
         onClick={() => handleToggle()}
       >
-        <div className="mr-5 flex h-10 w-full max-w-[40px] items-center justify-center rounded-lg bg-primary/5 text-primary">
+        <div className="mr-5 flex h-10 w-full max-w-[40px] items-center justify-center rounded-lg bg-secondary/5 text-secondary">
           <svg
-            className={`fill-primary stroke-primary duration-200 ease-in-out ${
+            className={`fill-secondary stroke-secondary duration-200 ease-in-out ${
               active ? "rotate-180" : ""
             }`}
             width="17"

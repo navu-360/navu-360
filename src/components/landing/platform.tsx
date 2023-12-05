@@ -98,7 +98,7 @@ export default function Features() {
           </svg>
         }
         title="Transform Training into Results"
-        description="turn your training into a strategic advantage. Unlock your team's full potential!"
+        description="Turn your training into a strategic advantage. Unlock your team's full potential!"
         delay={2}
       />
     </section>

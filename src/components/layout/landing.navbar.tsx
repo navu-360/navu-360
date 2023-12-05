@@ -89,7 +89,7 @@ export default function NavBar() {
             onClick={() => setShowSolutionsDropdown(!showSolutionsDropdown)}
             className={`flex items-center gap-1 rounded-3xl px-6 py-1 text-lg font-medium tracking-wide text-white hover:bg-secondary/10 ${font.className}`}
           >
-            <span id="features-span">Features</span>
+            <span id="features-span">Solutions</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
