@@ -118,6 +118,7 @@ function AccordionItem({
       whileInView={{ y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut", delay: delay * 0.1 }}
       viewport={{ amount: 1, once: true }}
+      whileHover={{ scale: 1.01 }}
       className="mb-8 w-full rounded-lg bg-white p-4 shadow-[0px_20px_95px_0px_rgba(201,203,204,0.30)] sm:p-8 lg:px-6 xl:px-8"
     >
       <button
