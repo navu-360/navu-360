@@ -8,7 +8,7 @@ export default function Cta() {
       <section className="mb-0">
         <div className="relative h-[500px] overflow-hidden">
           <Image
-            src="https://mdbcdn.b-cdn.net/img/new/slides/006.webp"
+            src="https://res.cloudinary.com/dpnbddror/image/upload/c_scale,w_1200/v1702291197/navu/DALL_E_2023-12-11_13.37.28_-_A_panoramic_landscape_embodying_the_essence_of_Navu360_s_onboarding_and_training_platform_incorporating_the_theme_color_9d2a57._The_scene_features_a_mlhmhr.webp"
             alt="Elevate your onboarding"
             fill
             className="h-full w-full object-cover"
