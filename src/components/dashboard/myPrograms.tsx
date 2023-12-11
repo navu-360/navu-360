@@ -111,7 +111,7 @@ export function OneProgramCard({
   return (
     <motion.div
       initial={{ y: 15 }}
-      transition={{ duration: 0.3, ease: "easeIn", delay }}
+      transition={{ duration: 0.3, ease: "easeOut", delay }}
       whileInView={{ y: 0 }}
       className="w-full"
       viewport={{ once: true }}

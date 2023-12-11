@@ -30,7 +30,7 @@ function OneOffering({ text, delay }: { text: string; delay: number }) {
     <motion.div
       initial={{ x: 10, opacity: 0.5 }}
       whileInView={{ x: 0, opacity: 1 }}
-      transition={{ ease: "easeIn", duration: 0.5, delay }}
+      transition={{ ease: "easeOut", duration: 0.5, delay }}
       className="btn-offering w-full"
     >
       <span className="">

@@ -238,7 +238,7 @@ function OneItemMegaMenu({
     <motion.li
       initial={{ opacity: 0.8, y: 5 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ ease: "easeIn", duration: 0.3, delay: index * 0.1 }}
+      transition={{ ease: "easeOut", duration: 0.3, delay: index * 0.1 }}
     >
       <div className="flex cursor-pointer flex-col rounded-lg p-3 hover:bg-gray-50 ">
         <div className="group flex items-center gap-3 text-gray-800">

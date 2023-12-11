@@ -133,7 +133,7 @@ export default function InviteTalent({
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, ease: "easeIn" }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
             className={`flex h-full w-full flex-col items-center justify-center p-8 pt-4 text-center md:w-2/3 ${
               session?.user ? "" : ""
             }`}

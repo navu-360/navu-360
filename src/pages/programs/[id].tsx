@@ -387,7 +387,7 @@ export default function Program({
                       initial={{ y: 15 }}
                       transition={{
                         duration: 0.3,
-                        ease: "easeIn",
+                        ease: "easeOut",
                         delay: i * 0.1,
                       }}
                       whileInView={{ y: 0 }}

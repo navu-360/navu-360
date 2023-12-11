@@ -910,7 +910,7 @@ export function ChangePlan({
         initial={{ y: 30, opacity: 0.7 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 20, opacity: 0 }}
-        transition={{ duration: 0.3, ease: "easeIn" }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
         className="relative flex h-full w-full flex-col items-center justify-center rounded-lg bg-white p-4 px-16 text-center md:h-max md:max-h-[600px] md:w-max md:p-8"
       >
         <svg
@@ -941,5 +941,8 @@ export function ChangePlan({
 
 const removeSpacesAndLowerCase = (str: string) => {
   // remove spaces, make lowercase and remove any special characters
-  return str.replace(/\s/g, "").toLowerCase().replace(/[^a-zA-Z0-9]/g, "");
+  return str
+    .replace(/\s/g, "")
+    .toLowerCase()
+    .replace(/[^a-zA-Z0-9]/g, "");
 };

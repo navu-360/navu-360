@@ -105,7 +105,7 @@ function OneFeature({
     <motion.div
       initial={{ y: 30 }}
       whileInView={{ y: 0 }}
-      transition={{ duration: 0.5, ease: "easeIn", delay: delay * 0.1 }}
+      transition={{ duration: 0.5, ease: "easeOut", delay: delay * 0.1 }}
       viewport={{ amount: 1, once: true }}
       className="shadowAroundFeature group flex max-w-[450px] cursor-default flex-col items-center gap-4 rounded-xl bg-white px-8 py-4 text-center text-tertiary"
     >

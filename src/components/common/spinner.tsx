@@ -7,7 +7,7 @@ export default function Spinner({ smaller }: { smaller?: boolean }) {
     <motion.svg
       initial={{ y: 20, scale: 0.95 }}
       animate={{ y: 0, scale: 1 }}
-      transition={{ duration: 0.5, ease: "easeIn" }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
       id="svg"
       width="205"
       height="120"
