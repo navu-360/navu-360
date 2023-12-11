@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 
 import { Play } from "next/font/google";
 
@@ -29,28 +30,34 @@ const Faqs = () => {
             <AccordionItem
               header="What types of training programs can I create with Navu360?"
               text="Navu360 is versatile and supports a wide range of training programs, including employee training, sales training, and compliance training. Its flexible platform allows you to customize courses to fit your specific training needs."
+              delay={0}
             />
             <AccordionItem
               header="Do you offer a free tier?"
               text="Navu360's free tier provides a comprehensive taste of our platform's capabilities, allowing you to create and manage training programs with essential features at no cost. This tier is perfect for small teams or those wanting to experience Navu360's intuitive design and effectiveness before committing to a paid plan."
+              delay={1}
             />
             <AccordionItem
               header="Can Navu360 handle the training needs of large organizations?"
               text="Navu360 is designed to scale with your organization, supporting everything from small teams to large enterprises. It offers features like a comprehensive courses library, multimedia learning tools, and next-gen dashboards for efficient management of large-scale training programs."
+              delay={2}
             />
           </div>
           <div className="w-full px-4 lg:w-1/2">
             <AccordionItem
               header="Is there support available for Navu360 users?"
               text="Yes, Navu360 provides robust support for all its users. This includes 24/7 support, ensuring that you have assistance whenever you need it. Whether you're encountering a technical issue or need guidance on best practices, our team is here to help."
+              delay={3}
             />
             <AccordionItem
               header="How does Navu360 ensure the effectiveness of training programs?"
               text="Navu360 incorporates advanced analytics and tracking features, enabling you to monitor learner progress and course effectiveness. This data-driven approach ensures that training programs are not only engaging but also yield measurable results."
+              delay={4}
             />
             <AccordionItem
               header="Does Navu360 offer customization to match our company's branding?"
               text="Absolutely! Navu360 allows for extensive customization, enabling you to align the look and feel of your training platform with your company’s branding. This includes custom logos, color schemes, and more, providing a consistent and immersive brand experience for your learners."
+              delay={5}
             />
           </div>
         </div>
@@ -91,14 +98,28 @@ const Faqs = () => {
 
 export default Faqs;
 
-function AccordionItem({ header, text }: { header: string; text: string }) {
+function AccordionItem({
+  header,
+  text,
+  delay,
+}: {
+  header: string;
+  text: string;
+  delay: number;
+}) {
   const [active, setActive] = useState(false);
 
   const handleToggle = () => {
     setActive(!active);
   };
   return (
-    <div className="mb-8 w-full rounded-lg bg-white p-4 shadow-[0px_20px_95px_0px_rgba(201,203,204,0.30)] sm:p-8 lg:px-6 xl:px-8">
+    <motion.div
+      initial={{ y: 30 }}
+      whileInView={{ y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut", delay: delay * 0.1 }}
+      viewport={{ amount: 1, once: true }}
+      className="mb-8 w-full rounded-lg bg-white p-4 shadow-[0px_20px_95px_0px_rgba(201,203,204,0.30)] sm:p-8 lg:px-6 xl:px-8"
+    >
       <button
         className={`faq-btn flex w-full text-left`}
         onClick={() => handleToggle()}
@@ -133,6 +154,6 @@ function AccordionItem({ header, text }: { header: string; text: string }) {
       >
         <p className="py-3 text-base leading-relaxed text-tertiary">{text}</p>
       </div>
-    </div>
+    </motion.div>
   );
 }
