@@ -13,7 +13,7 @@ export default function Features() {
   return (
     <section className="relative flex w-full flex-col items-center justify-center gap-16 bg-white px-6 py-8 pt-44 text-white lg:flex-row lg:flex-wrap lg:justify-around lg:gap-8 xl:flex-nowrap">
       <h2
-        className={`textGradientTitles absolute px-4 left-0 right-0 top-20 cursor-default text-3xl font-semibold lg:left-0 ${font.className} text-center`}
+        className={`textGradientTitles absolute left-0 right-0 top-20 cursor-default px-4 text-3xl font-semibold lg:left-0 ${font.className} text-center`}
       >
         Navu360: Where Training Gets a Modern Makeover
       </h2>
@@ -26,16 +26,17 @@ export default function Features() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
             className="transition-all duration-300 ease-in group-hover:text-secondary"
           >
-            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            <path d="M3 3v18h18" />
+            <path d="m19 9-5 5-4-4-3 3" />
           </svg>
         }
         title="Elevate Your Talent Training"
-        description="Say goodbye to dull slides and outdated training methods. Empowers your team with!"
+        description="Say goodbye to dull slides and outdated training methods. Empowers your team!"
         delay={0}
       />
       <OneFeature
@@ -47,29 +48,19 @@ export default function Features() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
             className="transition-all duration-300 ease-in group-hover:text-secondary"
           >
-            <path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z"></path>
-            <path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"></path>
-            <path d="M12 2v2"></path>
-            <path d="M12 22v-2"></path>
-            <path d="m17 20.66-1-1.73"></path>
-            <path d="M11 10.27 7 3.34"></path>
-            <path d="m20.66 17-1.73-1"></path>
-            <path d="m3.34 7 1.73 1"></path>
-            <path d="M14 12h8"></path>
-            <path d="M2 12h2"></path>
-            <path d="m20.66 7-1.73 1"></path>
-            <path d="m3.34 17 1.73-1"></path>
-            <path d="m17 3.34-1 1.73"></path>
-            <path d="m11 13.73-4 6.93"></path>
+            <path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z" />
+            <path d="M17 18h1" />
+            <path d="M12 18h1" />
+            <path d="M7 18h1" />
           </svg>
         }
         title="Streamline Learning Management"
-        description="Simplify your training process. Save time and provide personalized learning experiences."
+        description="Save time and provide personalized learning experiences by tracking progress real-time and more!"
         delay={1}
       />
       <OneFeature
@@ -81,20 +72,14 @@ export default function Features() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
             className="transition-all duration-300 ease-in group-hover:text-secondary"
           >
-            <path d="M15 4V2"></path>
-            <path d="M15 16v-2"></path>
-            <path d="M8 9h2"></path>
-            <path d="M20 9h2"></path>
-            <path d="M17.8 11.8 19 13"></path>
-            <path d="M15 9h0"></path>
-            <path d="M17.8 6.2 19 5"></path>
-            <path d="m3 21 9-9"></path>
-            <path d="M12.2 6.2 11 5"></path>
+            <path d="M12 22v-7l-2-2" />
+            <path d="M17 8v.8A6 6 0 0 1 13.8 20v0H10v0A6.5 6.5 0 0 1 7 8h0a5 5 0 0 1 10 0Z" />
+            <path d="m14 14-2 2" />
           </svg>
         }
         title="Transform Training into Results"
