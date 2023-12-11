@@ -114,7 +114,7 @@ export default function InviteTalentsModal({
         initial={{ y: 30, opacity: 0.7 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 20, opacity: 0 }}
-        transition={{ duration: 0.3, ease: "easeIn" }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
         className="relative flex h-full w-full flex-col items-center justify-center rounded-lg bg-white p-4 text-center md:h-max md:max-h-[600px] md:w-max md:max-w-[700px] md:p-8"
       >
         <svg

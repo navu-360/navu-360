@@ -186,7 +186,7 @@ export function SelectPrograms({
         initial={{ y: 30, opacity: 0.7 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 20, opacity: 0 }}
-        transition={{ duration: 0.3, ease: "easeIn" }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
         className="relative h-full w-full rounded-lg bg-white px-8 py-4 lg:h-max lg:w-[700px]"
       >
         <div className="flex h-full flex-col justify-between">

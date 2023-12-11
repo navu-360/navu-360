@@ -22,6 +22,7 @@ export default function FeaturesNavu() {
       description: `Effortlessly build engaging courses with Navu360's intuitive course creator. Add text, images, videos, and documents. Say goodbye to complex course authoring tools.`,
       gradientClass: "featureThreeGradient",
       reverse: false,
+      cta: "Launch your first course",
     },
     {
       image:
@@ -30,6 +31,7 @@ export default function FeaturesNavu() {
       description: `Navigate your talent development journey seamlessly with Navu360's clean and user-friendly dashboard. Monitor progress, track results, and manage courses effortlessly.`,
       gradientClass: "featureThreeGradient",
       reverse: true,
+      cta: "Start for free",
     },
     {
       image:
@@ -38,6 +40,7 @@ export default function FeaturesNavu() {
       description: `Keep your team engaged with videos, quizzes, and interactive modules. Deliver effective skill development while making learning enjoyable.`,
       gradientClass: "featureThreeGradient",
       reverse: false,
+      cta: "Empower your team",
     },
     {
       image:
@@ -46,6 +49,7 @@ export default function FeaturesNavu() {
       description: `Streamline talent training with your library of pre-built chapters. Save time and ensure consistency in training.`,
       gradientClass: "featureThreeGradient",
       reverse: true,
+      cta: "Start for free",
     },
   ];
   return (
@@ -114,9 +118,9 @@ export default function FeaturesNavu() {
                           callbackUrl: `${window.location.origin}/setup`,
                         })
                       }
-                      className="rounded-full border-2 border-neutral-50 px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-neutral-50 transition-all duration-300 ease-in hover:border-neutral-100 hover:bg-neutral-100 hover:bg-opacity-10 hover:px-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200"
+                      className="rounded-full border-2 border-neutral-50 px-7 pb-2.5 pt-3 text-sm font-semibold tracking-widest uppercase leading-normal text-neutral-50 transition-all duration-300 ease-in hover:border-neutral-100 hover:bg-neutral-100 hover:bg-opacity-10 hover:px-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200"
                     >
-                      Start for Free
+                      {feature.cta}
                     </button>
                   </div>
                 </div>

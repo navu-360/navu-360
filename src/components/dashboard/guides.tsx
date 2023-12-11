@@ -14,8 +14,8 @@ export function NoCourses({}: { showSelectTemplate: () => void }) {
     <motion.section
       initial={{ y: 30 }}
       whileInView={{ y: 0 }}
-      transition={{ ease: "easeIn", duration: 0.3 }}
-      className="m-auto mb-4 flex w-full flex-col justify-center gap-6 rounded-3xl bg-gray-200 p-4 md:px-8 px-4 text-center md:max-w-4xl"
+      transition={{ ease: "easeOut", duration: 0.3 }}
+      className="m-auto mb-4 flex w-full flex-col justify-center gap-6 rounded-3xl bg-gray-200 p-4 px-4 text-center md:max-w-4xl md:px-8"
     >
       <Image
         src={"/ebook.svg"}
@@ -66,7 +66,7 @@ export function UpgradeSuccess({
       <motion.section
         initial={{ y: 30 }}
         whileInView={{ y: 0 }}
-        transition={{ ease: "easeIn", duration: 0.3 }}
+        transition={{ ease: "easeOut", duration: 0.3 }}
         className="m-auto flex max-w-4xl flex-col justify-center gap-6 rounded-3xl bg-gray-200 p-4 px-8 text-center"
       >
         <svg
@@ -120,7 +120,7 @@ export function WelcomeGuide({
     <motion.section
       initial={{ y: 30 }}
       whileInView={{ y: 0 }}
-      transition={{ ease: "easeIn", duration: 0.3 }}
+      transition={{ ease: "easeOut", duration: 0.3 }}
       className="flex w-full flex-col items-center justify-center gap-6 bg-tertiary p-4 px-8 pl-20 text-center md:m-auto md:max-w-4xl md:rounded-3xl md:pl-8"
     >
       <Image
@@ -167,7 +167,7 @@ export function NoAssignedCourses() {
     <motion.section
       initial={{ y: 30 }}
       whileInView={{ y: 0 }}
-      transition={{ ease: "easeIn", duration: 0.3 }}
+      transition={{ ease: "easeOut", duration: 0.3 }}
       className="m-auto mt-32 flex max-w-4xl flex-col justify-center gap-6 rounded-3xl bg-gray-200 p-4 px-8 text-center"
     >
       <Image
@@ -200,7 +200,7 @@ export function NoLibraryItems({
     <motion.section
       initial={{ y: 30 }}
       whileInView={{ y: 0 }}
-      transition={{ ease: "easeIn", duration: 0.3 }}
+      transition={{ ease: "easeOut", duration: 0.3 }}
       className="m-auto flex max-w-4xl flex-col justify-center gap-6 rounded-3xl bg-gray-200 p-4 px-8 text-center"
     >
       <Image
@@ -242,7 +242,7 @@ export function NoInvitedTalents({
     <motion.section
       initial={{ y: 30 }}
       whileInView={{ y: 0 }}
-      transition={{ ease: "easeIn", duration: 0.3 }}
+      transition={{ ease: "easeOut", duration: 0.3 }}
       className="m-auto flex h-max max-w-4xl flex-col justify-center gap-6 rounded-3xl bg-gray-200 p-4 px-8 text-center"
     >
       <Image
@@ -273,7 +273,7 @@ export function GetPlan() {
     <motion.section
       initial={{ y: 30 }}
       whileInView={{ y: 0 }}
-      transition={{ ease: "easeIn", duration: 0.3 }}
+      transition={{ ease: "easeOut", duration: 0.3 }}
       className="m-auto flex h-max flex-col justify-center gap-0 rounded-3xl bg-gray-200 p-4 px-8 text-center"
     >
       <Image

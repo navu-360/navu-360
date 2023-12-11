@@ -46,7 +46,7 @@ export function ConfirmUnenroll({
         initial={{ y: 30, opacity: 0.7 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 20, opacity: 0 }}
-        transition={{ duration: 0.3, ease: "easeIn" }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
         className="h-[225px] w-[95%] rounded-lg bg-white px-8 py-4 md:w-[400px]"
       >
         <div className="flex h-full flex-col justify-between">

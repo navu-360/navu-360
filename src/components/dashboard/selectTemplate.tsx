@@ -84,7 +84,7 @@ export default function SelectTemplate({
         initial={{ y: 30, opacity: 0.7 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 20, opacity: 0 }}
-        transition={{ duration: 0.3, ease: "easeIn" }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
         className="relative flex h-full w-full flex-col rounded-lg bg-white p-4 pt-16 md:h-[90vh] md:max-h-[600px] md:w-[1000px] md:p-8 md:pt-8"
       >
         <svg

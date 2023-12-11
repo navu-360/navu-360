@@ -187,7 +187,7 @@ export function OneProgramCard({
   return (
     <motion.div
       initial={{ y: 10 }}
-      transition={{ duration: 0.3, ease: "easeIn", delay }}
+      transition={{ duration: 0.3, ease: "easeOut", delay }}
       whileInView={{ y: 0 }}
       className="stat-shadow"
     >
@@ -364,7 +364,7 @@ function ProgramShimmer() {
   return (
     <motion.div
       initial={{ y: 10 }}
-      transition={{ duration: 0.3, ease: "easeIn" }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
       whileInView={{ y: 0 }}
       className="stat-shadow"
     >
