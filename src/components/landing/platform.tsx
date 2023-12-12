@@ -11,7 +11,7 @@ const font = Play({
 
 export default function Features() {
   return (
-    <section className="relative flex w-full flex-col items-center justify-center gap-16 bg-white px-6 py-8 pt-44 text-white lg:flex-row lg:flex-wrap lg:justify-around lg:gap-8 xl:flex-nowrap">
+    <section className="relative max-w-7xl mx-auto flex w-full flex-col items-center justify-center gap-16 bg-white px-6 py-8 pt-44 text-white lg:flex-row lg:flex-wrap lg:justify-around lg:gap-8 xl:flex-nowrap">
       <h2
         className={`textGradientTitles absolute left-0 right-0 top-20 cursor-default px-4 text-3xl font-semibold lg:left-0 ${font.className} text-center`}
       >
