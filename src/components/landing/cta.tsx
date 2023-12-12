@@ -4,14 +4,14 @@ import { signIn } from "next-auth/react";
 
 export default function Cta() {
   return (
-    <div className="mt-24 w-full">
+    <div className="mt-24 w-full group">
       <section className="mb-0">
         <div className="relative h-[500px] overflow-hidden">
           <Image
             src="https://res.cloudinary.com/dpnbddror/image/upload/c_scale,w_1200/v1702291197/navu/DALL_E_2023-12-11_13.37.28_-_A_panoramic_landscape_embodying_the_essence_of_Navu360_s_onboarding_and_training_platform_incorporating_the_theme_color_9d2a57._The_scene_features_a_mlhmhr.webp"
             alt="Elevate your onboarding"
             fill
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover group-hover:scale-105 transition-all ease-out duration-1000"
           />
           <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-[hsla(0,0%,0%,0.75)] bg-fixed">
             <div className="flex h-full items-center justify-center">
