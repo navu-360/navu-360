@@ -44,8 +44,8 @@ export default function AdminCompanyDetails({
         noOfEmployees,
       }}
     >
-      <form className="mt-8 flex h-auto w-full flex-col gap-6 md:w-max md:min-w-[400px]">
-        <div className="flex flex-col gap-2">
+      <form className="mt-8 flex h-auto w-full flex-col gap-6 md:w-full md:max-w-[400px]">
+        <div className="flex flex-col gap-2 w-full">
           <label htmlFor="role">What is your role?</label>
           <input
             type="text"
@@ -60,7 +60,7 @@ export default function AdminCompanyDetails({
             required
           />
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 w-full">
           <label htmlFor="name">What’s your company name?</label>
           <input
             type="text"
@@ -75,7 +75,7 @@ export default function AdminCompanyDetails({
           />
         </div>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 w-full">
           <label htmlFor="industry">What industry are you in?</label>
           <select
             value={industry}
@@ -102,7 +102,7 @@ export default function AdminCompanyDetails({
           </select>
         </div>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 w-full">
           <label htmlFor="noOfEmployees">How big is your company?</label>
           <select
             className="common-input"
