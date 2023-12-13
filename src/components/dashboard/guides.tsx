@@ -15,7 +15,7 @@ export function NoCourses({}: { showSelectTemplate: () => void }) {
       initial={{ y: 30 }}
       whileInView={{ y: 0 }}
       transition={{ ease: "easeOut", duration: 0.3 }}
-      className="m-auto mb-4 flex w-full flex-col justify-center gap-6 rounded-3xl bg-gray-200 p-4 px-4 text-center md:max-w-4xl md:px-8"
+      className="mx-auto mb-4 flex w-full flex-col justify-center gap-6 rounded-3xl bg-gray-200 p-4 px-4 text-center md:max-w-4xl h-max mt-8 md:px-8"
     >
       <Image
         src={"/ebook.svg"}
