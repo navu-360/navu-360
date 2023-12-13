@@ -384,7 +384,7 @@ function Steps({
             />
           )}
           Course{" "}
-          <span className="hidden sm:ml-2 sm:inline-flex">Materials</span>
+          <span className="hidden sm:ml-2 sm:inline-flex">Chapters</span>
         </span>
       </li>
       <li
