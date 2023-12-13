@@ -55,7 +55,7 @@ export default function AdminCompanyDetails({
             id="role"
             value={role}
             onChange={(e) => setRole(e.target.value)}
-            placeholder="Enter role"
+            placeholder="E.g Talent Acquisition Manager"
             className="common-input"
             required
           />
@@ -71,7 +71,7 @@ export default function AdminCompanyDetails({
             className="common-input"
             value={companyName}
             onChange={(e) => setCompanyName(e.target.value)}
-            placeholder="Enter name"
+            placeholder="E.g Navu360"
           />
         </div>
 
@@ -113,7 +113,7 @@ export default function AdminCompanyDetails({
             onChange={(e) => setNoOfEmployees(e.target.value)}
           >
             <option value="default" selected>
-              Number of employees
+              Choose number of employees
             </option>
             <option value="1-10">1-10</option>
             <option value="11-50">11-50</option>
