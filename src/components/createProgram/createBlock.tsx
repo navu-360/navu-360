@@ -124,18 +124,21 @@ export default function CreateBlockChapter({
 
   return (
     <div
-      className={`relative flex flex-col no-scrollbar ${
+      className={`no-scrollbar relative flex flex-col ${
         fromLibrary
           ? "h-[calc(100vh_-_180px)] w-full gap-8 2xl:h-[calc(100vh_-_400px)]"
-          : "md:ml-auto w-full h-[calc(100vh_-_310px)] md:w-[calc(100%_-_330px)] gap-8"
+          : "h-[calc(100vh_-_310px)] w-full gap-8 md:ml-auto md:w-[calc(100%_-_330px)]"
       }`}
     >
-      <Editor
-        save={save}
-        setBlockContent={setBlockContent}
-        setContent={setContent}
-        blockContent={blockContent}
-      />
+      <div className="h-[calc(100%_-_100px)] w-full">
+        <Editor
+          save={save}
+          setBlockContent={setBlockContent}
+          setContent={setContent}
+          blockContent={blockContent}
+        />
+      </div>
+
       <div className="flex w-full flex-col gap-2">
         <label htmlFor="name">Chapter Name</label>
         <input
@@ -149,7 +152,7 @@ export default function CreateBlockChapter({
         />
       </div>
 
-      <div className="md:absolute md:inset-x-0 md:-bottom-24 flex md:flex-row flex-col w-full justify-start md:gap-8 gap-2 bg-white pb-8">
+      <div className="flex w-full flex-col justify-start gap-2 bg-white pb-8 md:absolute md:inset-x-0 md:-bottom-24 md:flex-row md:gap-8">
         <button
           disabled={
             blockContent?.blocks?.length === 0 ||
@@ -167,13 +170,13 @@ export default function CreateBlockChapter({
               }
             }
           }}
-          className="h-max md:w-max rounded-md bg-green-500 w-full px-8 py-1.5 text-sm font-semibold text-white"
+          className="h-max w-full rounded-md bg-green-500 px-8 py-1.5 text-sm font-semibold text-white md:w-max"
         >
           {editingSection || creatingSection
             ? "Saving..."
             : currentEditing
-            ? "Save Changes"
-            : "Save Chapter"}
+              ? "Save Changes"
+              : "Save Chapter"}
         </button>
         <button
           disabled={!currentEditing}
