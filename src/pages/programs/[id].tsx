@@ -380,6 +380,17 @@ export default function Program({
                     No talents enrolled.
                   </p>
                 )}
+                {enrolledTalents?.data?.length === 0 && (
+                  <p className="text-sm font-medium text-gray-500">
+                    <Link
+                      href="/talents"
+                      className="font-semibold text-blue-600"
+                    >
+                      Enroll
+                    </Link>{" "}
+                    talents to this course
+                  </p>
+                )}
 
                 {enrolledTalents?.data?.map(
                   (enrollment: IEnrollmentWithTalent, i: number) => (
