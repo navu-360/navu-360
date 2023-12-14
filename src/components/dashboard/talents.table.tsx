@@ -224,7 +224,7 @@ export default function AllTalents({
                           Courses Enrolled
                         </th>
                         <th className="date whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                          {selectedType === "Enrolled" ? "Enrolled" : "Joined"}
+                          Joined
                         </th>
                         {selectedType === "Enrolled" && (
                           <th className="progress whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
@@ -319,7 +319,7 @@ export default function AllTalents({
                           Courses Enrolled
                         </th>
                         <th className="date whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                          {selectedType === "Enrolled" ? "Enrolled" : "Joined"}
+                          Joined
                         </th>
                         {selectedType === "Enrolled" && (
                           <th className="progress whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
