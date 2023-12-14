@@ -380,17 +380,6 @@ export default function Program({
                     No talents enrolled.
                   </p>
                 )}
-                {enrolledTalents?.data?.length === 0 && (
-                  <p className="text-sm font-medium text-gray-500">
-                    <Link
-                      href="/talents"
-                      className="font-semibold text-blue-600"
-                    >
-                      Enroll
-                    </Link>{" "}
-                    talents to this course
-                  </p>
-                )}
 
                 {enrolledTalents?.data?.map(
                   (enrollment: IEnrollmentWithTalent, i: number) => (
@@ -423,6 +412,13 @@ export default function Program({
                     </motion.div>
                   ),
                 )}
+                <p className="w-full text-center text-sm font-medium text-gray-500">
+                  <Link href="/talents" className="font-semibold underline text-indigo-400">
+                    Enroll
+                  </Link>{" "}
+                  {enrolledTalents?.data?.length > 0 && "more "}
+                  talents to this course
+                </p>
                 {fetchingEnrolled && (
                   <div className="mt-3 flex w-full items-center justify-center">
                     <SmallSpinner />
