@@ -48,7 +48,7 @@ export default function CreateOrganizationLayout({
   const router = useRouter();
   return (
     <section className="no-scrollbar flex h-[100vh] w-screen overflow-x-hidden overflow-y-hidden">
-      <div className="relative hidden h-full w-[38%] bg-dark md:block">
+      <div className="relative hidden h-full w-[50%] bg-dark md:block">
         <div className="spotlight absolute left-0 right-0 top-0 z-10 mx-auto h-full w-[30vw]">
           <div className="">
             <div className="spotlight-one absolute -right-32 -top-48 h-[10vw] w-[10vw] rounded-full"></div>
@@ -103,7 +103,7 @@ export default function CreateOrganizationLayout({
           <img src="/logo.svg" className="mr-3 h-6 sm:h-9" alt="Navu360" />
         </Link>
       </div>
-      <div className="no-scrollbar relative flex h-auto w-full flex-col overflow-y-auto p-8 px-4 pl-8 pt-4 md:w-[62%] md:pt-4">
+      <div className="no-scrollbar relative flex h-auto w-full flex-col overflow-y-auto p-8 px-4 pl-8 pt-4 md:w-[50%] md:pt-4">
         <div className="relative">
           <GoBack customText="Cancel" />
         </div>

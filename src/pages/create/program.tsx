@@ -217,6 +217,8 @@ export default function CreateProgram() {
 
   const [noUnsavedChanges, setNoUnsavedChanges] = useState(true);
 
+  const [isAddingQuiz, setIsAddingQuiz] = useState(false);
+
   return (
     <>
       <Header title="Create a new Course" />
@@ -232,65 +234,71 @@ export default function CreateProgram() {
                 changesNotSaved={(val) => setNoUnsavedChanges(val)}
               />
             )}
-            {activeTab === 2 && <ConfirmStep />}
+            {activeTab === 2 && (
+              <ConfirmStep setIsAddingQuiz={() => setIsAddingQuiz(true)} />
+            )}
 
-            <div className="absolute inset-x-0 bottom-0 flex w-full flex-col justify-between gap-5 border-t-[1px] border-t-neutral-200 bg-neutral-100 px-4 py-2 md:flex-row">
-              <button
-                onClick={() => {
-                  if (activeTab === 0) {
-                    deleteIfCreated();
-                    return;
-                  }
-                  setActiveTab(activeTab - 1);
-                }}
-                className="md:w-max w-full rounded-md border-[1px] border-gray-400 bg-transparent px-8 py-1.5 text-sm font-medium text-gray-500"
-              >
-                {activeTab === 0 ? "Cancel" : "Back"}
-              </button>
-              <div className="flex gap-8">
+            {(activeTab !== 2 || isAddingQuiz) && (
+              <div className="absolute inset-x-0 bottom-0 flex w-full flex-col justify-between gap-5 border-t-[1px] border-t-neutral-200 bg-neutral-100 px-4 py-2 md:flex-row">
                 <button
                   onClick={() => {
-                    if (activeTab === 2) {
-                      router.replace(`/programs/${draftProgramId}`);
-                      return;
-                    }
                     if (activeTab === 0) {
-                      if (!draftProgramId) {
-                        saveStepOne();
-                      } else {
-                        updateStepOne();
-                      }
+                      deleteIfCreated();
                       return;
                     }
-                    if (activeTab === 1) {
-                      if (!noUnsavedChanges) {
-                        toaster({
-                          status: "error",
-                          message: "Please save the chapter before continuing",
-                        });
-                        return;
-                      }
-                      if (createSectionIds?.length === 0) {
-                        toaster({
-                          status: "error",
-                          message: "Please add at least one section",
-                        });
-                        return;
-                      }
-                    }
-                    setActiveTab(activeTab + 1);
+                    setActiveTab(activeTab - 1);
                   }}
-                  disabled={creating || uploading || editing}
-                  className="w-full rounded-md bg-secondary px-8 py-1.5 text-sm font-semibold text-white md:w-max"
+                  className="w-full rounded-md border-[1px] border-gray-400 bg-transparent px-8 py-1.5 text-sm font-medium text-gray-500 md:w-max"
                 >
-                  {activeTab === 2
-                    ? draftProgramId?.length > 0
-                      ? "View Course"
-                      : "Create Course"
-                    : "Save & Continue"}
+                  {activeTab === 0 ? "Cancel" : "Back"}
                 </button>
+
+                <div className="flex gap-8">
+                  <button
+                    onClick={() => {
+                      if (activeTab === 2) {
+                        router.replace(`/programs/${draftProgramId}`);
+                        return;
+                      }
+                      if (activeTab === 0) {
+                        if (!draftProgramId) {
+                          saveStepOne();
+                        } else {
+                          updateStepOne();
+                        }
+                        return;
+                      }
+                      if (activeTab === 1) {
+                        if (!noUnsavedChanges) {
+                          toaster({
+                            status: "error",
+                            message:
+                              "Please save the chapter before continuing",
+                          });
+                          return;
+                        }
+                        if (createSectionIds?.length === 0) {
+                          toaster({
+                            status: "error",
+                            message: "Please add at least one section",
+                          });
+                          return;
+                        }
+                      }
+                      setActiveTab(activeTab + 1);
+                    }}
+                    disabled={creating || uploading || editing}
+                    className="w-full rounded-md bg-secondary px-8 py-1.5 text-sm font-semibold text-white md:w-max"
+                  >
+                    {activeTab === 2
+                      ? draftProgramId?.length > 0
+                        ? "View Course"
+                        : "Create Course"
+                      : "Save & Continue"}
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
 
@@ -383,8 +391,7 @@ function Steps({
               }`}
             />
           )}
-          Course{" "}
-          <span className="hidden sm:ml-2 sm:inline-flex">Materials</span>
+          Course <span className="hidden sm:ml-2 sm:inline-flex">Chapters</span>
         </span>
       </li>
       <li

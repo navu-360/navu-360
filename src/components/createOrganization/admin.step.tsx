@@ -44,8 +44,8 @@ export default function AdminCompanyDetails({
         noOfEmployees,
       }}
     >
-      <form className="mt-8 flex h-auto w-full flex-col gap-6 md:w-max md:min-w-[400px]">
-        <div className="flex flex-col gap-2">
+      <form className="mt-8 flex h-auto w-full flex-col gap-6 md:w-full md:max-w-[400px]">
+        <div className="flex flex-col gap-2 w-full">
           <label htmlFor="role">What is your role?</label>
           <input
             type="text"
@@ -55,12 +55,12 @@ export default function AdminCompanyDetails({
             id="role"
             value={role}
             onChange={(e) => setRole(e.target.value)}
-            placeholder="Enter role"
+            placeholder="E.g Talent Acquisition Manager"
             className="common-input"
             required
           />
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 w-full">
           <label htmlFor="name">What’s your company name?</label>
           <input
             type="text"
@@ -71,11 +71,11 @@ export default function AdminCompanyDetails({
             className="common-input"
             value={companyName}
             onChange={(e) => setCompanyName(e.target.value)}
-            placeholder="Enter name"
+            placeholder="E.g Navu360"
           />
         </div>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 w-full">
           <label htmlFor="industry">What industry are you in?</label>
           <select
             value={industry}
@@ -102,7 +102,7 @@ export default function AdminCompanyDetails({
           </select>
         </div>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 w-full">
           <label htmlFor="noOfEmployees">How big is your company?</label>
           <select
             className="common-input"
@@ -113,7 +113,7 @@ export default function AdminCompanyDetails({
             onChange={(e) => setNoOfEmployees(e.target.value)}
           >
             <option value="default" selected>
-              Number of employees
+              Choose number of employees
             </option>
             <option value="1-10">1-10</option>
             <option value="11-50">11-50</option>

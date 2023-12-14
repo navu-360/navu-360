@@ -4,7 +4,11 @@ import { CreateQuiz } from "./createQuiz";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-export function ConfirmStep() {
+export function ConfirmStep({
+  setIsAddingQuiz,
+}: {
+  setIsAddingQuiz: () => void;
+}) {
   const [showCreateQuiz, setShowCreateQuiz] = useState(false);
   const router = useRouter();
 
@@ -46,7 +50,10 @@ export function ConfirmStep() {
               No, I&apos;m done
             </button>
             <button
-              onClick={() => setShowCreateQuiz(true)}
+              onClick={() => {
+                setShowCreateQuiz(true);
+                setIsAddingQuiz();
+              }}
               className="h-max w-full rounded-md bg-secondary px-8 py-1.5 font-semibold text-white"
             >
               Yes, add a quiz

@@ -52,29 +52,21 @@ export default function MyEnrolledPrograms({
                 clipRule="evenodd"
               />
             </svg>
-            {user ? (
-              <div className="flex flex-col gap-2">
-                <p>
-                  <span className="capitalize">{user?.name}</span> has not been
-                  enrolled to any course
-                </p>
-                <button
-                  onClick={() =>
-                    setShowTalentEnrolModal &&
-                    setShowTalentEnrolModal([user?.id, user?.name as string])
-                  }
-                  className="mx-auto mb-2 mt-2 block w-max whitespace-nowrap rounded-xl bg-tertiary px-12 py-2 text-sm font-semibold text-white"
-                >
-                  Enroll Now
-                </button>
-              </div>
-            ) : (
-              <p className="text-center leading-[150%]">
-                You have not been enrolled yet to any course.{" "}
-                <br className="hidden md:block" />
-                You will receive an email when enrolled to a course.
+            <div className="flex flex-col gap-2">
+              <p>
+                <span className="capitalize">{user?.name}</span> has not been
+                enrolled to any course
               </p>
-            )}
+              <button
+                onClick={() =>
+                  setShowTalentEnrolModal &&
+                  setShowTalentEnrolModal([user?.id, user?.name as string])
+                }
+                className="mx-auto mb-2 mt-2 block w-max whitespace-nowrap rounded-xl bg-tertiary px-12 py-2 text-sm font-semibold text-white"
+              >
+                Enroll Now
+              </button>
+            </div>
           </div>
         )}
         {data?.length > 0 && (
@@ -108,6 +100,7 @@ export function OneProgramCard({
   unenroll: (arg: string) => void;
   user: User;
 }) {
+  const [isDone, setIsDone] = React.useState(false);
   return (
     <motion.div
       initial={{ y: 15 }}
@@ -142,6 +135,11 @@ export function OneProgramCard({
             className={`flex h-max w-full max-w-[400px] items-center gap-2 rounded-lg px-4 py-2 pl-0`}
           >
             <CompletionStatus
+              completion={(val) => {
+                if (val === 100) {
+                  setIsDone(true);
+                }
+              }}
               enrollment={{
                 userId: user?.id,
               }}
@@ -152,26 +150,28 @@ export function OneProgramCard({
           </div>
         </div>
 
-        <button
-          onClick={() => unenroll(program.id)}
-          className="mr-3 flex w-[150px] items-center justify-center gap-2 rounded-md border-[1px] border-tertiary bg-white px-4 py-1 text-sm font-semibold text-tertiary"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="h-6 w-6"
+        {!isDone && (
+          <button
+            onClick={() => unenroll(program.id)}
+            className="mr-3 flex w-[150px] items-center justify-center gap-2 rounded-md border-[1px] border-tertiary bg-white px-4 py-1 text-sm font-semibold text-tertiary"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M19.5 12h-15"
-            />
-          </svg>
-          <span className="w-max">Unenroll</span>
-        </button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="h-6 w-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M19.5 12h-15"
+              />
+            </svg>
+            <span className="w-max">Unenroll</span>
+          </button>
+        )}
       </div>
     </motion.div>
   );
@@ -182,6 +182,7 @@ export function CompletionStatus({
   totalChapters,
   programId,
   hasQuiz,
+  completion,
 }: {
   enrollment: {
     userId: string;
@@ -189,6 +190,7 @@ export function CompletionStatus({
   programId: string;
   totalChapters: number;
   hasQuiz: boolean;
+  completion: (val: number) => void;
 }) {
   const body = {
     userId: enrollment?.userId,
@@ -210,6 +212,7 @@ export function CompletionStatus({
 
   const checkCompletionStatus = () => {
     const percentage = (completed / totalRequired) * 100;
+    completion(percentage);
     return percentage;
   };
 

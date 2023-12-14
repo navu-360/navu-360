@@ -11,8 +11,8 @@ export function InsertNewSection({
   showLibrary: () => void;
 }) {
   return (
-    <div className="relative mx-auto flex md:h-max h-auto w-full flex-col gap-2 rounded-md p-4 pb-16 shadow-md 2xl:max-w-[500px]">
-      <h3 className="flex items-center gap-1 text-lg font-semibold text-blue-500">
+    <div className="relative mx-auto flex h-auto w-full flex-col gap-2 rounded-md p-4 pb-16 shadow-md md:h-max 2xl:max-w-[500px]">
+      <h3 className="flex items-center gap-1 text-xl font-semibold text-blue-500">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -30,6 +30,10 @@ export function InsertNewSection({
         </svg>{" "}
         {isFirst ? "Add first chapter" : "Add another chapter?"}
       </h3>
+      <p className="text-sm font-medium text-gray-500">
+        Choose type of chapter to create. You can create multiple chapters. You can
+        select prebuilt chapters from the library
+      </p>
       <div className="flex w-full flex-col gap-0 font-medium text-gray-500">
         <Tooltip
           direction="right"
@@ -211,7 +215,7 @@ export function InsertNewSection({
       </div>
 
       {!isFirst && (
-        <p className="md:absolute bottom-3 w-full inset-x-0 text-center text-sm font-medium italic text-gray-600">
+        <p className="inset-x-0 bottom-3 w-full text-center text-sm font-medium italic text-gray-600 md:absolute">
           When done adding chapters, click on the &quot;Save & Continue&quot;
           button
         </p>
