@@ -110,7 +110,7 @@ export default function Talent({ data }: { data: User }) {
                         <path d="M16 18h.01"></path>
                       </svg>
                       <p className="text-sm">
-                        Enrolled {processDate(data?.createdAt)}
+                        Joined on {processDate(data?.createdAt)}
                       </p>
                     </div>
                   </div>
