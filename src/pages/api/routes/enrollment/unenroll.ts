@@ -39,6 +39,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     });
 
+    // TODO: email talent
+
     return res
       .status(200)
       .json({ message: `Talent unenrolled!`, data: enrollment });
