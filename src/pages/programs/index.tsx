@@ -63,7 +63,7 @@ export default function Programs() {
 
   return (
     <>
-      <Header title={`All Training Programs - Navu360`} />
+      <Header title={`All Courses`} />
       <DashboardWrapper>
         {searchQuery?.length > 0 ? (
           <SearchResults />
