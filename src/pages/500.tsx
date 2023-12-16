@@ -5,7 +5,7 @@ export default function Custom500() {
   return (
     <>
       <Head>
-        <title>500 - Something went wrong</title>
+        <title>Something went wrong</title>
       </Head>
       <div className="flex h-screen w-screen flex-col items-center justify-center gap-6 bg-tertiary text-center text-gray-200">
         <div className="flex flex-col gap-4">

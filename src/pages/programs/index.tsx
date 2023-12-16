@@ -342,7 +342,7 @@ export function OneProgramCard({
             Created on {processDate(program.createdAt)}
           </span>
         </div>
-        <div className="flex flex-col items-start gap-2 px-4">
+        <div className="flex flex-col items-start gap-1 px-4">
           <p className="text-xs font-medium">Created By</p>
           <div className="flex items-center gap-4">
             <img

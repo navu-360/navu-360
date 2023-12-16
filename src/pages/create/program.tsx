@@ -325,7 +325,6 @@ function Steps({
   activeStep: number;
   doneSteps: number[];
 }) {
-  // TODO: make steps clickable
   return (
     <ol className="flex w-full items-center pt-1 text-center text-sm font-medium text-gray-400 sm:text-base">
       <li
