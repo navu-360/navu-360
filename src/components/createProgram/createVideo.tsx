@@ -158,7 +158,7 @@ export default function CreateVideoChapter({
     <div
       className={`relative flex flex-col ${
         fromLibrary
-          ? "h-[calc(100vh_-_180px)] w-full gap-8 pl-4 2xl:h-[calc(100vh_-_350px)]"
+          ? "h-[calc(100vh_-_180px)] w-full gap-8 pl-4 2xl:h-[calc(100vh_-_480px)]"
           : "ml-auto h-[calc(100vh_-_310px)] w-[calc(100%_-_330px)] gap-8 2xl:h-[calc(100vh_-_400px)]"
       }`}
     >
@@ -283,8 +283,8 @@ export default function CreateVideoChapter({
           {editingSection || creatingSection || uploading
             ? "Saving..."
             : currentEditing
-            ? "Save Changes"
-            : "Create Chapter"}
+              ? "Save Changes"
+              : "Create Chapter"}
         </button>
         <button
           disabled={!currentEditing}
