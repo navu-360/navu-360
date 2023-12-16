@@ -202,7 +202,7 @@ export default function Program({
               <h2 className="pl-2 text-lg font-semibold text-tertiary">
                 Course Details
               </h2>
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-2 px-2">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -289,7 +289,7 @@ export default function Program({
               {/* created on */}
 
               {/* no of enrolled */}
-              <div className="flex items-center gap-2 px-4">
+              <div className="flex items-center gap-2 px-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -476,7 +476,7 @@ export const getStaticProps = async ({
         headers: { "Accept-Encoding": "gzip,deflate,compress" },
       },
     );
-    if (res.data.data) {
+    if (res?.data?.data) {
       return {
         props: {
           data: res.data.data,
