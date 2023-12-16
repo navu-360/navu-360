@@ -8,6 +8,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       orderBy: {
         createdAt: "desc",
       },
+      select: {
+        id: true
+      }
     });
 
     return res

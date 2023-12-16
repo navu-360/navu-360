@@ -63,7 +63,7 @@ export default function Programs() {
 
   return (
     <>
-      <Header title={`All Training Programs - Navu360`} />
+      <Header title={`All Courses`} />
       <DashboardWrapper>
         {searchQuery?.length > 0 ? (
           <SearchResults />
@@ -74,7 +74,7 @@ export default function Programs() {
             </div>
             <button
               onClick={() => router.push("/create/program")}
-              className="absolute right-12 top-0 flex h-max min-h-[45px] w-max min-w-[150px] items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white hover:bg-secondary/90 focus:outline-none focus:ring-4 md:mr-0"
+              className="absolute right-12 top-0 flex h-max min-h-[45px] w-max min-w-[120px] items-center justify-center gap-4 rounded-3xl bg-secondary px-4 py-2 text-center text-base font-semibold text-white hover:bg-secondary/90 focus:outline-none focus:ring-4 md:mr-0"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -280,7 +280,10 @@ export function OneProgramCard({
               <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
             </svg>
             <span className="text-xs font-medium">
-              Total Chapters {program?._count?.ProgramSection || 0}
+              Total Chapters:{" "}
+              <span className="font-semibold">
+                {program?._count?.ProgramSection || 0}
+              </span>
             </span>
           </div>
           <div className="flex items-center gap-2 px-4">
@@ -303,7 +306,10 @@ export function OneProgramCard({
               <path d="M13 18h8" />
             </svg>
             <span className="text-xs font-medium">
-              Total Questions {program?._count?.QuizQuestion || 0}
+              Total Questions:{" "}
+              <span className="font-semibold">
+                {program?._count?.QuizQuestion || 0}
+              </span>
             </span>
           </div>
         </div>
@@ -322,7 +328,12 @@ export function OneProgramCard({
               d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
             />
           </svg>
-          <p>{enrolledTalents?.data?.length || 0} talents enrolled</p>
+          <p>
+            Talents Enrolled:{" "}
+            <span className="font-semibold">
+              {enrolledTalents?.data?.length || 0}
+            </span>
+          </p>
         </div>
         <div className="flex items-center gap-2 px-4">
           <svg
@@ -339,10 +350,13 @@ export function OneProgramCard({
             />
           </svg>
           <span className="text-xs font-medium">
-            Created on {processDate(program.createdAt)}
+            Created on:{" "}
+            <span className="font-semibold">
+              {processDate(program.createdAt)}
+            </span>
           </span>
         </div>
-        <div className="flex flex-col items-start gap-2 px-4">
+        <div className="flex flex-col items-start gap-1 px-4">
           <p className="text-xs font-medium">Created By</p>
           <div className="flex items-center gap-4">
             <img

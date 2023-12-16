@@ -125,11 +125,11 @@ export default function AllTalents() {
                             <th className="role whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                               Courses Enrolled
                             </th>
-                            <th className="date whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
-                              Joined On
-                            </th>
                             <th className="progress whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                               Completion{" "}
+                            </th>
+                            <th className="date whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
+                              Joined On
                             </th>
                             <th className="whitespace-nowrap bg-[#52324c] px-6 py-3 text-left align-middle text-xs font-semibold uppercase text-white">
                               Action
@@ -161,7 +161,7 @@ export default function AllTalents() {
                                     colSpan={6}
                                     className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-lg font-bold"
                                   >
-                                    No talents have enrolled yet
+                                    No talents here
                                   </td>
                                 </tr>
                               )}
@@ -182,7 +182,7 @@ export default function AllTalents() {
                                       <span className="font-bold capitalize">
                                         {talent?.name}
                                       </span>
-                                      <span className="font-semibold lowercase text-gray-400 gap-1">
+                                      <span className="gap-1 font-semibold lowercase text-gray-400">
                                         {talent?.email}
                                       </span>
                                     </div>
@@ -194,14 +194,14 @@ export default function AllTalents() {
                                     )?.length ?? 0}{" "}
                                     Courses
                                   </td>
-                                  <td className="date whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
-                                    {processDate(talent?.createdAt)}
-                                  </td>
                                   <CompletionStatus
                                     enrollment={{
                                       userId: talent?.id,
                                     }}
                                   />
+                                  <td className="date whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 align-middle text-xs font-semibold">
+                                    {processDate(talent?.createdAt)}
+                                  </td>
 
                                   <td className="whitespace-nowrap border-l-0 border-r-0 border-t-0 p-4 px-6 text-right align-middle text-xs">
                                     <div
