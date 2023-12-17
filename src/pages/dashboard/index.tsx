@@ -23,6 +23,11 @@ import {
 import toaster from "utils/toaster";
 
 export default function Dashboard() {
+  const [isReady, setIsReady] = useState(false);
+  useEffect(() => {
+    setIsReady(true);
+  }, []);
+
   const userProfile = useSelector(
     (state: { auth: { userProfile: User } }) => state.auth.userProfile,
   );
@@ -52,16 +57,10 @@ export default function Dashboard() {
 
   const [countOfPrograms, setCountOfPrograms] = useState(0);
 
-  const [isReady, setIsReady] = useState(false);
-
   useEffect(() => {
     dispatch(setDraftProgramId(undefined));
     dispatch(resetCommon());
   }, [dispatch]);
-
-  useEffect(() => {
-    setIsReady(true);
-  }, []);
 
   const router = useRouter();
 

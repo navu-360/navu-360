@@ -11,7 +11,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       res.status(401).json({ message: `Unauthorized.` });
       return;
     }
-
     // get events for a talent for certain program. Required fields: userId, programId
 
     const { programId, userId } = req.body as {
@@ -32,7 +31,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           userId: session.user.id,
         },
       });
-
       return res.status(200).json({ message: `Events retrieved`, data: events });
     } else {
       if (programId) {
