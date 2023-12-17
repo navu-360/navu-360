@@ -115,10 +115,12 @@ function TemplateCard({ template }: { template: OnboardingProgram }) {
   return (
     <Link
       href={`/programs/${template.id}`}
-      className={`group relative flex w-full cursor-pointer items-center justify-between rounded-md course-card-gradient p-6 py-4 pb-4 text-white`}
+      className={`course-card-gradient group relative flex w-full cursor-pointer items-center justify-between rounded-md p-6 py-4 pb-4 text-white`}
     >
       <div className="flex flex-col break-all">
-        <h3 className="text-base font-bold tracking-normal capitalize">{template.name}</h3>
+        <h3 className="text-base font-bold capitalize tracking-normal">
+          {template.name}
+        </h3>
         <p className="mt-3 flex w-full items-center gap-2 truncate text-sm font-medium">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -127,9 +129,9 @@ function TemplateCard({ template }: { template: OnboardingProgram }) {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="lucide lucide-info mt-0.5"
           >
             <circle cx="12" cy="12" r="10" />
@@ -169,9 +171,9 @@ function TemplateCard({ template }: { template: OnboardingProgram }) {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               className="lucide lucide-users"
             >
               <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />

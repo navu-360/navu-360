@@ -78,7 +78,7 @@ export default function NavBar() {
           href={`${router.pathname.includes("invite") ? "/?home" : "/"}`}
           className="relative flex flex-col items-start pl-4"
         >
-          <img src="/logo.svg" className="mr-3 h-6 sm:h-9" alt="Navu360" />
+          <img src="/logo.svg" className="mr-3 h-6 sm:h-9" height={36} width={144} alt="Navu360" />
           <p className="mt-2 text-xs font-bold tracking-wide text-white">
             Empower. Train. Excel.
           </p>

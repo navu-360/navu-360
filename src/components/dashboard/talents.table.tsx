@@ -190,7 +190,7 @@ export default function AllTalents({
 
   const [showDeleteInvite, setShowDeleteInvite] = useState<string>("");
 
-  if (isFetching || !orgId)
+  if (isFetching)
     return (
       <section className="w-full rounded-l p-2 lg:w-full">
         <section className="relative md:py-16">
@@ -619,7 +619,7 @@ export function CompletionStatus({
         fromTalentView || fromViewTalent ? "w-full px-0" : "p-4 px-6 pl-4"
       }`}
     >
-      {isFetching || !enrollmentStatus?.data ? (
+      {isFetching ? (
         <div className="h-[30px] w-4/5 animate-pulse rounded bg-gray-400" />
       ) : (
         <div

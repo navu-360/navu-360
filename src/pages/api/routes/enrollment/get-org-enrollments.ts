@@ -12,7 +12,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       res.status(401).json({ message: `Unauthorized.` });
       return;
     }
-
     // get all enrollments for a organization
     // receive: organizationId
 
@@ -20,28 +19,41 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const { organizationId } = req.query as { organizationId: string };
 
+    console.time("getOrg");
     const organization = await prisma.organization.findUnique({
       where: {
         id: organizationId,
       },
     });
 
+    console.timeEnd("getOrg");
+
     if (!organization)
       return res.status(400).json({ error: "Organization not found" });
 
+    console.time("getOrgEnrollments");
     const organizationEnrollments =
       await prisma.onboardingProgramTalents.findMany({
         where: {
           organizationId: organizationId,
         },
         include: {
-          User: true,
+          User: {
+            select: {
+              name: true,
+              email: true,
+              id: true,
+              createdAt: true,
+            },
+
+          }
         },
         // cacheStrategy: {
         //   ttl: 60,
         //   swr: 10,
         // },
       });
+    console.timeEnd("getOrgEnrollments");
 
     return res
       .status(200)

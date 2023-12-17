@@ -228,6 +228,7 @@ export const baseApiSlice = createApi({
         url: `enrollment/get-org-enrollments?organizationId=${organizationId}`,
         method: "GET",
       }),
+      keepUnusedDataFor: 60,
     }),
 
     // get all enrollments for a program

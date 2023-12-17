@@ -59,7 +59,7 @@ export default function AllTalents() {
     if (data?.data) {
       setShowingTalents(getEnrolledTalentsFromEnrollments());
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.data]);
 
   const getEnrolledTalentsFromEnrollments = () => {

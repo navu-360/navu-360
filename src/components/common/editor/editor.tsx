@@ -67,7 +67,7 @@ function MyEditor({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialData, isReadOnly]);
 
-  const saveData = async () => {
+  const saveData = () => {
     if (outputData) {
       receiveData && receiveData(outputData);
     }

@@ -11,7 +11,7 @@ const font = Play({
 
 export default function Features() {
   return (
-    <section className="relative max-w-7xl mx-auto flex w-full flex-col items-center justify-center gap-16 bg-white px-6 py-8 pt-44 text-white lg:flex-row lg:flex-wrap lg:justify-around lg:gap-8 xl:flex-nowrap">
+    <section className="relative mx-auto flex w-full max-w-7xl flex-col items-center justify-center gap-16 bg-white px-6 py-8 pt-44 text-white lg:flex-row lg:flex-wrap lg:justify-around lg:gap-8 xl:flex-nowrap">
       <h2
         className={`textGradientTitles absolute left-0 right-0 top-20 cursor-default px-4 text-3xl font-semibold lg:left-0 ${font.className} text-center`}
       >
@@ -26,9 +26,9 @@ export default function Features() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="transition-all duration-300 ease-in group-hover:text-secondary"
           >
             <path d="M3 3v18h18" />
@@ -48,9 +48,9 @@ export default function Features() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="transition-all duration-300 ease-in group-hover:text-secondary"
           >
             <path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z" />
@@ -72,9 +72,9 @@ export default function Features() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="transition-all duration-300 ease-in group-hover:text-secondary"
           >
             <path d="M12 22v-7l-2-2" />

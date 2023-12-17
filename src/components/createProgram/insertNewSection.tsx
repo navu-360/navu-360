@@ -31,8 +31,8 @@ export function InsertNewSection({
         {isFirst ? "Add first chapter" : "Add another chapter?"}
       </h3>
       <p className="text-sm font-medium text-gray-500">
-        Choose type of chapter to create. You can create multiple chapters. You can
-        select prebuilt chapters from the library
+        Choose type of chapter to create. You can create multiple chapters. You
+        can select prebuilt chapters from the library
       </p>
       <div className="flex w-full flex-col gap-0 font-medium text-gray-500">
         <Tooltip
@@ -119,9 +119,9 @@ export function InsertNewSection({
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="lucide lucide-youtube text-secondary"
                 >
                   <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
@@ -189,9 +189,9 @@ export function InsertNewSection({
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="text-secondary transition-all duration-300 ease-in"
                 >
                   <path d="m16 6 4 14" />

@@ -71,9 +71,9 @@ export const getActiveTypeSvg = (type: string) => {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="lucide lucide-youtube text-secondary"
           >
             <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
@@ -196,9 +196,9 @@ export function CreateProgramContent({
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 className="lucide lucide-layers-3 mx-auto"
               >
                 <path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z" />
@@ -208,7 +208,7 @@ export function CreateProgramContent({
             </div>
           )}
 
-          <div className="no-scrollbar flex h-full w-full md:flex-col gap-4 overflow-x-auto flex-row md:overflow-y-auto">
+          <div className="no-scrollbar flex h-full w-full flex-row gap-4 overflow-x-auto md:flex-col md:overflow-y-auto">
             {createSectionIds?.map((section: ProgramSection, i: number) => (
               <OneCreatedSection
                 key={section?.id}

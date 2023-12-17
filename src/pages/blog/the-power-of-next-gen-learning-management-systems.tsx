@@ -41,13 +41,13 @@ export default function BlogView() {
 
         <div className="blog-content flex flex-col text-base font-medium text-slate-500">
           <p>
-            In today's fast-paced business environment, the importance of
-            effective employee training cannot be overstated. It's the bedrock
-            upon which skilled workforces are built, ensuring that employees are
-            well-equipped to meet the evolving demands of their roles. Enter the
-            realm of next-generation Learning Management Systems (LMS) like
-            Navu360, which are transforming the way organizations approach
-            employee training.
+            In today&apos;s fast-paced business environment, the importance of
+            effective employee training cannot be overstated. It&apos;s the
+            bedrock upon which skilled workforces are built, ensuring that
+            employees are well-equipped to meet the evolving demands of their
+            roles. Enter the realm of next-generation Learning Management
+            Systems (LMS) like Navu360, which are transforming the way
+            organizations approach employee training.
           </p>
           <h2>The Evolution of Learning Management Systems</h2>
           <p>
@@ -84,7 +84,7 @@ export default function BlogView() {
 
           <h2>Transforming Employee Onboarding</h2>
           <p>
-            Onboarding is the first step in an employee's journey with a
+            Onboarding is the first step in an employee&apos;s journey with a
             company. Navu360 revolutionizes this process by providing an
             engaging and comprehensive learning experience. New hires can access
             all necessary training materials in one place, ensuring a smooth and
