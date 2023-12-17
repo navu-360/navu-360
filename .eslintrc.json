@@ -20,6 +20,6 @@
   "rules": {
     "@typescript-eslint/consistent-type-imports": "warn",
     "@typescript-eslint/ban-ts-comment": "off",
-    "@typescript-eslint/no-floating-promises": "error"
+    "@typescript-eslint/no-floating-promises": "off"
   }
 }

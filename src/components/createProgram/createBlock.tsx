@@ -63,7 +63,7 @@ export default function CreateBlockChapter({
 
   const [name, setName] = useState(currentEditing?.name ?? "");
 
-  const createBlockSection = async (isCreate = false) => {
+  const createBlockSection = (isCreate = false) => {
     const body = {
       type: "block",
       content: JSON.stringify(blockContent),
@@ -76,7 +76,7 @@ export default function CreateBlockChapter({
     };
 
     isCreate
-      ? await createSection(body)
+      ? createSection(body)
           .unwrap()
           .then((payload) => {
             setActiveContentType("");
@@ -104,7 +104,7 @@ export default function CreateBlockChapter({
               message: error?.data?.message,
             });
           })
-      : await editSection(body)
+      :  editSection(body)
           .unwrap()
           .then(() => {
             toaster({

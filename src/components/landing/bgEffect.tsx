@@ -1,12 +1,6 @@
 import React from "react";
 
-export default function BgEffect({
-  flip,
-  id,
-}: {
-  flip?: boolean;
-  id?: string;
-}) {
+export default function BgEffect({ flip }: { flip?: boolean; id?: string }) {
   return (
     <div className="absolute bottom-0 right-0 z-[-1] h-full w-full">
       <svg

@@ -11,7 +11,6 @@ const font = Play({
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { signIn, useSession } from "next-auth/react";
-import BgEffect from "./bgEffect";
 
 export default function Pricing({
   fromStart,

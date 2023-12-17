@@ -121,7 +121,7 @@ export default function CreateDocumentChapter({
       });
   };
 
-  const updatePdfOrLink = async () => {
+  const updatePdfOrLink =  async () => {
     setUploading(true);
     const res =
       uploadedDocument instanceof File
@@ -138,7 +138,7 @@ export default function CreateDocumentChapter({
       name,
     };
 
-    await editSection(body)
+     editSection(body)
       .unwrap()
       .then((payload) => {
         if (!fromLibrary) {
