@@ -18,7 +18,7 @@ export function OneCreatedSection({
 }) {
   return (
     <div
-      className={`relative mb-2 flex h-28 md:w-full w-4/5 cursor-pointer items-center justify-between gap-6 rounded-lg border-[2px] bg-gray-50 p-2 pl-4 pr-14 shadow-sm  ${
+      className={`relative mb-2 flex h-28 w-4/5 cursor-pointer items-center justify-between gap-6 rounded-lg border-[2px] bg-gray-50 p-2 pl-4 pr-14 shadow-sm md:w-full  ${
         activeId === id ? "border-secondary" : "border-white"
       }`}
     >
@@ -30,7 +30,10 @@ export function OneCreatedSection({
       </div>
 
       <div className="flex w-full flex-col justify-start gap-4">
-        <span onClick={() => openEditMode()} className="text-base w-[90%] truncate font-semibold">
+        <span
+          onClick={() => openEditMode()}
+          className="w-[90%] truncate text-base font-semibold"
+        >
           {name}
         </span>
         <div className="flex gap-6">
@@ -45,9 +48,9 @@ export function OneCreatedSection({
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               className="lucide lucide-pencil"
             >
               <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
@@ -67,9 +70,9 @@ export function OneCreatedSection({
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               className="lucide lucide-trash"
             >
               <path d="M3 6h18" />

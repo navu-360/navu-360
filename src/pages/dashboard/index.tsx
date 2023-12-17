@@ -169,9 +169,9 @@ export default function Dashboard() {
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                         className="lucide lucide-plus-circle"
                       >
                         <circle cx="12" cy="12" r="10" />
@@ -184,8 +184,8 @@ export default function Dashboard() {
                   )}
                 </div>
                 <div className="relative ml-[90px] mr-4 mt-[3rem] flex justify-between text-tertiary md:ml-[230px]">
-                  <section className="flex md:w-[70%] w-full flex-col">
-                    <div className="mt-0 grid w-full md:grid-cols-3 grid-cols-1 gap-4 lg:justify-between lg:gap-4 2xl:mt-0">
+                  <section className="flex w-full flex-col md:w-[70%]">
+                    <div className="mt-0 grid w-full grid-cols-1 gap-4 md:grid-cols-3 lg:justify-between lg:gap-4 2xl:mt-0">
                       <OneStat
                         svg={
                           <svg
@@ -244,9 +244,9 @@ export default function Dashboard() {
                             viewBox="0 0 24 24"
                             fill="none"
                             stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                             className="h-6 w-6 md:h-12 md:w-12"
                           >
                             <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
@@ -314,13 +314,13 @@ function OneStat({
 }) {
   return (
     <div
-      className={`stat-shadow flex w-full flex-row items-center gap-3 bg-dark p-2 text-white transition-all duration-300 ease-in md:first:rounded-tl-3xl sm:w-max lg:w-full lg:flex-col ${
+      className={`stat-shadow flex w-full flex-row items-center gap-3 bg-dark p-2 text-white transition-all duration-300 ease-in sm:w-max md:first:rounded-tl-3xl lg:w-full lg:flex-col ${
         roundLastCard ? "md:last:rounded-tr-3xl" : "md:last:rounded-r-none"
       }`}
     >
       <div className="">{svg}</div>
 
-      <div className="md:mb-4 flex items-center gap-2 text-center text-base">
+      <div className="flex items-center gap-2 text-center text-base md:mb-4">
         <span className="flex h-[35px] w-[35px] items-center justify-center rounded-full bg-white p-2 text-base font-medium leading-normal text-secondary">
           {num}
         </span>

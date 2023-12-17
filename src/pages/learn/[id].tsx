@@ -316,12 +316,12 @@ export default function ViewEnrollment({
     <>
       <Header title={`${data?.OnboardingProgram?.name}`} />
       <DashboardWrapper hideSearch>
-        <div className="relative ml-[90px] mr-4 mt-[20px] flex h-[calc(100vh_-_105px)] w-auto items-start md:flex-row flex-col justify-start rounded-md bg-gray-100 p-4 md:ml-[250px]">
+        <div className="relative ml-[90px] mr-4 mt-[20px] flex h-[calc(100vh_-_105px)] w-auto flex-col items-start justify-start rounded-md bg-gray-100 p-4 md:ml-[250px] md:flex-row">
           {enrollmentStatus?.data && (
             <>
               <div
                 className={`no-scrollbar relative flex h-full flex-col gap-6 overflow-y-auto ${
-                  courseDone ? "w-full" : "md:w-[calc(100%_-_350px)] w-full"
+                  courseDone ? "w-full" : "w-full md:w-[calc(100%_-_350px)]"
                 }`}
               >
                 {showingIntro && (
@@ -388,9 +388,9 @@ export default function ViewEnrollment({
                                 viewBox="0 0 24 24"
                                 fill="none"
                                 stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                                 className={`lucide lucide-check-circle text-green-500`}
                               >
                                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
@@ -404,9 +404,9 @@ export default function ViewEnrollment({
                                 viewBox="0 0 24 24"
                                 fill="none"
                                 stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                                 className="lucide lucide-circle-dashed text-gray-400"
                               >
                                 <path d="M10.1 2.18a9.93 9.93 0 0 1 3.8 0" />
@@ -437,9 +437,9 @@ export default function ViewEnrollment({
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                         className="lucide lucide-arrow-right-circle"
                       >
                         <circle cx="12" cy="12" r="10" />
@@ -603,7 +603,7 @@ export default function ViewEnrollment({
                 )}
 
                 {!showingIntro && !chaptersDone && !courseDone && (
-                  <div className="relative mt-auto flex h-[60px] w-full shrink-0 items-center justify-between rounded-b-md border-[1px] border-neutral-300 md:px-8 px-2">
+                  <div className="relative mt-auto flex h-[60px] w-full shrink-0 items-center justify-between rounded-b-md border-[1px] border-neutral-300 px-2 md:px-8">
                     <button
                       disabled={
                         data?.OnboardingProgram?.ProgramSection[0]?.id ===
@@ -696,7 +696,7 @@ export default function ViewEnrollment({
                 )}
               </div>
               {!courseDone && (
-                <div className="z-50 hidden md:flex h-auto w-full flex-col gap-8 rounded-br-md rounded-tr-md border-l-[1px] border-gray-300 bg-gray-100 p-4 px-0 md:fixed md:bottom-5 md:right-4 md:top-[95px] md:w-[350px]">
+                <div className="z-50 hidden h-auto w-full flex-col gap-8 rounded-br-md rounded-tr-md border-l-[1px] border-gray-300 bg-gray-100 p-4 px-0 md:fixed md:bottom-5 md:right-4 md:top-[95px] md:flex md:w-[350px]">
                   <div className="flex flex-col gap-6 px-4 text-tertiary">
                     <h2 className="text-lg font-semibold">About the Course</h2>
                     <div className="flex w-full flex-col items-start gap-3">
@@ -842,9 +842,9 @@ export default function ViewEnrollment({
                                     viewBox="0 0 24 24"
                                     fill="none"
                                     stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
                                     className={`lucide lucide-check-circle text-green-500`}
                                   >
                                     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
@@ -858,9 +858,9 @@ export default function ViewEnrollment({
                                     viewBox="0 0 24 24"
                                     fill="none"
                                     stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
                                     className="lucide lucide-circle-dashed text-gray-400"
                                   >
                                     <path d="M10.1 2.18a9.93 9.93 0 0 1 3.8 0" />

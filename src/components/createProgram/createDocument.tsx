@@ -121,7 +121,7 @@ export default function CreateDocumentChapter({
       });
   };
 
-  const updatePdfOrLink =  async () => {
+  const updatePdfOrLink = async () => {
     setUploading(true);
     const res =
       uploadedDocument instanceof File
@@ -138,7 +138,7 @@ export default function CreateDocumentChapter({
       name,
     };
 
-     editSection(body)
+    editSection(body)
       .unwrap()
       .then((payload) => {
         if (!fromLibrary) {
@@ -211,9 +211,9 @@ export default function CreateDocumentChapter({
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           className="lucide lucide-trash"
         >
           <path d="M3 6h18" />

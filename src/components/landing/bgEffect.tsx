@@ -25,9 +25,9 @@ export default function BgEffect({ flip }: { flip?: boolean; id?: string }) {
             y2="-418.681"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#3056D3" stop-opacity="0.36" />
-            <stop offset="1" stop-color="#9d2a57" stop-opacity="0" />
-            <stop offset="1" stop-color="#9d2a57" stop-opacity="0.096144" />
+            <stop stopColor="#3056D3" stopOpacity="0.36" />
+            <stop offset="1" stopColor="#9d2a57" stopOpacity="0" />
+            <stop offset="1" stopColor="#9d2a57" stopOpacity="0.096144" />
           </linearGradient>
         </defs>
       </svg>

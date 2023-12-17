@@ -35,6 +35,8 @@ export function Footer() {
               src="/logo.svg"
               className="mb-1 mr-3 h-6 sm:h-9"
               alt="Navu360"
+              height={36}
+              width={144}
             />
           </Link>
           © 2023 . All Rights Reserved.

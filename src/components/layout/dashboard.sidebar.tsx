@@ -134,9 +134,9 @@ export default function AdminNav({
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
                 >
                   <path d="M2 16V4a2 2 0 0 1 2-2h11" />
@@ -159,9 +159,9 @@ export default function AdminNav({
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
                 >
                   <path d="m16 6 4 14" />
@@ -228,7 +228,7 @@ export default function AdminNav({
           )}
         </div>
 
-        <div className="mt-4 flex text-white md:absolute md:bottom-8 md:mx-auto md:w-4/5 flex-col md:gap-4">
+        <div className="mt-4 flex flex-col text-white md:absolute md:bottom-8 md:mx-auto md:w-4/5 md:gap-4">
           <OneItem
             svg={
               <svg
@@ -238,9 +238,9 @@ export default function AdminNav({
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 className="transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
               >
                 <circle cx="12" cy="12" r="10" />
@@ -265,9 +265,9 @@ export default function AdminNav({
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 className="transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
               >
                 <rect width="20" height="16" x="2" y="4" rx="2" />
