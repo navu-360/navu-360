@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "postinstall": "prisma generate --no-engine",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,scss,json,md}\"",
     "preinstall": "npx only-allow pnpm",
