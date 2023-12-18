@@ -4,6 +4,8 @@ import { SessionProvider } from "next-auth/react";
 import { Provider } from "react-redux";
 import { makeStore } from "redux/store";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
 
 import Smartlook from "smartlook-client";
 
@@ -77,6 +79,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
           `}</style>
           <Component {...pageProps} />
           <Analytics />
+          <SpeedInsights />
         </Provider>
       </ErrorBoundary>
     </SessionProvider>
