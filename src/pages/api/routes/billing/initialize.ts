@@ -25,7 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         plan: getPlanIdFromName(sub as string),
         firstname: session?.user.name?.split(" ")[0],
         lastname: session?.user.name?.split(" ")[1],
-        callback_url: `${process.env.NEXTAUTH_URL}/account?upgraded=true`,
+        callback_url: `${process.env.NEXTAUTH_URL}/account?tab=account&upgraded=true`,
         // start_date: now + 14 days, free trial
         start_date: new Date(fourteenDaysLater).toISOString(),
     })

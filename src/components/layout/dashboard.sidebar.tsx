@@ -299,7 +299,7 @@ export default function AdminNav({
             }
             text={"Settings"}
             isActive={router.pathname === "/account"}
-            to={"/account"}
+            to={"/account?tab=account"}
           />
           <OneItem
             svg={

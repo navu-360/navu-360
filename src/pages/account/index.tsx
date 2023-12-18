@@ -31,14 +31,15 @@ import { useRouter } from "next/router";
 import { UpgradeSuccess } from "components/dashboard/guides";
 
 export default function Account() {
-  const [activeTab, setActiveTab] = useState("account");
+  // const [activeTab, setActiveTab] = useState("account");
+  const router = useRouter();
+  const { tab } = router.query;
 
   const userProfile = useSelector(
     (state: { auth: { userProfile: User } }) => state.auth.userProfile,
   );
 
   const dispatch = useDispatch();
-  const router = useRouter();
 
   const { upgraded } = router.query;
 
@@ -113,7 +114,7 @@ export default function Account() {
   };
 
   const getCurrentPageTitle = () => {
-    switch (activeTab) {
+    switch (tab) {
       case "account":
         return "Account Settings";
       case "billing":
@@ -281,11 +282,11 @@ export default function Account() {
                     className="rounded-lg px-4 py-1 hover:bg-secondary/30"
                   >
                     <button
-                      onClick={() => setActiveTab(item.name.toLowerCase())}
+                      onClick={() =>
+                        router.push(`/account?tab=${item.name.toLowerCase()}`)
+                      }
                       className={
-                        activeTab === item.name.toLowerCase()
-                          ? "text-secondary"
-                          : ""
+                        tab === item.name.toLowerCase() ? "text-secondary" : ""
                       }
                     >
                       {item.name}
@@ -296,7 +297,7 @@ export default function Account() {
             </nav>
           </header>
 
-          {activeTab === "account" && (
+          {(tab === "account" || !tab) && (
             <div className="divide-y divide-secondary/20">
               <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
                 <div>
@@ -653,12 +654,12 @@ export default function Account() {
               )}
             </div>
           )}
-          {activeTab === "notifications" && (
+          {tab === "notifications" && (
             <div className="mt-8 w-full text-center">
               <p>Coming soon...</p>
             </div>
           )}
-          {activeTab === "billing" && (
+          {tab === "billing" && (
             <div className="mt-8 flex w-full text-center">
               <Billing
                 changePlan={() => setShowChangePlan(true)}
@@ -666,12 +667,12 @@ export default function Account() {
               />
             </div>
           )}
-          {activeTab === "teams" && (
+          {tab === "teams" && (
             <div className="mt-8 w-full text-center">
               <p>Coming soon...</p>
             </div>
           )}
-          {activeTab === "integrations" && (
+          {tab === "integrations" && (
             <div className="mt-8 w-full text-center">
               <p>Coming soon...</p>
             </div>
@@ -689,7 +690,7 @@ export default function Account() {
         {upgraded && (
           <UpgradeSuccess
             showSelectTemplate={() => {
-              router.push("/account");
+              router.push("/account?tab=account");
             }}
           />
         )}
