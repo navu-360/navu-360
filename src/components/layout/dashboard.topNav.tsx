@@ -206,7 +206,7 @@ function AdminCard() {
           <button className="mr-8 flex h-[40px] w-full shrink-0 animate-pulse items-center justify-center gap-2 rounded-3xl bg-gray-400 px-12 py-2 text-base font-semibold text-white"></button>
         ))}
       <div
-        onClick={() => router.push("/account")}
+        onClick={() => router.push("/account?tab=account")}
         className="relative flex h-[50px] w-[50px] shrink-0 items-center justify-center rounded-full"
       >
         {session?.user?.id ? (
