@@ -116,18 +116,18 @@ model OnboardingProgram {
 }
 
 model ProgramSection {
-  id             String             @id @default(cuid())
-  type           String
-  content        String?
-  link           String?
-  name           String?
-  published      Boolean            @default(false)
-  programId      String?
-  Program        OnboardingProgram? @relation(fields: [programId], references: [id], onDelete: Cascade)
-  orgId          String
-  Organization   Organization       @relation(fields: [orgId], references: [id])
-  createdAt      DateTime           @default(now())
-  updatedAt      DateTime           @updatedAt
+  id           String             @id @default(cuid())
+  type         String
+  content      String?
+  link         String?
+  name         String?
+  published    Boolean            @default(false)
+  programId    String?
+  Program      OnboardingProgram? @relation(fields: [programId], references: [id], onDelete: Cascade)
+  orgId        String
+  Organization Organization       @relation(fields: [orgId], references: [id])
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
 }
 
 model OnboardingProgramTalents {
@@ -137,6 +137,8 @@ model OnboardingProgramTalents {
   userId            String
   User              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   programId         String
+  learningPathId    String?
+  learningPath      LearningPath?     @relation(fields: [learningPathId], references: [id], onDelete: Cascade)
   OnboardingProgram OnboardingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
@@ -234,15 +236,16 @@ model invites {
 }
 
 model LearningPath {
-  id             String               @id @default(cuid())
-  name           String
-  description    String
-  orgId          String
-  Organization   Organization         @relation(fields: [orgId], references: [id])
-  courses        OnboardingProgram[]
-  createdAt      DateTime             @default(now())
-  updatedAt      DateTime             @updatedAt
-  ModuleCourse   LearningPathCourse[]
+  id                       String                     @id @default(cuid())
+  name                     String
+  description              String
+  orgId                    String
+  Organization             Organization               @relation(fields: [orgId], references: [id])
+  courses                  OnboardingProgram[]
+  createdAt                DateTime                   @default(now())
+  updatedAt                DateTime                   @updatedAt
+  ModuleCourse             LearningPathCourse[]
+  OnboardingProgramTalents OnboardingProgramTalents[]
 }
 
 model LearningPathCourse {
