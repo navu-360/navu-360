@@ -67,7 +67,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     select: {
                         name: true,
                         // count of courses
-                        ModuleCourse: {
+                        moduleCourse: {
                             select: {
                                 courseId: true,
                             }
@@ -90,7 +90,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
                 const emailResponses = await Promise.all(talents.map(async (talent) => {
                     return await sendEnrolledEmail({
-                        programName: `learning path - ${learningPath?.name} which has ${learningPath?.ModuleCourse.length} courses`,
+                        programName: `learning path - ${learningPath?.name} which has ${learningPath?.moduleCourse.length} courses`,
                         talentName: talent?.name ?? "",
                         organizationName: organization?.name ?? "",
                         talentId: talent.id,

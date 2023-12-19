@@ -114,7 +114,7 @@ export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
   ]);
 
   return (
-    <header className="fixed left-[70px] top-0 z-[100] flex h-[75px] w-full items-center bg-white py-2 pl-4 md:left-[200px]">
+    <header className="fixed left-[70px] top-0 z-[100] flex h-[75px] w-full items-center bg-white py-2 pl-4 md:left-[225px]">
       {!hideSearch && (
         <form
           onSubmit={(e) => e.preventDefault()}

@@ -25,15 +25,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     id: moduleId,
                 },
                 include: {
-                    ModuleCourse: {
+                    moduleCourse: {
                         include: {
                             course: {
                                 include: {
                                     onboardingProgramTalents: {
-                                        select: {
-                                            userId: true,
-                                            learningPathId: true,
-                                        },
+                                        include: {
+                                            User: {
+                                                select: {
+                                                    name: true,
+                                                    email: true,
+                                                    id: true,
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             },

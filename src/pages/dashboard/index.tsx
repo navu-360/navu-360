@@ -149,7 +149,7 @@ export default function Dashboard() {
             )}
             {session?.user?.seenWelcomeGuide && (
               <>
-                <div className="relative ml-[90px] mr-4 mt-[2rem] flex justify-between text-tertiary md:ml-[230px]">
+                <div className="relative ml-[90px] mr-4 mt-[2rem] flex justify-between text-tertiary md:ml-[250px]">
                   <h1 className="text-2xl font-bold">
                     Hi, {userProfile?.name?.split(" ")[0] ?? ""}
                   </h1>
@@ -182,7 +182,7 @@ export default function Dashboard() {
                     </button>
                   )}
                 </div>
-                <div className="relative ml-[90px] mr-4 mt-[3rem] flex justify-between text-tertiary md:ml-[230px]">
+                <div className="relative ml-[90px] mr-4 mt-[3rem] flex justify-between text-tertiary md:ml-[250px]">
                   <section className="flex w-full flex-col md:w-[70%]">
                     <div className="mt-0 grid w-full grid-cols-1 gap-4 md:grid-cols-3 lg:justify-between lg:gap-4 2xl:mt-0">
                       <OneStat
