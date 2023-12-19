@@ -70,15 +70,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     case "PUT":
       try {
-        // name, description, and course IDs
-        const { name, description, courseIds, learningPathId } = req.body as {
+        // name, description
+        const { name, description, learningPathId } = req.body as {
           name: string;
           description: string;
-          courseIds: string[];
           learningPathId: string;
         };
 
-        if (!name || !description || !courseIds || !learningPathId) {
+        if (!name || !description || !learningPathId) {
           return res.status(400).json({ message: `Missing fields.` });
         }
 
@@ -117,8 +116,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
     case "DELETE":
       try {
-        const { learningPathId } = req.body as {
-          learningPathId: string;
+        const { id: learningPathId } = req.query as {
+          id: string;
         };
 
         if (!learningPathId) {
