@@ -475,4 +475,12 @@ export const {
   useVerifyReferenceQuery,
   useAddCustomDomainMutation,
   useEditCustomDomainMutation,
+  useCreateLearningPathMutation,
+  useEditLearningPathMutation,
+  useDeletePathMutation,
+  useGetOrgLearningPathsQuery,
+  useAddCoursesToLearningPathMutation,
+  useRemoveCoursesFromLearningPathMutation,
+  useEnrolTalentToPathsMutation,
+  useEnrolTalentsToLearningPathMutation,
 } = baseApiSlice;

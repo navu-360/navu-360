@@ -6,7 +6,10 @@ import DashboardWrapper from "components/layout/dashboardWrapper";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useGetProgramTalentsQuery } from "services/baseApiSlice";
+import {
+  useGetOrgLearningPathsQuery,
+  useGetProgramTalentsQuery,
+} from "services/baseApiSlice";
 import { generateAvatar } from "utils/avatar";
 import { processDate } from "utils/date";
 import { motion } from "framer-motion";
@@ -20,6 +23,10 @@ export default function LearningPaths() {
   useEffect(() => {
     setIsReady(true);
   }, []);
+
+  const { data, isFetching } = useGetOrgLearningPathsQuery(undefined);
+
+  console.log(data?.data);
 
   const router = useRouter();
 
@@ -36,7 +43,9 @@ export default function LearningPaths() {
         ) : (
           <div className="relative ml-[80px] mt-[3rem] flex h-full flex-col items-center justify-center gap-8 pb-16 pt-20 md:ml-[250px] 2xl:ml-[250px]">
             <div className="absolute left-0 top-0 flex w-max flex-col gap-0 text-left">
-              <h1 className="text-xl font-bold text-tertiary">Learning Paths</h1>
+              <h1 className="text-xl font-bold text-tertiary">
+                Learning Paths
+              </h1>
             </div>
             <button
               onClick={() => router.push("/create/path")}
@@ -57,7 +66,7 @@ export default function LearningPaths() {
 
               <span>Create a Learning Path</span>
             </button>
-            {[].length === 0 && (
+            {data?.data?.length === 0 && (
               <div className="flex min-h-[70vh] w-full items-center justify-center gap-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -75,7 +84,7 @@ export default function LearningPaths() {
               </div>
             )}
 
-            {0 && (
+            {isFetching && (
               <div className="flex w-full flex-wrap justify-center gap-8 md:justify-start">
                 <ProgramShimmer />
                 <ProgramShimmer />

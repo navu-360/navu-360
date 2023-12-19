@@ -174,8 +174,8 @@ export default function AdminNav({
                 </svg>
               }
               text={"Learning Paths"}
-              isActive={router.pathname.includes("learning-path")}
-              to={"/learning-path"}
+              isActive={router.pathname.includes("learning-paths")}
+              to={"/learning-paths"}
             />
           )}
           {userProfile?.role === "admin" && (
