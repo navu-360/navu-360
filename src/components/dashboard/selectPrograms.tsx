@@ -1,15 +1,10 @@
 import { motion } from "framer-motion";
-import type {
-  EventEnrollment,
-  OnboardingProgram,
-  Organization,
-} from "@prisma/client";
+import type { EventEnrollment, OnboardingProgram } from "@prisma/client";
 
 import React, { useState, useEffect } from "react";
 import toaster from "utils/toaster";
 import {
   useEnrollTalentMutation,
-  useSendEnrolledEmailMutation,
   useGetOrganizationProgramsQuery,
   useGetEnrollmentStatusQuery,
 } from "services/baseApiSlice";
@@ -68,39 +63,6 @@ export function SelectPrograms({
 
   const [enrollTalent, { isLoading: isEnrolling }] = useEnrollTalentMutation();
 
-  const organizationData = useSelector(
-    (state: { auth: { organizationData: Organization } }) =>
-      state.auth.organizationData,
-  );
-
-  const [sendEmailAction, { isLoading }] = useSendEnrolledEmailMutation();
-
-  const sendEmail = async (programName: string) => {
-    const body = {
-      programName,
-      talentName: talentName.split(" ")[0],
-      organizationName: organizationData?.name,
-      talentId: talentId,
-    };
-    await sendEmailAction(body)
-      .unwrap()
-      .then(() => {
-        console.log("");
-      })
-      .catch(
-        (error: {
-          data: {
-            message: string;
-          };
-        }) => {
-          toaster({
-            status: "error",
-            message: error?.data?.message,
-          });
-        },
-      );
-  };
-
   const handleEnrollTalent = async () => {
     const body = {
       programId: selectedProgramIds,
@@ -114,17 +76,6 @@ export function SelectPrograms({
           status: "success",
           message: "Talent enrolled successfully",
         });
-        // for every program, send email
-        selectedProgramIds.forEach(async (programId) => {
-          const programName = programs?.data?.find(
-            (program: OnboardingProgram) => program.id === programId,
-          )?.name;
-
-          if (programName) {
-            await sendEmail(programName);
-          }
-        });
-
         closeModal(true);
       })
       .catch(
@@ -243,15 +194,11 @@ export function SelectPrograms({
             </div>
             <div className="flex justify-center gap-4">
               <button
-                disabled={
-                  isEnrolling || selectedProgramIds?.length === 0 || isLoading
-                }
+                disabled={isEnrolling || selectedProgramIds?.length === 0}
                 onClick={() => handleEnrollTalent()}
                 className="ml-2 flex items-center justify-center rounded-md bg-secondary px-8 py-2 text-sm font-semibold capitalize text-white disabled:opacity-50"
               >
-                {isEnrolling || isLoading
-                  ? "Loading..."
-                  : `Enroll ${talentName}`}
+                {isEnrolling ? "Loading..." : `Enroll ${talentName}`}
               </button>
             </div>
           </div>
