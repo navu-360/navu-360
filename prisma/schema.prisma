@@ -79,6 +79,7 @@ model Organization {
   createdAt                DateTime                   @default(now())
   updatedAt                DateTime                   @updatedAt
   ProgramSection           ProgramSection[]
+  Module                   LearningPath[]
 }
 
 model emailTracking {
@@ -109,9 +110,9 @@ model OnboardingProgram {
   TalentQuizAnswers        TalentQuizAnswers[]
   TalentProgramResults     TalentProgramResults[]
   LearnEvents              EventEnrollment[]
-  module                   Module?                    @relation(fields: [moduleId], references: [id])
+  module                   LearningPath?                    @relation(fields: [moduleId], references: [id])
   moduleId                 String?
-  ModuleCourse             ModuleCourse[]
+  ModuleCourse             LearningPathCourse[]
 }
 
 model ProgramSection {
@@ -232,21 +233,23 @@ model invites {
   @@index([orgId], name: "orgId")
 }
 
-model Module {
+model LearningPath {
   id           String              @id @default(cuid())
   name         String
   description  String
+  orgId        String
+  Organization Organization        @relation(fields: [orgId], references: [id])
   courses      OnboardingProgram[]
   createdAt    DateTime            @default(now())
   updatedAt    DateTime            @updatedAt
-  ModuleCourse ModuleCourse[]
+  ModuleCourse LearningPathCourse[]
 }
 
-model ModuleCourse {
+model LearningPathCourse {
   id        String            @id @default(cuid())
   moduleId  String
   courseId  String
-  module    Module            @relation(fields: [moduleId], references: [id])
+  module    LearningPath            @relation(fields: [moduleId], references: [id])
   course    OnboardingProgram @relation(fields: [courseId], references: [id])
   createdAt DateTime          @default(now())
   updatedAt DateTime          @updatedAt
