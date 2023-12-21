@@ -2,6 +2,7 @@
 import type { Organization, User } from "@prisma/client";
 import Header from "components/common/head";
 import SearchResults from "components/common/searchResults";
+import CreateLearningPath from "components/createProgram/createLearningPath/main";
 import { NoCourses, WelcomeGuide } from "components/dashboard/guides";
 import Programs from "components/dashboard/programs.table";
 import SelectTemplate from "components/dashboard/selectTemplate";
@@ -133,6 +134,8 @@ export default function Dashboard() {
   };
 
   const [showCreateDropdown, setShowCreateDropdown] = useState(false);
+
+  const { create } = router.query;
 
   if (!isReady) return null;
 
@@ -304,6 +307,16 @@ export default function Dashboard() {
             <CreateOptions close={() => setShowCreateDropdown(false)} />
           )}
         </AnimatePresence>
+
+        <AnimatePresence>
+          {create === "path" && (
+            <CreateLearningPath
+              close={() => {
+                router.push("/dashboard");
+              }}
+            />
+          )}
+        </AnimatePresence>
       </DashboardWrapper>
     </>
   );
@@ -371,7 +384,7 @@ function CreateOptions({ close }: { close: () => void }) {
       <div className="relative flex h-max w-max max-w-md flex-col gap-4 rounded-lg bg-white p-4 shadow">
         <div
           onClick={() => close()}
-          className="absolute -right-4 -top-12 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-200"
+          className="absolute -right-4 -top-12 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-50"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -395,7 +408,7 @@ function CreateOptions({ close }: { close: () => void }) {
         {options.map((item, i) => (
           <Link
             key={i}
-            href={item.id === 0 ? "/create/program" : "/create/course"}
+            href={item.id === 1 ? "/create/program" : "/dashboard?create=path"}
             className="group flex cursor-pointer items-center gap-4 pr-4 transition-all duration-300 ease-in hover:bg-neutral-100"
           >
             <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg bg-neutral-200">
