@@ -180,6 +180,12 @@ span {
     z-index: 20;
 }
 
+.overlay-dark {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    border-radius: 6px;
+}
+
 .overlay-course {
     position: absolute;
     top: 0;
