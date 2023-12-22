@@ -381,8 +381,8 @@ function OneItem({
   return isFeedback ? (
     <button
       id="feedback"
-      className={`group flex items-center gap-2 rounded-md px-4 py-4 font-medium transition-all duration-300 ease-in hover:bg-secondary/50 md:px-8 md:py-2 md:pl-2 ${
-        isActive ? "bg-secondary/20" : "bg-transparent"
+      className={`group relative flex items-center gap-2 rounded-md px-4 py-4 font-medium transition-all duration-300 ease-in hover:bg-secondary/50 md:px-8 md:py-2 md:pl-2 ${
+        isActive ? "shadow-before bg-secondary/20" : "bg-transparent"
       }`}
     >
       {svg} <span className="hidden md:block">{text}</span>
@@ -413,8 +413,8 @@ function OneItem({
           action();
         }
       }}
-      className={`group flex items-center gap-2 rounded-md px-4 py-4 font-medium transition-all duration-300 ease-in hover:bg-secondary/50 md:px-8 md:py-2 md:pl-2 ${
-        isActive ? "bg-secondary/20" : "bg-transparent"
+      className={`group relative flex items-center gap-2 rounded-md px-4 py-4 font-medium transition-all duration-300 ease-in hover:bg-secondary/50 md:px-8 md:py-2 md:pl-2 ${
+        isActive ? "shadow-before bg-secondary/20" : "bg-transparent"
       }`}
     >
       {svg} <span className="hidden md:block">{text}</span>
