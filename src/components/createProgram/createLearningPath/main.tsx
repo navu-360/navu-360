@@ -2,7 +2,11 @@ import type { OnboardingProgram } from "@prisma/client";
 import Image from "next/image";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { useGetOrganizationProgramsQuery } from "services/baseApiSlice";
+import {
+  useGetOrganizationProgramsQuery,
+  useCreateLearningPathMutation,
+} from "services/baseApiSlice";
+import toaster from "utils/toaster";
 
 export default function CreateLearningPath({ close }: { close: () => void }) {
   const [name, setName] = useState("");
@@ -18,6 +22,36 @@ export default function CreateLearningPath({ close }: { close: () => void }) {
   });
 
   const [selectedCourses, setSelectedCourses] = useState<string[]>([]);
+
+  const [createPath, { isLoading }] = useCreateLearningPathMutation();
+
+  const createPathHandler = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    e.preventDefault();
+    //
+    const body = {
+      name,
+      description,
+      courseIds: selectedCourses,
+    };
+
+    createPath(body)
+      .unwrap()
+      .then(() => {
+        toaster({
+          status: "success",
+          message: "Learning Path Created Successfully",
+        });
+        close();
+      })
+      .catch((err) => {
+        toaster({
+          status: "error",
+          message: err?.message ?? "Error Creating Learning Path",
+        });
+      });
+  };
 
   return (
     <div
@@ -117,13 +151,19 @@ export default function CreateLearningPath({ close }: { close: () => void }) {
             disabled={
               name.length === 0 ||
               description.length === 0 ||
-              selectedCourses.length === 0
+              selectedCourses.length === 0 ||
+              isLoading
             }
+            type="submit"
+            onClick={(e) => createPathHandler(e)}
             className="h-max w-full rounded-md bg-secondary px-8 py-1.5 text-sm font-semibold text-white md:w-max"
           >
             Create Learning Path
           </button>
-          <button className="rounded-md border-[1px] border-gray-400 bg-transparent px-8 py-1.5 text-sm font-medium text-gray-500">
+          <button
+            onClick={() => close()}
+            className="rounded-md border-[1px] border-gray-400 bg-transparent px-8 py-1.5 text-sm font-medium text-gray-500"
+          >
             Cancel
           </button>
         </div>
