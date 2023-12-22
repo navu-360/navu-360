@@ -311,7 +311,7 @@ export default function Dashboard() {
         <AnimatePresence>
           {create === "path" && (
             <CreateLearningPath
-              close={() => {
+              closeModal={() => {
                 router.push("/dashboard");
               }}
             />

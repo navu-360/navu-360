@@ -8,7 +8,7 @@ import {
 } from "services/baseApiSlice";
 import toaster from "utils/toaster";
 
-export default function CreateLearningPath({ close }: { close: () => void }) {
+export default function CreateLearningPath({ closeModal }: { closeModal: () => void }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
@@ -43,7 +43,7 @@ export default function CreateLearningPath({ close }: { close: () => void }) {
           status: "success",
           message: "Learning Path Created Successfully",
         });
-        close();
+        closeModal();
       })
       .catch((err) => {
         toaster({
@@ -55,12 +55,12 @@ export default function CreateLearningPath({ close }: { close: () => void }) {
 
   return (
     <div
-      onClick={(e) => (e.currentTarget === e.target ? close() : null)}
+      onClick={(e) => (e.currentTarget === e.target ? closeModal() : null)}
       className="fixed inset-0 z-[200] flex h-screen w-screen items-center justify-center bg-dark/30 backdrop-blur-sm"
     >
       <div className="relative h-[80vh] min-h-[600px] w-[1000px] overflow-hidden rounded-lg bg-white p-4 px-8">
         <div
-          onClick={() => close()}
+          onClick={() => closeModal()}
           className="absolute -right-4 -top-12 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-50"
         >
           <svg
@@ -156,12 +156,15 @@ export default function CreateLearningPath({ close }: { close: () => void }) {
             }
             type="submit"
             onClick={(e) => createPathHandler(e)}
-            className="h-max w-full rounded-md bg-secondary px-8 py-1.5 text-sm font-semibold text-white md:w-max"
+            className="h-max w-max rounded-md bg-secondary px-8 py-1.5 text-sm font-semibold text-white"
           >
             Create Learning Path
           </button>
           <button
-            onClick={() => close()}
+            onClick={() => {
+              console.log("cancel");
+              closeModal();
+            }}
             className="rounded-md border-[1px] border-gray-400 bg-transparent px-8 py-1.5 text-sm font-medium text-gray-500"
           >
             Cancel
