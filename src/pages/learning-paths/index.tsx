@@ -26,8 +26,6 @@ export default function LearningPaths() {
 
   const { data, isFetching } = useGetOrgLearningPathsQuery(undefined);
 
-  console.log(data?.data);
-
   const router = useRouter();
 
   const searchQuery = useSelector((state: any) => state.common.searchQuery);
@@ -36,7 +34,7 @@ export default function LearningPaths() {
 
   return (
     <>
-      <Header title={`All Courses`} />
+      <Header title={`All Learning Paths`} />
       <DashboardWrapper>
         {searchQuery?.length > 0 ? (
           <SearchResults />
@@ -66,6 +64,13 @@ export default function LearningPaths() {
 
               <span>Create a Learning Path</span>
             </button>
+
+            <OneLearningPath
+              program={data?.data[0]}
+              delay={0}
+              deleteProgram={() => {}}
+            />
+
             {data?.data?.length === 0 && (
               <div className="flex min-h-[70vh] w-full items-center justify-center gap-4">
                 <svg
@@ -101,7 +106,7 @@ export default function LearningPaths() {
   );
 }
 
-export function OneProgramCard({
+function OneLearningPath({
   program,
   delay,
   deleteProgram,
