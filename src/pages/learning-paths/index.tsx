@@ -16,6 +16,8 @@ import { motion } from "framer-motion";
 
 import { useRouter } from "next/router";
 import SearchResults from "components/common/searchResults";
+import CreateLearningPath from "components/createProgram/createLearningPath/main";
+import { AnimatePresence } from "framer-motion";
 
 export default function LearningPaths() {
   const [isReady, setIsReady] = useState(false);
@@ -26,9 +28,9 @@ export default function LearningPaths() {
 
   const { data, isFetching } = useGetOrgLearningPathsQuery(undefined);
 
-  const router = useRouter();
-
   const searchQuery = useSelector((state: any) => state.common.searchQuery);
+
+  const [showCreateLearningPath, setShowCreateLearningPath] = useState(false);
 
   if (!isReady) return null;
 
@@ -46,7 +48,7 @@ export default function LearningPaths() {
               </h1>
             </div>
             <button
-              onClick={() => router.push("/create/path")}
+              onClick={() => setShowCreateLearningPath(true)}
               className="absolute right-12 top-0 flex h-max min-h-[45px] w-max min-w-[120px] items-center justify-center gap-4 rounded-3xl bg-secondary px-4 py-2 text-center text-base font-semibold text-white hover:bg-secondary/90 focus:outline-none focus:ring-4 md:mr-0"
             >
               <svg
@@ -102,6 +104,16 @@ export default function LearningPaths() {
           </div>
         )}
       </DashboardWrapper>
+
+      <AnimatePresence>
+        {showCreateLearningPath && (
+          <CreateLearningPath
+            closeModal={() => {
+              setShowCreateLearningPath(false);
+            }}
+          />
+        )}
+      </AnimatePresence>
     </>
   );
 }
@@ -126,7 +138,9 @@ function OneLearningPath({
 }) {
   const programId = program?.id;
 
-  const { data: enrolledTalents } = useGetProgramTalentsQuery(programId);
+  const { data: enrolledTalents } = useGetProgramTalentsQuery(programId, {
+    skip: !programId,
+  });
 
   const router = useRouter();
 
@@ -138,7 +152,7 @@ function OneLearningPath({
       className="stat-shadow"
     >
       <Link
-        href={`/programs/${program.id}`}
+        href={`/programs/${program?.id ?? ""}`}
         onClick={(e) => {
           // if click element IDs: editProgram, deleteProgram, cancel default
           if (e.target) {
@@ -158,7 +172,7 @@ function OneLearningPath({
         className="relative flex h-[350px] w-[350px] flex-col gap-4 rounded-lg bg-white text-tertiary shadow-md"
       >
         <div className="relative flex h-[60px] w-full items-center gap-2 rounded-t-lg bg-tertiary p-4 py-10 text-white">
-          <h2 className="text-lg font-bold capitalize">{program.name}</h2>
+          <h2 className="text-lg font-bold capitalize">{program?.name}</h2>
         </div>
 
         <div className="absolute bottom-4 right-4 flex flex-row-reverse items-center justify-end gap-6">
@@ -185,7 +199,7 @@ function OneLearningPath({
 
           <div
             onClick={() => {
-              router.push(`/create/program?edit=${program.id}`);
+              router.push(`/create/program?edit=${program?.id}`);
             }}
             className="flex h-[35px] w-[35px] items-center justify-center rounded-full hover:bg-secondary/20"
           >
@@ -298,7 +312,7 @@ function OneLearningPath({
           <span className="text-xs font-medium">
             Created on:{" "}
             <span className="font-semibold">
-              {processDate(program.createdAt)}
+              {processDate(program?.createdAt)}
             </span>
           </span>
         </div>
