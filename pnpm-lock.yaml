@@ -32,6 +32,9 @@ dependencies:
   '@supabase/supabase-js':
     specifier: ^2.39.2
     version: 2.39.2
+  '@tawk.to/tawk-messenger-react':
+    specifier: ^2.0.2
+    version: 2.0.2(react-dom@18.2.0)(react@18.2.0)
   '@vercel/analytics':
     specifier: ^1.1.1
     version: 1.1.1
@@ -2220,6 +2223,16 @@ packages:
     resolution: {integrity: sha512-E4KcWTpoLHqwPHLxidpOqQbcrZVgi0rsmmZXUle1jXmJfuIf/UWpczUJ7MZZ5tlxytgJXyp0w4PGkkeLiuIdZw==}
     dependencies:
       tslib: 2.5.0
+
+  /@tawk.to/tawk-messenger-react@2.0.2(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-Nl3JMMIrQiyveSSuP8qYWEu1u+coqz4WCA7TfSjOMDcpyWEiORvOdnMWTsSlhz8rae57HWsCAGLzE507fKtzXA==}
+    peerDependencies:
+      react: ^18.1.0
+      react-dom: ^18.1.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
 
   /@types/body-parser@1.19.2:
     resolution: {integrity: sha512-ALYone6pm6QmwZoAgeyNksccT9Q4AWZQ6PvfwR37GT6r6FWUPguq6sUmNGSMV2Wr761oQoBxwGGa6DR5o1DC9g==}
