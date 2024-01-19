@@ -6,8 +6,7 @@ Welcome to Navu360 repository. This repository contains the source code for the 
 
 - [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
-- [Features](#features)
-
+- 
 ## Tech Stack
 
 - [Next JS](https://nextjs.org/)
