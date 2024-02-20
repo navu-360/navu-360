@@ -408,7 +408,7 @@ function CreateOptions({ close }: { close: () => void }) {
         {options.map((item, i) => (
           <Link
             key={i}
-            href={item.id === 1 ? "/create/program" : "/dashboard?create=path"}
+            href={item.id === 1 ? "/create/program" : "/learning-paths"}
             className="group flex cursor-pointer items-center gap-4 pr-4 transition-all duration-300 ease-in hover:bg-neutral-100"
           >
             <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg bg-neutral-200">

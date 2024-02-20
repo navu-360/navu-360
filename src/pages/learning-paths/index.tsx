@@ -44,12 +44,12 @@ export default function LearningPaths() {
           <div className="relative ml-[80px] mt-[3rem] flex h-full flex-col items-center justify-center gap-8 pb-16 pt-20 md:ml-[250px] 2xl:ml-[250px]">
             <div className="absolute left-0 top-0 flex w-max flex-col gap-0 text-left">
               <h1 className="text-xl font-bold text-tertiary">
-                Learning Paths
+                Learning Paths: Coming Soon...
               </h1>
             </div>
             <button
               onClick={() => setShowCreateLearningPath(true)}
-              className="absolute right-12 top-0 flex h-max min-h-[45px] w-max min-w-[120px] items-center justify-center gap-4 rounded-3xl bg-secondary px-4 py-2 text-center text-base font-semibold text-white hover:bg-secondary/90 focus:outline-none focus:ring-4 md:mr-0"
+              className="absolute hidden right-12 top-0 flex h-max min-h-[45px] w-max min-w-[120px] items-center justify-center gap-4 rounded-3xl bg-secondary px-4 py-2 text-center text-base font-semibold text-white hover:bg-secondary/90 focus:outline-none focus:ring-4 md:mr-0"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -67,14 +67,14 @@ export default function LearningPaths() {
               <span>Create a Learning Path</span>
             </button>
 
-            <OneLearningPath
+            {/* <OneLearningPath
               program={data?.data[0]}
               delay={0}
               deleteProgram={() => {}}
-            />
+            /> */}
 
             {data?.data?.length === 0 && (
-              <div className="flex min-h-[70vh] w-full items-center justify-center gap-4">
+              <div className="hidden min-h-[70vh] w-full items-center justify-center gap-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -92,7 +92,7 @@ export default function LearningPaths() {
             )}
 
             {isFetching && (
-              <div className="flex w-full flex-wrap justify-center gap-8 md:justify-start">
+              <div className="hidden w-full flex-wrap justify-center gap-8 md:justify-start">
                 <ProgramShimmer />
                 <ProgramShimmer />
                 <ProgramShimmer />
