@@ -1,20 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
-import type { OnboardingProgram } from "@prisma/client";
 import Header from "components/common/head";
 import DashboardWrapper from "components/layout/dashboardWrapper";
-import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import {
   useGetOrgLearningPathsQuery,
-  useGetProgramTalentsQuery,
 } from "services/baseApiSlice";
-import { generateAvatar } from "utils/avatar";
-import { processDate } from "utils/date";
 import { motion } from "framer-motion";
 
-import { useRouter } from "next/router";
 import SearchResults from "components/common/searchResults";
 import CreateLearningPath from "components/createProgram/createLearningPath/main";
 import { AnimatePresence } from "framer-motion";
@@ -49,7 +43,7 @@ export default function LearningPaths() {
             </div>
             <button
               onClick={() => setShowCreateLearningPath(true)}
-              className="absolute hidden right-12 top-0 flex h-max min-h-[45px] w-max min-w-[120px] items-center justify-center gap-4 rounded-3xl bg-secondary px-4 py-2 text-center text-base font-semibold text-white hover:bg-secondary/90 focus:outline-none focus:ring-4 md:mr-0"
+              className="absolute hidden right-12 top-0 h-max min-h-[45px] w-max min-w-[120px] items-center justify-center gap-4 rounded-3xl bg-secondary px-4 py-2 text-center text-base font-semibold text-white hover:bg-secondary/90 focus:outline-none focus:ring-4 md:mr-0"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
