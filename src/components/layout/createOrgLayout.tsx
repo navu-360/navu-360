@@ -65,7 +65,7 @@ export default function CreateOrganizationLayout({
           <div className="bg-gradient-to-r from-white to-white to-50% bg-clip-text text-base font-extrabold text-transparent [text-wrap:balance]">
             Built for the modern workplace, built for{" "}
             <span className="inline-flex h-[calc(theme(fontSize.base)*theme(lineHeight.tight))] flex-col overflow-hidden text-secondary md:h-[calc(theme(fontSize.base)*theme(lineHeight.tight))]">
-              <ul className="block animate-text-slide-5 text-left leading-tight [&_li]:block">
+              <ul className="block animate-text-slide-5 text-left !leading-wide [&_li]:block">
                 <li>Employee Training</li>
                 <li>Sales Training</li>
                 <li>Onboarding Training</li>

@@ -6,8 +6,7 @@ Welcome to Navu360 repository. This repository contains the source code for the 
 
 - [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
-- [Features](#features)
-
+- 
 ## Tech Stack
 
 - [Next JS](https://nextjs.org/)
@@ -19,7 +18,9 @@ Welcome to Navu360 repository. This repository contains the source code for the 
 - [NextAuth](https://next-auth.js.org/)
 - [Next JS API Routes](https://nextjs.org/docs/api-routes/introduction)
 - [Prisma](https://www.prisma.io/)
-- [Prisma Data Proxy](https://www.prisma.io/docs/data-platform/data-proxy)
+- [Prisma Accelerate](https://www.prisma.io/data-platform/accelerate)
+- [CloudFlare API](https://developers.cloudflare.com/api/)
+- [Vercel API](https://vercel.com/docs/rest-api)
 
 ## Getting Started
 

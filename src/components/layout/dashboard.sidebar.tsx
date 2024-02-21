@@ -82,8 +82,8 @@ export default function AdminNav({
   if (!isReady) return null;
 
   return (
-    <nav className="fixed left-0 top-0 z-50 h-full w-[70px] bg-dark py-2.5 sm:px-4 md:w-[200px]">
-      <div className="mx-auto flex h-full flex-col items-center md:mx-0">
+    <nav className="fixed left-0 top-0 z-50 h-full w-[70px] bg-dark py-2.5 sm:px-4 md:w-[225px]">
+      <div className="mx-auto flex h-full flex-col items-start md:mx-0">
         <Link href="/?home=true" className="flex items-center md:pl-0">
           <img
             src="/logo.svg"
@@ -147,6 +147,35 @@ export default function AdminNav({
               text={userProfile?.role === "admin" ? "Courses" : "My Courses"}
               isActive={router.pathname.includes("programs")}
               to={"/programs"}
+            />
+          )}
+          {userProfile?.role === "admin" && (
+            <OneItem
+              svg={
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="transition-all duration-300 ease-in md:group-hover:rotate-[-25deg]"
+                >
+                  <circle cx="12" cy="4.5" r="2.5" />
+                  <path d="m10.2 6.3-3.9 3.9" />
+                  <circle cx="4.5" cy="12" r="2.5" />
+                  <path d="M7 12h10" />
+                  <circle cx="19.5" cy="12" r="2.5" />
+                  <path d="m13.8 17.7 3.9-3.9" />
+                  <circle cx="12" cy="19.5" r="2.5" />
+                </svg>
+              }
+              text={"Learning Paths"}
+              isActive={router.pathname.includes("learning-paths")}
+              to={"/learning-paths"}
             />
           )}
           {userProfile?.role === "admin" && (
@@ -352,8 +381,8 @@ function OneItem({
   return isFeedback ? (
     <button
       id="feedback"
-      className={`group flex items-center gap-2 rounded-md px-4 py-4 font-medium transition-all duration-300 ease-in hover:bg-secondary/50 md:px-8 md:py-2 md:pl-2 ${
-        isActive ? "bg-secondary/20" : "bg-transparent"
+      className={`group relative flex items-center gap-2 rounded-md px-4 py-4 font-medium transition-all duration-300 ease-in hover:bg-secondary/50 md:px-8 md:py-2 md:pl-2 ${
+        isActive ? "shadow-before bg-secondary/20" : "bg-transparent"
       }`}
     >
       {svg} <span className="hidden md:block">{text}</span>
@@ -384,8 +413,8 @@ function OneItem({
           action();
         }
       }}
-      className={`group flex items-center gap-2 rounded-md px-4 py-4 font-medium transition-all duration-300 ease-in hover:bg-secondary/50 md:px-8 md:py-2 md:pl-2 ${
-        isActive ? "bg-secondary/20" : "bg-transparent"
+      className={`group relative flex items-center gap-2 rounded-md px-4 py-4 font-medium transition-all duration-300 ease-in hover:bg-secondary/50 md:px-8 md:py-2 md:pl-2 ${
+        isActive ? "shadow-before bg-secondary/20" : "bg-transparent"
       }`}
     >
       {svg} <span className="hidden md:block">{text}</span>

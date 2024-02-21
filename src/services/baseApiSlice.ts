@@ -367,6 +367,59 @@ export const baseApiSlice = createApi({
         body,
       }),
     }),
+    // PATHS
+    // create learning path
+    createLearningPath: builder.mutation({
+      query: (body) => ({
+        url: `paths`,
+        method: "POST",
+        body,
+      }),
+    }),
+    editLearningPath: builder.mutation({
+      query: (body) => ({
+        url: `paths`,
+        method: "PUT",
+        body,
+      }),
+    }),
+    deletePath: builder.mutation({
+      query: (id) => ({
+        url: `paths?id=${id}`,
+        method: "DELETE",
+      }),
+    }),
+    getOrgLearningPaths: builder.query({
+      query: () => `paths/org-modules`,
+    }),
+    addCoursesToLearningPath: builder.mutation({
+      query: (body) => ({
+        url: `paths/addCourse`,
+        method: "POST",
+        body,
+      }),
+    }),
+    removeCoursesFromLearningPath: builder.mutation({
+      query: (body) => ({
+        url: `paths/removeCourse`,
+        method: "POST",
+        body,
+      }),
+    }),
+    enrolTalentToPaths: builder.mutation({
+      query: (body) => ({
+        url: `paths/enrolTalentToModules`,
+        method: "POST",
+        body,
+      }),
+    }),
+    enrolTalentsToLearningPath: builder.mutation({
+      query: (body) => ({
+        url: `paths/enrolTalentsToModule`,
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -422,4 +475,12 @@ export const {
   useVerifyReferenceQuery,
   useAddCustomDomainMutation,
   useEditCustomDomainMutation,
+  useCreateLearningPathMutation,
+  useEditLearningPathMutation,
+  useDeletePathMutation,
+  useGetOrgLearningPathsQuery,
+  useAddCoursesToLearningPathMutation,
+  useRemoveCoursesFromLearningPathMutation,
+  useEnrolTalentToPathsMutation,
+  useEnrolTalentsToLearningPathMutation,
 } = baseApiSlice;

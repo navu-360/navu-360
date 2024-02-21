@@ -180,6 +180,12 @@ span {
     z-index: 20;
 }
 
+.overlay-dark {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    border-radius: 6px;
+}
+
 .overlay-course {
     position: absolute;
     top: 0;
@@ -934,4 +940,15 @@ strong {
     height: 100%;
     width: 100%;
     border-radius: 30px;
+}
+
+.shadow-before::before {
+    content: "";
+    position: absolute;
+    background: transparent;
+    border-right: 2px solid rgba(157, 42, 87, 0.3);
+    width: 20px;
+    height: 100%;
+    left: -25px;
+    border-radius: 5px;
 }

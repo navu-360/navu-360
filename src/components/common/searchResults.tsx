@@ -41,7 +41,7 @@ export default function SearchResults() {
   const dispatch = useDispatch();
 
   return (
-    <section className="relative ml-[90px] mr-4 mt-[2rem] flex w-auto flex-col justify-between gap-8 text-tertiary md:ml-[230px]">
+    <section className="relative ml-[90px] mr-4 mt-[2rem] flex w-auto flex-col justify-between gap-8 text-tertiary md:ml-[250px]">
       {resultsCourses?.length === 0 &&
       resultsTalents?.length === 0 &&
       resultsChapters?.length === 0 ? (

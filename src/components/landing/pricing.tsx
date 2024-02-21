@@ -209,7 +209,7 @@ export default function Pricing({
             </motion.div>
             <motion.div
               initial={{ scale: 1 }}
-              whileInView={{ scale: 1 }}
+              whileInView={{ scale: 1.1 }}
               transition={{ ease: "easeOut", duration: 0.5, delay: 0.2 }}
               viewport={{ amount: 0.9, once: true }}
               className="shadowAroundFeature featureThreeGradient disable-mobile-animation mx-auto mb-3 w-full min-w-[300px] rounded-md px-8 py-8 text-white md:max-w-[300px] lg:relative lg:z-10 lg:-mx-3 lg:mb-0 lg:flex lg:w-1/3 lg:max-w-none lg:flex-col lg:px-10 lg:py-10"

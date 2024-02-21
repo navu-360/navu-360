@@ -2,6 +2,7 @@
 import type { Organization, User } from "@prisma/client";
 import Header from "components/common/head";
 import SearchResults from "components/common/searchResults";
+import CreateLearningPath from "components/createProgram/createLearningPath/main";
 import { NoCourses, WelcomeGuide } from "components/dashboard/guides";
 import Programs from "components/dashboard/programs.table";
 import SelectTemplate from "components/dashboard/selectTemplate";
@@ -9,6 +10,7 @@ import AllTalents from "components/dashboard/talents.table";
 import DashboardWrapper from "components/layout/dashboardWrapper";
 import { AnimatePresence } from "framer-motion";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -131,6 +133,10 @@ export default function Dashboard() {
       });
   };
 
+  const [showCreateDropdown, setShowCreateDropdown] = useState(false);
+
+  const { create } = router.query;
+
   if (!isReady) return null;
 
   return (
@@ -149,14 +155,14 @@ export default function Dashboard() {
             )}
             {session?.user?.seenWelcomeGuide && (
               <>
-                <div className="relative ml-[90px] mr-4 mt-[2rem] flex justify-between text-tertiary md:ml-[230px]">
+                <div className="relative ml-[90px] mr-4 mt-[2rem] flex justify-between text-tertiary md:ml-[250px]">
                   <h1 className="text-2xl font-bold">
                     Hi, {userProfile?.name?.split(" ")[0] ?? ""}
                   </h1>
                   {programs && (
                     <button
                       disabled={isFetching}
-                      onClick={() => router.push("/create/program")}
+                      onClick={() => setShowCreateDropdown(true)}
                       className={`z-50 flex h-max min-h-[45px] w-max min-w-[150px] shrink-0 items-center justify-center gap-4 rounded-3xl bg-secondary px-8 py-2 text-center text-lg font-semibold text-white transition-all duration-150 ease-in hover:bg-secondary/90 focus:outline-none focus:ring-4 ${
                         programs?.data?.length > 0 || isFetching ? "" : "hidden"
                       }`}
@@ -178,11 +184,11 @@ export default function Dashboard() {
                         <path d="M12 8v8" />
                       </svg>
 
-                      <span className="w-max">Create Course</span>
+                      <span className="w-max">Create</span>
                     </button>
                   )}
                 </div>
-                <div className="relative ml-[90px] mr-4 mt-[3rem] flex justify-between text-tertiary md:ml-[230px]">
+                <div className="relative ml-[90px] mr-4 mt-[3rem] flex justify-between text-tertiary md:ml-[250px]">
                   <section className="flex w-full flex-col md:w-[70%]">
                     <div className="mt-0 grid w-full grid-cols-1 gap-4 md:grid-cols-3 lg:justify-between lg:gap-4 2xl:mt-0">
                       <OneStat
@@ -295,8 +301,131 @@ export default function Dashboard() {
             <SelectTemplate closeModal={() => setShowSelectTemplate(false)} />
           )}
         </AnimatePresence>
+
+        <AnimatePresence>
+          {showCreateDropdown && (
+            <CreateOptions close={() => setShowCreateDropdown(false)} />
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {create === "path" && (
+            <CreateLearningPath
+              closeModal={() => {
+                router.push("/dashboard");
+              }}
+            />
+          )}
+        </AnimatePresence>
       </DashboardWrapper>
     </>
+  );
+}
+
+function CreateOptions({ close }: { close: () => void }) {
+  const options = [
+    {
+      id: 0,
+      label: "Create Learning Path",
+      description: "Create a new learning path by combining courses",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          className="text-secondary transition-all duration-300 ease-in group-hover:rotate-12"
+        >
+          <circle cx="12" cy="4.5" r="2.5" />
+          <path d="m10.2 6.3-3.9 3.9" />
+          <circle cx="4.5" cy="12" r="2.5" />
+          <path d="M7 12h10" />
+          <circle cx="19.5" cy="12" r="2.5" />
+          <path d="m13.8 17.7 3.9-3.9" />
+          <circle cx="12" cy="19.5" r="2.5" />
+        </svg>
+      ),
+    },
+    {
+      id: 1,
+      label: "Create Course",
+      description:
+        "Create a new course with new chapters or select chapters from your library",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="text-secondary transition-all duration-300 ease-in group-hover:rotate-12"
+        >
+          <path d="M2 16V4a2 2 0 0 1 2-2h11" />
+          <path d="M5 14H4a2 2 0 1 0 0 4h1" />
+          <path d="M22 18H11a2 2 0 1 0 0 4h11V6H11a2 2 0 0 0-2 2v12" />
+        </svg>
+      ),
+    },
+  ];
+  return (
+    <div
+      onClick={(e) => (e.currentTarget === e.target ? close() : null)}
+      className="fixed inset-0 z-[200] flex h-screen w-screen justify-end bg-dark/30 pr-4 pt-[10rem] backdrop-blur-sm lg:pr-8 lg:pt-[12rem]"
+    >
+      <div className="relative flex h-max w-max max-w-md flex-col gap-4 rounded-lg bg-white p-4 shadow">
+        <div
+          onClick={() => close()}
+          className="absolute -right-4 -top-12 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-50"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            className="lucide lucide-x text-gray-400"
+          >
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        </div>
+        <h2 className="text-lg font-semibold capitalize text-dark">
+          What do you want to create?
+        </h2>
+        {options.map((item, i) => (
+          <Link
+            key={i}
+            href={item.id === 1 ? "/create/program" : "/learning-paths"}
+            className="group flex cursor-pointer items-center gap-4 pr-4 transition-all duration-300 ease-in hover:bg-neutral-100"
+          >
+            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg bg-neutral-200">
+              {item.icon}
+            </div>
+            <div className="flex flex-col gap-0">
+              <h2 className="text-lg font-semibold text-gray-800">
+                {item.label}
+              </h2>
+              <p className="text-sm font-medium text-gray-500">
+                {item.description}
+              </p>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
   );
 }
 

@@ -70,7 +70,7 @@ model Organization {
   noOfEmployees            String
   industry                 String
   website                  String?
-  freeTrialCoursesIds      String[]                  @default([])
+  freeTrialCoursesIds      String[]                   @default([])
   domain                   String?
   user                     User                       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId                   String                     @unique
@@ -79,11 +79,12 @@ model Organization {
   createdAt                DateTime                   @default(now())
   updatedAt                DateTime                   @updatedAt
   ProgramSection           ProgramSection[]
+  Module                   LearningPath[]
 }
 
 model emailTracking {
   id        String   @id @default(cuid())
-  emailType     String
+  emailType String
   email     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -109,6 +110,9 @@ model OnboardingProgram {
   TalentQuizAnswers        TalentQuizAnswers[]
   TalentProgramResults     TalentProgramResults[]
   LearnEvents              EventEnrollment[]
+  module                   LearningPath?              @relation(fields: [moduleId], references: [id])
+  moduleId                 String?
+  ModuleCourse             LearningPathCourse[]
 }
 
 model ProgramSection {
@@ -133,6 +137,8 @@ model OnboardingProgramTalents {
   userId            String
   User              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   programId         String
+  learningPathId    String?
+  learningPath      LearningPath?     @relation(fields: [learningPathId], references: [id], onDelete: Cascade)
   OnboardingProgram OnboardingProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
@@ -227,4 +233,29 @@ model invites {
   updatedAt DateTime @updatedAt
 
   @@index([orgId], name: "orgId")
+}
+
+model LearningPath {
+  id                       String                     @id @default(cuid())
+  name                     String
+  description              String
+  orgId                    String
+  Organization             Organization               @relation(fields: [orgId], references: [id])
+  courses                  OnboardingProgram[]
+  createdAt                DateTime                   @default(now())
+  updatedAt                DateTime                   @updatedAt
+  moduleCourse             LearningPathCourse[]
+  OnboardingProgramTalents OnboardingProgramTalents[]
+}
+
+model LearningPathCourse {
+  id        String            @id @default(cuid())
+  moduleId  String
+  courseId  String
+  module    LearningPath      @relation(fields: [moduleId], references: [id])
+  course    OnboardingProgram @relation(fields: [courseId], references: [id])
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  @@unique([moduleId, courseId])
 }

@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-var-requires */
-import type { NextApiRequest, NextApiResponse } from "next";
 const { readFileSync } = require("fs");
 const { join } = require("path");
 import sgMail from "@sendgrid/mail";
@@ -7,26 +7,22 @@ import sgMail from "@sendgrid/mail";
 import { env } from "env/server.mjs";
 import { prisma } from "auth/db";
 
-
-import { getServerSession } from "next-auth";
-import { authOptions } from 'auth/auth';
-
 sgMail.setApiKey(env.SENDGRID_API_KEY);
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+const sendEnrolledEmail = async (req: {
+  programName: string;
+  talentName: string;
+  organizationName: string;
+  talentId: string;
+  originBaseUrl: string;
+}) => {
   try {
 
-    const session = await getServerSession(req, res, authOptions);
-    if (!session) {
-      res.status(401).json({ message: `Unauthorized.` });
-      return;
-    }
-
-    const { programName, talentName, organizationName, talentId } = req.body;
+    const { programName, talentName, organizationName, talentId, originBaseUrl } = req;
 
     // validate the data coming in
     if (!organizationName || !programName) {
-      return res.status(400).json({ error: "Missing required fields" });
+      throw new Error(`Missing fields.`);
     }
 
     const path = join(process.cwd(), "src/utils/emails/enrolled.html");
@@ -34,7 +30,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     // email link: staging.navu360.com/onboarding/organizationId/onboardingProgramId
 
-    const originBaseUrl = req.headers.origin;
+    // const originBaseUrl = req.headers.origin;
 
     const link = `${originBaseUrl}`;
 
@@ -46,7 +42,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     if (!talent) {
-      return res.status(400).json({ message: `Talent not found.` });
+      throw new Error(`Talent not found.`);
     }
 
     const msg = {
@@ -69,13 +65,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // @ts-ignore
     await sgMail.send(msg);
 
-    return res.json({
+    return {
       message: `Email sent to ${talent?.email}`,
-    });
-  } catch (error) {
-    // @ts-ignore
-    return res.status(400).json({ message: error.message });
+    };
+  } catch (error: any) {
+    throw new Error(error.message);
   }
 };
 
-export default handler;
+export default sendEnrolledEmail;

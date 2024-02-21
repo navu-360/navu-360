@@ -375,7 +375,9 @@ export function OneCourse({
           {enrollmentStatus?.data?.viewedChapters ? (
             <div className="flex flex-col gap-1">
               {doneSections === requiredSections ? (
-                <span className="text-sm font-semibold">100%</span>
+                <span className="text-sm font-semibold text-green-500">
+                  100%
+                </span>
               ) : (
                 <span className="text-sm font-semibold">
                   {doneSections}/{requiredSections}
@@ -389,7 +391,13 @@ export function OneCourse({
                       width: `${(1 / requiredSections) * 100}%`,
                     }}
                     className={`h-2 rounded-3xl ${
-                      i < doneSections ? "bg-secondary" : "bg-secondary/10"
+                      i < doneSections
+                        ? `${
+                            doneSections === requiredSections
+                              ? "bg-green-500"
+                              : "bg-secondary"
+                          }`
+                        : "bg-secondary/10"
                     }`}
                   />
                 ))}

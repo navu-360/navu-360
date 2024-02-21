@@ -2,8 +2,9 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import { getServerSession } from "next-auth";
 
-import { prisma } from "../../../../auth/db";
+import { prisma } from "auth/db";
 import { authOptions } from "auth/auth";
+import sendEnrolledEmail from "../email/enroll";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -54,7 +55,42 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const enrollmentEvent = await Promise.all(enrollmentEvents);
 
+    // find all course from programId array and select name
+    const courseNames = await prisma.onboardingProgram.findMany({
+      where: {
+        id: {
+          in: programId,
+        },
+      },
+      select: {
+        name: true,
+      },
+    });
+
     console.log(!!enrollmentEvent);
+
+    // call sendEnrolledEmail and pass:  programName, talentName, organizationName, talentId, originBaseUrl
+    const originBaseUrl = req.headers.origin as string;
+
+    const organization = await prisma.organization.findFirst({
+      where: {
+        userId: session?.user?.id as string,
+      },
+      select: {
+        name: true,
+      }
+    });
+
+    const emailResponse = await sendEnrolledEmail({
+      programName: courseNames.map((course) => course.name).join(", "),
+      talentName: talent?.name ?? "",
+      organizationName: organization?.name ?? "",
+      talentId: talent.id,
+      originBaseUrl,
+    }
+    )
+
+    console.log(emailResponse)
 
     return res
       .status(200)

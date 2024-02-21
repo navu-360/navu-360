@@ -39,7 +39,7 @@ export function Footer() {
               width={144}
             />
           </Link>
-          © 2023 . All Rights Reserved.
+          © {new Date().getFullYear()} . All Rights Reserved.
         </div>
         <ul className="mt-3 flex flex-wrap items-center justify-center text-sm font-medium text-gray-300 sm:mt-0">
           <li>
