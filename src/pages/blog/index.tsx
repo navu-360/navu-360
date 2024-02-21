@@ -124,7 +124,7 @@ export default function Blog() {
           <h1 className="text-5xl font-bold leading-[1.2] tracking-tight text-tertiary">
             Navu360 Blog
           </h1>
-          <p className="text-2xl font-medium !leading-[1.6] tracking-wide text-gray-500">
+          <p className="text-lg font-medium !leading-[1.6] tracking-wide text-gray-500 md:text-2xl">
             Get tips and advice on delivering exceptional talent training,
             create effective courses, and building an effective workforce.
           </p>
