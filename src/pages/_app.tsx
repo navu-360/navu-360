@@ -9,8 +9,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 // @ts-ignore
 import TawkMessengerReact from "@tawk.to/tawk-messenger-react";
 
-import Smartlook from "smartlook-client";
-
 import { useEffect } from "react";
 
 import { ToastContainer, Slide } from "react-toastify";
@@ -52,10 +50,6 @@ const MyApp: AppType<{ session: Session | null }> = ({
       router.events.off("routeChangeError", handleRouteDone);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    Smartlook.init("ff70c35d43416ffa3ca09d4a0df8d5b7943b5450");
   }, []);
 
   return (
