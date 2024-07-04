@@ -23,7 +23,6 @@
     "@sendgrid/mail": "^8.1.1",
     "@sentry/nextjs": "^7.102.0",
     "@supabase/supabase-js": "^2.39.7",
-    "@tawk.to/tawk-messenger-react": "^2.0.2",
     "@vercel/analytics": "^1.2.2",
     "@vercel/speed-insights": "^1.0.10",
     "axios": "^1.6.7",

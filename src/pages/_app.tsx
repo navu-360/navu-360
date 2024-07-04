@@ -6,9 +6,6 @@ import { makeStore } from "redux/store";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-// @ts-ignore
-import TawkMessengerReact from "@tawk.to/tawk-messenger-react";
-
 import { useEffect } from "react";
 
 import { ToastContainer, Slide } from "react-toastify";
@@ -76,10 +73,6 @@ const MyApp: AppType<{ session: Session | null }> = ({
           <Component {...pageProps} />
           <Analytics />
           <SpeedInsights />
-          <TawkMessengerReact
-            propertyId="659d7e1b8d261e1b5f513601"
-            widgetId="1hjnj97nu"
-          />
         </Provider>
       </ErrorBoundary>
     </SessionProvider>
