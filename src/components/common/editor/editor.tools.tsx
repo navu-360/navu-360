@@ -15,6 +15,7 @@ import { uploadOne } from "../uploader";
 
 import { IconH1, IconH2, IconH3 } from "@codexteam/icons";
 
+// @ts-ignore
 class CustomHeader extends Header {
   static get toolbox() {
     return [

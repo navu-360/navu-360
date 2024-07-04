@@ -106,10 +106,10 @@ importers:
         specifier: ^2.9.0
         version: 2.9.0
       '@editorjs/editorjs':
-        specifier: ^2.29.1
+        specifier: ^2.29.0
         version: 2.29.1
       '@editorjs/header':
-        specifier: ^2.8.4
+        specifier: ^2.8.1
         version: 2.8.4
       '@editorjs/image':
         specifier: ^2.9.0
@@ -1819,11 +1819,6 @@ packages:
 
   abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
-
-  acorn-import-assertions@1.8.0:
-    resolution: {integrity: sha512-m7VZ3jwz4eK6A4Vtt8Ew1/mNbP24u0FhdyfA7fSvnJR6LMdfOYnmuIrrJAgrYfYJ10F/otaHTtrtrtmHdMNzEw==}
-    peerDependencies:
-      acorn: ^8
 
   acorn-import-assertions@1.9.0:
     resolution: {integrity: sha512-cmMwop9x+8KFhxvKrKfPYmN6/pKTYYHBqLa0DfvVZcKMJWNyWLnaqND7dx/qn66R7ewM1UX5XMaDVP5wlVTaVA==}
@@ -6510,14 +6505,9 @@ snapshots:
   abbrev@1.1.1:
     optional: true
 
-  acorn-import-assertions@1.8.0(acorn@8.10.0):
-    dependencies:
-      acorn: 8.10.0
-
   acorn-import-assertions@1.9.0(acorn@8.10.0):
     dependencies:
       acorn: 8.10.0
-    optional: true
 
   acorn-import-attributes@1.9.5(acorn@8.10.0):
     dependencies:
@@ -9217,7 +9207,7 @@ snapshots:
       '@webassemblyjs/wasm-edit': 1.11.5
       '@webassemblyjs/wasm-parser': 1.11.5
       acorn: 8.10.0
-      acorn-import-assertions: 1.8.0(acorn@8.10.0)
+      acorn-import-assertions: 1.9.0(acorn@8.10.0)
       browserslist: 4.23.0
       chrome-trace-event: 1.0.3
       enhanced-resolve: 5.13.0
