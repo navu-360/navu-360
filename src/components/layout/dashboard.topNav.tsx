@@ -16,8 +16,6 @@ import {
 import { generateAvatar } from "utils/avatar";
 import useDebounce from "utils/useDebounce";
 
-import formbricks from "@formbricks/js";
-
 export default function TopNavAdmin({ hideSearch }: { hideSearch?: boolean }) {
   const { data: session, status } = useSession();
 
@@ -152,7 +150,6 @@ function AdminCard() {
   useEffect(() => {
     if (session?.user) {
       dispatch(setUserProfile(session?.user));
-      formbricks.setEmail(session?.user?.email as string);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
