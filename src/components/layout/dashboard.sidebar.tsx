@@ -3,8 +3,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
-import formbricks from "@formbricks/js";
-
 import { signOut, useSession } from "next-auth/react";
 import { useDispatch, useSelector } from "react-redux";
 import type { User } from "@prisma/client";
@@ -20,13 +18,6 @@ import {
   setAllLibraryChapters,
 } from "redux/common/commonSlice";
 
-if (typeof window !== "undefined") {
-  formbricks.init({
-    environmentId: "cloihp7rwh336q70fu50y2jku",
-    apiHost: "https://app.formbricks.com",
-    debug: process.env.VERCEL_ENV !== "production",
-  });
-}
 
 export default function AdminNav({
   showInviteTalent,
