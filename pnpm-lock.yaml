@@ -11,9 +11,6 @@ importers:
       '@codexteam/icons':
         specifier: ^0.3.0
         version: 0.3.0
-      '@formbricks/js':
-        specifier: ^2.1.0
-        version: 2.1.0
       '@next-auth/prisma-adapter':
         specifier: ^1.0.7
         version: 1.0.7(@prisma/client@5.16.1(prisma@5.16.1))(next-auth@4.24.7(next@14.2.4(@babel/core@7.21.5)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
@@ -879,9 +876,6 @@ packages:
 
   '@floating-ui/utils@0.1.6':
     resolution: {integrity: sha512-OfX7E2oUDYxtBvsuS4e/jSn4Q9Qb6DzgeYtsAdkPZ47znpoNsMgZw0+tVijiv3uGNR6dgNlty6r9rzIzHjtd/A==}
-
-  '@formbricks/js@2.1.0':
-    resolution: {integrity: sha512-UZyp5IA8cIf8A3cgzwoLa1mxbZaE8Wfh1n71JD/KlI8vABQx3P8sF5NLq9tulEhJ70zd5EesXmZaTylTsaOD0w==}
 
   '@humanwhocodes/config-array@0.11.13':
     resolution: {integrity: sha512-JSBDMiDKSzQVngfRjOdFXgFfklaXI4K9nLF49Auh21lmBWRLIK3+xTErTWD4KU54pb6coM6ESE7Awz/FNU3zgQ==}
@@ -5358,8 +5352,6 @@ snapshots:
       '@floating-ui/utils': 0.1.6
 
   '@floating-ui/utils@0.1.6': {}
-
-  '@formbricks/js@2.1.0': {}
 
   '@humanwhocodes/config-array@0.11.13':
     dependencies:
